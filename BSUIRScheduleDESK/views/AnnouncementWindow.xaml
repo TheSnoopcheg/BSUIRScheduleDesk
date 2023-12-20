@@ -1,0 +1,194 @@
+﻿<Window x:Class="BSUIRScheduleDESK.views.AnnouncementWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
+        xmlns:templates="clr-namespace:BSUIRScheduleDESK.templates"
+        xmlns:viewmodels="clr-namespace:BSUIRScheduleDESK.viewmodels"
+        mc:Ignorable="d"
+        Title="BSUIR Schedule" Height="450" Width="800"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        MouseDown="Window_MouseDown"
+        KeyDown="Window_KeyDown"
+        ResizeMode="NoResize">
+    <Window.Resources>
+        <templates:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
+        <DataTemplate x:Key="AnnouncementTemplate">
+            <Grid Margin="0, 10, 0, 10">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="200"/>
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Vertical" Grid.Column="0"
+                            VerticalAlignment="Center">
+                    <TextBlock Text="{Binding date}"
+                                HorizontalAlignment="Center"
+                               FontWeight="DemiBold"/>
+                    <TextBlock HorizontalAlignment="Center">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}({0} - {1})">
+                                <Binding Path="startTime"/>
+                                <Binding Path="endTime"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
+                </StackPanel>
+                <TextBlock Grid.Column="1" Text="{Binding auditory}"
+                           HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="2" Text="{Binding content}"
+                           HorizontalAlignment="Center"
+                            VerticalAlignment="Center"/>
+                <TextBlock Grid.Column="3"
+                           HorizontalAlignment="Center"
+                            VerticalAlignment="Center">
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="Text" Value="{Binding employee}"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding isEmployeeAnnouncement}" Value="True">
+                                    <Setter Property="Text" Value="{Binding studentGroups, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Group}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+            </Grid>
+        </DataTemplate>
+    </Window.Resources>
+    <Border
+        CornerRadius="20"
+        BorderThickness="2"
+        BorderBrush="Black"
+        Background="White">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Center"
+                       Margin="10"
+                       FontSize="16"
+                       FontWeight="DemiBold">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Text" Value="Объявления"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsEmployeeAnnouncement}" Value="True">
+                                <Setter Property="Text" Value="{Binding Title, StringFormat=Объявления {0}}"/>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsEmployeeAnnouncement}" Value="False">
+                                <Setter Property="Text" Value="{Binding Path=Title, StringFormat=Объявления группы {0}}"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+            <Button x:Name="btnClose"
+                                Style="{StaticResource IconButtonStyle1}"
+                                Height="30"
+                                Click="btnClose_Click"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="10">
+                <Image Source="/assets/icons8-close-50.png"/>
+            </Button>
+            <Border Grid.Row="1" 
+                CornerRadius="20"
+                Background="#e9edf3"
+                Margin="10">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Border Grid.Row="0" HorizontalAlignment="Stretch"  MaxWidth="800" Background="#b9c6d7" CornerRadius="20, 20, 0, 0">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="200"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Дата"
+                           Grid.Column="0"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="DemiBold"/>
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                           Grid.Column="0"
+                           HorizontalAlignment="Right"
+                           Background="#663a547f"/>
+                            <TextBlock Text="Аудитория"
+                           Grid.Column="1"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="DemiBold"/>
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                           Grid.Column="1"
+                           HorizontalAlignment="Right"
+                           Background="#663a547f"/>
+                            <TextBlock Text="Объявление"
+                           Grid.Column="2"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="DemiBold"/>
+                            <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
+                           Grid.Column="2"
+                           HorizontalAlignment="Right"
+                           Background="#663a547f"/>
+                            <TextBlock
+                           Grid.Column="3"
+                           VerticalAlignment="Center"
+                           HorizontalAlignment="Center"
+                           FontSize="14"
+                           FontWeight="DemiBold">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Setter Property="Text" Value="Преподаватель"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsEmployeeAnnouncement}" Value="True">
+                                                <Setter Property="Text" Value="Группы"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                            </TextBlock>
+                        </Grid>
+                    </Border>
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" Focusable="False">
+                        <ItemsControl ItemsSource="{Binding Announcements, UpdateSourceTrigger=PropertyChanged}"
+                          ItemTemplate="{StaticResource AnnouncementTemplate}" Focusable="False">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Vertical"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <Image Source="/assets/emptyannview.png" Grid.Row="1">
+                        <Image.Style>
+                            <Style TargetType="{x:Type Image}">
+                                <Setter Property="Visibility" Value="Hidden"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Announcements.Count}" Value="0">
+                                        <Setter Property="Visibility" Value="Visible"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                </Grid>
+            </Border>
+        </Grid>
+    </Border>
+</Window>

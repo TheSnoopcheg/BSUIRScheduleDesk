@@ -1,0 +1,62 @@
+﻿<Window x:Class="BSUIRScheduleDESK.views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
+        xmlns:controls="clr-namespace:BSUIRScheduleDESK.templates"
+        xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
+        mc:Ignorable="d"
+        Title="BSUIR Schedule" Height="250" Width="400"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        MouseDown="Window_MouseDown"
+        KeyDown="Window_KeyDown"
+        x:Name="sWindow">
+    <Border
+        Background="White"
+        CornerRadius="20"
+        BorderBrush="Black"
+        BorderThickness="2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock Text="Настройки"
+                       FontSize="16"
+                       Margin="10"
+                       FontWeight="DemiBold"
+                       VerticalAlignment="Center"/>
+            <Button
+                VerticalAlignment="Center"
+                HorizontalAlignment="Right"
+                Height="30"
+                Margin="10"
+                Click="btnClose_Click"
+                Style="{StaticResource IconButtonStyle1}">
+
+                <Image Source="/assets/icons8-close-50.png"/>
+            </Button>
+            <StackPanel Grid.Row="1"
+                        Orientation="Vertical"
+                        Margin="10">
+                <TextBlock Text="Цвета"
+                           FontSize="14"
+                           />
+                <StackPanel Orientation="Vertical"
+                            Margin="5,0,0,0"
+                            HorizontalAlignment="Left">
+                    <controls:ColorPicker Text="Лекция" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0], Mode=TwoWay, ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                    <controls:ColorPicker Text="Практическая работа" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[1], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                    <controls:ColorPicker Text="Лабораторная работа" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[2], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                    <controls:ColorPicker Text="Экзамен" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[3], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                    <controls:ColorPicker Text="Консультация" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[4], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                    <controls:ColorPicker Text="Неизвестно" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[5], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

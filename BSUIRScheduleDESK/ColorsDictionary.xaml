@@ -1,0 +1,17 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <x:Array Type="{x:Type SolidColorBrush}"
+         x:Key="ColorArray">
+        <SolidColorBrush Color="Red"/>
+        <SolidColorBrush Color="#f0768b"/>
+        <SolidColorBrush Color="Orange"/>
+        <SolidColorBrush Color="Yellow"/>
+        <SolidColorBrush Color="Green"/>
+        <SolidColorBrush Color="#00bfff"/>
+        <SolidColorBrush Color="#3333ff"/>
+        <SolidColorBrush Color="#4b0082"/>
+        <SolidColorBrush Color="#800080"/>
+        <SolidColorBrush Color="Gray"/>
+        <SolidColorBrush Color="#964B00"/>
+    </x:Array>
+</ResourceDictionary>

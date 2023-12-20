@@ -1,0 +1,102 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net6.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>assets\appicon.ico</ApplicationIcon>
+    <SupportedOSPlatformVersion>7.0</SupportedOSPlatformVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="assets\backforjenya.jpg" />
+    <None Remove="assets\emptyannview.png" />
+    <None Remove="assets\icons8-calendar-50.png" />
+    <None Remove="assets\icons8-close-50.png" />
+    <None Remove="assets\icons8-close-50w.png" />
+    <None Remove="assets\icons8-close-60.png" />
+    <None Remove="assets\icons8-commercial-50.png" />
+    <None Remove="assets\icons8-double-left-50.png" />
+    <None Remove="assets\icons8-double-right-50.png" />
+    <None Remove="assets\icons8-maximize-50.png" />
+    <None Remove="assets\icons8-maximize-50w.png" />
+    <None Remove="assets\icons8-minimize-50.png" />
+    <None Remove="assets\icons8-minimize-50w.png" />
+    <None Remove="assets\icons8-note-30.png" />
+    <None Remove="assets\icons8-note-60.png" />
+    <None Remove="assets\icons8-penis-50.png" />
+    <None Remove="assets\icons8-plus-50.png" />
+    <None Remove="assets\icons8-plus-96.png" />
+    <None Remove="assets\icons8-return-50.png" />
+    <None Remove="assets\icons8-santa-hat-48.png" />
+    <None Remove="assets\icons8-search-50.png" />
+    <None Remove="assets\icons8-settings-50.png" />
+    <None Remove="assets\icons8-star-50.png" />
+    <None Remove="assets\icons8-star-501.png" />
+    <None Remove="assets\icons8-tits-50.png" />
+    <None Remove="assets\snow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\appicon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\emptyannview.png" />
+    <Resource Include="assets\icons8-calendar-50.png" />
+    <Resource Include="assets\icons8-close-50w.png" />
+    <Resource Include="assets\icons8-maximize-50w.png" />
+    <Resource Include="assets\icons8-minimize-50w.png" />
+    <Resource Include="assets\icons8-penis-50.png" />
+    <Resource Include="assets\icons8-plus-96.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="7.0.4" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\backforjenya.jpg" />
+    <Resource Include="assets\icons8-close-50.png" />
+    <Resource Include="assets\icons8-close-60.png" />
+    <Resource Include="assets\icons8-commercial-50.png" />
+    <Resource Include="assets\icons8-double-left-50.png" />
+    <Resource Include="assets\icons8-double-right-50.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="assets\icons8-maximize-50.png" />
+    <Resource Include="assets\icons8-minimize-50.png" />
+    <Resource Include="assets\icons8-note-30.png" />
+    <Resource Include="assets\icons8-note-60.png" />
+    <Resource Include="assets\icons8-plus-50.png" />
+    <Resource Include="assets\icons8-return-50.png" />
+    <Resource Include="assets\icons8-santa-hat-48.png" />
+    <Resource Include="assets\icons8-search-50.png" />
+    <Resource Include="assets\icons8-settings-50.png" />
+    <Resource Include="assets\icons8-star-50.png" />
+    <Resource Include="assets\icons8-star-501.png" />
+    <Resource Include="assets\icons8-tits-50.png" />
+    <Resource Include="assets\snow.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Properties\Settings.Designer.cs">
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+
+</Project>
