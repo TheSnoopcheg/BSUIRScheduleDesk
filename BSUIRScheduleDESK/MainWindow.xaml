@@ -679,6 +679,7 @@
                                                    Height="16"/>
                                         </Button>
                                     </Grid>
+                                    <templates:DaySchedule DataContext="{Binding Schedule.schedules}" Grid.Row="1"/>
                                 </Grid>
                             </TabItem.Content>
                         </TabItem>

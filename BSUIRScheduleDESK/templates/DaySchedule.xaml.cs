@@ -16,13 +16,13 @@ namespace BSUIRScheduleDESK.templates
         }
         public void OnSub()
         {
-            if(sch.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(sch.ItemsSource).Refresh();
+            //if(sch.ItemsSource != null)
+                //CollectionViewSource.GetDefaultView(sch.ItemsSource).Refresh();
         }
         public void OnSub(int t)
         {
-            if (sch.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(sch.ItemsSource).Refresh();
+            //if (sch.ItemsSource != null)
+              //  CollectionViewSource.GetDefaultView(sch.ItemsSource).Refresh();
         }
 
         #region LoadScheduleCommand

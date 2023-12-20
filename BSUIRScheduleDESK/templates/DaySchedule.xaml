@@ -247,7 +247,7 @@
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Border Background="#b9c6d7" Grid.Row="0">
-                    <TextBlock Text="{Binding Date, ElementName=root}"
+                    <TextBlock Text="waiting for binding..."
                    VerticalAlignment="Center"
                    HorizontalAlignment="Center"
                    FontWeight="DemiBold"/>
@@ -272,10 +272,19 @@
                     <RowDefinition Height="35"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
+                <Border Grid.Row="0"
+                        Background="#b9c6d7">
+                    <TextBlock VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               FontWeight="DemiBold"
+                               TextAlignment="Center"
+                               Text="waiting for binding..."/>
+                </Border>
                 <ItemsControl x:Name="sch" 
                   ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
                   ItemsSource="{Binding}"
                   Focusable="False"
+                             Grid.Row="1"
                   >
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -286,27 +295,40 @@
             </Grid>
         </DataTemplate>
         <DataTemplate x:Key="tableSchedule">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
-            </Grid>
+            <Border Background="#e9edf3" Margin="10">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+                    <ContentPresenter Content="{Binding Monday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="0"/>
+                    <ContentPresenter Content="{Binding Tuesday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="1"/>
+                    <ContentPresenter Content="{Binding Wednesday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="2"/>
+                    <ContentPresenter Content="{Binding Thursday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="3"/>
+                    <ContentPresenter Content="{Binding Friday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="4"/>
+                    <ContentPresenter Content="{Binding Saturday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="5"/>
+                </Grid>
+            </Border>
         </DataTemplate>
         <DataTemplate x:Key="listSchedule">
             <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="0,5,0,5">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                    
+                    <ContentPresenter Content="{Binding Monday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
+                    <ContentPresenter Content="{Binding Tuesday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
+                    <ContentPresenter Content="{Binding Wednesday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
+                    <ContentPresenter Content="{Binding Thursday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
+                    <ContentPresenter Content="{Binding Friday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
+                    <ContentPresenter Content="{Binding Saturday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
                 </StackPanel>
             </ScrollViewer>
         </DataTemplate>
     </UserControl.Resources>
     <ContentPresenter Grid.Row="1"
-                  Content="{Binding Schedule.schedules}">
+                  Content="{Binding}">
         <ContentPresenter.Style>
             <Style TargetType="{x:Type ContentPresenter}">
                 <Setter Property="ContentTemplate" Value="{StaticResource tableSchedule}"/>
