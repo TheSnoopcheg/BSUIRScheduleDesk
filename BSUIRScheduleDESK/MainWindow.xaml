@@ -679,19 +679,6 @@
                                                    Height="16"/>
                                         </Button>
                                     </Grid>
-                                    <ContentPresenter Grid.Row="1"
-                                                      Content="{Binding Schedule.schedules}">
-                                        <ContentPresenter.Style>
-                                            <Style TargetType="{x:Type ContentPresenter}">
-                                                <Setter Property="ContentTemplate" Value="{StaticResource tableSchedule}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Normal">
-                                                        <Setter Property="ContentTemplate" Value="{StaticResource listSchedule}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </ContentPresenter.Style>
-                                    </ContentPresenter>
                                 </Grid>
                             </TabItem.Content>
                         </TabItem>

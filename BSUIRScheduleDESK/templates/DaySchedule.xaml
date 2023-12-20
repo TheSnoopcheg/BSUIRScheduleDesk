@@ -12,7 +12,7 @@
         <local:DayScheduleTemplateSelector x:Key="DayScheduleTemplateSelector"/>
         <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
         <DataTemplate x:Key="clearTemplate">
-            
+
         </DataTemplate>
         <DataTemplate x:Key="announcementTemplate">
             <Border CornerRadius="10"
@@ -50,7 +50,7 @@
                                VerticalAlignment="Center"
                                Margin="5,0"/>
                         </StackPanel>
-                        
+
                         <TextBlock Text="{Binding note}"
                                    Margin="10,0,0,0"
                                    VerticalAlignment="Center"
@@ -89,7 +89,7 @@
                             <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
                                        VerticalAlignment="Center"
                                        FontWeight="DemiBold"
-                                       Margin="5,0"/>       
+                                       Margin="5,0"/>
                         </StackPanel>
 
                         <local:EmployeeGroups
@@ -103,7 +103,7 @@
                             </local:EmployeeGroups.Style>
                         </local:EmployeeGroups>
                     </Grid>
-                    
+
                 </Grid>
             </Border>
         </DataTemplate>
@@ -240,16 +240,82 @@
                 </Grid>
             </Border>
         </DataTemplate>
-    </UserControl.Resources>
-    <ItemsControl x:Name="sch" 
+        <DataTemplate x:Key="scheduleListTemplate">
+            <Grid Width="700">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="25"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <Border Background="#b9c6d7" Grid.Row="0">
+                    <TextBlock Text="{Binding Date, ElementName=root}"
+                   VerticalAlignment="Center"
+                   HorizontalAlignment="Center"
+                   FontWeight="DemiBold"/>
+                </Border>
+                <Border Grid.Row="1" Background="White"
+            BorderBrush="Gray" BorderThickness="0,0.25,0,0.25"
+            Height="30">
+                    <TextBlock Text="Нет занятий"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+                </Border>
+                <ItemsControl Grid.Row="1" ItemsSource="{Binding}"
+                  ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
+                  Focusable="False"
+                  x:Name="lst">
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="schduleColumnTemplate">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+                <ItemsControl x:Name="sch" 
                   ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
                   ItemsSource="{Binding}"
                   Focusable="False"
                   >
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Orientation="Vertical"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-    </ItemsControl>
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="tableSchedule">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </DataTemplate>
+        <DataTemplate x:Key="listSchedule">
+            <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="0,5,0,5">
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                    
+                </StackPanel>
+            </ScrollViewer>
+        </DataTemplate>
+    </UserControl.Resources>
+    <ContentPresenter Grid.Row="1"
+                  Content="{Binding Schedule.schedules}">
+        <ContentPresenter.Style>
+            <Style TargetType="{x:Type ContentPresenter}">
+                <Setter Property="ContentTemplate" Value="{StaticResource tableSchedule}"/>
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Normal">
+                        <Setter Property="ContentTemplate" Value="{StaticResource listSchedule}"/>
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ContentPresenter.Style>
+    </ContentPresenter>
 </UserControl>
