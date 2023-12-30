@@ -98,5 +98,10 @@ namespace BSUIRScheduleDESK.views
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        private void searchBox_ItemSelected()
+        {
+            this.DialogResult = true;
+        }
     }
 }

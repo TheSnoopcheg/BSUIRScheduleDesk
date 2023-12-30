@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Specialized;
 using System.Windows;
 using System.Windows.Controls;
@@ -167,9 +168,9 @@ namespace BSUIRScheduleDESK.templates
         {
             if(e.Key == Key.Enter)
             {
-                searchTextBox.Text = SelectedItem.ToString();
-                IsDropDownOpen = false;
+                ItemSelected.Invoke();
             }
         }
+        public event Action ItemSelected;
     }
 }
