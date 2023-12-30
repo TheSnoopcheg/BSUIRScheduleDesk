@@ -4,6 +4,7 @@ using System.Windows.Controls;
 using BSUIRScheduleDESK.services;
 using System.Collections.Generic;
 using System;
+using System.Diagnostics;
 
 namespace BSUIRScheduleDESK.templates
 {
@@ -48,13 +49,7 @@ namespace BSUIRScheduleDESK.templates
                 {
                     if (schedule.announcement)
                     {
-                        if (DateTime.TryParse(schedule.startLessonDate, out DateTime dateTime))
-                        {
-                            if (DateService.IsWeekContainsDay(dateTime))
-                            {
-                                return element.FindResource("announcementTemplate") as DataTemplate;
-                            }
-                        }
+                        return element.FindResource("announcementTemplate") as DataTemplate;
                     }
                     if (schedule.lessonTypeAbbrev != "ПЗ" && schedule.lessonTypeAbbrev != "ЛК" && schedule.lessonTypeAbbrev != "ЛР")
                         return element.FindResource("clearTemplate") as DataTemplate;
