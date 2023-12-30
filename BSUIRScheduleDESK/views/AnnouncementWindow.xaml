@@ -52,7 +52,7 @@
                         <Style TargetType="{x:Type TextBlock}">
                             <Setter Property="Text" Value="{Binding employee}"/>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding isEmployeeAnnouncement}" Value="True">
+                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsEmployeeAnnouncement}" Value="True">
                                     <Setter Property="Text" Value="{Binding studentGroups, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Group}"/>
                                 </DataTrigger>
                             </Style.Triggers>

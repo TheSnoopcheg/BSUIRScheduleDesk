@@ -1,8 +1,10 @@
 ﻿using System.Windows.Controls;
 using BSUIRScheduleDESK.services;
-using System.Windows.Data;
 using System.Windows;
 using System.Windows.Input;
+using System.Collections.Generic;
+using System;
+using System.Collections.ObjectModel;
 
 namespace BSUIRScheduleDESK.templates
 {
@@ -11,18 +13,6 @@ namespace BSUIRScheduleDESK.templates
         public DaySchedule()
         {
             InitializeComponent();
-            EventService.SubgroupUpdated += OnSub;
-            EventService.WeekUpdated += OnSub;
-        }
-        public void OnSub()
-        {
-            //if(sch.ItemsSource != null)
-                //CollectionViewSource.GetDefaultView(sch.ItemsSource).Refresh();
-        }
-        public void OnSub(int t)
-        {
-            //if (sch.ItemsSource != null)
-              //  CollectionViewSource.GetDefaultView(sch.ItemsSource).Refresh();
         }
 
         #region LoadScheduleCommand
@@ -37,6 +27,22 @@ namespace BSUIRScheduleDESK.templates
         {
             get {  return (ICommand)GetValue(LoadScheduleCommandProperty);}
             set {  SetValue(LoadScheduleCommandProperty, value);}
+        }
+
+        #endregion
+
+        #region Dates
+
+        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register(
+            "Dates",
+            typeof(ObservableCollection<DateTime>),
+            typeof(DaySchedule),
+            new FrameworkPropertyMetadata(null));
+
+        public ObservableCollection<DateTime> Dates
+        {
+            get { return (ObservableCollection<DateTime>)GetValue(DatesProperty); }
+            set {  SetValue(DatesProperty, value); }
         }
 
         #endregion

@@ -79,7 +79,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 EventService.SubgroupUpdated_Invoke();
             }
         }
-        public string Build { get; set; } = "build:000022019beta 19.12.2023";
+        public string Build { get; set; } = "build:000022572beta 30.12.2023";
         private ObservableCollection<Announcement> _announcements;
         public ObservableCollection<Announcement> Announcements
         {
@@ -122,7 +122,7 @@ namespace BSUIRScheduleDESK.viewmodels
                     }));
             }
         }
-
+        // command to add favorite schedule without presentation
         private ICommand? addFavoriteScheduleWL;
         public ICommand AddFavoriteScheduleWL
         {
@@ -246,6 +246,7 @@ namespace BSUIRScheduleDESK.viewmodels
             CurrentWeek = Properties.Settings.Default.currentweek;
             WeekDiff = 0;
         }
+        // command to load schedule from schedule' plate
         private ICommand? loadScheduleBS;
         public ICommand LoadScheduleBS
         {

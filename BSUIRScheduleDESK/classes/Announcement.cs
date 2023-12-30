@@ -12,7 +12,6 @@ namespace BSUIRScheduleDESK.classes
         public string? date { get; set; }
         public string? startTime { get; set; }
         public string? endTime { get; set; }
-        public bool isEmployeeAnnouncement { get; set; }
         public List<string>? employeeDepartments { get; set; }
         public List<StudentGroup>? studentGroups { get; set; }
     }

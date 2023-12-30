@@ -8,294 +8,9 @@
              mc:Ignorable="d"
              x:Name="root">
     <UserControl.Resources>
-        <local:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
-        <local:DayScheduleTemplateSelector x:Key="DayScheduleTemplateSelector"/>
-        <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
-        <DataTemplate x:Key="clearTemplate">
-
-        </DataTemplate>
-        <DataTemplate x:Key="announcementTemplate">
-            <Border CornerRadius="10"
-                    Background="White"
-                    Margin="5"
-                    MinWidth="50"
-                    MaxWidth="285"
-                    Height="Auto"
-                    MaxHeight="250"
-                    HorizontalAlignment="Stretch">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <Border 
-                        CornerRadius="10,0,00,10"
-                        Background="Gray"/>
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition MinHeight="20" Height="Auto"/>
-                            <RowDefinition MinHeight="20"/>
-                            <RowDefinition MinHeight="20" Height="Auto"/>
-                            <RowDefinition MinHeight="20" Height="Auto"/>
-                            <RowDefinition MinHeight="20" Height="Auto"/>
-                            <RowDefinition MinHeight="30"/>
-                        </Grid.RowDefinitions>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="/assets/icons8-note-30.png"
-                                   Height="17.5"
-                                   VerticalAlignment="Center"
-                                   Margin="10,0,0,0"/>
-                            <TextBlock Text="ОБЪЯВЛЕНИЕ"
-                               FontWeight="Bold"
-                               VerticalAlignment="Center"
-                               Margin="5,0"/>
-                        </StackPanel>
-
-                        <TextBlock Text="{Binding note}"
-                                   Margin="10,0,0,0"
-                                   VerticalAlignment="Center"
-                                   Grid.Row="1"/>
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Row="2">
-                            <TextBlock Text="Дата:"
-                                       VerticalAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock Text="{Binding startLessonDate}"
-                                       VerticalAlignment="Center"
-                                       FontWeight="DemiBold"
-                                       Margin="5,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Row="3">
-                            <TextBlock Text="Время:"
-                                       VerticalAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock VerticalAlignment="Center"
-                                       FontWeight="DemiBold"
-                                       Margin="5,0">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} - {1}">
-                                        <Binding Path="startLessonTime"/>
-                                        <Binding Path="endLessonTime"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Row="4">
-                            <TextBlock Text="Аудитория:"
-                                       VerticalAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
-                                       VerticalAlignment="Center"
-                                       FontWeight="DemiBold"
-                                       Margin="5,0"/>
-                        </StackPanel>
-
-                        <local:EmployeeGroups
-                                Grid.Row="5"
-                                Margin="10,0"
-                                >
-                            <local:EmployeeGroups.Style>
-                                <Style TargetType="{x:Type local:EmployeeGroups}">
-                                    <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
-                                </Style>
-                            </local:EmployeeGroups.Style>
-                        </local:EmployeeGroups>
-                    </Grid>
-
-                </Grid>
-            </Border>
-        </DataTemplate>
-        <DataTemplate x:Key="scheduleTemplate">
-            <Border CornerRadius="10"
-            Background="White"
-            Margin="5"
-            MinWidth="50"
-            MaxWidth="285"
-            Height="Auto"
-            MaxHeight="260"
-            HorizontalAlignment="Stretch"
-            >
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="10"/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition MinWidth="30" Width="Auto"/>
-                    </Grid.ColumnDefinitions>
-                    <Border 
-                    CornerRadius="10,0,00,10">
-                        <Border.Style>
-                            <Style TargetType="{x:Type Border}">
-                                <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛК">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=TwoWay}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ПЗ">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=TwoWay}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛР">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=TwoWay}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Экзамен">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=TwoWay}"/>
-                                    </DataTrigger>
-                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Консультация">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=TwoWay}"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-                    </Border>
-                    <Grid Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition MinHeight="20" Height="Auto"/>
-                            <RowDefinition MinHeight="20" Height="Auto"/>
-                            <RowDefinition MinHeight="20" Height="Auto"/>
-                            <RowDefinition MinHeight="20" Height="Auto"/>
-                            <RowDefinition MinHeight="20"/>
-                        </Grid.RowDefinitions>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="{Binding subject}"
-                               FontWeight="DemiBold"
-                               VerticalAlignment="Center"
-                               Margin="10,0,0,0">
-                                <TextBlock.ToolTip>
-                                    <ToolTip Placement="Top" HasDropShadow="True" Style="{DynamicResource ToolTipStyle}" MaxWidth="200">
-                                        <TextBlock Text="{Binding subjectFullName}"
-                                                   TextWrapping="Wrap"/>
-                                    </ToolTip>
-                                </TextBlock.ToolTip>
-                                <TextBlock.Style>
-                                    <Style TargetType="{x:Type TextBlock}">
-                                        <Style.Triggers>
-                                            <Trigger Property="IsMouseOver" Value="True">
-                                                <Setter Property="Cursor" Value="Help"/>
-                                            </Trigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </TextBlock.Style>
-                            </TextBlock>
-                            <TextBlock Text="{Binding lessonTypeAbbrev, StringFormat=({0})}"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               Margin="5,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"
-                            Grid.Row="1">
-                            <TextBlock Text="Недели:"
-                               VerticalAlignment="Center"
-                               Margin="10,0,0,0"/>
-                            <TextBlock Text="{Binding weekNumber, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Weeks}"
-                               VerticalAlignment="Center"
-                               FontWeight="DemiBold"
-                               Margin="5,0"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Row="2">
-                            <TextBlock Text="Время:"
-                                       VerticalAlignment="Center"
-                                       Margin="10,0,0,0"/>
-                            <TextBlock VerticalAlignment="Center"
-                                       FontWeight="DemiBold"
-                                       Margin="5,0">
-                                <TextBlock.Text>
-                                    <MultiBinding StringFormat="{}{0} - {1}">
-                                        <Binding Path="startLessonTime"/>
-                                        <Binding Path="endLessonTime"/>
-                                    </MultiBinding>
-                                </TextBlock.Text>
-                            </TextBlock>
-                        </StackPanel>
-                        <local:EmployeeGroups
-                                Grid.Row="3"
-                                Margin="10,0"
-                                MaxHeight="100"
-                                Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}"
-                                >
-                            <local:EmployeeGroups.Style>
-                                <Style TargetType="{x:Type local:EmployeeGroups}">
-                                    <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
-                                </Style>
-                            </local:EmployeeGroups.Style>
-                        </local:EmployeeGroups>
-                        <TextBlock Grid.Row="4"
-                                   Text="{Binding note}"
-                                   VerticalAlignment="Center"
-                                   TextWrapping="Wrap"
-                                   Margin="10,0"
-                                   Foreground="Red"/>
-                    </Grid>
-                    <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
-                               Grid.Column="2"
-                               VerticalAlignment="Top"
-                               HorizontalAlignment="Right"
-                               Margin="0, 0, 5, 0"/>
-                    <TextBlock Text="{Binding numSubgroup, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=SubGroup}"
-                               Grid.Column="2"
-                               VerticalAlignment="Bottom"
-                               HorizontalAlignment="Right"
-                               Margin="0,0,5,0"/>
-                </Grid>
-            </Border>
-        </DataTemplate>
-        <DataTemplate x:Key="scheduleListTemplate">
-            <Grid Width="700">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="25"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Border Background="#b9c6d7" Grid.Row="0">
-                    <TextBlock Text="waiting for binding..."
-                   VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   FontWeight="DemiBold"/>
-                </Border>
-                <Border Grid.Row="1" Background="White"
-            BorderBrush="Gray" BorderThickness="0,0.25,0,0.25"
-            Height="30">
-                    <TextBlock Text="Нет занятий"
-                   HorizontalAlignment="Center"
-                   VerticalAlignment="Center"/>
-                </Border>
-                <ItemsControl Grid.Row="1" ItemsSource="{Binding}"
-                  ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
-                  Focusable="False"
-                  x:Name="lst">
-                </ItemsControl>
-            </Grid>
-        </DataTemplate>
-        <DataTemplate x:Key="schduleColumnTemplate">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Border Grid.Row="0"
-                        Background="#b9c6d7">
-                    <TextBlock VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               FontWeight="DemiBold"
-                               TextAlignment="Center"
-                               Text="waiting for binding..."/>
-                </Border>
-                <ItemsControl x:Name="sch" 
-                  ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
-                  ItemsSource="{Binding}"
-                  Focusable="False"
-                             Grid.Row="1"
-                  >
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </Grid>
-        </DataTemplate>
+        <local:DateConverter x:Key="DateConverter"/>
         <DataTemplate x:Key="tableSchedule">
-            <Border Background="#e9edf3" Margin="10">
+            <Border Background="#e9edf3" Margin="10" CornerRadius="20">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -305,30 +20,31 @@
                         <ColumnDefinition/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <ContentPresenter Content="{Binding Monday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="0"/>
-                    <ContentPresenter Content="{Binding Tuesday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="1"/>
-                    <ContentPresenter Content="{Binding Wednesday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="2"/>
-                    <ContentPresenter Content="{Binding Thursday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="3"/>
-                    <ContentPresenter Content="{Binding Friday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="4"/>
-                    <ContentPresenter Content="{Binding Saturday}" ContentTemplate="{StaticResource schduleColumnTemplate}" Grid.Column="5"/>
+                    <local:ScheduleColumnTemplate Date="{Binding Dates[0], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Monday}" Grid.Column="0" Location="First"/>
+                    <local:ScheduleColumnTemplate Date="{Binding Dates[1], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Tuesday}" Grid.Column="1"/>
+                    <local:ScheduleColumnTemplate Date="{Binding Dates[2], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Wednesday}" Grid.Column="2"/>
+                    <local:ScheduleColumnTemplate Date="{Binding Dates[3], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Thursday}" Grid.Column="3"/>
+                    <local:ScheduleColumnTemplate Date="{Binding Dates[4], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Friday}" Grid.Column="4"/>
+                    <local:ScheduleColumnTemplate Date="{Binding Dates[5], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Saturday}" Grid.Column="5" Location="Last"/>
                 </Grid>
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="listSchedule">
             <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="0,5,0,5">
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                    <ContentPresenter Content="{Binding Monday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
-                    <ContentPresenter Content="{Binding Tuesday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
-                    <ContentPresenter Content="{Binding Wednesday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
-                    <ContentPresenter Content="{Binding Thursday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
-                    <ContentPresenter Content="{Binding Friday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
-                    <ContentPresenter Content="{Binding Saturday}" ContentTemplate="{StaticResource scheduleListTemplate}"/>
+                    <local:ListDayTemplate Date="{Binding Dates[0], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Monday}"/>
+                    <local:ListDayTemplate Date="{Binding Dates[1], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Tuesday}"/>
+                    <local:ListDayTemplate Date="{Binding Dates[2], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Wednesday}"/>
+                    <local:ListDayTemplate Date="{Binding Dates[3], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Thursday}"/>
+                    <local:ListDayTemplate Date="{Binding Dates[4], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Friday}"/>
+                    <local:ListDayTemplate Date="{Binding Dates[5], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Saturday}"/>
                 </StackPanel>
             </ScrollViewer>
         </DataTemplate>
     </UserControl.Resources>
     <ContentPresenter Grid.Row="1"
-                  Content="{Binding}">
+                  Content="{Binding}"
+                  x:Name="hw">
         <ContentPresenter.Style>
             <Style TargetType="{x:Type ContentPresenter}">
                 <Setter Property="ContentTemplate" Value="{StaticResource tableSchedule}"/>

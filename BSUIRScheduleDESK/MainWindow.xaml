@@ -65,130 +65,6 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <DataTemplate x:Key="tableSchedule">
-            <Border CornerRadius="20"
-                    Margin="10"
-                    Background="#e9edf3"
-                    >
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition Height="*"/>
-                    </Grid.RowDefinitions>
-                    <Border Background="#b9c6d7" CornerRadius="20, 20, 0, 0" Grid.Row="0" HorizontalAlignment="Stretch">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Grid.Column="0" Text="{Binding DataContext.Dates[0], ElementName=mainWindow, Converter={StaticResource DateConverter}}"
-                           TextAlignment="Center"
-                           FontWeight="DemiBold"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="1" Text="{Binding DataContext.Dates[1], ElementName=mainWindow, Converter={StaticResource DateConverter}}"
-                           TextAlignment="Center"
-                           FontWeight="DemiBold"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="2" Text="{Binding DataContext.Dates[2], ElementName=mainWindow, Converter={StaticResource DateConverter}}"
-                           TextAlignment="Center"
-                           FontWeight="DemiBold"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="3" Text="{Binding DataContext.Dates[3], ElementName=mainWindow, Converter={StaticResource DateConverter}}"
-                           TextAlignment="Center"
-                           FontWeight="DemiBold"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="4" Text="{Binding DataContext.Dates[4], ElementName=mainWindow, Converter={StaticResource DateConverter}}"
-                           TextAlignment="Center"
-                           FontWeight="DemiBold"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-                            <TextBlock Grid.Column="5" Text="{Binding DataContext.Dates[5], ElementName=mainWindow, Converter={StaticResource DateConverter}}"
-                           TextAlignment="Center"
-                           FontWeight="DemiBold"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Center"/>
-                        </Grid>
-                    </Border>
-                    <ScrollViewer  Grid.Row="1"
-                                    VerticalScrollBarVisibility="Hidden">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                                <ColumnDefinition MaxWidth="315"/>
-                            </Grid.ColumnDefinitions>
-
-                            <templates:DaySchedule HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Top"
-                                                   Margin="5,5,5,0"
-                                                   LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
-                                                   DataContext="{Binding Monday}"
-                                                   >
-                            </templates:DaySchedule>
-                            <templates:DaySchedule HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Top"
-                                                   Margin="5,5,5,0"
-                                                   Grid.Column="1"
-                                                   LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
-                                                   DataContext="{Binding Tuesday}"
-                                                   />
-                            <templates:DaySchedule HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Top"
-                                                   Margin="5,5,5,0"
-                                                   Grid.Column="2"
-                                                   LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
-                                                   DataContext="{Binding Wednesday}"
-                                                   />
-                            <templates:DaySchedule HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Top"
-                                                   Margin="5,5,5,0"
-                                                   Grid.Column="3"
-                                                   LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
-                                                   DataContext="{Binding Thursday}"
-                                                   />
-                            <templates:DaySchedule HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Top"
-                                                   Margin="5,5,5,0"
-                                                   Grid.Column="4"
-                                                   LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
-                                                   DataContext="{Binding Friday}"
-                                                   />
-                            <templates:DaySchedule HorizontalAlignment="Stretch"
-                                                   VerticalAlignment="Top"
-                                                   Margin="5,5,5,0"
-                                                   Grid.Column="5"
-                                                   LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
-                                                   DataContext="{Binding Saturday}"
-                                                   >
-                            </templates:DaySchedule>
-                        </Grid>
-                    </ScrollViewer>
-                </Grid>
-            </Border>
-        </DataTemplate>
-        <DataTemplate x:Key="listSchedule">
-            <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="0,5,0,5">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                    <templates:ListDaySchedule Date="{Binding DataContext.Dates[0], ElementName=mainWindow, Converter={StaticResource DateConverter}, ConverterParameter=linear}" LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}" DataContext="{Binding Monday}"/>
-                    <templates:ListDaySchedule Date="{Binding DataContext.Dates[1], ElementName=mainWindow, Converter={StaticResource DateConverter}, ConverterParameter=linear}" LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}" DataContext="{Binding Tuesday}"/>
-                    <templates:ListDaySchedule Date="{Binding DataContext.Dates[2], ElementName=mainWindow, Converter={StaticResource DateConverter}, ConverterParameter=linear}" LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}" DataContext="{Binding Wednesday}"/>
-                    <templates:ListDaySchedule Date="{Binding DataContext.Dates[3], ElementName=mainWindow, Converter={StaticResource DateConverter}, ConverterParameter=linear}" LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}" DataContext="{Binding Thursday}"/>
-                    <templates:ListDaySchedule Date="{Binding DataContext.Dates[4], ElementName=mainWindow, Converter={StaticResource DateConverter}, ConverterParameter=linear}" LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}" DataContext="{Binding Friday}"/>
-                    <templates:ListDaySchedule Date="{Binding DataContext.Dates[5], ElementName=mainWindow, Converter={StaticResource DateConverter}, ConverterParameter=linear}" LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}" DataContext="{Binding Saturday}"/>
-                </StackPanel>
-            </ScrollViewer>
-        </DataTemplate>
     </Window.Resources>
     <Window.Style>
         <Style TargetType="{x:Type Window}">
@@ -679,7 +555,9 @@
                                                    Height="16"/>
                                         </Button>
                                     </Grid>
-                                    <templates:DaySchedule DataContext="{Binding Schedule.schedules}" Grid.Row="1"/>
+                                    <templates:DaySchedule DataContext="{Binding Schedule.schedules}" Grid.Row="1"
+                                                           Dates="{Binding DataContext.Dates, ElementName=mainWindow}"
+                                                           LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow}"/>
                                 </Grid>
                             </TabItem.Content>
                         </TabItem>
