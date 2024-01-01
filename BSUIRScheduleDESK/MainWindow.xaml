@@ -207,7 +207,7 @@
                     <!--schedule info border-->
                     <Border Margin="10" 
                                 Background="#e9edf3"
-                                CornerRadius="20"
+                                CornerRadius="10"
                                 BorderBrush="Black"
                                 BorderThickness="1">
                         <Grid>

@@ -240,44 +240,16 @@
             </Border>
         </DataTemplate>
     </UserControl.Resources>
-    <Grid>
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
-            <Border Grid.Row="0"
-            Background="#b9c6d7">
-                <TextBlock VerticalAlignment="Center"
-                   HorizontalAlignment="Center"
-                   FontWeight="DemiBold"
-                   TextAlignment="Center"
-                   Text="{Binding Date, ElementName=root}"/>
-                <Border.Style>
-                    <Style TargetType="{x:Type Border}">
-                        <Style.Triggers>
-                            <DataTrigger Binding="{Binding Location, ElementName=root}" Value="First">
-                                <Setter Property="CornerRadius" Value="20,0,0,0"/>
-                            </DataTrigger>
-                            <DataTrigger Binding="{Binding Location, ElementName=root}" Value="Last">
-                                <Setter Property="CornerRadius" Value="0,20,0,0"/>
-                            </DataTrigger>
-                        </Style.Triggers>
-                    </Style>
-                </Border.Style>
-            </Border>
-            <ItemsControl x:Name="sch" 
-                  ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
-                  ItemsSource="{Binding}"
-                  Focusable="False"
-                  Grid.Row="1"
-                  >
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Orientation="Vertical"/>
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-            </ItemsControl>
-        </Grid>
-    </Grid>
+    <ItemsControl x:Name="sch" 
+      ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
+      ItemsSource="{Binding}"
+      Focusable="False"
+      Grid.Row="1"
+      >
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
 </UserControl>

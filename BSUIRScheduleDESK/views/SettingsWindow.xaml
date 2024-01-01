@@ -17,9 +17,9 @@
         x:Name="sWindow">
     <Border
         Background="White"
-        CornerRadius="20"
+        CornerRadius="10"
         BorderBrush="Black"
-        BorderThickness="2">
+        BorderThickness="1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>

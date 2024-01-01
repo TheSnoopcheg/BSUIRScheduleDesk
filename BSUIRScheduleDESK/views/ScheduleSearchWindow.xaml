@@ -50,7 +50,7 @@
     </Window.Resources>
     <Border
         Background="White"
-        CornerRadius="20"
+        CornerRadius="10"
         BorderThickness="1"
         BorderBrush="Black">
         <Grid>

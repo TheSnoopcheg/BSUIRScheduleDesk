@@ -9,23 +9,40 @@
              x:Name="root">
     <UserControl.Resources>
         <local:DateConverter x:Key="DateConverter"/>
+        <DataTemplate x:Key="dateTemplate">
+            <TextBlock Text="{Binding Converter={StaticResource DateConverter}}"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       TextAlignment="Center"
+                       FontWeight="DemiBold"/>
+        </DataTemplate>
         <DataTemplate x:Key="tableSchedule">
-            <Border Background="#e9edf3" Margin="10" CornerRadius="20">
+            <Border Background="#e9edf3" Margin="10" CornerRadius="10">
                 <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                        <ColumnDefinition/>
-                    </Grid.ColumnDefinitions>
-                    <local:ScheduleColumnTemplate Date="{Binding Dates[0], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Monday}" Grid.Column="0" Location="First"/>
-                    <local:ScheduleColumnTemplate Date="{Binding Dates[1], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Tuesday}" Grid.Column="1"/>
-                    <local:ScheduleColumnTemplate Date="{Binding Dates[2], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Wednesday}" Grid.Column="2"/>
-                    <local:ScheduleColumnTemplate Date="{Binding Dates[3], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Thursday}" Grid.Column="3"/>
-                    <local:ScheduleColumnTemplate Date="{Binding Dates[4], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Friday}" Grid.Column="4"/>
-                    <local:ScheduleColumnTemplate Date="{Binding Dates[5], ElementName=root, Converter={StaticResource DateConverter}}" DataContext="{Binding Saturday}" Grid.Column="5" Location="Last"/>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="35"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <Border Background="#b9c6d7" CornerRadius="10,10,0,0"
+                            VerticalAlignment="Top" Grid.Row="0" Height="35">
+                        <ItemsControl ItemsSource="{Binding Dates, ElementName=root}" ItemTemplate="{StaticResource dateTemplate}">
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="6"/>
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </Border>
+                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                        <UniformGrid Columns="6">
+                            <local:ScheduleColumnTemplate DataContext="{Binding Monday}" Grid.Column="0"/>
+                            <local:ScheduleColumnTemplate DataContext="{Binding Tuesday}" Grid.Column="1"/>
+                            <local:ScheduleColumnTemplate DataContext="{Binding Wednesday}" Grid.Column="2"/>
+                            <local:ScheduleColumnTemplate DataContext="{Binding Thursday}" Grid.Column="3"/>
+                            <local:ScheduleColumnTemplate DataContext="{Binding Friday}" Grid.Column="4"/>
+                            <local:ScheduleColumnTemplate DataContext="{Binding Saturday}" Grid.Column="5"/>
+                        </UniformGrid>
+                    </ScrollViewer>
                 </Grid>
             </Border>
         </DataTemplate>

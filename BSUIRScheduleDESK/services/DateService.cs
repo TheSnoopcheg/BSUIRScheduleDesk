@@ -13,7 +13,7 @@ namespace BSUIRScheduleDESK.services
             CultureInfo culture = CultureInfo.CurrentCulture;
             int weekOffset = culture.DateTimeFormat.FirstDayOfWeek - today.DayOfWeek;
             DateTime startOfWeek = today.AddDays(weekOffset);
-            return Enumerable.Range(0, 7).Select(i => startOfWeek.AddDays(i)).ToList();
+            return Enumerable.Range(0, 6).Select(i => startOfWeek.AddDays(i)).ToList();
         }
 
         public static bool IsWeekContainsDay(DateTime date)
