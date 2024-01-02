@@ -95,6 +95,15 @@ namespace BSUIRScheduleDESK.viewmodels
             get { return _groupSchedule!; }
             set
             {
+                Task.Run(async () =>
+                {
+                    bool isFav = await _model.IsScheduleFavorited(value);
+                    if (isFav)
+                    {
+                        value!.favorited = true;
+                        OnPropertyChanged();
+                    }
+                });
                 _groupSchedule = value;
                 OnPropertyChanged();
             }
