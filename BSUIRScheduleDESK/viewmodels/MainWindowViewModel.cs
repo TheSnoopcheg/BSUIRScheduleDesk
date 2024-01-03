@@ -28,6 +28,7 @@ namespace BSUIRScheduleDESK.viewmodels
         public FavoriteSchedulesViewModel FavoriteSchedulesViewModel
         {
             get { return favoriteSchedulesViewModel;}
+            set { favoriteSchedulesViewModel = value; }
         }
         private ObservableCollection<DateTime> _dates;
         public ObservableCollection<DateTime> Dates
@@ -79,7 +80,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 EventService.SubgroupUpdated_Invoke();
             }
         }
-        public string Build { get; set; } = "build:000022572beta 30.12.2023";
+        public string Build { get; set; } = "build:000022603beta 02.01.2024";
         private ObservableCollection<Announcement> _announcements;
         public ObservableCollection<Announcement> Announcements
         {
@@ -95,15 +96,11 @@ namespace BSUIRScheduleDESK.viewmodels
             get { return _groupSchedule!; }
             set
             {
-                Task.Run(async () =>
+                string? url = value?.employee == null ? value?.studentGroup?.name : value.employee.urlId;
+                if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
                 {
-                    bool isFav = await _model.IsScheduleFavorited(value);
-                    if (isFav)
-                    {
-                        value!.favorited = true;
-                        OnPropertyChanged();
-                    }
-                });
+                    value!.favorited = true;
+                }
                 _groupSchedule = value;
                 OnPropertyChanged();
             }

@@ -100,7 +100,7 @@
                 <Image Source="/assets/icons8-close-50.png"/>
             </Button>
             <Border Grid.Row="1" 
-                CornerRadius="20"
+                CornerRadius="10"
                 Background="#e9edf3"
                 Margin="10">
                 <Grid>
@@ -108,7 +108,7 @@
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
-                    <Border Grid.Row="0" HorizontalAlignment="Stretch"  MaxWidth="800" Background="#b9c6d7" CornerRadius="20, 20, 0, 0">
+                    <Border Grid.Row="0" HorizontalAlignment="Stretch"  MaxWidth="800" Background="#b9c6d7" CornerRadius="10, 10, 0, 0">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="100"/>

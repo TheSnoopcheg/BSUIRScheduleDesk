@@ -72,5 +72,9 @@ namespace BSUIRScheduleDESK.models
             ScheduleService.DeleteSchedule(schedule);
             SaveFavoriteSchedulesAsync();
         }
+        public bool IsScheduleFavorite(string? url)
+        {
+            return _favoriteSchedules.Any(u => u.UrlId == url);
+        }
     }
 }

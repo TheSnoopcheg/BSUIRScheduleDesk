@@ -25,26 +25,6 @@ namespace BSUIRScheduleDESK.models
                 _schedule = value;
             }
         }
-        public async Task<bool> IsScheduleFavorited(GroupSchedule? schedule)
-        {
-            string favoriteSchedules = Properties.Settings.Default.favoriteschedules;
-            if (!string.IsNullOrEmpty(favoriteSchedules))
-            {
-                using (var stream = new MemoryStream(Encoding.Default.GetBytes(favoriteSchedules)))
-                {
-                    if (stream.Length > 0)
-                    {
-                        List<FavoriteSchedule>? list = await JsonSerializer.DeserializeAsync<List<FavoriteSchedule>>(stream);
-                        string? urlid = schedule?.employee == null ? schedule?.studentGroup?.name : schedule.employee.urlId;
-                        if (list != null && urlid != null)
-                        {
-                            return list.Any(u => u.UrlId == urlid);
-                        }
-                    }
-                }
-            }
-            return false;
-        }
         public async Task<int> GetCurrentWeekAsync()
         {
             if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)

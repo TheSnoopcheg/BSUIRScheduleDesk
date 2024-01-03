@@ -50,6 +50,10 @@ namespace BSUIRScheduleDESK.viewmodels
         {
             _model.AddSchedule(schedule, isProc);
         }
+        public bool IsScheduleFavorite(string? url)
+        {
+            return _model.IsScheduleFavorite(url);
+        }
 
         public ReadOnlyObservableCollection<FavoriteSchedule> FavoriteSchedules => _model.FavoriteSchedules;
     }
