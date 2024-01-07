@@ -21,6 +21,7 @@
     <!-- WindowSizing class in C++ (maybe some other classes) -->
     <Window.Resources>
         <templates:DateConverter x:Key="DateConverter"/>
+        <templates:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
         <Style TargetType="{x:Type Button}" x:Key="AddButtonStyle">
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="Template">
@@ -571,7 +572,7 @@
                                 <Grid>
                                     <Border Background="#e9edf3" CornerRadius="20" Margin="10">
                                         <ScrollViewer VerticalScrollBarVisibility="Hidden">
-                                            <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams}"
+                                            <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
                                                                            LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
                                                                             Margin="0,10,0,10"
                                                                            HorizontalAlignment="Center"/>   

@@ -1,4 +1,6 @@
 ﻿using BSUIRScheduleDESK.classes;
+using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -9,19 +11,19 @@ namespace BSUIRScheduleDESK.templates
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             FrameworkElement? element = container as FrameworkElement;
-            if (element != null && item != null && item is Schedule)
+            if (element != null && item != null && item is IGrouping<string?, Schedule>)
             {
-                Schedule? schedule = item as Schedule;
-                if (schedule != null)
+                IGrouping<string?, Schedule>? schedules = item as IGrouping<string?, Schedule>;
+                if (schedules != null)
                 {
-                    if (schedule.announcement)
-                    {
-                        return element.FindResource("announcementTemplate") as DataTemplate;
-                    }
-                    else
-                    {
-                        return element.FindResource("scheduleTemplate") as DataTemplate;
-                    }
+                    return element.FindResource("scheduleTemplate") as DataTemplate;
+                    //if (schedule.announcement)
+                    //{
+                    //    return element.FindResource("announcementTemplate") as DataTemplate;
+                    //}
+                    //else
+                    //{
+                    //}
                 }
             }
             return element.FindResource("emptyTemplate") as DataTemplate;

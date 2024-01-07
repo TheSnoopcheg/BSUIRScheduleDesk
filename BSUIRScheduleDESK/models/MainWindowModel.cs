@@ -1,20 +1,17 @@
 ﻿using BSUIRScheduleDESK.classes;
 using BSUIRScheduleDESK.services;
-using System.Collections.Generic;
-using System.IO;
-using System.Text.Json;
-using System.Text;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System;
+using System.Linq;
 
 namespace BSUIRScheduleDESK.models
 {
     public class MainWindowModel
     {
-        public ObservableCollection<DateTime>? DateTimes { get; set; }
+        public ObservableCollection<DateTime>? Dates { get; set; }
+        
         public ObservableCollection<Announcement>? Announcements { get; set; }
         private GroupSchedule? _schedule;
         public GroupSchedule? Schedule
@@ -88,7 +85,7 @@ namespace BSUIRScheduleDESK.models
         }
         public MainWindowModel()
         {
-            DateTimes = new ObservableCollection<DateTime>(DateService.GetCurrentWeekDates());
+            Dates = new ObservableCollection<DateTime>(DateService.GetCurrentWeekDates());
         }
     }
 }

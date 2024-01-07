@@ -14,6 +14,10 @@ namespace BSUIRScheduleDESK.viewmodels
 {
     public class MainWindowViewModel : Notifier
     {
+        readonly MainWindowModel _model;
+
+        #region Properties
+
         private bool isCalendarOpen = false;
         public bool IsCalendarOpen
         {
@@ -30,8 +34,8 @@ namespace BSUIRScheduleDESK.viewmodels
             get { return favoriteSchedulesViewModel;}
             set { favoriteSchedulesViewModel = value; }
         }
-        private ObservableCollection<DateTime> _dates;
-        public ObservableCollection<DateTime> Dates
+        private ObservableCollection<DateTime>? _dates = new ObservableCollection<DateTime>();
+        public ObservableCollection<DateTime>? Dates
         {
             get { return _dates; }
             set
@@ -40,8 +44,21 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        readonly MainWindowModel _model;
         private GroupSchedule? _groupSchedule;
+        public GroupSchedule? Schedule
+        {
+            get { return _groupSchedule!; }
+            set
+            {
+                string? url = value?.employee == null ? value?.studentGroup?.name : value.employee.urlId;
+                if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
+                {
+                    value!.favorited = true;
+                }
+                _groupSchedule = value;
+                OnPropertyChanged();
+            }
+        }
         private int _currentWeek;
         public int CurrentWeek
         {
@@ -80,9 +97,8 @@ namespace BSUIRScheduleDESK.viewmodels
                 EventService.SubgroupUpdated_Invoke();
             }
         }
-        public string Build { get; set; } = "build:000022603beta 02.01.2024";
-        private ObservableCollection<Announcement> _announcements;
-        public ObservableCollection<Announcement> Announcements
+        private ObservableCollection<Announcement>? _announcements = new ObservableCollection<Announcement>();
+        public ObservableCollection<Announcement>? Announcements
         {
             get { return _announcements;}
             set
@@ -91,20 +107,29 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public GroupSchedule Schedule
+        private int weekDiff = 0;
+        public int WeekDiff
         {
-            get { return _groupSchedule!; }
+            get { return weekDiff; }
             set
             {
-                string? url = value?.employee == null ? value?.studentGroup?.name : value.employee.urlId;
-                if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
-                {
-                    value!.favorited = true;
-                }
-                _groupSchedule = value;
+                weekDiff = value;
                 OnPropertyChanged();
             }
         }
+        private void ChangeDates(int diff)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                Dates![i] = Dates[i].AddDays(diff * 7);
+            }
+        }
+        public string Build { get; set; } = "build:000022603beta 02.01.2024";
+
+        #endregion
+
+        #region Commands
+
         private ICommand? searchSchedule;
         public ICommand SearchSchedule
         {
@@ -172,7 +197,7 @@ namespace BSUIRScheduleDESK.viewmodels
                         if(Announcements != null)
                         {
                             AnnouncementWindow announcementWindow = new AnnouncementWindow();
-                            announcementWindow.DataContext = new AnnouncementViewModel(Announcements, Schedule.GetName());
+                            announcementWindow.DataContext = new AnnouncementViewModel(Announcements, Schedule!.GetName());
                             announcementWindow.ShowDialog();
                         }
                     }));
@@ -209,23 +234,6 @@ namespace BSUIRScheduleDESK.viewmodels
                     }));
             }
         }
-        private int weekDiff = 0;
-        public int WeekDiff
-        {
-            get { return weekDiff;}
-            set
-            {
-                weekDiff = value;
-                OnPropertyChanged();
-            }
-        }
-        private void ChangeDates(int diff)
-        {
-            for(int i = 0; i < 6; i++)
-            {
-                Dates[i] = Dates[i].AddDays(diff * 7);
-            }
-        }
         private ICommand? changeWeekNum;
         public ICommand ChangeWeekNum
         {
@@ -234,7 +242,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 return changeWeekNum ??
                     (changeWeekNum = new RelayCommand(obj =>
                     {
-                        if(int.TryParse(obj.ToString(), out int res))
+                        if (int.TryParse(obj.ToString(), out int res))
                         {
                             WeekDiff += res;
                             CurrentWeek += res;
@@ -243,14 +251,6 @@ namespace BSUIRScheduleDESK.viewmodels
                         }
                     }));
             }
-        }
-        private void BackCurrentWeek()
-        {
-            int wd = Properties.Settings.Default.currentweek - CurrentWeek;
-            EventService.WeekUpdated_Invoke(wd);
-            ChangeDates(-WeekDiff);
-            CurrentWeek = Properties.Settings.Default.currentweek;
-            WeekDiff = 0;
         }
         // command to load schedule from schedule' plate
         private ICommand? loadScheduleBS;
@@ -303,20 +303,32 @@ namespace BSUIRScheduleDESK.viewmodels
                 return openSelectedWeek ??
                     (openSelectedWeek = new RelayCommand(obj =>
                     {
-                        if(obj is DateTime date)
+                        if (obj is DateTime date)
                         {
-                            int weeks = -(DateService.GetWeekDiff(date, Dates[0]));
+                            int weeks = -(DateService.GetWeekDiff(date, Dates![0]));
                             WeekDiff += weeks;
                             ChangeDates(weeks);
-                            int chavo = weeks % 4;
-                            CurrentWeek += chavo;
-                            EventService.WeekUpdated_Invoke(chavo);
+                            int wd = weeks % 4;
+                            CurrentWeek += wd;
+                            EventService.WeekUpdated_Invoke(wd);
                             IsCalendarOpen = false;
                         }
                     }));
             }
         }
-        
+
+        #endregion
+
+        #region Methods
+
+        private void BackCurrentWeek()
+        {
+            int wd = Properties.Settings.Default.currentweek - CurrentWeek;
+            EventService.WeekUpdated_Invoke(wd);
+            ChangeDates(-WeekDiff);
+            CurrentWeek = Properties.Settings.Default.currentweek;
+            WeekDiff = 0;
+        }        
         private async void LoadFavoriteSchedule(FavoriteSchedule schedule)
         {
             await _model.LoadSchedule(schedule.UrlId, ScheduleService.LoadingType.Local);
@@ -341,6 +353,8 @@ namespace BSUIRScheduleDESK.viewmodels
                 await _model.SaveRecentSchedule(Schedule);
             }
         }
+
+        #endregion
         public MainWindowViewModel()
         {
             favoriteSchedulesViewModel = new FavoriteSchedulesViewModel();
@@ -355,7 +369,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
                     CurrentWeek += 1;
             });
-            Dates = _model.DateTimes;
+            Dates = _model.Dates;
             LoadRecentSchedule();
         }
     }
