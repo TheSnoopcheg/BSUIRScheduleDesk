@@ -552,6 +552,7 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            <DropShadowEffect x:Key="myShadow" BlurRadius="10" Opacity="0.4" ShadowDepth="0"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

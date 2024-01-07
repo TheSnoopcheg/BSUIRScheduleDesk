@@ -16,7 +16,6 @@
         WindowState="Maximized"
         ResizeMode="CanMinimize"
         >
-    <!--shadows-->
     <!-- Dark theme -->
     <!-- WindowSizing class in C++ (maybe some other classes) -->
     <Window.Resources>
