@@ -4,14 +4,12 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System;
-using System.Linq;
 
 namespace BSUIRScheduleDESK.models
 {
     public class MainWindowModel
     {
         public ObservableCollection<DateTime>? Dates { get; set; }
-        
         public ObservableCollection<Announcement>? Announcements { get; set; }
         private GroupSchedule? _schedule;
         public GroupSchedule? Schedule
@@ -22,23 +20,10 @@ namespace BSUIRScheduleDESK.models
                 _schedule = value;
             }
         }
-        public async Task<int> GetCurrentWeekAsync()
-        {
-            if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
-            {
-                int week = await NetworkService.GetAsync<int>($"https://iis.bsuir.by/api/v1/schedule/current-week");
-                Properties.Settings.Default.currentweek = week;
-                Properties.Settings.Default.Save();
-                return week;
-            }
-            return Properties.Settings.Default.currentweek;
-        }
-
         public async Task SaveRecentSchedule(GroupSchedule schedule)
         {
             await ScheduleService.SaveRecentSchedule(schedule);
         }
-
         public async Task LoadSchedule(string? url, ScheduleService.LoadingType loadingType)
         {
             GroupSchedule schedule = await ScheduleService.LoadSchedule(url, loadingType);

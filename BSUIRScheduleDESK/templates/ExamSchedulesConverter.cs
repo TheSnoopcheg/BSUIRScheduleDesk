@@ -1,5 +1,6 @@
 ﻿using BSUIRScheduleDESK.classes;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace BSUIRScheduleDESK.templates
         {
             if (value == null) return null;
             List<Schedule>? schedules = value as List<Schedule>;
+            schedules = schedules!.OrderBy(s => s.startLessonTime).ToList();
             return schedules!.GroupBy(x => x.dateLesson);
         }
 

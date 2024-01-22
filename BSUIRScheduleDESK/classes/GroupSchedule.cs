@@ -10,6 +10,9 @@ namespace BSUIRScheduleDESK.classes
         [JsonPropertyName("studentGroupDto")]
         public StudentGroup? studentGroup { get; set; }
         public Schedules? schedules { get; set; }
+        public Schedules? previousSchedules { get; set; }
+        public string? currentTerm { get; set; }
+        public string? previousTerm { get; set; }
         public List<Schedule>? exams { get; set; }
         public string? startDate { get; set; }
         public string? endDate { get; set; }

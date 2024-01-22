@@ -1,6 +1,7 @@
 ﻿using BSUIRScheduleDESK.classes;
 using System;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
 
 namespace BSUIRScheduleDESK.templates
@@ -17,7 +18,7 @@ namespace BSUIRScheduleDESK.templates
                     {
                         Schedule? schedule = value as Schedule;
                         if (schedule?.employees == null)
-                            return schedule?.studentGroups!;
+                            return schedule?.studentGroups!.OrderBy(s => s.name)!;
                         return schedule?.employees!;
                     }
                 case "Text":

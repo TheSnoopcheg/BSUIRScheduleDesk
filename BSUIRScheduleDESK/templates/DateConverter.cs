@@ -45,7 +45,6 @@ namespace BSUIRScheduleDESK.templates
                 }
                 return result;
             }
-            return string.Empty;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

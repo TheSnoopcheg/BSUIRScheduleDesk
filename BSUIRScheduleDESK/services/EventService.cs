@@ -10,7 +10,12 @@ namespace BSUIRScheduleDESK.services
         public static event Action<FavoriteSchedule>? FavoriteScheduleSelected;
         public static event Action<FavoriteSchedule>? ScheduleUnFavorited;
         public static event Action<int>? WeekUpdated;
+        public static event Action? CurrentWeekUpdated;
 
+        public static void CurrentWeekUpdated_Invoke()
+        {
+            CurrentWeekUpdated!.Invoke();
+        }
         public static void ScheduleFavorited_Invoke(GroupSchedule schedule, bool isProc)
         {
             ScheduleFavorited?.Invoke(schedule, isProc);

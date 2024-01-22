@@ -1,6 +1,11 @@
-﻿using BSUIRScheduleDESK.viewmodels;
+﻿using BSUIRScheduleDESK.services;
+using BSUIRScheduleDESK.viewmodels;
+using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
+
+using n = BSUIRScheduleDESK.Properties.Settings;
 
 namespace BSUIRScheduleDESK
 {
@@ -11,6 +16,17 @@ namespace BSUIRScheduleDESK
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            if (n.Default.currentweek == 0)
+            {
+                var up = ScheduleService.UpdateCurrentWeekAsync();
+            }
+            int wd = DateService.GetWeekDiff(n.Default.laststartup, DateTime.Today);
+            if (wd != 0)
+            {
+                n.Default.currentweek += wd % 4;
+            }
+            n.Default.laststartup = DateTime.Today;
+            n.Default.Save();
             MainWindowViewModel mwvm = new MainWindowViewModel();
             this.MainWindow = new MainWindow();
             this.MainWindow.DataContext = mwvm;

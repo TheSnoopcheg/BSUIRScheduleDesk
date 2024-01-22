@@ -12,7 +12,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="currentweek" Type="System.Int32" Scope="User">
-      <Value Profile="(Default)">2</Value>
+      <Value Profile="(Default)">0</Value>
     </Setting>
     <Setting Name="lecturecolor" Type="System.String" Scope="User">
       <Value Profile="(Default)">Green</Value>
@@ -34,6 +34,9 @@
     </Setting>
     <Setting Name="indexes" Type="System.String" Scope="User">
       <Value Profile="(Default)">[4,2,0,1,5,9]</Value>
+    </Setting>
+    <Setting Name="laststartup" Type="System.DateTime" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

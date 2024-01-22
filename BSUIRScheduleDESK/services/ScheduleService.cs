@@ -13,14 +13,14 @@ namespace BSUIRScheduleDESK.services
         public enum LoadingType
         {
             Server,
-            ServerWL,
+            ServerWP,
             Local
         }
 
         public static async Task<GroupSchedule> LoadSchedule(string? url, LoadingType loadingType)
         {
             GroupSchedule? schedule = new GroupSchedule();
-            if (loadingType == LoadingType.Server || loadingType == LoadingType.ServerWL)
+            if (loadingType == LoadingType.Server || loadingType == LoadingType.ServerWP)
             {
                 schedule = await ServerLoad(url);
             }
@@ -35,7 +35,7 @@ namespace BSUIRScheduleDESK.services
                     schedule = await ServerLoad(url, LoadingType.Local);
                 }
             }
-            if (schedule != null && loadingType != LoadingType.ServerWL)
+            if (schedule != null && loadingType != LoadingType.ServerWP)
             {
                 await SaveRecentSchedule(schedule);
             }
@@ -115,6 +115,16 @@ namespace BSUIRScheduleDESK.services
                 }
             }
             return default;
+        }
+        public static async Task UpdateCurrentWeekAsync()
+        {
+            if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
+            {
+                int week = await NetworkService.GetAsync<int>($"https://iis.bsuir.by/api/v1/schedule/current-week");
+                Properties.Settings.Default.currentweek = week;
+                Properties.Settings.Default.Save();
+                EventService.CurrentWeekUpdated_Invoke();
+            }
         }
     }
 }

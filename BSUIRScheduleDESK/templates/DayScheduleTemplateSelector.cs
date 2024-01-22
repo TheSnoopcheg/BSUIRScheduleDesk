@@ -4,7 +4,9 @@ using System.Windows.Controls;
 using BSUIRScheduleDESK.services;
 using System.Collections.Generic;
 using System;
+#if DEBUG
 using System.Diagnostics;
+#endif
 
 namespace BSUIRScheduleDESK.templates
 {

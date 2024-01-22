@@ -4,7 +4,6 @@ using BSUIRScheduleDESK.services;
 using BSUIRScheduleDESK.views;
 using System;
 using System.Collections.ObjectModel;
-using System.Threading.Tasks;
 using System.Windows.Input;
 #if DEBUG
     using System.Diagnostics;
@@ -17,6 +16,17 @@ namespace BSUIRScheduleDESK.viewmodels
         readonly MainWindowModel _model;
 
         #region Properties
+
+        private int selectedTab = 0;
+        public int SelectedTab
+        {
+            get { return selectedTab; }
+            set
+            {
+                selectedTab = value;
+                OnPropertyChanged();
+            }
+        }
 
         private bool isCalendarOpen = false;
         public bool IsCalendarOpen
@@ -50,13 +60,20 @@ namespace BSUIRScheduleDESK.viewmodels
             get { return _groupSchedule!; }
             set
             {
-                string? url = value?.employee == null ? value?.studentGroup?.name : value.employee.urlId;
-                if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
+                if(value != null)
                 {
-                    value!.favorited = true;
+                    string? url = value?.employee == null ? value?.studentGroup?.name : value.employee.urlId;
+                    if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
+                    {
+                        value!.favorited = true;
+                    }
+                    DateTime startExamsDate = DateTime.Parse(value!.startExamsDate!);
+                    DateTime endExamsDate = DateTime.Parse(value!.endExamsDate!);
+                    if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
+                        SelectedTab = 1;
+                    _groupSchedule = value;
+                    OnPropertyChanged();
                 }
-                _groupSchedule = value;
-                OnPropertyChanged();
             }
         }
         private int _currentWeek;
@@ -117,14 +134,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        private void ChangeDates(int diff)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                Dates![i] = Dates[i].AddDays(diff * 7);
-            }
-        }
-        public string Build { get; set; } = "build:000022603beta 02.01.2024";
+        public string Build { get; set; } = "build:000022753beta 23.01.2024";
 
         #endregion
 
@@ -168,7 +178,7 @@ namespace BSUIRScheduleDESK.viewmodels
                             SearchResponse? response = scheduleSearchWindow.FSearchResponce;
                             if (response != null)
                             {
-                                GroupSchedule tSchedule = await ScheduleService.LoadSchedule(response.GetUrl(), ScheduleService.LoadingType.ServerWL);
+                                GroupSchedule tSchedule = await ScheduleService.LoadSchedule(response.GetUrl(), ScheduleService.LoadingType.ServerWP);
                                 if(Schedule != null)
                                 {
 
@@ -320,7 +330,13 @@ namespace BSUIRScheduleDESK.viewmodels
         #endregion
 
         #region Methods
-
+        private void ChangeDates(int diff)
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                Dates![i] = Dates[i].AddDays(diff * 7);
+            }
+        }
         private void BackCurrentWeek()
         {
             int wd = Properties.Settings.Default.currentweek - CurrentWeek;
@@ -353,6 +369,11 @@ namespace BSUIRScheduleDESK.viewmodels
                 await _model.SaveRecentSchedule(Schedule);
             }
         }
+        private void OnCurrentWeekUpdate()
+        {
+            CurrentWeek = Properties.Settings.Default.currentweek;
+            EventService.CurrentWeekUpdated -= OnCurrentWeekUpdate;
+        }
 
         #endregion
         public MainWindowViewModel()
@@ -361,14 +382,15 @@ namespace BSUIRScheduleDESK.viewmodels
             _model = new MainWindowModel();
             EventService.FavoriteScheduleSelected += LoadFavoriteSchedule;
             EventService.ScheduleUnFavorited += OnScheduleUnFavorited;
+            if(Properties.Settings.Default.currentweek == 0)
+            {
+                EventService.CurrentWeekUpdated += OnCurrentWeekUpdate;
+            }
             _firstsubgroup = Properties.Settings.Default.firstsubgroup;
             _secondsubgroup = Properties.Settings.Default.secondsubgroup;
-            Task.Run(async () => 
-            {
-                CurrentWeek = await _model.GetCurrentWeekAsync();
-                if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-                    CurrentWeek += 1;
-            });
+            CurrentWeek = Properties.Settings.Default.currentweek;
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                CurrentWeek += 1;
             Dates = _model.Dates;
             LoadRecentSchedule();
         }

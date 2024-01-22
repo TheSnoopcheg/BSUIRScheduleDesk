@@ -61,7 +61,7 @@ namespace BSUIRScheduleDESK.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2")]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
         public int currentweek {
             get {
                 return ((int)(this["currentweek"]));
@@ -152,6 +152,17 @@ namespace BSUIRScheduleDESK.Properties {
             }
             set {
                 this["indexes"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        public global::System.DateTime laststartup {
+            get {
+                return ((global::System.DateTime)(this["laststartup"]));
+            }
+            set {
+                this["laststartup"] = value;
             }
         }
     }
