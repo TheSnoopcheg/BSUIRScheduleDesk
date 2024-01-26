@@ -71,6 +71,8 @@ namespace BSUIRScheduleDESK.viewmodels
                     DateTime endExamsDate = DateTime.Parse(value!.endExamsDate!);
                     if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
                         SelectedTab = 1;
+                    else
+                        SelectedTab = 0;
                     _groupSchedule = value;
                     OnPropertyChanged();
                 }
@@ -134,7 +136,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public string Build { get; set; } = "build:000022753beta 23.01.2024";
+        public string Build { get; set; } = "build:000022767beta 26.01.2024";
 
         #endregion
 

@@ -20,6 +20,7 @@ namespace BSUIRScheduleDESK.classes
         public string? endExamsDate { get; set; }
         public bool favorited { get; set; }
         public UpdateDate? updateDate { get; set; }
+        public string? currentPeriod { get; set; }
         public bool Compare(GroupSchedule right)
         {
             string? lOp = this.studentGroup == null ? this.employee!.urlId : this.studentGroup.name;

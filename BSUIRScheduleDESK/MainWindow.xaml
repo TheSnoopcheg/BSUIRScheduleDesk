@@ -20,6 +20,7 @@
     <Window.Resources>
         <templates:DateConverter x:Key="DateConverter"/>
         <templates:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
+        <templates:TabItemVisibilityConverter x:Key="TabItemVisibilityConverter"/>
         <Style TargetType="{x:Type Button}" x:Key="AddButtonStyle">
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="Template">
@@ -563,17 +564,28 @@
                     <TabControl Style="{DynamicResource TabControlStyle}" Grid.Row="1" Margin="10,0,10,0"
                                 Padding="-10,5,-10,0"
                                 SelectedIndex="{Binding SelectedTab}">
-                        <TabItem Style="{DynamicResource TabItemStyle}">
+                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.schedules, Converter={StaticResource TabItemVisibilityConverter}}">
                             <TabItem.Header>
                                 <StackPanel>
-                                    <TextBlock Text="{Binding Schedule.currentTerm}" FontSize="14"/>
+                                    <TextBlock FontSize="14">
+                                        <TextBlock.Style>
+                                            <Style TargetType="{x:Type TextBlock}">
+                                                <Setter Property="Text" Value="{Binding Schedule.currentTerm}"/>
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Schedule.currentTerm}" Value="{x:Null}">
+                                                        <Setter Property="Text" Value="Занятия"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </TextBlock.Style>
+                                    </TextBlock>
                                 </StackPanel>
                             </TabItem.Header>
                             <TabItem.Content>
                                 <Control Template="{StaticResource tabSchedule}"/>
                             </TabItem.Content>
                         </TabItem>
-                        <TabItem Style="{DynamicResource TabItemStyle}">
+                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.exams, Converter={StaticResource TabItemVisibilityConverter}}">
                             <TabItem.Header>
                                 <StackPanel>
                                     <TextBlock Text="Сессия" FontSize="14"/>
@@ -592,7 +604,7 @@
                                 </Grid>
                             </TabItem.Content>
                         </TabItem>
-                        <TabItem Style="{DynamicResource TabItemStyle}">
+                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.previousSchedules, Converter={StaticResource TabItemVisibilityConverter}}">
                             <TabItem.Header>
                                 <StackPanel>
                                     <TextBlock Text="{Binding Schedule.previousTerm}" FontSize="14"/>

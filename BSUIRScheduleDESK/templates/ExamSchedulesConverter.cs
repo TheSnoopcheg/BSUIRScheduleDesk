@@ -14,7 +14,7 @@ namespace BSUIRScheduleDESK.templates
         {
             if (value == null) return null;
             List<Schedule>? schedules = value as List<Schedule>;
-            schedules = schedules!.OrderBy(s => s.startLessonTime).ToList();
+            schedules = schedules!.OrderBy(s => s.dateLesson).ThenBy(s => s.startLessonTime).ToList();
             return schedules!.GroupBy(x => x.dateLesson);
         }
 
