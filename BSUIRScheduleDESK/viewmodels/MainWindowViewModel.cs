@@ -136,7 +136,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public string Build { get; set; } = "build:000022767beta 26.01.2024";
+        public string Build { get; set; } = "build:000022768beta 26.01.2024";
 
         #endregion
 

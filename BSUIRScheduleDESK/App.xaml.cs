@@ -24,6 +24,11 @@ namespace BSUIRScheduleDESK
             if (wd != 0)
             {
                 n.Default.currentweek += wd % 4;
+                if(n.Default.currentweek >= 5)
+                {
+                    n.Default.currentweek -= 4;
+                    n.Default.Save();
+                }
             }
             n.Default.laststartup = DateTime.Today;
             n.Default.Save();
