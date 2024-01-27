@@ -175,18 +175,23 @@
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
                     </ScrollViewer>
-                    <Image Source="/assets/emptyannview.png" Grid.Row="1">
-                        <Image.Style>
-                            <Style TargetType="{x:Type Image}">
-                                <Setter Property="Visibility" Value="Hidden"/>
+                    <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Center">
+                        <Image Source="/assets/emptyannview.png" Height="125"/>
+                        <TextBlock Text="Объявлений нет"
+                                   HorizontalAlignment="Center"
+                                   FontWeight="DemiBold"
+                                   Margin="0,5,0,0"/>
+                        <StackPanel.Style>
+                            <Style TargetType="{x:Type StackPanel}">
+                                <Setter Property="Visibility" Value="Collapsed"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding Announcements.Count}" Value="0">
                                         <Setter Property="Visibility" Value="Visible"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
-                        </Image.Style>
-                    </Image>
+                        </StackPanel.Style>
+                    </StackPanel>
                 </Grid>
             </Border>
         </Grid>

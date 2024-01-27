@@ -10,7 +10,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="assets\backforjenya.jpg" />
     <None Remove="assets\emptyannview.png" />
     <None Remove="assets\icons8-calendar-50.png" />
     <None Remove="assets\icons8-close-50.png" />
@@ -25,7 +24,6 @@
     <None Remove="assets\icons8-minimize-50w.png" />
     <None Remove="assets\icons8-note-30.png" />
     <None Remove="assets\icons8-note-60.png" />
-    <None Remove="assets\icons8-penis-50.png" />
     <None Remove="assets\icons8-plus-50.png" />
     <None Remove="assets\icons8-plus-96.png" />
     <None Remove="assets\icons8-return-50.png" />
@@ -34,7 +32,6 @@
     <None Remove="assets\icons8-settings-50.png" />
     <None Remove="assets\icons8-star-50.png" />
     <None Remove="assets\icons8-star-501.png" />
-    <None Remove="assets\icons8-tits-50.png" />
     <None Remove="assets\snow.png" />
   </ItemGroup>
 
@@ -48,7 +45,6 @@
     <Resource Include="assets\icons8-close-50w.png" />
     <Resource Include="assets\icons8-maximize-50w.png" />
     <Resource Include="assets\icons8-minimize-50w.png" />
-    <Resource Include="assets\icons8-penis-50.png" />
     <Resource Include="assets\icons8-plus-96.png" />
   </ItemGroup>
 
@@ -60,7 +56,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\backforjenya.jpg" />
     <Resource Include="assets\icons8-close-50.png" />
     <Resource Include="assets\icons8-close-60.png" />
     <Resource Include="assets\icons8-commercial-50.png" />
@@ -80,7 +75,6 @@
     <Resource Include="assets\icons8-settings-50.png" />
     <Resource Include="assets\icons8-star-50.png" />
     <Resource Include="assets\icons8-star-501.png" />
-    <Resource Include="assets\icons8-tits-50.png" />
     <Resource Include="assets\snow.png" />
   </ItemGroup>
 

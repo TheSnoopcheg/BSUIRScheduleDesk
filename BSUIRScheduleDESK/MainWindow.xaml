@@ -74,7 +74,7 @@
                 <Grid Grid.Row="0"
                       Margin="15,0,15,0">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="25"/>
+                        <ColumnDefinition Width="75"/>
                         <ColumnDefinition Width="*"/>
                         <ColumnDefinition Width="25"/>
                         <ColumnDefinition Width="25"/>
@@ -83,7 +83,7 @@
                     <Button Grid.Column="0"
                             Command="{Binding ChangeWeekNum}"
                             CommandParameter="-1"
-                            HorizontalAlignment="Center"
+                            HorizontalAlignment="Left"
                             VerticalAlignment="Center"
                             Height="25"
                             Width="25"

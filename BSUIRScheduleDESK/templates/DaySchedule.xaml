@@ -16,6 +16,13 @@
                        TextAlignment="Center"
                        FontWeight="DemiBold"/>
         </DataTemplate>
+        <DataTemplate x:Key="emptySchedule">
+            <TextBlock Text='Здесь ничего нет. Чтобы загрузить расписание, нажмите "🔍︎".'
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       FontSize="15"
+                       FontWeight="DemiBold"/>
+        </DataTemplate>
         <DataTemplate x:Key="tableSchedule">
             <Border Background="#e9edf3" Margin="10" CornerRadius="10">
                 <Grid>
@@ -56,6 +63,7 @@
                     <local:ListDayTemplate Date="{Binding Dates[4], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Friday}"/>
                     <local:ListDayTemplate Date="{Binding Dates[5], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Saturday}"/>
                 </StackPanel>
+                
             </ScrollViewer>
         </DataTemplate>
     </UserControl.Resources>
@@ -68,6 +76,9 @@
                 <Style.Triggers>
                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Normal">
                         <Setter Property="ContentTemplate" Value="{StaticResource listSchedule}"/>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                        <Setter Property="ContentTemplate" Value="{StaticResource emptySchedule}"/>
                     </DataTrigger>
                 </Style.Triggers>
             </Style>
