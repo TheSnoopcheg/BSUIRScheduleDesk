@@ -598,7 +598,7 @@
                                             <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
                                                                            LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
                                                                             Margin="0,10,0,10"
-                                                                           HorizontalAlignment="Center"/>   
+                                                                           HorizontalAlignment="Stretch"/>   
                                         </ScrollViewer>
                                     </Border>
                                 </Grid>

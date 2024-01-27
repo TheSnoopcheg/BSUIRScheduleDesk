@@ -30,6 +30,12 @@ namespace BSUIRScheduleDESK.templates
                     {
                         result = day + dateTime.ToString(" dd.MM.yyyy");
                     }
+                    if (param == "monthyear")
+                    {
+                        string month = dateTime.ToString("MMMM yyyy");
+                        month = month.Replace(month[0], char.ToUpper(month[0]));
+                        return month;
+                    }
                 }
                 else
                 {

@@ -152,14 +152,14 @@
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="scheduleTemplate">
-            <Grid>
+            <Grid Margin="0,5,0,0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
                 <Border CornerRadius="10" Height="20" Background="White" Width="150"
                         BorderBrush="Black" BorderThickness="1" VerticalAlignment="Top" HorizontalAlignment="Center">
-                    <TextBlock Text="{Binding dateLesson, Converter={StaticResource DateConverter}}"
+                    <TextBlock Text="{Binding Key, Converter={StaticResource DateConverter}}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
                                FontWeight="DemiBold"/>
@@ -271,13 +271,30 @@
                 </Grid>
             </Border>
         </DataTemplate>
+        <DataTemplate x:Key="monthTemplate">
+            <Expander BorderBrush="Gray" BorderThickness="1" Margin="15,5,15,5" Style="{DynamicResource ExpanderStyle1}" Focusable="False" HorizontalContentAlignment="Center" IsExpanded="True">
+                <Expander.Header>
+                    <TextBlock Text="{Binding Key, Converter={StaticResource DateConverter}, ConverterParameter=monthyear}" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                </Expander.Header>
+                <ItemsControl ItemTemplateSelector="{StaticResource ExamScheduleTemplateSelector}"
+                              ItemsSource="{Binding}"
+                              Focusable="False"
+                              Margin="0,5,0,5">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" MaxWidth="1180"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </Expander>
+        </DataTemplate>
     </UserControl.Resources>
-    <ItemsControl ItemTemplateSelector="{StaticResource ExamScheduleTemplateSelector}"
-                  ItemsSource="{Binding}"
-                  Focusable="False">
+    <ItemsControl ItemsSource="{Binding}"
+                  Focusable="False"
+                  ItemTemplate="{StaticResource monthTemplate}">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
-                <WrapPanel Orientation="Horizontal" MaxWidth="1180"/>
+                <StackPanel Orientation="Vertical"/>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
     </ItemsControl>
