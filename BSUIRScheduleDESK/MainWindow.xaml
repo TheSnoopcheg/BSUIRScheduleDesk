@@ -582,7 +582,7 @@
                                 </StackPanel>
                             </TabItem.Header>
                             <TabItem.Content>
-                                <Control Template="{StaticResource tabSchedule}"/>
+                                <Control Template="{StaticResource tabSchedule}" Focusable="False"/>
                             </TabItem.Content>
                         </TabItem>
                         <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.exams, Converter={StaticResource TabItemVisibilityConverter}}">
@@ -611,7 +611,7 @@
                                 </StackPanel>
                             </TabItem.Header>
                             <TabItem.Content>
-                                <Control Template="{StaticResource tabSchedule}"/>
+                                <Control Template="{StaticResource tabSchedule}" Focusable="False"/>
                             </TabItem.Content>
                         </TabItem>
                     </TabControl>

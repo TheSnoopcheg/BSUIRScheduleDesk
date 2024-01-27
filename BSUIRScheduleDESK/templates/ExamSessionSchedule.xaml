@@ -17,6 +17,7 @@
         </DataTemplate>
         <Style x:Key="schedulePlateStyle" TargetType="{x:Type ContentPresenter}">
             <Setter Property="ContentTemplate" Value="{DynamicResource schedulePlateTemplate}"/>
+            <Setter Property="Focusable" Value="False"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding announcement}" Value="True">
                     <Setter Property="ContentTemplate" Value="{DynamicResource announcementTemplate}"/>
@@ -164,7 +165,7 @@
                                HorizontalAlignment="Center"
                                FontWeight="DemiBold"/>
                 </Border>
-                <ItemsControl Grid.Row="1" ItemContainerStyle="{StaticResource schedulePlateStyle}" ItemsSource="{Binding}">
+                <ItemsControl Grid.Row="1" ItemContainerStyle="{StaticResource schedulePlateStyle}" ItemsSource="{Binding}" Focusable="False">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Vertical"/>
