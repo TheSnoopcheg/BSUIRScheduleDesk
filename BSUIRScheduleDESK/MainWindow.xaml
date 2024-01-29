@@ -91,6 +91,9 @@
                             Style="{StaticResource IconButtonStyle1}">
                         <Image Source="/assets/icons8-double-left-50.png"
                                Height="16"/>
+                        <Button.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
+                        </Button.RenderTransform>
                     </Button>
                     <Grid HorizontalAlignment="Center"
                           Grid.Column="1">
@@ -127,6 +130,9 @@
                             Height="25"
                             Padding="0"
                             Command="{Binding BackToCurrentWeek}">
+                        <Button.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
+                        </Button.RenderTransform>
                         <Image Source="/assets/icons8-return-50.png"
                                Height="16"/>
                         <Button.ToolTip>
@@ -157,6 +163,18 @@
                                                 <DataTrigger Binding="{Binding WeekDiff}" Value="0">
                                                     <Setter Property="Visibility" Value="Hidden"/>
                                                 </DataTrigger>
+                                                <EventTrigger RoutedEvent="Button.Click">
+                                                    <EventTrigger.Actions>
+                                                        <BeginStoryboard>
+                                                            <Storyboard>
+                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" 
+                                                                                 To="0.8" Duration="0:0:0.1" AutoReverse="True"/>
+                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" 
+                                                                                 To="0.8" Duration="0:0:0.1" AutoReverse="True"/>
+                                                            </Storyboard>
+                                                        </BeginStoryboard>
+                                                    </EventTrigger.Actions>
+                                                </EventTrigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </Setter.Value>
@@ -176,6 +194,9 @@
                                Height="17.5"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"/>
+                        <Button.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
+                        </Button.RenderTransform>
                     </Button>
                     <Button Grid.Column="4"
                             VerticalAlignment="Center"
@@ -187,6 +208,9 @@
                             Style="{StaticResource IconButtonStyle1}">
                         <Image Source="/assets/icons8-double-right-50.png"
                                Height="16"/>
+                        <Button.RenderTransform>
+                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
+                        </Button.RenderTransform>
                     </Button>
                 </Grid>
                 <templates:DaySchedule Grid.Row="1"
@@ -313,6 +337,9 @@
                                 Command="{Binding SearchSchedule}"
                                 FocusVisualStyle="{x:Null}">
                             <Image Source="/assets/icons8-search-50.png"/>
+                            <Button.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
+                            </Button.RenderTransform>
                         </Button>
                         <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
                         <StackPanel Orientation="Vertical" Grid.Row="1">
@@ -334,6 +361,9 @@
                                    VerticalAlignment="Center"
                                    HorizontalAlignment="Center"
                                    Height="25"/>
+                            <Button.RenderTransform>
+                                <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
+                            </Button.RenderTransform>
                         </Button>
                     </Grid>
                 </Border>
@@ -499,6 +529,9 @@
                                     HorizontalAlignment="Right"
                                     Margin="5,0,0,0"
                                     Command="{Binding Path=AddFavoriteSchedule}">
+                                    <Button.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                                    </Button.RenderTransform>
                                     <Image>
                                         <Image.Style>
                                             <Style TargetType="{x:Type Image}">
@@ -523,6 +556,9 @@
                                     Margin="0,0,5,0"
                                     Command="{Binding Path=OpenAnnouncements}"
                                     >
+                                    <Button.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                                    </Button.RenderTransform>
                                     <Grid>
                                         <Image Source="/assets/icons8-commercial-50.png" Margin="5"/>
                                         <Grid VerticalAlignment="Top"

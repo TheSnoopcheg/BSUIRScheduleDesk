@@ -98,6 +98,9 @@
                     VerticalAlignment="Center"
                     Margin="10">
                 <Image Source="/assets/icons8-close-50.png"/>
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                </Button.RenderTransform>
             </Button>
             <Border Grid.Row="1" 
                 CornerRadius="10"

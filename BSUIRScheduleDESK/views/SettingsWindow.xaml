@@ -37,7 +37,9 @@
                 Margin="10"
                 Click="btnClose_Click"
                 Style="{StaticResource IconButtonStyle1}">
-
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                </Button.RenderTransform>
                 <Image Source="/assets/icons8-close-50.png"/>
             </Button>
             <StackPanel Grid.Row="1"

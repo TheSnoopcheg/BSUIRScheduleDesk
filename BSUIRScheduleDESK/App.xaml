@@ -52,6 +52,18 @@
                                 <Trigger Property="IsPressed" Value="true">
                                     <Setter Property="Background" TargetName="border" Value="#c4c4c4"/>
                                 </Trigger>
+                                <EventTrigger RoutedEvent="Button.Click">
+                                    <EventTrigger.Actions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1"
+                                                                 To="0.8" Duration="0:0:0.1" AutoReverse="True"/>
+                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1"
+                                                                 To="0.8" Duration="0:0:0.1" AutoReverse="True"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </EventTrigger.Actions>
+                                </EventTrigger>
                             </ControlTemplate.Triggers>
                         </ControlTemplate>
                     </Setter.Value>
@@ -79,7 +91,7 @@
             <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF000000"/>
             <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FFFFFFFF"/>
             <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#FFF3F9FF"/>
-            <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#1890ff"/>
+            <Color x:Key="OptionMark.MouseOver.Border">#1890ff</Color>
             <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#FF212121"/>
             <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#1890ff"/>
             <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#1890ff"/>
@@ -118,11 +130,21 @@
                                     <Setter Property="Padding" Value="4,-1,0,0"/>
                                 </Trigger>
                                 <Trigger Property="IsMouseOver" Value="true">
-                                    <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Background}"/>
-                                    <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.MouseOver.Border}"/>
-                                    <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
-                                    <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.MouseOver.Glyph}"/>
                                     <Setter Property="Cursor" Value="Hand"/>
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard Storyboard.TargetName="checkBoxBorder" Storyboard.TargetProperty="BorderBrush.Color">
+                                                <ColorAnimation To="{StaticResource OptionMark.MouseOver.Border}" Duration="0:0:0.25"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard Storyboard.TargetName="checkBoxBorder" Storyboard.TargetProperty="BorderBrush.Color">
+                                                <ColorAnimation To="Black" Duration="0:0:0.25"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
                                 </Trigger>
                                 <Trigger Property="IsEnabled" Value="false">
                                     <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Disabled.Background}"/>
@@ -131,17 +153,29 @@
                                     <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Disabled.Glyph}"/>
                                 </Trigger>
                                 <Trigger Property="IsPressed" Value="true">
-                                    <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Background}"/>
                                     <Setter Property="BorderBrush" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Border}"/>
-                                    <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
-                                    <Setter Property="Fill" TargetName="indeterminateMark" Value="{StaticResource OptionMark.Pressed.Glyph}"/>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="true">
-                                    <Setter Property="Background" TargetName="checkBoxBorder" Value="{StaticResource OptionMark.Pressed.Background}"/>
-                                    <Setter Property="Fill" TargetName="optionMark" Value="{StaticResource OptionMark.Static.Glyph}"/>
                                     <Setter Property="BorderThickness" TargetName="checkBoxBorder" Value="0"/>
-                                    <Setter Property="Opacity" TargetName="optionMark" Value="1"/>
                                     <Setter Property="Opacity" TargetName="indeterminateMark" Value="0"/>
+                                    <Trigger.EnterActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="optionMark" Storyboard.TargetProperty="Fill.Color" To="White" Duration="0:0:0.25"/>
+                                                <ColorAnimation Storyboard.TargetName="checkBoxBorder" Storyboard.TargetProperty="Background.Color" To="#1890ff" Duration="0:0:0.25"/>
+                                                <DoubleAnimation Storyboard.TargetName="optionMark" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.25"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.EnterActions>
+                                    <Trigger.ExitActions>
+                                        <BeginStoryboard>
+                                            <Storyboard>
+                                                <ColorAnimation Storyboard.TargetName="optionMark" Storyboard.TargetProperty="Fill.Color" To="White" Duration="0:0:0.25"/>
+                                                <ColorAnimation Storyboard.TargetName="checkBoxBorder" Storyboard.TargetProperty="Background.Color" To="White" Duration="0:0:0.25"/>
+                                                <DoubleAnimation Storyboard.TargetName="optionMark" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.25"/>
+                                            </Storyboard>
+                                        </BeginStoryboard>
+                                    </Trigger.ExitActions>
                                 </Trigger>
                                 <Trigger Property="IsChecked" Value="{x:Null}">
                                     <Setter Property="Opacity" TargetName="optionMark" Value="0"/>

@@ -189,6 +189,7 @@ namespace BSUIRScheduleDESK.viewmodels
                                         _model.Schedule!.favorited = true;
                                         Schedule.favorited = true;
                                         await _model.SaveRecentSchedule(Schedule);
+                                        OnPropertyChanged(nameof(Schedule));
                                     }
                                 }
                                 

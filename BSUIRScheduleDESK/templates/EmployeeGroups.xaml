@@ -57,11 +57,30 @@
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="border" Property="Background" Value="#3a547f"/>
-                                            <Setter TargetName="border" Property="BorderThickness" Value="0"/>
-                                            <Setter Property="Foreground" Value="White"/>
                                             <Setter Property="Cursor" Value="Hand"/>
                                         </Trigger>
+                                        <EventTrigger RoutedEvent="MouseEnter">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard >
+                                                        <ColorAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color" To="#3a547f" Duration="0:0:0.25"/>
+                                                        <ThicknessAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="BorderThickness" To="0" Duration="0:0:0.25"/>
+                                                        <ColorAnimation Storyboard.TargetProperty="Foreground.Color" To="White" Duration="0:0:0.25"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
+                                        <EventTrigger RoutedEvent="MouseLeave">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <ColorAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color" To="White" Duration="0:0:0.25"/>
+                                                        <ThicknessAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="BorderThickness" To="1" Duration="0:0:0.25"/>
+                                                        <ColorAnimation Storyboard.TargetProperty="Foreground.Color" To="Black" Duration="0:0:0.25"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>

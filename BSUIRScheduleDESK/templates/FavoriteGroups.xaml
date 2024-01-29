@@ -16,6 +16,8 @@
                         <Setter Property="Command" Value="{Binding ElementName=_Schedules, Path=DataContext.OpenSchedule, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="CommandParameter" Value="{Binding}"/>
                         <Setter Property="Focusable" Value="False"/>
+                        <Setter Property="Opacity" Value="0"/>
+                        <Setter Property="Height" Value="0"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type RadioButton}">
@@ -27,7 +29,11 @@
                                                  StrokeDashArray="5"
                                                  Margin="5"
                                                  HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center">
+                                                 VerticalAlignment="Center"
+                                                 x:Name="dashCircle">
+                                            <Ellipse.RenderTransform>
+                                                <RotateTransform Angle="0" x:Name="AnimatedRotateTransform" CenterX="20" CenterY="20"/>
+                                            </Ellipse.RenderTransform>
                                         </Ellipse>
 
                                         <Ellipse Height="35"
@@ -46,7 +52,7 @@
                                               HorizontalAlignment="Right"
                                               VerticalAlignment="Top"
                                               Margin="6"
-                                              Visibility="Hidden"
+                                                Opacity="0"
                                                 Background="AliceBlue"
                                                 Padding="0"
                                                 HorizontalContentAlignment="Center"
@@ -54,6 +60,9 @@
                                                 Command="{Binding ElementName=_Schedules, Path=DataContext.DeleteSchedule, UpdateSourceTrigger=PropertyChanged}"
                                                 CommandParameter="{Binding}"
                                               Style="{DynamicResource IconButtonStyle1}">
+                                            <Button.RenderTransform>
+                                                <ScaleTransform ScaleX="1" ScaleY="1" CenterX="7.5" CenterY="7.5"/>
+                                            </Button.RenderTransform>
                                             <Image
                                                     Source="/assets/icons8-close-60.png"
                                                     Height="7.5"/>
@@ -75,12 +84,42 @@
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
                                             <Setter TargetName="some" Property="Fill" Value="#e2e2e2"/>
-                                            <Setter TargetName="deleteFavBtn" Property="Visibility" Value="Visible"/>
                                             <Setter Property="Cursor" Value="Hand"/>
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard Storyboard.TargetName="deleteFavBtn" Storyboard.TargetProperty="Opacity">
+                                                        <DoubleAnimation To="1" Duration="0:0:0.15"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
+                                            <Trigger.ExitActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard Storyboard.TargetName="deleteFavBtn" Storyboard.TargetProperty="Opacity">
+                                                        <DoubleAnimation To="0" Duration="0:0:0.15"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.ExitActions>
                                         </Trigger>
                                         <Trigger Property="IsPressed" Value="True">
                                             <Setter TargetName="some" Property="Fill" Value="#c4c4c4"/>
+                                            <Trigger.EnterActions>
+                                                <BeginStoryboard>
+                                                    <Storyboard Storyboard.TargetName="AnimatedRotateTransform" Storyboard.TargetProperty="Angle">
+                                                        <DoubleAnimation By="360" Duration="0:0:1" AccelerationRatio="0.25" DecelerationRatio="0.25"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </Trigger.EnterActions>
                                         </Trigger>
+                                        <EventTrigger RoutedEvent="Loaded">
+                                            <EventTrigger.Actions>
+                                                <BeginStoryboard>
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.25"/>
+                                                        <DoubleAnimation Storyboard.TargetProperty="Height" To="50" Duration="0:0:0.25"/>
+                                                    </Storyboard>
+                                                </BeginStoryboard>
+                                            </EventTrigger.Actions>
+                                        </EventTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>
