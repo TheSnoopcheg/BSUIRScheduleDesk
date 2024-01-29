@@ -385,7 +385,7 @@ namespace BSUIRScheduleDESK.viewmodels
             _model = new MainWindowModel();
             EventService.FavoriteScheduleSelected += LoadFavoriteSchedule;
             EventService.ScheduleUnFavorited += OnScheduleUnFavorited;
-            if(Properties.Settings.Default.currentweek == 0)
+            if(Properties.Settings.Default.currentweek == 0 || Properties.Settings.Default.laststartup == DateTime.MinValue)
             {
                 EventService.CurrentWeekUpdated += OnCurrentWeekUpdate;
             }
@@ -393,7 +393,10 @@ namespace BSUIRScheduleDESK.viewmodels
             _secondsubgroup = Properties.Settings.Default.secondsubgroup;
             CurrentWeek = Properties.Settings.Default.currentweek;
             if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+            {
+                WeekDiff += 1;
                 CurrentWeek += 1;
+            }
             Dates = _model.Dates;
             LoadRecentSchedule();
         }

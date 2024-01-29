@@ -16,7 +16,7 @@ namespace BSUIRScheduleDESK
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            if (n.Default.currentweek == 0)
+            if (n.Default.currentweek == 0 || n.Default.laststartup == DateTime.MinValue)
             {
                 var up = ScheduleService.UpdateCurrentWeekAsync();
             }
@@ -30,9 +30,9 @@ namespace BSUIRScheduleDESK
                     n.Default.Save();
                 }
             }
+            MainWindowViewModel mwvm = new MainWindowViewModel();
             n.Default.laststartup = DateTime.Today;
             n.Default.Save();
-            MainWindowViewModel mwvm = new MainWindowViewModel();
             this.MainWindow = new MainWindow();
             this.MainWindow.DataContext = mwvm;
             MainWindow.Show();
