@@ -5,8 +5,10 @@ using BSUIRScheduleDESK.views;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
+using System.Threading.Tasks;
+
 #if DEBUG
-    using System.Diagnostics;
+using System.Diagnostics;
 #endif
 
 namespace BSUIRScheduleDESK.viewmodels
@@ -73,6 +75,13 @@ namespace BSUIRScheduleDESK.viewmodels
                         SelectedTab = 1;
                     else
                         SelectedTab = 0;
+                    if (value.favorited)
+                    {
+                        Task.Run(async () =>
+                        {
+                            Notes = await NoteService.LoadNotes(value.GetUrl());
+                        });
+                    }
                     _groupSchedule = value;
                     OnPropertyChanged();
                 }
@@ -116,6 +125,16 @@ namespace BSUIRScheduleDESK.viewmodels
                 EventService.SubgroupUpdated_Invoke();
             }
         }
+        private ObservableCollection<Note>? _notes = new ObservableCollection<Note>();
+        public ObservableCollection<Note>? Notes
+        {
+            get { return _notes; }
+            set
+            {
+                _notes = value;
+                OnPropertyChanged();
+            }
+        }
         private ObservableCollection<Announcement>? _announcements = new ObservableCollection<Announcement>();
         public ObservableCollection<Announcement>? Announcements
         {
@@ -136,7 +155,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public string Build { get; set; } = "build:000022780beta 27.01.2024";
+        public string Build { get; set; } = "build:000023000beta 02.02.2024";
 
         #endregion
 
@@ -207,7 +226,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 return openAnnouncements ??
                     (openAnnouncements = new RelayCommand(obj =>
                     {
-                        if(Announcements != null)
+                        if(Schedule != null)
                         {
                             AnnouncementWindow announcementWindow = new AnnouncementWindow();
                             announcementWindow.DataContext = new AnnouncementViewModel(Announcements, Schedule!.GetName());
@@ -231,6 +250,7 @@ namespace BSUIRScheduleDESK.viewmodels
                             OnPropertyChanged(nameof(Schedule));
                             await _model.SaveRecentSchedule(Schedule);
                             EventService.ScheduleFavorited_Invoke(Schedule, true);
+                            Notes = await NoteService.LoadNotes(Schedule.GetUrl());
                         }
                     }));
             }
@@ -325,6 +345,23 @@ namespace BSUIRScheduleDESK.viewmodels
                             CurrentWeek += wd;
                             EventService.WeekUpdated_Invoke(wd);
                             IsCalendarOpen = false;
+                        }
+                    }));
+            }
+        }
+        private ICommand? openNotesWindow;
+        public ICommand OpenNotesWindow
+        {
+            get
+            {
+                return openNotesWindow ??
+                    (openNotesWindow = new RelayCommand(obj =>
+                    {
+                        if(Schedule != null)
+                        {
+                            NotesWindow notesWindow = new NotesWindow();
+                            notesWindow.DataContext = new NoteViewModel(Notes, Schedule!.GetName(), Schedule!.GetUrl());
+                            notesWindow.ShowDialog();
                         }
                     }));
             }

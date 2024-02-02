@@ -23,6 +23,7 @@
     <None Remove="assets\icons8-minimize-50.png" />
     <None Remove="assets\icons8-minimize-50w.png" />
     <None Remove="assets\icons8-note-30.png" />
+    <None Remove="assets\icons8-note-50.png" />
     <None Remove="assets\icons8-note-60.png" />
     <None Remove="assets\icons8-plus-50.png" />
     <None Remove="assets\icons8-plus-96.png" />
@@ -45,6 +46,7 @@
     <Resource Include="assets\icons8-close-50w.png" />
     <Resource Include="assets\icons8-maximize-50w.png" />
     <Resource Include="assets\icons8-minimize-50w.png" />
+    <Resource Include="assets\icons8-note-50.png" />
     <Resource Include="assets\icons8-plus-96.png" />
   </ItemGroup>
 

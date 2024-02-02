@@ -52,14 +52,18 @@
                                 <Trigger Property="IsPressed" Value="true">
                                     <Setter Property="Background" TargetName="border" Value="#c4c4c4"/>
                                 </Trigger>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter Property="Background" TargetName="border" Value="#b9b9b9"/>
+                                    <Setter Property="Opacity" TargetName="contentPresenter" Value="0.5"/>
+                                </Trigger>
                                 <EventTrigger RoutedEvent="Button.Click">
                                     <EventTrigger.Actions>
                                         <BeginStoryboard>
                                             <Storyboard>
                                                 <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" From="1"
-                                                                 To="0.8" Duration="0:0:0.1" AutoReverse="True"/>
+                                                                 To="0.85" Duration="0:0:0.1" AutoReverse="True"/>
                                                 <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" From="1"
-                                                                 To="0.8" Duration="0:0:0.1" AutoReverse="True"/>
+                                                                 To="0.85" Duration="0:0:0.1" AutoReverse="True"/>
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger.Actions>

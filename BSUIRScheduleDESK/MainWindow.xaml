@@ -21,6 +21,7 @@
         <templates:DateConverter x:Key="DateConverter"/>
         <templates:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
         <templates:TabItemVisibilityConverter x:Key="TabItemVisibilityConverter"/>
+        <templates:ButtonVisibilityConverter x:Key="ButtonVisibilityConverter"/>
         <Style TargetType="{x:Type Button}" x:Key="AddButtonStyle">
             <Setter Property="Focusable" Value="False"/>
             <Setter Property="Template">
@@ -521,13 +522,26 @@
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right">
                                 <Button
+                                    x:Name="btnNotes"
+                                    Style="{StaticResource IconButtonStyle1}"
+                                    Width="30"
+                                    Height="30"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource ButtonVisibilityConverter}}"
+                                    Command="{Binding Path=OpenNotesWindow}">
+                                    <Button.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                                    </Button.RenderTransform>
+                                    <Image Source="/assets/icons8-note-50.png"/>
+                                </Button>
+                                <Button
                                     x:Name="btnFavoriteGroup"
                                     Style="{StaticResource IconButtonStyle1}"
                                     Width="30"
                                     Height="30"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
-                                    Margin="5,0,0,0"
                                     Command="{Binding Path=AddFavoriteSchedule}">
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
@@ -591,7 +605,6 @@
                                     </Grid>
                                 </Button>
                             </StackPanel>
-
                         </Grid>
                     </Border>
 

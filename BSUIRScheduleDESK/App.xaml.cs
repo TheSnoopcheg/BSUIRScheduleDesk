@@ -1,7 +1,6 @@
 ﻿using BSUIRScheduleDESK.services;
 using BSUIRScheduleDESK.viewmodels;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 

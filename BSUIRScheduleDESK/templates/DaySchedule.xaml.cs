@@ -1,8 +1,6 @@
 ﻿using System.Windows.Controls;
-using BSUIRScheduleDESK.services;
 using System.Windows;
 using System.Windows.Input;
-using System.Collections.Generic;
 using System;
 using System.Collections.ObjectModel;
 
