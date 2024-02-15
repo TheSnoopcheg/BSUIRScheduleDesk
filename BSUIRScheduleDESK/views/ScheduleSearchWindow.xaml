@@ -13,37 +13,10 @@
         Title="BSUIR Schedule"
         MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown">
-    <Window.Resources>
-        <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="Width" Value="80"/>
-            <Setter Property="BorderBrush" Value="Black"/>
-            <Setter Property="BorderThickness" Value="1"/>
-            <Setter Property="Background" Value="#e9edf3"/>
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true" CornerRadius="5">
-                            <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#d6dae0"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="true">
-                                <Setter Property="Background" TargetName="border" Value="#c1c5ca"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-    </Window.Resources>
-    <Border
-        Background="White"
-        CornerRadius="10"
-        BorderThickness="1"
-        BorderBrush="Black">
+    <Border Background="{DynamicResource Window.Background.Static}"
+            CornerRadius="10"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource Window.BorderBrush.Static}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition/>
@@ -64,8 +37,8 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Добавить" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle}" Click="Button_Click" IsDefault="True" />
-                <Button Grid.Column="1" Content="Отмена" VerticalAlignment="Center"  IsCancel="True" Style="{DynamicResource ButtonStyle}"/>
+                <Button Content="Добавить" Width="80" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle2}" Click="Button_Click" IsDefault="True" />
+                <Button Grid.Column="1" Width="80" Content="Отмена" VerticalAlignment="Center"  IsCancel="True" Style="{DynamicResource ButtonStyle2}"/>
             </Grid>
         </Grid>
     </Border>

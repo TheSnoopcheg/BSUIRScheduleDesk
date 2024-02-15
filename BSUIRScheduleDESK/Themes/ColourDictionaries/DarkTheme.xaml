@@ -1,0 +1,300 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <Color x:Key="Window.Background" R="22" G="22" B="22" A="255"/>
+    <Color x:Key="Window.Title" R="33" G="33" B="33" A="255"/>
+    <Color x:Key="Window.Title.Icon" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="Window.TitleText" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="Window.BorderBrush" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="SubWindow.TitleText" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="SubWindow.Button.Background" R="44" G="44" B="44" A="255"/>
+    <Color x:Key="SubWindow.Button.Foreground" R="245" G="245" B="245" A="255"/>
+
+    <Color x:Key="Icon.Stroke" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Icon.Star.Fill.Favorited" R="255" G="185" B="0" A="255"/>
+
+    <Color x:Key="FavoriteBar.Background" R="66" G="66" B="66" A="255"/>
+    <Color x:Key="FavoriteBar.Button.Background" R="44" G="44" B="44" A="255"/>
+    <Color x:Key="FavoriteBar.Button.Delete.Background" R="33" G="33" B="33" A="255"/>
+    <Color x:Key="FavoriteBar.Button.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="FavoriteBar.Background.MouseOver" R="33" G="33" B="33" A="255"/>
+    <Color x:Key="FavoriteBar.Background.Pressed" R="22" G="22" B="22" A="255"/>
+
+    <Color x:Key="Border.BorderBrush" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="Border.Background" R="55" G="55" B="55" A="255"/>
+    <Color x:Key="Border.Title.Background" R="88" G="88" B="88" A="255"/>
+    <Color x:Key="Border.TitleText" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="Border.Title.Separator" R="188" G="188" B="188" A="102"/>
+    <Color x:Key="Border.ElementText" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Border.Empty" R="245" G="245" B="245" A="255"/>
+
+    <Color x:Key="WarningSign.Background" R="255" G="0" B="0" A="255"/>
+    <Color x:Key="WarningSign.Text.Foreground" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="TextBlock.Foreground" R="245" G="245" B="245" A="255"/>
+
+    <Color x:Key="Calendar.Button.BorderBrush" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="Calendar.Button.Background" R="88" G="88" B="88" A="255"/>
+    <Color x:Key="Calendar.Button.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Calendar.Button.Background.MouseOver" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Calendar.Button.Foreground.MouseOver" R="0" G="0" B="0" A="255"/>
+    
+    <Color x:Key="Calendar.BorderBrush" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="Calendar.Background" R="88" G="88" B="88" A="255"/>
+    <Color x:Key="Calendar.DayTitle.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Calendar.DayTitle.Foreground.MouseOver" R="178" G="178" B="178" A="255"/>
+    <Color x:Key="Calendar.DisabledColor" R="255" G="255" B="255" A="165"/>
+    <Color x:Key="Calendar.InnerBorder.BorderBrush" R="0" G="0" B="0" A="0"/>
+    <Color x:Key="Calendar.DayButton.Background.Selected" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Calendar.DayButton.Background.MouseOver" R="128" G="128" B="128" A="255"/>
+    <Color x:Key="Calendar.DayButton.Foreground.Selected" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="Calendar.DayButton.Foreground.Inactive" R="119" G="119" B="119" A="255"/>
+    <Color x:Key="Calendar.DayButton.Foreground" R="245" G="245" B="245" A="255"/>
+
+    <Color x:Key="Button.Background.MouseOver" R="22" G="22" B="22" A="255"/>
+    <Color x:Key="Button.Background.Pressed" R="11" G="11" B="11" A="255"/>
+    <Color x:Key="Button1.Background.MouseOver" R="33" G="33" B="33" A="255"/>
+    <Color x:Key="Button1.Background.Pressed" R="22" G="22" B="22" A="255"/>
+    <Color x:Key="Button1.Background.Disabled" R="55" G="55" B="55" A="255"/>
+    <Color x:Key="Button2.BorderBrush" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="Button2.Background" R="66" G="66" B="66" A="255"/>
+    <Color x:Key="Button2.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Button2.Background.MouseOver" R="55" G="55" B="55" A="255"/>
+    <Color x:Key="Button2.Background.Pressed" R="44" G="44" B="44" A="255"/>
+
+    <Color x:Key="OptionMark.Background" R="88" G="88" B="88" A="255"/>
+    <Color x:Key="OptionMark.Border" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="OptionMark.Glyph" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="OptionMark.Background.MouseOver" R="243" G="249" B="255" A="255"/>
+    <Color x:Key="OptionMark.Border.MouseOver" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="OptionMark.Glyph.MouseOver" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="OptionMark.Background.Pressed" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="OptionMark.Border.Pressed" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="OptionMark.Glyph.Pressed" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="OptionMark.Background.Disabled" R="33" G="33" B="33" A="255"/>
+    <Color x:Key="OptionMark.Border.Disabled" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="OptionMark.Glyph.Disabled" R="112" G="112" B="112" A="255"/>
+
+    <Color x:Key="ToolTip.Background" R="88" G="88" B="88" A="255"/>
+    <Color x:Key="ToolTip.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="ToolTip.BorderBrush" R="136" G="136" B="136" A="255"/>
+
+    <Color x:Key="TabControl.Background" R="22" G="22" B="22" A="255"/>
+
+    <Color x:Key="TabItem.Border" R="172" G="172" B="172" A="255"/>
+    <Color x:Key="TabItem.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="TabItem.Border.MouseOver" R="126" G="180" B="234" A="255"/>
+    <Color x:Key="TabItem.Border.Disabled" R="217" G="217" B="217" A="255"/>
+    <Color x:Key="TabItem.Background.Disabled" R="240" G="240" B="240" A="255"/>
+    <Color x:Key="TabItem.Background.Selected" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="TabItem.Border.Selected" R="172" G="172" B="172" A="255"/>
+    <Color x:Key="TabItem.UnderLine" R="255" G="255" B="255" A="255"/>
+
+    <Color x:Key="Expander.Arrow.Stroke" R="190" G="190" B="190" A="255"/>
+    <Color x:Key="Expander.Arrow.Stroke.MouseOver" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="Expander.Arrow.Stroke.Pressed" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="Expander.Arrow.Stroke.Disabled" R="112" G="112" B="112" A="255"/>
+
+    <Color x:Key="ComboBox.Background" R="88" G="88" B="88" A="255"/>
+    <Color x:Key="ComboBox.Border" R="172" G="172" B="172" A="0"/>
+    <Color x:Key="ComboBox.Glyph" R="196" G="196" B="196" A="255"/>
+    <Color x:Key="ComboBox.Background.MouseOver" R="236" G="244" B="252" A="255"/>
+    <Color x:Key="ComboBox.Border.MouseOver" R="126" G="180" B="234" A="0"/>
+    <Color x:Key="ComboBox.Glyph.MouseOver" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="ComboBox.Background.Pressed" R="218" G="236" B="252" A="255"/>
+    <Color x:Key="ComboBox.Border.Pressed" R="86" G="157" B="229" A="0"/>
+    <Color x:Key="ComboBox.Glyph.Pressed" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="ComboBox.Background.Disabled" R="240" G="240" B="240" A="255"/>
+    <Color x:Key="ComboBox.Border.Disabled" R="217" G="217" B="217" A="0"/>
+    <Color x:Key="ComboBox.Glyph.Disabled" R="191" G="191" B="191" A="255"/>
+
+    <Color x:Key="EmployeeGroups.Button.BorderBrush" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="EmployeeGroups.Button.Background" R="55" G="55" B="55" A="255"/>
+    <Color x:Key="EmployeeGroups.Button.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="EmployeeGroups.Button.Foreground.MouseOver" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="EmployeeGroups.Button.Background.MouseOver" R="255" G="255" B="255" A="255"/>
+
+    <Color x:Key="Exams.Expander.BorderBrush" R="128" G="128" B="128" A="255"/>
+    <Color x:Key="Exams.Expander.Header.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Exams.Expander.Header.Background" R="88" G="88" B="88" A="255"/>
+    <Color x:Key="Exams.Date.Border.BorderBrush" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="Exams.Date.Border.Background" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="Exams.Date.Border.Foreground" R="0" G="0" B="0" A="255"/>
+
+    <Color x:Key="Schedule.Date.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Schedule.Background" R="77" G="77" B="77" A="255"/>
+    <Color x:Key="Schedule.Text.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="Schedule.Note.Foreground" R="255" G="255" B="0" A="255"/>
+    <Color x:Key="Schedule.BorderBrush" R="128" G="128" B="128" A="255"/>
+
+    <Color x:Key="ListBox.BorderBrush" R="171" G="173" B="179" A="255"/>
+
+    <Color x:Key="ListView.BorderBrush" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="ListView.Background" R="77" G="77" B="77" A="255"/>
+    <Color x:Key="ListView.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="ListView.Item.Background" R="55" G="55" B="55" A="0"/>
+    <Color x:Key="ListView.Item.Background.MouseOver" R="99" G="99" B="99" A="255"/>
+    <Color x:Key="ListView.Item.Background.Selected" R="88" G="88" B="88" A="255"/>
+    <Color x:Key="ListView.Item.BorderBrush.Selected" R="190" G="190" B="190" A="255"/>
+    <Color x:Key="ListView.Item.BorderBrush.MouseOver" R="190" G="190" B="190" A="255"/>
+
+    <Color x:Key="SearchBox.TextBox.Hint.Foreground" R="255" G="255" B="255" A="255"/>
+
+    <Color x:Key="TextBox.Background" R="55" G="55" B="55" A="255"/>
+    <Color x:Key="TextBox.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="TextBox.Border" R="171" G="173" B="179" A="0"/>
+    <Color x:Key="TextBox.Border.MouseOver" R="222" G="222" B="222" A="0"/>
+    <Color x:Key="TextBox.Border.Focus" R="255" G="255" B="255" A="0"/>
+
+    <Color x:Key="DatePicker.Foreground" R="245" G="245" B="245" A="255"/>
+    <Color x:Key="DatePicker.BorderBrush" R="171" G="173" B="179" A="255"/>
+    <Color x:Key="DatePicker.Button.Background.MouseOver" R="33" G="33" B="33" A="255"/>
+    <Color x:Key="DatePicker.Button.Background.Pressed" R="22" G="22" B="22" A="255"/>
+
+    <SolidColorBrush x:Key="Window.Background.Static" Color="{StaticResource Window.Background}"/>
+    <SolidColorBrush x:Key="Window.Title.Static" Color="{StaticResource Window.Title}"/>
+    <SolidColorBrush x:Key="Window.Title.Icon.Static" Color="{StaticResource Window.Title.Icon}"/>
+    <SolidColorBrush x:Key="Window.TitleText.Static" Color="{StaticResource Window.TitleText}"/>
+    <SolidColorBrush x:Key="Window.BorderBrush.Static" Color="{StaticResource Window.BorderBrush}"/>
+    <SolidColorBrush x:Key="SubWindow.TitleText.Static" Color="{StaticResource SubWindow.TitleText}"/>
+    <SolidColorBrush x:Key="SubWindow.Button.Background.Static" Color="{StaticResource SubWindow.Button.Background}"/>
+    <SolidColorBrush x:Key="SubWindow.Button.Foreground.Static" Color="{StaticResource SubWindow.Button.Foreground}"/>
+
+    <SolidColorBrush x:Key="Icon.Stroke.Static" Color="{StaticResource Icon.Stroke}"/>
+    <SolidColorBrush x:Key="Icon.Star.Favorited.Fill" Color="{StaticResource Icon.Star.Fill.Favorited}"/>
+
+    <SolidColorBrush x:Key="FavoriteBar.Background.Static" Color="{StaticResource FavoriteBar.Background}"/>
+    <SolidColorBrush x:Key="FavoriteBar.Button.Background.Static" Color="{StaticResource FavoriteBar.Button.Background}"/>
+    <SolidColorBrush x:Key="FavoriteBar.Button.Delete.Background.Static" Color="{StaticResource FavoriteBar.Button.Delete.Background}"/>
+    <SolidColorBrush x:Key="FavoriteBar.Button.Foreground.Static" Color="{StaticResource FavoriteBar.Button.Foreground}"/>
+    <SolidColorBrush x:Key="FavoriteBar.MouseOver.Background" Color="{StaticResource FavoriteBar.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="FavoriteBar.Pressed.Background" Color="{StaticResource FavoriteBar.Background.Pressed}"/>
+
+    <SolidColorBrush x:Key="Border.BorderBrush.Static" Color="{StaticResource Border.BorderBrush}"/>
+    <SolidColorBrush x:Key="Border.Background.Static" Color="{StaticResource Border.Background}"/>
+    <SolidColorBrush x:Key="Border.Title.Background.Static" Color="{StaticResource Border.Title.Background}"/>
+    <SolidColorBrush x:Key="Border.Title.Separator.Static" Color="{StaticResource Border.Title.Separator}"/>
+    <SolidColorBrush x:Key="Border.TitleText.Static" Color="{StaticResource Border.TitleText}"/>
+    <SolidColorBrush x:Key="Border.ElementText.Static" Color="{StaticResource Border.ElementText}"/>
+    <SolidColorBrush x:Key="Border.Empty.Static" Color="{StaticResource Border.Empty}"/>
+
+    <SolidColorBrush x:Key="WarningSign.Background.Static" Color="{StaticResource WarningSign.Background}"/>
+    <SolidColorBrush x:Key="WarningSign.Text.Foreground.Static" Color="{StaticResource WarningSign.Text.Foreground}"/>
+    <SolidColorBrush x:Key="TextBlock.Foreground.Static" Color="{StaticResource TextBlock.Foreground}"/>
+
+    <SolidColorBrush x:Key="Calendar.Button.Static.BorderBrush" Color="{StaticResource Calendar.Button.BorderBrush}"/>
+    <SolidColorBrush x:Key="Calendar.Button.Static.Background" Color="{StaticResource Calendar.Button.Background}"/>
+    <SolidColorBrush x:Key="Calendar.Button.Static.Foreground" Color="{StaticResource Calendar.Button.Foreground}"/>
+    <SolidColorBrush x:Key="Calendar.Button.MouseOver.Background" Color="{StaticResource Calendar.Button.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="Calendar.Button.MouseOver.Foreground" Color="{StaticResource Calendar.Button.Foreground.MouseOver}"/>
+
+    <SolidColorBrush x:Key="Calendar.BorderBrush.Static" Color="{StaticResource Calendar.BorderBrush}"/>
+    <SolidColorBrush x:Key="Calendar.Background.Static" Color="{StaticResource Calendar.Background}"/>
+    <SolidColorBrush x:Key="Calendar.DayTitle.Static.Foreground" Color="{StaticResource Calendar.DayTitle.Foreground}"/>
+    <SolidColorBrush x:Key="Calendar.DayTitle.MouseOver.Foreground" Color="{StaticResource Calendar.DayTitle.Foreground.MouseOver}"/>
+    <SolidColorBrush x:Key="Calendar.DisabledColor.Static" Color="{StaticResource Calendar.DayTitle.Foreground}"/>
+    <SolidColorBrush x:Key="Calendar.InnerBorder.BorderBrush.Static" Color="{StaticResource Calendar.InnerBorder.BorderBrush}"/>
+    <SolidColorBrush x:Key="Calendar.DayButton.Selected.Background" Color="{StaticResource Calendar.DayButton.Background.Selected}"/>
+    <SolidColorBrush x:Key="Calendar.DayButton.MouseOver.Background" Color="{StaticResource Calendar.DayButton.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="Calendar.DayButton.Selected.Foreground" Color="{StaticResource Calendar.DayButton.Foreground.Selected}"/>
+    <SolidColorBrush x:Key="Calendar.DayButton.Inactive.Foreground" Color="{StaticResource Calendar.DayButton.Foreground.Inactive}"/>
+    <SolidColorBrush x:Key="Calendar.DayButton.Static.Foreground" Color="{StaticResource Calendar.DayButton.Foreground}"/>
+
+    <SolidColorBrush x:Key="Button.MouseOver.Background" Color="{StaticResource Button.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="Button.Pressed.Background" Color="{StaticResource Button.Background.Pressed}"/>
+    <SolidColorBrush x:Key="Button1.MouseOver.Background" Color="{StaticResource Button1.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="Button1.Pressed.Background" Color="{StaticResource Button1.Background.Pressed}"/>
+    <SolidColorBrush x:Key="Button1.Disabled.Background" Color="{StaticResource Button1.Background.Disabled}"/>
+    <SolidColorBrush x:Key="Button2.Static.BorderBrush" Color="{StaticResource Button2.BorderBrush}"/>
+    <SolidColorBrush x:Key="Button2.Static.Background" Color="{StaticResource Button2.Background}"/>
+    <SolidColorBrush x:Key="Button2.Static.Foreground" Color="{StaticResource Button2.Foreground}"/>
+    <SolidColorBrush x:Key="Button2.MouseOver.Background" Color="{StaticResource Button2.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="Button2.Pressed.Background" Color="{StaticResource Button2.Background.Pressed}"/>
+
+    <SolidColorBrush x:Key="OptionMark.Static.Background" Color="{StaticResource OptionMark.Background}"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Border" Color="{StaticResource OptionMark.Border}"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="{StaticResource OptionMark.Glyph}"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="{StaticResource OptionMark.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="{StaticResource OptionMark.Border.MouseOver}"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="{StaticResource OptionMark.Glyph.MouseOver}"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="{StaticResource OptionMark.Background.Pressed}"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="{StaticResource OptionMark.Border.Pressed}"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="{StaticResource OptionMark.Glyph.Pressed}"/>
+    <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="{StaticResource OptionMark.Background.Disabled}"/>
+    <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="{StaticResource OptionMark.Border.Disabled}"/>
+    <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="{StaticResource OptionMark.Glyph.Disabled}"/>
+
+    <SolidColorBrush x:Key="ToolTip.Static.Background" Color="{StaticResource ToolTip.Background}"/>
+    <SolidColorBrush x:Key="ToolTip.Static.Foreground" Color="{StaticResource ToolTip.Foreground}"/>
+    <SolidColorBrush x:Key="ToolTip.Static.BorderBrush" Color="{StaticResource ToolTip.BorderBrush}"/>
+
+    <SolidColorBrush x:Key="TabControl.Background.Static" Color="{StaticResource TabControl.Background}"/>
+
+    <SolidColorBrush x:Key="TabItem.Static.Border" Color="{StaticResource TabItem.Border}"/>
+    <SolidColorBrush x:Key="TabItem.Static.Foreground" Color="{StaticResource TabItem.Foreground}"/>
+    <SolidColorBrush x:Key="TabItem.MouseOver.Border" Color="{StaticResource TabItem.Border.MouseOver}"/>
+    <SolidColorBrush x:Key="TabItem.Disabled.Background" Color="{StaticResource TabItem.Background.Disabled}"/>
+    <SolidColorBrush x:Key="TabItem.Disabled.Border" Color="{StaticResource TabItem.Border.Disabled}"/>
+    <SolidColorBrush x:Key="TabItem.Selected.Background" Color="{StaticResource TabItem.Background.Selected}"/>
+    <SolidColorBrush x:Key="TabItem.Selected.Border" Color="{StaticResource TabItem.Border.Selected}"/>
+    <SolidColorBrush x:Key="TabItem.UnderLine.Static" Color="{StaticResource TabItem.UnderLine}"/>
+
+    <SolidColorBrush x:Key="Expander.Static.Arrow.Stroke" Color="{StaticResource Expander.Arrow.Stroke}"/>
+    <SolidColorBrush x:Key="Expander.MouseOver.Arrow.Stroke" Color="{StaticResource Expander.Arrow.Stroke.MouseOver}"/>
+    <SolidColorBrush x:Key="Expander.Pressed.Arrow.Stroke" Color="{StaticResource Expander.Arrow.Stroke.Pressed}"/>
+    <SolidColorBrush x:Key="Expander.Disabled.Arrow.Stroke" Color="{StaticResource Expander.Arrow.Stroke.Disabled}"/>
+
+    <SolidColorBrush x:Key="ComboBox.Static.Background" Color="{StaticResource ComboBox.Background}"/>
+    <SolidColorBrush x:Key="ComboBox.Static.Border" Color="{StaticResource ComboBox.Border}"/>
+    <SolidColorBrush x:Key="ComboBox.Static.Glyph" Color="{StaticResource ComboBox.Glyph}"/>
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Background" Color="{StaticResource ComboBox.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Border" Color="{StaticResource ComboBox.Border.MouseOver}"/>
+    <SolidColorBrush x:Key="ComboBox.MouseOver.Glyph" Color="{StaticResource ComboBox.Glyph.MouseOver}"/>
+    <SolidColorBrush x:Key="ComboBox.Pressed.Background" Color="{StaticResource ComboBox.Background.Pressed}"/>
+    <SolidColorBrush x:Key="ComboBox.Pressed.Border" Color="{StaticResource ComboBox.Border.Pressed}"/>
+    <SolidColorBrush x:Key="ComboBox.Pressed.Glyph" Color="{StaticResource ComboBox.Glyph.Pressed}"/>
+    <SolidColorBrush x:Key="ComboBox.Disabled.Background" Color="{StaticResource ComboBox.Background.Disabled}"/>
+    <SolidColorBrush x:Key="ComboBox.Disabled.Border" Color="{StaticResource ComboBox.Border.Disabled}"/>
+    <SolidColorBrush x:Key="ComboBox.Disabled.Glyph" Color="{StaticResource ComboBox.Glyph.Disabled}"/>
+
+    <SolidColorBrush x:Key="EmployeeGroups.Button.Static.BorderBrush" Color="{StaticResource EmployeeGroups.Button.BorderBrush}"/>
+    <SolidColorBrush x:Key="EmployeeGroups.Button.Static.Background" Color="{StaticResource EmployeeGroups.Button.Background}"/>
+    <SolidColorBrush x:Key="EmployeeGroups.Button.Static.Foreground" Color="{StaticResource EmployeeGroups.Button.Foreground}"/>
+    <SolidColorBrush x:Key="EmployeeGroups.Button.MouseOver.Foreground" Color="{StaticResource EmployeeGroups.Button.Foreground.MouseOver}"/>
+    <SolidColorBrush x:Key="EmployeeGroups.Button.MouseOver.Background" Color="{StaticResource EmployeeGroups.Button.Background.MouseOver}"/>
+
+    <SolidColorBrush x:Key="Exams.Expander.BorderBrush.Static" Color="{StaticResource Exams.Expander.BorderBrush}"/>
+    <SolidColorBrush x:Key="Exams.Expander.Header.Foreground.Static" Color="{StaticResource Exams.Expander.Header.Foreground}"/>
+    <SolidColorBrush x:Key="Exams.Expander.Header.Background.Static" Color="{StaticResource Exams.Expander.Header.Background}"/>
+    <SolidColorBrush x:Key="Exams.Date.Border.BorderBrush.Static" Color="{StaticResource Exams.Date.Border.BorderBrush}"/>
+    <SolidColorBrush x:Key="Exams.Date.Border.Background.Static" Color="{StaticResource Exams.Date.Border.Background}"/>
+    <SolidColorBrush x:Key="Exams.Date.Border.Foreground.Static" Color="{StaticResource Exams.Date.Border.Foreground}"/>
+
+    <SolidColorBrush x:Key="Schedule.Date.Foreground.Static" Color="{StaticResource Schedule.Date.Foreground}"/>
+    <SolidColorBrush x:Key="Schedule.Background.Static" Color="{StaticResource Schedule.Background}"/>
+    <SolidColorBrush x:Key="Schedule.Text.Foreground.Static" Color="{StaticResource Schedule.Text.Foreground}"/>
+    <SolidColorBrush x:Key="Schedule.Note.Foreground.Static" Color="{StaticResource Schedule.Note.Foreground}"/>
+    <SolidColorBrush x:Key="Schedule.BorderBrush.Static" Color="{StaticResource Schedule.BorderBrush}"/>
+
+    <SolidColorBrush x:Key="ListBox.BorderBrush.Static" Color="{StaticResource ListBox.BorderBrush}"/>
+
+    <SolidColorBrush x:Key="ListView.BorderBrush.Static" Color="{StaticResource ListView.BorderBrush}"/>
+    <SolidColorBrush x:Key="ListView.Background.Static" Color="{StaticResource ListView.Background}"/>
+    <SolidColorBrush x:Key="ListView.Foreground.Static" Color="{StaticResource ListView.Foreground}"/>
+    <SolidColorBrush x:Key="ListView.Item.Static.Background" Color="{StaticResource ListView.Item.Background}"/>
+    <SolidColorBrush x:Key="ListView.Item.MouseOver.Background" Color="{StaticResource ListView.Item.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="ListView.Item.Selected.Background" Color="{StaticResource ListView.Item.Background.Selected}"/>
+    <SolidColorBrush x:Key="ListView.Item.Selected.BorderBrush" Color="{StaticResource ListView.Item.BorderBrush.Selected}"/>
+    <SolidColorBrush x:Key="ListView.Item.MouseOver.BorderBrush" Color="{StaticResource ListView.Item.BorderBrush.MouseOver}"/>
+
+    <SolidColorBrush x:Key="SearchBox.TextBox.Static.Hint.Foreground" Color="{StaticResource SearchBox.TextBox.Hint.Foreground}"/>
+
+    <SolidColorBrush x:Key="TextBox.Static.Background" Color="{StaticResource TextBox.Background}"/>
+    <SolidColorBrush x:Key="TextBox.Static.Foreground" Color="{StaticResource TextBox.Foreground}"/>
+    <SolidColorBrush x:Key="TextBox.Static.Border" Color="{StaticResource TextBox.Border}"/>
+    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="{StaticResource TextBox.Border.MouseOver}"/>
+    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="{StaticResource TextBox.Border.Focus}"/>
+
+    <SolidColorBrush x:Key="DatePicker.Foreground.Static" Color="{StaticResource DatePicker.Foreground}"/>
+    <SolidColorBrush x:Key="DatePicker.BorderBrush.Static" Color="{StaticResource DatePicker.BorderBrush}"/>
+    <SolidColorBrush x:Key="DatePicker.Button.MouseOver.Background" Color="{StaticResource DatePicker.Button.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="DatePicker.Button.Pressed.Background" Color="{StaticResource DatePicker.Button.Background.Pressed}"/>
+</ResourceDictionary>

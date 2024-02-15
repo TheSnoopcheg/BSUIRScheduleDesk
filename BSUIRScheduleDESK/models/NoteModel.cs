@@ -1,6 +1,7 @@
 ﻿using BSUIRScheduleDESK.classes;
 using BSUIRScheduleDESK.services;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace BSUIRScheduleDESK.models
 {
@@ -18,6 +19,7 @@ namespace BSUIRScheduleDESK.models
         public void AddNote(Note note)
         {
             _notes.Add(note);
+            _notes.OrderBy(s => s.Date);
             var saveTask = NoteService.SaveNotes(_notes, _url);
         }
         public void RemoveNote(Note note)
@@ -29,6 +31,7 @@ namespace BSUIRScheduleDESK.models
         {
             int noteIndex = _notes.IndexOf(oldvalue);
             _notes[noteIndex] = newvalue;
+            _notes.OrderBy(s => s.Date);
             var saveTask = NoteService.SaveNotes(_notes, _url);
         }
     }

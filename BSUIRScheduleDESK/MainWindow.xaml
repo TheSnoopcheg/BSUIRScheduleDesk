@@ -31,7 +31,7 @@
                             <Ellipse Height="40"
                                  Width="40"
                                  StrokeThickness="1"
-                                 Stroke="AliceBlue"
+                                 Stroke="{DynamicResource FavoriteBar.Button.Background.Static}"
                                  StrokeDashArray="5"
                                  Margin="5"
                                  HorizontalAlignment="Center"
@@ -41,31 +41,34 @@
                             <Ellipse Height="35"
                                  Width="35"
                                  StrokeThickness="1"
-                                 Fill="White"
+                                 Fill="{DynamicResource FavoriteBar.Button.Background.Static}"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Center"
                                  x:Name="some">
 
                             </Ellipse>
 
-                            <Image Source="/assets/icons8-plus-96.png"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               Height="20"
-                           />
+                            <Path Fill="{DynamicResource Icon.Stroke.Static}" 
+                                  Height="20" 
+                                  Width="20" 
+                                  VerticalAlignment="Center" 
+                                  HorizontalAlignment="Center" 
+                                  Stretch="Fill" 
+                                  Data="{StaticResource plusIcon}"/>
                         </Grid>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="some" Property="Fill" Value="#e2e2e2"/>
+                                <Setter TargetName="some" Property="Fill" Value="{DynamicResource FavoriteBar.MouseOver.Background}"/>
                             </Trigger>
                             <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="some" Property="Fill" Value="#c4c4c4"/>
+                                <Setter TargetName="some" Property="Fill" Value="{DynamicResource FavoriteBar.Pressed.Background}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
+        
         <ControlTemplate x:Key="tabSchedule">
             <Grid>
                 <Grid.RowDefinitions>
@@ -89,9 +92,12 @@
                             Height="25"
                             Width="25"
                             Padding="0"
-                            Style="{StaticResource IconButtonStyle1}">
-                        <Image Source="/assets/icons8-double-left-50.png"
-                               Height="16"/>
+                            Style="{StaticResource ButtonStyle1}">
+                        <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                              Stretch="Fill"
+                              Data="{StaticResource doubleLeftArrowIcon}"
+                              Height="16"
+                              Width="16"/>
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
                         </Button.RenderTransform>
@@ -105,9 +111,10 @@
                         <StackPanel Orientation="Horizontal"
                                     Grid.Row="0">
                             <TextBlock Text="Подгруппы:"
+                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"/>
-                            <CheckBox Style="{StaticResource CheckBoxStyle}" Content="1"
+                            <CheckBox Style="{DynamicResource CheckBoxStyle}" Content="1"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Path=FirstSubGroup}"
                                       Margin="5,0,0,0"
@@ -115,11 +122,12 @@
                             <CheckBox Content="2"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Path=SecondSubGroup}"
-                                      Style="{StaticResource CheckBoxStyle}"
+                                      Style="{DynamicResource CheckBoxStyle}"
                                       Margin="5,0,0,0"
                                       HorizontalAlignment="Center"/>
                         </StackPanel>
                         <TextBlock Text="{Binding CurrentWeek, StringFormat=Неделя: {0}}"
+                                   Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                    Margin="5,0"
                                    Grid.Row="1"
                                    HorizontalAlignment="Center"
@@ -134,8 +142,11 @@
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
                         </Button.RenderTransform>
-                        <Image Source="/assets/icons8-return-50.png"
-                               Height="16"/>
+                        <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                              Stretch="Fill"
+                              Height="12"
+                              Width="16"
+                              Data="{DynamicResource returnIcon}"/>
                         <Button.ToolTip>
                             <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Bottom">
                                 <TextBlock Text="К текущей"/>
@@ -156,10 +167,10 @@
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter Property="Background" TargetName="border" Value="#e2e2e2"/>
+                                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource Button1.MouseOver.Background}"/>
                                                 </Trigger>
                                                 <Trigger Property="IsPressed" Value="true">
-                                                    <Setter Property="Background" TargetName="border" Value="#c4c4c4"/>
+                                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource Button1.Pressed.Background}"/>
                                                 </Trigger>
                                                 <DataTrigger Binding="{Binding WeekDiff}" Value="0">
                                                     <Setter Property="Visibility" Value="Hidden"/>
@@ -190,11 +201,12 @@
                             Padding="0"
                             Command="{Binding CalendarStatusChange}"
                             CommandParameter="1"
-                            Style="{StaticResource IconButtonStyle1}">
-                        <Image Source="/assets/icons8-calendar-50.png"
-                               Height="17.5"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"/>
+                            Style="{StaticResource ButtonStyle1}">
+                        <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                              Stretch="Fill"
+                              Height="16"
+                              Width="16"
+                              Data="{StaticResource calendarIcon}"/>
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
                         </Button.RenderTransform>
@@ -206,9 +218,12 @@
                             Padding="0"
                             Command="{Binding ChangeWeekNum}"
                             CommandParameter="1"
-                            Style="{StaticResource IconButtonStyle1}">
-                        <Image Source="/assets/icons8-double-right-50.png"
-                               Height="16"/>
+                            Style="{StaticResource ButtonStyle1}">
+                        <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                              Stretch="Fill"
+                              Height="16"
+                              Width="16"
+                              Data="{StaticResource doubleRightArrowIcon}"/>
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
                         </Button.RenderTransform>
@@ -253,7 +268,7 @@
     </Window.Style>
     <Border
         CornerRadius="0"
-        Background="White">
+        Background="{DynamicResource Window.Background.Static}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="35"/>
@@ -262,7 +277,7 @@
 
             <!--Title bar-->
             <Border Grid.Row="0"
-                    Background="#3a547f"
+                    Background="{DynamicResource Window.Title.Static}"
                     CornerRadius="0"
                     MouseDown="Border_MouseDown">
                 <Grid>
@@ -271,7 +286,7 @@
                     <Grid Margin="15, 0"
                           HorizontalAlignment="Center">
                         <TextBlock Text="BSUIR Schedule"
-                                   Foreground="White"
+                                   Foreground="{DynamicResource Window.TitleText.Static}"
                                    VerticalAlignment="Center"
                                    FontSize="16"
                                    FontWeight="DemiBold"/>
@@ -292,22 +307,37 @@
                                 Orientation="Horizontal"
                                 Margin="0,0,5,0">
                         <Button x:Name="btnMinimize" 
-                                Style="{StaticResource IconButtonStyle}"
+                                Style="{StaticResource ButtonStyle}"
                                 Height="30"
+                                Width="30"
                                 Click="btnMinimize_Click">
-                            <Image Source="/assets/icons8-minimize-50w.png"/>
+                            <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
+                                  Stretch="Fill" 
+                                  Width="15" 
+                                  Height="1" 
+                                  Data="{StaticResource minimizeIcon}"/>
                         </Button>
                         <Button x:Name="btnMaximize" 
-                                Style="{StaticResource IconButtonStyle}"
+                                Style="{StaticResource ButtonStyle}"
                                 Height="30"
+                                Width="30"
                                 Click="btnMaximize_Click">
-                            <Image Source="/assets/icons8-maximize-50w.png"/>
+                            <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
+                                  Stretch="Fill" 
+                                  Width="15" 
+                                  Height="15" 
+                                  Data="{StaticResource maximizeIcon}"/>
                         </Button>
                         <Button x:Name="btnClose"
-                                Style="{StaticResource IconButtonStyle}"
+                                Style="{StaticResource ButtonStyle}"
                                 Height="30"
+                                Width="30"
                                 Click="btnClose_Click">
-                            <Image Source="/assets/icons8-close-50w.png"/>
+                            <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
+                                  Stretch="Fill" 
+                                  Width="15" 
+                                  Height="15" 
+                                  Data="{StaticResource closeIcon}"/>
                         </Button>
                     </StackPanel>
                 </Grid>
@@ -319,7 +349,9 @@
                 </Grid.ColumnDefinitions>
 
                 <!--favorites bar-->
-                <Border Grid.Column="0" CornerRadius="0" Background="#6786b8">
+                <Border Grid.Column="0" 
+                        CornerRadius="0" 
+                        Background="{DynamicResource FavoriteBar.Background.Static}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="60"/>
@@ -330,14 +362,17 @@
                         <!--search button-->
                         <Button x:Name="btnSearch"
                                 Grid.Row="0"
-                                Style="{StaticResource IconButtonStyle1}"
+                                Style="{StaticResource ButtonStyle1}"
                                 Height="40"
                                 Width="40"
-                                Background="White"
-                                Margin="0,0, 0, 0"
-                                Command="{Binding SearchSchedule}"
-                                FocusVisualStyle="{x:Null}">
-                            <Image Source="/assets/icons8-search-50.png"/>
+                                Background="{DynamicResource FavoriteBar.Button.Background.Static}"
+                                Margin="0"
+                                Command="{Binding SearchSchedule}">
+                            <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                                  Height="25" 
+                                  Width="25" 
+                                  Stretch="Fill" 
+                                  Data="{StaticResource searchIcon}"/>
                             <Button.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
                             </Button.RenderTransform>
@@ -351,17 +386,16 @@
                         <Separator Grid.Row="1" VerticalAlignment="Bottom" Margin="0"/>
                         <Button x:Name="btnSettings"
                                 Grid.Row="2"
-                                Style="{StaticResource IconButtonStyle1}"
+                                Style="{StaticResource ButtonStyle1}"
                                 Height="40"
                                 Width="40"
-                                Background="White"
-                                Command="{Binding OpenSettingsWindow}"
-                                Margin="0,0, 0, 0"
-                                FocusVisualStyle="{x:Null}">
-                            <Image Source="/assets/icons8-settings-50.png"
-                                   VerticalAlignment="Center"
-                                   HorizontalAlignment="Center"
-                                   Height="25"/>
+                                Background="{DynamicResource FavoriteBar.Button.Background.Static}"
+                                Command="{Binding OpenSettingsWindow}">
+                            <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                                  Stretch="Fill" 
+                                  Height="25"
+                                  Width="25"
+                                  Data="{StaticResource settingsIcon}"/>
                             <Button.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
                             </Button.RenderTransform>
@@ -377,9 +411,9 @@
                     </Grid.RowDefinitions>
                     <!--schedule info border-->
                     <Border Margin="10" 
-                                Background="#e9edf3"
+                                Background="{DynamicResource Border.Background.Static}"
                                 CornerRadius="10"
-                                BorderBrush="Black"
+                                BorderBrush="{DynamicResource Border.BorderBrush.Static}"
                                 BorderThickness="1">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -391,6 +425,7 @@
                                 <TextBlock DataContext="{Binding Path=Schedule}"
                                            x:Name="nameTextBlock"
                                            VerticalAlignment="Center"
+                                           Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                            Margin="10,0"
                                            FontSize="14"
                                            FontWeight="DemiBold">
@@ -422,7 +457,7 @@
                                         </Style>
                                     </TextBlock.Style>
                                     <TextBlock.ToolTip>
-                                        <ToolTip x:Name="nameToolTip" Background="Transparent" BorderThickness="0" Foreground="Black" Placement="Bottom" Width="110" Height="110">
+                                        <ToolTip x:Name="nameToolTip" Background="Transparent" BorderThickness="0" Placement="Bottom" Width="110" Height="110">
                                             <Image Height="100">
                                                 <Image.Clip>
                                                     <EllipseGeometry RadiusX="45" RadiusY="45" Center="50, 50"/>
@@ -444,6 +479,7 @@
                                 </TextBlock>
                                 <TextBlock DataContext="{Binding Path=Schedule.studentGroup}" 
                                            x:Name="nameAbbrevTextBlock"
+                                           Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                            VerticalAlignment="Center"
                                            FontWeight="DemiBold">
                                     <TextBlock.Text>
@@ -475,11 +511,13 @@
                                     <TextBlock DataContext="{Binding Path=Schedule}"
                                             Text="{Binding Path=startDate, StringFormat=Начало занятий: {0}}"
                                                VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                FontWeight="DemiBold"
                                                Grid.Row="0"/>
                                     <TextBlock DataContext="{Binding Path=Schedule}"
                                             Text="{Binding Path=endDate, StringFormat=Конец занятий: {0}}"
                                                VerticalAlignment="Center"
+                                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                FontWeight="DemiBold"
                                                Grid.Row="1"/>
                                     <Grid.Style>
@@ -501,11 +539,13 @@
                                             Text="{Binding Path=startExamsDate, StringFormat=Начало сессии: {0}}"
                                                VerticalAlignment="Center"
                                                FontWeight="DemiBold"
+                                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                Grid.Row="0"/>
                                     <TextBlock DataContext="{Binding Path=Schedule}"
                                             Text="{Binding Path=endExamsDate, StringFormat=Конец сессии: {0}}"
                                                VerticalAlignment="Center"
                                                FontWeight="DemiBold"
+                                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                Grid.Row="1"/>
                                     <Grid.Style>
                                         <Style TargetType="{x:Type Grid}">
@@ -518,12 +558,13 @@
                                     </Grid.Style>
                                 </Grid>
                             </StackPanel>
-                            <StackPanel Grid.Column="1" Orientation="Horizontal"
+                            <StackPanel Grid.Column="1"
+                                        Orientation="Horizontal"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right">
                                 <Button
                                     x:Name="btnNotes"
-                                    Style="{StaticResource IconButtonStyle1}"
+                                    Style="{StaticResource ButtonStyle1}"
                                     Width="30"
                                     Height="30"
                                     VerticalAlignment="Center"
@@ -533,11 +574,15 @@
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                                     </Button.RenderTransform>
-                                    <Image Source="/assets/icons8-note-50.png"/>
+                                    <Path Fill="{DynamicResource Icon.Stroke.Static}" 
+                                          Stretch="Fill" 
+                                          Height="17.5" 
+                                          Width="17.5" 
+                                          Data="{StaticResource noteIcon}"/>
                                 </Button>
                                 <Button
                                     x:Name="btnFavoriteGroup"
-                                    Style="{StaticResource IconButtonStyle1}"
+                                    Style="{StaticResource ButtonStyle1}"
                                     Width="30"
                                     Height="30"
                                     VerticalAlignment="Center"
@@ -546,45 +591,53 @@
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                                     </Button.RenderTransform>
-                                    <Image>
-                                        <Image.Style>
-                                            <Style TargetType="{x:Type Image}">
-                                                <Setter Property="Source" Value="/assets/icons8-star-50.png"/>
+                                    <Path Stroke="{DynamicResource Icon.Stroke.Static}" 
+                                          StrokeThickness="0.75" 
+                                          Stretch="Fill" 
+                                          Height="17.5" 
+                                          Width="17.5" 
+                                          Data="{StaticResource starIcon}">
+                                        <Path.Style>
+                                            <Style TargetType="{x:Type Path}">
                                                 <Style.Triggers>
                                                     <DataTrigger Binding="{Binding Path=Schedule.favorited}" Value="True">
-                                                        <Setter Property="Source" Value="/assets/icons8-star-501.png"/>
+                                                        <Setter Property="Fill" Value="{DynamicResource Icon.Star.Favorited.Fill}"/>
                                                     </DataTrigger>
                                                 </Style.Triggers>
                                             </Style>
-                                        </Image.Style>
-                                    </Image>
+                                        </Path.Style>
+                                    </Path>
                                 </Button>
                                 <Button 
                                     x:Name="btnAnnuncements"
-                                    Style="{StaticResource IconButtonStyle1}"
+                                    Style="{StaticResource ButtonStyle1}"
                                     Width="30"
                                     Height="30"
                                     Padding="0"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
                                     Margin="0,0,5,0"
-                                    Command="{Binding Path=OpenAnnouncements}"
-                                    >
+                                    Command="{Binding Path=OpenAnnouncements}">
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                                     </Button.RenderTransform>
                                     <Grid>
-                                        <Image Source="/assets/icons8-commercial-50.png" Margin="5"/>
+                                        <Path Stroke="{DynamicResource Icon.Stroke.Static}" 
+                                              Stretch="Fill" 
+                                              StrokeThickness="0.85"
+                                              Height="17.5" 
+                                              Width="17.5" 
+                                              Data="{StaticResource announcementIcon}"/>
                                         <Grid VerticalAlignment="Top"
                                               HorizontalAlignment="Right"
                                               Margin="0,2,2,0">
-                                            <Ellipse Fill="Red"
+                                            <Ellipse Fill="{DynamicResource WarningSign.Background.Static}"
                                                      Height="12"
                                                      Width="12"
                                                      HorizontalAlignment="Center"
                                                      VerticalAlignment="Center"/>
                                             <TextBlock Text="!"
-                                                       Foreground="White"
+                                                       Foreground="{DynamicResource WarningSign.Text.Foreground.Static}"
                                                        VerticalAlignment="Center"
                                                        HorizontalAlignment="Center"
                                                        FontSize="10"
@@ -612,6 +665,7 @@
                     <!--schedule-->
                     <TabControl Style="{DynamicResource TabControlStyle}" Grid.Row="1" Margin="10,0,10,0"
                                 Padding="-10,5,-10,0"
+                                Background="{DynamicResource TabControl.Background.Static}"
                                 SelectedIndex="{Binding SelectedTab}">
                         <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.schedules, Converter={StaticResource TabItemVisibilityConverter}}">
                             <TabItem.Header>
@@ -642,11 +696,11 @@
                             </TabItem.Header>
                             <TabItem.Content>
                                 <Grid>
-                                    <Border Background="#e9edf3" CornerRadius="20" Margin="10">
+                                    <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10">
                                         <ScrollViewer VerticalScrollBarVisibility="Hidden">
                                             <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
                                                                            LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
-                                                                            Margin="0,10,0,10"
+                                                                           Margin="0,10,0,10"
                                                                            HorizontalAlignment="Stretch"/>   
                                         </ScrollViewer>
                                     </Border>
@@ -660,15 +714,18 @@
                                 </StackPanel>
                             </TabItem.Header>
                             <TabItem.Content>
-                                <Control Template="{StaticResource tabSchedule}" Focusable="False"/>
-                            </TabItem.Content>
+                                <Grid>
+                                    <Control Template="{StaticResource tabSchedule}" Focusable="False"/>
+                                </Grid>
+                              </TabItem.Content>
                         </TabItem>
                     </TabControl>
                     <TextBlock Text="{Binding Path=Build}"
-                                   VerticalAlignment="Bottom"
-                                   HorizontalAlignment="Right"
-                                   Grid.Row="2"
-                                   Margin="0,0,10,0"/>
+                               VerticalAlignment="Bottom"
+                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                               HorizontalAlignment="Right"
+                               Grid.Row="2"
+                               Margin="0,0,10,0"/>
                 </Grid>
             </Grid>
             <Popup IsOpen="{Binding Path=IsCalendarOpen}"
@@ -677,10 +734,9 @@
                    StaysOpen="False">
                 <StackPanel Orientation="Vertical">
                     <Calendar FirstDayOfWeek="Monday"
-                              Style="{StaticResource CalendarStyle1}"
+                              Style="{StaticResource CalendarStyle}"
                               Margin="0"
                               GotMouseCapture="Calendar_GotMouseCapture"
-                              BorderBrush="#3a547f"
                               x:Name="calendar"
                               SelectionMode="SingleDate"
                               SelectedDate="{Binding DataContext.Dates[0], ElementName=mainWindow, Mode=OneWay}"
@@ -691,11 +747,12 @@
                             CommandParameter="{Binding ElementName=calendar, Path=SelectedDate}">
                         <Button.Style>
                             <Style TargetType="{x:Type Button}">
-                                <Setter Property="Margin" Value="0,-4,0,0"/>
+                                <Setter Property="Margin" Value="0,-10,0,0"/>
                                 <Setter Property="Height" Value="20"/>
                                 <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                <Setter Property="BorderBrush" Value="#3a547f"/>
-                                <Setter Property="Background" Value="White"/>
+                                <Setter Property="BorderBrush" Value="{DynamicResource Calendar.Button.Static.BorderBrush}"/>
+                                <Setter Property="Background" Value="{DynamicResource Calendar.Button.Static.Background}"/>
+                                <Setter Property="Foreground" Value="{DynamicResource Calendar.Button.Static.Foreground}"/>
                                 <Setter Property="Focusable" Value="False"/>
                                 <Setter Property="HorizontalContentAlignment" Value="Center"/>
                                 <Setter Property="VerticalContentAlignment" Value="Center"/>
@@ -704,15 +761,16 @@
                                         <ControlTemplate TargetType="{x:Type Button}">
                                             <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" SnapsToDevicePixels="True" CornerRadius="0,0,7.5,7.5" BorderThickness="1">
                                                 <TextBlock Text="Перейти" 
-                                           Margin="5,0,5,0"
-                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                           Margin="5,0,5,0"
+                                                           Foreground="{TemplateBinding Foreground}"
+                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
                                             </Border>
                                             <ControlTemplate.Triggers>
                                                 <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="border" Property="Background" Value="#3a547f"/>
+                                                    <Setter TargetName="border" Property="Background" Value="{DynamicResource Calendar.Button.MouseOver.Background}"/>
                                                     <Setter TargetName="border" Property="BorderThickness" Value="0"/>
-                                                    <Setter Property="Foreground" Value="White"/>
+                                                    <Setter Property="Foreground" Value="{DynamicResource Calendar.Button.MouseOver.Foreground}"/>
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>

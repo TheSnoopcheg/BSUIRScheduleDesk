@@ -24,18 +24,21 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <TextBlock Text="{Binding Path=Date, StringFormat=dd.MM.yyyy}"
+                           Foreground="{DynamicResource Border.ElementText.Static}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            TextWrapping="Wrap"
                            TextAlignment="Center"
                            Width="60"/>
                 <TextBlock Grid.Column="1" Text="{Binding Path=Content}"
+                           Foreground="{DynamicResource Border.ElementText.Static}"
                            HorizontalAlignment="Center"
                            VerticalAlignment="Center"
                            TextWrapping="Wrap"
                            TextAlignment="Center"/>
             </Grid>
         </DataTemplate>
+        
         <Style x:Key="listViewTemplate" TargetType="{x:Type ListViewItem}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Template">
@@ -46,23 +49,20 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#dcdcdc"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource ListView.Item.Selected.Background}"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#ececec"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource ListView.Item.MouseOver.Background}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="ListBox.Static.Background" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="ListBox.Static.Border" Color="#FFABADB3"/>
-        <SolidColorBrush x:Key="ListBox.Disabled.Background" Color="#FFFFFFFF"/>
-        <SolidColorBrush x:Key="ListBox.Disabled.Border" Color="#FFD9D9D9"/>
-        <Style x:Key="ListViewStyle1" TargetType="{x:Type ListView}">
+        
+        <Style x:Key="ListViewStyle" TargetType="{x:Type ListView}">
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="{StaticResource ListBox.Static.Border}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource ListBox.BorderBrush.Static}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Auto"/>
@@ -81,10 +81,6 @@
                             </ScrollViewer>
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsEnabled" Value="false">
-                                <Setter Property="Background" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Background}"/>
-                                <Setter Property="BorderBrush" TargetName="Bd" Value="{StaticResource ListBox.Disabled.Border}"/>
-                            </Trigger>
                             <MultiTrigger>
                                 <MultiTrigger.Conditions>
                                     <Condition Property="IsGrouping" Value="true"/>
@@ -97,14 +93,13 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
-        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
-        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
-        <Style x:Key="TextBoxStyle1" TargetType="{x:Type TextBox}">
-            <Setter Property="Background" Value="{DynamicResource {x:Static SystemColors.WindowBrushKey}}"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+        
+        <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}">
+            <Setter Property="Background" Value="{DynamicResource TextBox.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBox.Static.Foreground}"/>
             <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="1,0,0,1"/>
             <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
             <Setter Property="HorizontalContentAlignment" Value="Left"/>
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
@@ -122,10 +117,10 @@
                                 <Setter Property="Opacity" TargetName="border" Value="0.56"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource TextBox.MouseOver.Border}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource TextBox.Focus.Border}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -141,14 +136,16 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="DatePickerStyle1" TargetType="{x:Type DatePicker}">
-            <Setter Property="Foreground" Value="#FF333333"/>
+
+        <Style x:Key="DatePickerStyle" TargetType="{x:Type DatePicker}">
+            <Setter Property="Foreground" Value="{DynamicResource DatePicker.Foreground.Static}"/>
             <Setter Property="IsTodayHighlighted" Value="True"/>
             <Setter Property="SelectedDateFormat" Value="Short"/>
             <Setter Property="Background" Value="Transparent"/>
-            <Setter Property="Padding" Value="2"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
-            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="0"/>
+            <Setter Property="CalendarStyle" Value="{DynamicResource CalendarStyle}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource DatePicker.BorderBrush.Static}"/>
+            <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
             <Setter Property="Template">
                 <Setter.Value>
@@ -166,7 +163,6 @@
                             </VisualStateManager.VisualStateGroups>
                             <Grid x:Name="PART_Root" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
                                 <Grid.Resources>
-                                    <SolidColorBrush x:Key="DisabledBrush" Color="#A5FFFFFF"/>
                                     <ControlTemplate x:Key="DropDownButtonTemplate" TargetType="{x:Type Button}">
                                         <Grid>
                                             <VisualStateManager.VisualStateGroups>
@@ -174,19 +170,23 @@
                                                     <VisualState x:Name="Normal"/>
                                                     <VisualState x:Name="MouseOver">
                                                         <Storyboard>
-                                                            <ColorAnimation Duration="0" Storyboard.TargetName="btnBackground" To="#e6e6e6" Storyboard.TargetProperty="Background.Color"/>
+                                                            <ColorAnimation Duration="0" Storyboard.TargetName="btnBackground" To="{StaticResource DatePicker.Button.Background.MouseOver}" Storyboard.TargetProperty="Background.Color"/>
                                                         </Storyboard>
                                                     </VisualState>
                                                     <VisualState x:Name="Pressed">
                                                         <Storyboard>
-                                                            <ColorAnimation Duration="0" Storyboard.TargetName="btnBackground" To="#eaeaea" Storyboard.TargetProperty="Background.Color"/>
+                                                            <ColorAnimation Duration="0" Storyboard.TargetName="btnBackground" To="{StaticResource DatePicker.Button.Background.Pressed}" Storyboard.TargetProperty="Background.Color"/>
                                                         </Storyboard>
                                                     </VisualState>
                                                     <VisualState x:Name="Disabled"/>
                                                 </VisualStateGroup>
                                             </VisualStateManager.VisualStateGroups>
-                                            <Border x:Name="btnBackground" Background="White" CornerRadius="2">
-                                                <Image Source="/assets/icons8-calendar-50.png"/>
+                                            <Border x:Name="btnBackground" Background="Transparent" CornerRadius="2">
+                                                <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                                                      Stretch="Fill"
+                                                      Height="16.5"
+                                                      Width="16.5"
+                                                      Data="{StaticResource calendarIcon}"/>
                                             </Border>
                                         </Grid>
                                     </ControlTemplate>
@@ -195,8 +195,8 @@
                                     <ColumnDefinition Width="*"/>
                                     <ColumnDefinition Width="Auto"/>
                                 </Grid.ColumnDefinitions>
-                                <Button x:Name="PART_Button" Grid.Column="1" Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="Left" Margin="3,0,3,0" Grid.Row="0" Template="{StaticResource DropDownButtonTemplate}" VerticalAlignment="Top" Width="20"/>
-                                <DatePickerTextBox x:Name="PART_TextBox" Grid.Column="0" Focusable="{TemplateBinding Focusable}" HorizontalContentAlignment="Stretch" Grid.Row="0" VerticalContentAlignment="Stretch"/>
+                                <Button x:Name="PART_Button" Grid.Column="1" Foreground="{TemplateBinding Foreground}" Focusable="False" HorizontalAlignment="Left" Margin="3,0,3,0" Grid.Row="0" Template="{StaticResource DropDownButtonTemplate}" VerticalAlignment="Center" Width="20"/>
+                                <DatePickerTextBox x:Name="PART_TextBox" FontSize="11" Grid.Column="0" Focusable="{TemplateBinding Focusable}" HorizontalContentAlignment="Stretch" Grid.Row="0" VerticalContentAlignment="Center" Style="{StaticResource TextBoxStyle}"/>
                                 <Grid x:Name="PART_DisabledVisual" Grid.Column="0" Grid.ColumnSpan="2" IsHitTestVisible="False" Opacity="0" Grid.Row="0">
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"/>
@@ -217,19 +217,18 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        
     </Window.Resources>
-    <Border
-        CornerRadius="10"
-        BorderThickness="1"
-        BorderBrush="Black"
-        Background="White">
+    <Border CornerRadius="10"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource Window.BorderBrush.Static}"
+            Background="{DynamicResource Window.Background.Static}">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <TextBlock VerticalAlignment="Center"
+                       Foreground="{DynamicResource SubWindow.TitleText.Static}"
                        Margin="10"
                        FontSize="16"
                        FontWeight="DemiBold">
@@ -248,13 +247,18 @@
                 </TextBlock.Style>
             </TextBlock>
             <Button x:Name="btnClose"
-                    Style="{StaticResource IconButtonStyle1}"
+                    Style="{StaticResource ButtonStyle1}"
                     Height="30"
+                    Width="30"
                     Click="btnClose_Click"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
                     Margin="10">
-                <Image Source="/assets/icons8-close-50.png"/>
+                <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                      Stretch="Fill"
+                      Height="15"
+                      Width="15"
+                      Data="{StaticResource closeIcon}"/>
                 <Button.RenderTransform>
                     <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                 </Button.RenderTransform>
@@ -264,23 +268,26 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
-                <Border
-                    Grid.Column="0"
-                    CornerRadius="10"
-                    Margin="10,10,5,10"
-                    Background="#e9edf3">
+                <Border Grid.Column="0"
+                        CornerRadius="10"
+                        Margin="10,10,5,10"
+                        Background="{DynamicResource Border.Background.Static}">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="30"/>
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
-                        <Border Grid.Row="0" HorizontalAlignment="Stretch" Background="#b9c6d7" CornerRadius="10,10,0,0">
+                        <Border Grid.Row="0" 
+                                HorizontalAlignment="Stretch" 
+                                Background="{DynamicResource Border.Title.Background.Static}" 
+                                CornerRadius="10,10,0,0">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="175"/>
                                     <ColumnDefinition/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" 
+                                           Foreground="{DynamicResource Border.TitleText.Static}"
                                            Text="Дата"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
@@ -288,15 +295,16 @@
                                 <Separator Style="{StaticResource {x:Static ToolBar.SeparatorStyleKey}}"
                                            Grid.Column="0"
                                            HorizontalAlignment="Right"
-                                           Background="#663a547f"/>
+                                           Background="{DynamicResource Border.Title.Separator.Static}"/>
                                 <TextBlock Grid.Column="1"
+                                           Foreground="{DynamicResource Border.TitleText.Static}"
                                            Text="Заметка"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
                                            FontWeight="DemiBold"/>
                             </Grid>
                         </Border>
-                        <ListView Style="{DynamicResource ListViewStyle1}" Grid.Row="1"
+                        <ListView Style="{DynamicResource ListViewStyle}" Grid.Row="1"
                                   Padding="0"
                                   ItemsSource="{Binding Notes}"
                                   x:Name="lstView"
@@ -304,8 +312,13 @@
                                   ItemContainerStyle="{DynamicResource listViewTemplate}"
                                   SelectedItem="{Binding Path=SelectedNote}"/>
                         <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Center">
-                            <Image Source="/assets/emptyannview.png" Height="125"/>
+                            <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                                  Stretch="Fill"
+                                  Height="125"
+                                  Width="125"
+                                  Data="{StaticResource documentsIcon}"/>
                             <TextBlock Text="Заметок нет"
+                                       Foreground="{DynamicResource Border.Empty.Static}"
                                        HorizontalAlignment="Center"
                                        FontWeight="DemiBold"
                                        Margin="0,5,0,0"/>
@@ -328,11 +341,12 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
                     <StackPanel Margin="5,10,10,10">
-                        <Button Style="{DynamicResource IconButtonStyle1}"
+                        <Button Style="{DynamicResource ButtonStyle1}"
                                 Height="30"
                                 Width="135"
                                 Content="Добавить"
-                                Background="#e9e9e9"
+                                Foreground="{DynamicResource SubWindow.Button.Foreground.Static}"
+                                Background="{DynamicResource SubWindow.Button.Background.Static}"
                                 Command="{Binding Path=AddNote}">
                             <Button.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="67.5" CenterY="15"/>
@@ -345,24 +359,26 @@
                                 </MultiBinding>
                             </Button.IsEnabled>
                         </Button>
-                        <Button Style="{DynamicResource IconButtonStyle1}"
+                        <Button Style="{DynamicResource ButtonStyle1}"
                                 Height="30"
                                 Width="135"
                                 Margin="0,5,0,0"
                                 Content="Редактировать"
-                                Background="#e9e9e9"
+                                Foreground="{DynamicResource SubWindow.Button.Foreground.Static}"
+                                Background="{DynamicResource SubWindow.Button.Background.Static}"
                                 IsEnabled="{Binding ElementName=lstView, Path=SelectedIndex, Converter={StaticResource ButtonEnableConverter}}"
                                 Command="{Binding Path=EditNote}">
                             <Button.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="67.5" CenterY="15"/>
                             </Button.RenderTransform>
                         </Button>
-                        <Button Style="{DynamicResource IconButtonStyle1}"
+                        <Button Style="{DynamicResource ButtonStyle1}"
                                 Height="30"
                                 Width="135"
                                 Margin="0,5,0,0"
                                 Content="Удалить"
-                                Background="#e9e9e9"
+                                Foreground="{DynamicResource SubWindow.Button.Foreground.Static}"
+                                Background="{DynamicResource SubWindow.Button.Background.Static}"
                                 IsEnabled="{Binding ElementName=lstView, Path=SelectedIndex, Converter={StaticResource ButtonEnableConverter}}"
                                 Command="{Binding Path=DeleteNote}"
                                 CommandParameter="{Binding ElementName=lstView, Path=SelectedItem}">
@@ -378,13 +394,23 @@
                             <RowDefinition Height="Auto"/>
                             <RowDefinition/>
                         </Grid.RowDefinitions>
-                        <TextBlock Grid.Row="0" Text="Дата:"/>
-                        <DatePicker x:Name="noteDatePicker" Grid.Row="1" Style="{DynamicResource DatePickerStyle1}" SelectedDate="{Binding Path=NoteDate}"/>
-                        <TextBlock Grid.Row="2" Text="Текст:"/>
-                        <TextBox Style="{DynamicResource TextBoxStyle1}" x:Name="noteText" Grid.Row="3" Text="{Binding Path=NoteText, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
+                        <TextBlock Grid.Row="0" 
+                                   Text="Дата:" 
+                                   Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
+                        <DatePicker x:Name="noteDatePicker" 
+                                    Grid.Row="1" 
+                                    Style="{DynamicResource DatePickerStyle}" 
+                                    SelectedDate="{Binding Path=NoteDate}"/>
+                        <TextBlock Grid.Row="2" 
+                                   Text="Текст:" 
+                                   Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
+                        <TextBox Style="{DynamicResource TextBoxStyle}" 
+                                 x:Name="noteText" 
+                                 Grid.Row="3" 
+                                 Text="{Binding Path=NoteText, UpdateSourceTrigger=PropertyChanged}" 
+                                 TextWrapping="Wrap"/>
                     </Grid>
                 </Grid>
-                
             </Grid>
         </Grid>
     </Border>

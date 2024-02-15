@@ -8,10 +8,11 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
+        <local:CenterXConverter x:Key="CenterXConverter"/>
         <DataTemplate x:Key="EmployeeGroupsTemplate">
             <Button Command="{Binding Command, ElementName=root}" CommandParameter="{Binding}">
                 <Button.ToolTip>
-                    <ToolTip Style="{StaticResource ToolTipStyle}" Foreground="Black" Placement="Top" MaxWidth="200">
+                    <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Top" MaxWidth="200">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
@@ -33,7 +34,7 @@
                                     </Style>
                                 </Image.Style>
                             </Image>
-                            <TextBlock Grid.Row="1" Text="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Text}" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <TextBlock Grid.Row="1" Foreground="{DynamicResource TextBlock.Foreground.Static}" Text="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Text}" TextWrapping="Wrap" TextAlignment="Center"/>
                         </Grid>
                     </ToolTip>
                 </Button.ToolTip>
@@ -43,29 +44,53 @@
                         <Setter Property="Height" Value="20"/>
                         <Setter Property="HorizontalAlignment" Value="Left"/>
                         <Setter Property="Width" Value="Auto"/>
-                        <Setter Property="BorderBrush" Value="#3a547f"/>
-                        <Setter Property="Background" Value="White"/>
+                        <Setter Property="BorderBrush" Value="{DynamicResource EmployeeGroups.Button.Static.BorderBrush}"/>
+                        <Setter Property="Background" Value="{DynamicResource EmployeeGroups.Button.Static.Background}"/>
                         <Setter Property="Focusable" Value="False"/>
+                        <Setter Property="Cursor" Value="Hand"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" SnapsToDevicePixels="True" CornerRadius="7.5" BorderThickness="1">
+                                    <Grid Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" SnapsToDevicePixels="True">
+                                        <Rectangle x:Name="borderStatic" 
+                                                   Fill="{DynamicResource EmployeeGroups.Button.Static.Background}"
+                                                   Stroke="{DynamicResource EmployeeGroups.Button.Static.BorderBrush}"
+                                                   StrokeThickness="1"
+                                                   RadiusX="7.5"
+                                                   RadiusY="7.5"/>
+                                        <Rectangle x:Name="borderMouseOver"
+                                                   Fill="{DynamicResource EmployeeGroups.Button.MouseOver.Background}"
+                                                   Stroke="{DynamicResource EmployeeGroups.Button.Static.BorderBrush}"
+                                                   StrokeThickness="1"
+                                                   Opacity="1"
+                                                   RadiusX="7.5"
+                                                   RadiusY="7.5">
+                                            <Rectangle.RenderTransform>
+                                                <ScaleTransform ScaleX="0" ScaleY="0" CenterY="10" CenterX="{Binding ElementName=borderStatic, Path=ActualWidth, Converter={StaticResource CenterXConverter}}"/>
+                                            </Rectangle.RenderTransform>
+                                        </Rectangle>
                                         <TextBlock Text="{Binding}" 
+                                                   x:Name="content"
                                                    Margin="5,0,5,0"
+                                                   Foreground="{DynamicResource EmployeeGroups.Button.Static.Foreground}"
                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                    </Border>
+                                        <TextBlock Text="{Binding}" 
+                                                   x:Name="contentMouseOver"
+                                                   Margin="5,0,5,0"
+                                                   Foreground="{DynamicResource EmployeeGroups.Button.MouseOver.Foreground}"
+                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
+                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                   Opacity="0"/>
+                                    </Grid>
                                     <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Cursor" Value="Hand"/>
-                                        </Trigger>
                                         <EventTrigger RoutedEvent="MouseEnter">
                                             <EventTrigger.Actions>
                                                 <BeginStoryboard>
                                                     <Storyboard >
-                                                        <ColorAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color" To="#3a547f" Duration="0:0:0.25"/>
-                                                        <ThicknessAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="BorderThickness" To="0" Duration="0:0:0.25"/>
-                                                        <ColorAnimation Storyboard.TargetProperty="Foreground.Color" To="White" Duration="0:0:0.25"/>
+                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" Storyboard.TargetProperty="RenderTransform.ScaleX" To="1" Duration="0:0:0.20"/>
+                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" Storyboard.TargetProperty="RenderTransform.ScaleY" To="1" Duration="0:0:0.20"/>
+                                                        <DoubleAnimation Storyboard.TargetName="contentMouseOver" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.20" AccelerationRatio="0.75"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger.Actions>
@@ -74,9 +99,9 @@
                                             <EventTrigger.Actions>
                                                 <BeginStoryboard>
                                                     <Storyboard>
-                                                        <ColorAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="Background.Color" To="White" Duration="0:0:0.25"/>
-                                                        <ThicknessAnimation Storyboard.TargetName="border" Storyboard.TargetProperty="BorderThickness" To="1" Duration="0:0:0.25"/>
-                                                        <ColorAnimation Storyboard.TargetProperty="Foreground.Color" To="Black" Duration="0:0:0.25"/>
+                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" Storyboard.TargetProperty="RenderTransform.ScaleX" To="0" Duration="0:0:0.20"/>
+                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" Storyboard.TargetProperty="RenderTransform.ScaleY" To="0" Duration="0:0:0.20"/>
+                                                        <DoubleAnimation Storyboard.TargetName="contentMouseOver" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.20" AccelerationRatio="0.25"/>
                                                     </Storyboard>
                                                 </BeginStoryboard>
                                             </EventTrigger.Actions>

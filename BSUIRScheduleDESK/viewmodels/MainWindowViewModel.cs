@@ -69,12 +69,13 @@ namespace BSUIRScheduleDESK.viewmodels
                     {
                         value!.favorited = true;
                     }
-                    DateTime startExamsDate = DateTime.Parse(value!.startExamsDate!);
-                    DateTime endExamsDate = DateTime.Parse(value!.endExamsDate!);
-                    if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
-                        SelectedTab = 1;
-                    else
-                        SelectedTab = 0;
+                    if(DateTime.TryParse(value!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(value!.endExamsDate, out DateTime endExamsDate))
+                    {
+                        if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
+                            SelectedTab = 1;
+                        else
+                            SelectedTab = 0;
+                    }
                     if (value.favorited)
                     {
                         Task.Run(async () =>
@@ -155,7 +156,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public string Build { get; set; } = "build:000023000beta 02.02.2024";
+        public string Build { get; set; } = "build:000023101beta 16.02.2024";
 
         #endregion
 
@@ -229,7 +230,7 @@ namespace BSUIRScheduleDESK.viewmodels
                         if(Schedule != null)
                         {
                             AnnouncementWindow announcementWindow = new AnnouncementWindow();
-                            announcementWindow.DataContext = new AnnouncementViewModel(Announcements, Schedule!.GetName());
+                            announcementWindow.DataContext = new AnnouncementViewModel(Announcements!, Schedule!.GetName());
                             announcementWindow.ShowDialog();
                         }
                     }));
@@ -360,7 +361,7 @@ namespace BSUIRScheduleDESK.viewmodels
                         if(Schedule != null)
                         {
                             NotesWindow notesWindow = new NotesWindow();
-                            notesWindow.DataContext = new NoteViewModel(Notes, Schedule!.GetName(), Schedule!.GetUrl());
+                            notesWindow.DataContext = new NoteViewModel(Notes!, Schedule!.GetName(), Schedule!.GetUrl());
                             notesWindow.ShowDialog();
                         }
                     }));

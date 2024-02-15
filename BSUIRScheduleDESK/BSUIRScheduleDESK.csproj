@@ -10,44 +10,21 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="assets\emptyannview.png" />
-    <None Remove="assets\icons8-calendar-50.png" />
-    <None Remove="assets\icons8-close-50.png" />
-    <None Remove="assets\icons8-close-50w.png" />
-    <None Remove="assets\icons8-close-60.png" />
-    <None Remove="assets\icons8-commercial-50.png" />
-    <None Remove="assets\icons8-double-left-50.png" />
-    <None Remove="assets\icons8-double-right-50.png" />
-    <None Remove="assets\icons8-maximize-50.png" />
-    <None Remove="assets\icons8-maximize-50w.png" />
-    <None Remove="assets\icons8-minimize-50.png" />
-    <None Remove="assets\icons8-minimize-50w.png" />
-    <None Remove="assets\icons8-note-30.png" />
-    <None Remove="assets\icons8-note-50.png" />
-    <None Remove="assets\icons8-note-60.png" />
-    <None Remove="assets\icons8-plus-50.png" />
-    <None Remove="assets\icons8-plus-96.png" />
-    <None Remove="assets\icons8-return-50.png" />
     <None Remove="assets\icons8-santa-hat-48.png" />
-    <None Remove="assets\icons8-search-50.png" />
-    <None Remove="assets\icons8-settings-50.png" />
-    <None Remove="assets\icons8-star-50.png" />
-    <None Remove="assets\icons8-star-501.png" />
     <None Remove="assets\snow.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="assets\appicon.ico" />
+    <Page Remove="Themes\ColourDictionaries\DarkTheme.xaml" />
+    <Page Remove="Themes\ColourDictionaries\IISTheme.xaml" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\emptyannview.png" />
-    <Resource Include="assets\icons8-calendar-50.png" />
-    <Resource Include="assets\icons8-close-50w.png" />
-    <Resource Include="assets\icons8-maximize-50w.png" />
-    <Resource Include="assets\icons8-minimize-50w.png" />
-    <Resource Include="assets\icons8-note-50.png" />
-    <Resource Include="assets\icons8-plus-96.png" />
+    <Resource Include="Themes\ColourDictionaries\IISTheme.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="assets\appicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -59,26 +36,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\icons8-close-50.png" />
-    <Resource Include="assets\icons8-close-60.png" />
-    <Resource Include="assets\icons8-commercial-50.png" />
-    <Resource Include="assets\icons8-double-left-50.png" />
-    <Resource Include="assets\icons8-double-right-50.png" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Resource Include="assets\icons8-maximize-50.png" />
-    <Resource Include="assets\icons8-minimize-50.png" />
-    <Resource Include="assets\icons8-note-30.png" />
-    <Resource Include="assets\icons8-note-60.png" />
-    <Resource Include="assets\icons8-plus-50.png" />
-    <Resource Include="assets\icons8-return-50.png" />
     <Resource Include="assets\icons8-santa-hat-48.png" />
-    <Resource Include="assets\icons8-search-50.png" />
-    <Resource Include="assets\icons8-settings-50.png" />
-    <Resource Include="assets\icons8-star-50.png" />
-    <Resource Include="assets\icons8-star-501.png" />
     <Resource Include="assets\snow.png" />
+    <Resource Include="Themes\ColourDictionaries\DarkTheme.xaml" />
   </ItemGroup>
 
   <ItemGroup>

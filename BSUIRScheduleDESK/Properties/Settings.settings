@@ -38,5 +38,8 @@
     <Setting Name="laststartup" Type="System.DateTime" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
+    <Setting Name="currentTheme" Type="System.String" Scope="User">
+      <Value Profile="(Default)">IISTheme</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

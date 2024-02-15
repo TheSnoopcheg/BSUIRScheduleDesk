@@ -15,6 +15,7 @@ namespace BSUIRScheduleDESK
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{n.Default.currentTheme}.xaml", UriKind.Relative)};
             if (n.Default.currentweek == 0 || n.Default.laststartup == DateTime.MinValue)
             {
                 var up = ScheduleService.UpdateCurrentWeekAsync();

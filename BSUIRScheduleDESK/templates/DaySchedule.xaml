@@ -11,6 +11,7 @@
         <local:DateConverter x:Key="DateConverter"/>
         <DataTemplate x:Key="dateTemplate">
             <TextBlock Text="{Binding Converter={StaticResource DateConverter}}"
+                       Foreground="{DynamicResource Schedule.Date.Foreground.Static}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        TextAlignment="Center"
@@ -18,19 +19,20 @@
         </DataTemplate>
         <DataTemplate x:Key="emptySchedule">
             <TextBlock Text='Здесь ничего нет. Чтобы загрузить расписание, нажмите "🔍︎".'
+                       Foreground="{DynamicResource Border.Empty.Static}"
                        HorizontalAlignment="Center"
                        VerticalAlignment="Center"
                        FontSize="15"
                        FontWeight="DemiBold"/>
         </DataTemplate>
         <DataTemplate x:Key="tableSchedule">
-            <Border Background="#e9edf3" Margin="10" CornerRadius="10">
+            <Border Background="{DynamicResource Border.Background.Static}" Margin="10" CornerRadius="10">
                 <Grid>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="35"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
-                    <Border Background="#b9c6d7" CornerRadius="10,10,0,0"
+                    <Border Background="{DynamicResource Border.Title.Background.Static}" CornerRadius="10,10,0,0"
                             VerticalAlignment="Top" Grid.Row="0" Height="35">
                         <ItemsControl ItemsSource="{Binding Dates, ElementName=root}" ItemTemplate="{StaticResource dateTemplate}" Focusable="False">
                             <ItemsControl.ItemsPanel>

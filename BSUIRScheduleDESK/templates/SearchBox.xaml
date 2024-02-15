@@ -8,20 +8,20 @@
              x:Name="Control"
              PreviewKeyDown="Control_KeyDown">
     <UserControl.Resources>
-        <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABAdB3"/>
-        <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FF7EB4EA"/>
-        <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
         <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
             <Style.Resources>
                 <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
                     <VisualBrush.Visual>
-                        <Label Content="Введите номер группы" Foreground="#99000000" FontWeight="Normal" />
+                        <Border Background="{DynamicResource TextBox.Static.Background}" Width="280">
+                            <Label Content="Введите номер группы" Foreground="{DynamicResource SearchBox.TextBox.Static.Hint.Foreground}" FontWeight="Normal" />
+                        </Border>
                     </VisualBrush.Visual>
                 </VisualBrush>
             </Style.Resources>
-            <Setter Property="Background" Value="White"/>
-            <Setter Property="BorderBrush" Value="{StaticResource TextBox.Static.Border}"/>
-            <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}"/>
+            <Setter Property="Background" Value="{DynamicResource TextBox.Static.Background}"/>
+            <Setter Property="BorderBrush" Value="{DynamicResource TextBox.Static.Border}"/>
+            <Setter Property="Foreground" Value="{DynamicResource TextBox.Static.Foreground}"/>
+            <Setter Property="CaretBrush" Value="{DynamicResource TextBox.Static.Foreground}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Height" Value="{Binding Height, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
             <Setter Property="KeyboardNavigation.TabNavigation" Value="None"/>
@@ -41,10 +41,10 @@
                                 <Setter Property="Opacity" TargetName="border" Value="0.56"/>
                             </Trigger>
                             <Trigger Property="IsMouseOver" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.MouseOver.Border}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource TextBox.MouseOver.Border}"/>
                             </Trigger>
                             <Trigger Property="IsKeyboardFocused" Value="true">
-                                <Setter Property="BorderBrush" TargetName="border" Value="{StaticResource TextBox.Focus.Border}"/>
+                                <Setter Property="BorderBrush" TargetName="border" Value="{DynamicResource TextBox.Focus.Border}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -66,17 +66,9 @@
                 </MultiTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="FocusVisual">
-            <Setter Property="Control.Template">
-                <Setter.Value>
-                    <ControlTemplate>
-                        <Rectangle Margin="2" StrokeDashArray="1 2" Stroke="{DynamicResource {x:Static SystemColors.ControlTextBrushKey}}" SnapsToDevicePixels="true" StrokeThickness="1"/>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
         <Style x:Key="listViewTemplate" TargetType="{x:Type ListViewItem}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Background" Value="{DynamicResource ListView.Item.Static.Background}"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -85,9 +77,9 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
-                                <Setter TargetName="border" Property="Background" Value="#dcdcdc"/>
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource ListView.Item.Selected.Background}"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="1"/>
-                                <Setter TargetName="border" Property="BorderBrush" Value="#bebebe"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource ListView.Item.Selected.BorderBrush}"/>
                             </Trigger>
                         </ControlTemplate.Triggers>
                     </ControlTemplate>
@@ -103,14 +95,35 @@
         </Style>
     </UserControl.Resources>
     <Grid x:Name="Root" SnapsToDevicePixels="True" Style="{DynamicResource FocusTextBox}">
-        <Popup x:Name="popup" Placement="Bottom" AllowsTransparency="True" StaysOpen="False" PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" IsOpen="{Binding IsDropDownOpen, ElementName=Control}">
-            <Border x:Name="dropDownBorder" Background="Transparent" Width="{Binding ActualWidth, ElementName=searchTextBox}" MaxHeight="{Binding MaxDropDownHeigth, ElementName=Control}">
-                <ListView x:Name="ListView" BorderBrush="Black" BorderThickness="1" ItemsSource="{Binding ItemsSource, ElementName=Control}" KeyboardNavigation.DirectionalNavigation="Cycle" SelectedIndex="{Binding SelectedIndex, ElementName=Control}" SelectedItem="{Binding SelectedItem, ElementName=Control}" KeyDown="ListView_KeyDown" ItemContainerStyle="{DynamicResource listViewTemplate}" Background="White" ScrollViewer.HorizontalScrollBarVisibility="Hidden" ScrollViewer.VerticalScrollBarVisibility="Hidden">
+        <Popup x:Name="popup" 
+               Placement="Bottom" 
+               AllowsTransparency="True" 
+               StaysOpen="False" 
+               PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
+               IsOpen="{Binding IsDropDownOpen, ElementName=Control}">
+            <Border x:Name="dropDownBorder" 
+                    Background="Transparent" 
+                    Width="{Binding ActualWidth, ElementName=searchTextBox}" 
+                    MaxHeight="{Binding MaxDropDownHeigth, ElementName=Control}">
+                <ListView x:Name="ListView" 
+                          BorderBrush="{DynamicResource ListView.BorderBrush.Static}" 
+                          BorderThickness="1" 
+                          ItemsSource="{Binding ItemsSource, ElementName=Control}" 
+                          KeyboardNavigation.DirectionalNavigation="Cycle" 
+                          SelectedIndex="{Binding SelectedIndex, ElementName=Control}" 
+                          SelectedItem="{Binding SelectedItem, ElementName=Control}" 
+                          KeyDown="ListView_KeyDown" 
+                          ItemContainerStyle="{DynamicResource listViewTemplate}"  
+                          Background="{DynamicResource ListView.Background.Static}"
+                          Foreground="{DynamicResource ListView.Foreground.Static}"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden">
                 </ListView>
             </Border>
         </Popup>
-        <TextBox x:Name="searchTextBox" Text="{Binding SText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" TabIndex="0" Style="{DynamicResource TextBoxStyle}"/>
+        <TextBox x:Name="searchTextBox" 
+                 Text="{Binding SText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 TabIndex="0" 
+                 Style="{DynamicResource TextBoxStyle}"/>
     </Grid>
 </UserControl>
-
-<!---->

@@ -16,21 +16,20 @@
         </DataTemplate>
         <DataTemplate x:Key="announcementTemplate">
             <Border CornerRadius="10"
-            Background="White"
-            Margin="5"
-            MinWidth="50"
-            MaxWidth="285"
-            Height="Auto"
-            MaxHeight="250"
-            HorizontalAlignment="Stretch">
+                    Background="{DynamicResource Schedule.Background.Static}"
+                    Margin="5"
+                    MinWidth="50"
+                    MaxWidth="285"
+                    Height="Auto"
+                    MaxHeight="250"
+                    HorizontalAlignment="Stretch">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Border 
-                CornerRadius="10,0,00,10"
-                Background="Gray"/>
+                    <Border CornerRadius="10,0,00,10"
+                            Background="{DynamicResource Schedule.BorderBrush.Static}"/>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
                             <RowDefinition MinHeight="20" Height="Auto"/>
@@ -42,37 +41,43 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <Image Source="/assets/icons8-note-30.png"
-                           Height="17.5"
-                           VerticalAlignment="Center"
-                           Margin="10,0,0,0"/>
+                                   Height="17.5"
+                                   VerticalAlignment="Center"
+                                   Margin="10,0,0,0"/>
                             <TextBlock Text="ОБЪЯВЛЕНИЕ"
-                       FontWeight="Bold"
-                       VerticalAlignment="Center"
-                       Margin="5,0"/>
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       FontWeight="Bold"
+                                       VerticalAlignment="Center"
+                                       Margin="5,0"/>
                         </StackPanel>
 
                         <TextBlock Text="{Binding note}"
-                           Margin="10,0,0,0"
-                           VerticalAlignment="Center"
-                           Grid.Row="1"/>
+                                   Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                   Margin="10,0,0,0"
+                                   VerticalAlignment="Center"
+                                   Grid.Row="1"/>
                         <StackPanel Orientation="Horizontal"
-                            Grid.Row="2">
+                                    Grid.Row="2">
                             <TextBlock Text="Дата:"
-                               VerticalAlignment="Center"
-                               Margin="10,0,0,0"/>
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock Text="{Binding startLessonDate}"
-                               VerticalAlignment="Center"
-                               FontWeight="DemiBold"
-                               Margin="5,0"/>
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       FontWeight="DemiBold"
+                                       Margin="5,0"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
-                            Grid.Row="3">
+                                    Grid.Row="3">
                             <TextBlock Text="Время:"
-                               VerticalAlignment="Center"
-                               Margin="10,0,0,0"/>
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock VerticalAlignment="Center"
-                               FontWeight="DemiBold"
-                               Margin="5,0">
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       FontWeight="DemiBold"
+                                       Margin="5,0">
                                 <TextBlock.Text>
                                     <MultiBinding StringFormat="{}{0} - {1}">
                                         <Binding Path="startLessonTime"/>
@@ -82,20 +87,20 @@
                             </TextBlock>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"
-                            Grid.Row="4">
+                                    Grid.Row="4">
                             <TextBlock Text="Аудитория:"
-                               VerticalAlignment="Center"
-                               Margin="10,0,0,0"/>
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"/>
                             <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
-                               VerticalAlignment="Center"
-                               FontWeight="DemiBold"
-                               Margin="5,0"/>
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       FontWeight="DemiBold"
+                                       Margin="5,0"/>
                         </StackPanel>
 
-                        <local:EmployeeGroups
-                        Grid.Row="5"
-                        Margin="10,0"
-                        >
+                        <local:EmployeeGroups Grid.Row="5"
+                                              Margin="10,0">
                             <local:EmployeeGroups.Style>
                                 <Style TargetType="{x:Type local:EmployeeGroups}">
                                     <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
@@ -108,22 +113,20 @@
         </DataTemplate>
         <DataTemplate x:Key="scheduleTemplate">
             <Border CornerRadius="10"
-                    Background="White"
+                    Background="{DynamicResource Schedule.Background.Static}"
                     Margin="5"
                     MinWidth="50"
                     MaxWidth="285"
                     Height="Auto"
                     MaxHeight="260"
-                    HorizontalAlignment="Stretch"
-                    >
+                    HorizontalAlignment="Stretch">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition/>
                         <ColumnDefinition MinWidth="30" Width="Auto"/>
                     </Grid.ColumnDefinitions>
-                    <Border 
-                            CornerRadius="10,0,00,10">
+                    <Border CornerRadius="10,0,00,10">
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
                                 <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}"/>
@@ -157,26 +160,20 @@
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="{Binding subject}"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        FontWeight="DemiBold"
                                        VerticalAlignment="Center"
-                                       Margin="10,0,0,0">
+                                       Margin="10,0,0,0"
+                                       Cursor="Help">
                                 <TextBlock.ToolTip>
                                     <ToolTip Placement="Top" HasDropShadow="True" Style="{DynamicResource ToolTipStyle}" MaxWidth="200">
                                         <TextBlock Text="{Binding subjectFullName}"
                                            TextWrapping="Wrap"/>
                                     </ToolTip>
                                 </TextBlock.ToolTip>
-                        <TextBlock.Style>
-                            <Style TargetType="{x:Type TextBlock}">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Cursor" Value="Help"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
                     </TextBlock>
                             <TextBlock Text="{Binding lessonTypeAbbrev, StringFormat=({0})}"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"
                                        Margin="5,0"/>
@@ -184,9 +181,11 @@
                         <StackPanel Orientation="Horizontal"
                                     Grid.Row="1">
                             <TextBlock Text="Недели:"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        VerticalAlignment="Center"
                                        Margin="10,0,0,0"/>
                             <TextBlock Text="{Binding weekNumber, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Weeks}"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        VerticalAlignment="Center"
                                        FontWeight="DemiBold"
                                        Margin="5,0"/>
@@ -194,9 +193,11 @@
                         <StackPanel Orientation="Horizontal"
                                     Grid.Row="2">
                             <TextBlock Text="Время:"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        VerticalAlignment="Center"
                                        Margin="10,0,0,0"/>
                             <TextBlock VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        FontWeight="DemiBold"
                                        Margin="5,0">
                                 <TextBlock.Text>
@@ -207,12 +208,10 @@
                                 </TextBlock.Text>
                             </TextBlock>
                         </StackPanel>
-                        <local:EmployeeGroups
-                        Grid.Row="3"
-                        Margin="10,0"
-                        MaxHeight="100"
-                        Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=2}}"
-                        >
+                        <local:EmployeeGroups Grid.Row="3"
+                                              Margin="10,0"
+                                              MaxHeight="100"
+                                              Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=2}}">
                             <local:EmployeeGroups.Style>
                                 <Style TargetType="{x:Type local:EmployeeGroups}">
                                     <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
@@ -224,15 +223,17 @@
                                    VerticalAlignment="Center"
                                    TextWrapping="Wrap"
                                    Margin="10,0"
-                                   Foreground="Red"/>
+                                   Foreground="{DynamicResource Schedule.Note.Foreground.Static}"/>
                     </Grid>
                     <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
                                Grid.Column="2"
+                               Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                VerticalAlignment="Top"
                                HorizontalAlignment="Right"
                                Margin="0, 0, 5, 0"/>
                     <TextBlock Text="{Binding numSubgroup, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=SubGroup}"
                                Grid.Column="2"
+                               Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                VerticalAlignment="Bottom"
                                HorizontalAlignment="Right"
                                Margin="0,0,5,0"/>
@@ -241,11 +242,10 @@
         </DataTemplate>
     </UserControl.Resources>
     <ItemsControl x:Name="sch" 
-      ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
-      ItemsSource="{Binding}"
-      Focusable="False"
-      Grid.Row="1"
-      >
+                  ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
+                  ItemsSource="{Binding}"
+                  Focusable="False"
+                  Grid.Row="1">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel Orientation="Vertical"/>
