@@ -1,6 +1,7 @@
 ﻿using BSUIRScheduleDESK.services;
 using BSUIRScheduleDESK.viewmodels;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 
@@ -15,6 +16,7 @@ namespace BSUIRScheduleDESK
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{n.Default.currentTheme}.xaml", UriKind.Relative)};
             if (n.Default.currentweek == 0 || n.Default.laststartup == DateTime.MinValue)
             {
@@ -42,6 +44,12 @@ namespace BSUIRScheduleDESK
             {
                 Directory.CreateDirectory(path);
             }
+        }
+
+        private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            File.WriteAllText($"{Directory.GetCurrentDirectory()}\\crash.log", $"[{DateTime.Now}] {e.ExceptionObject}");
+            MessageBox.Show("Упс.. Отправьте, пожалуйста, файл crash.log в телеграм @snoopcheg\nДля запуска попробуйте удалить recent.json в папке data", "Critical error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }
 }
