@@ -22,6 +22,7 @@ namespace BSUIRScheduleDESK.views
         public NotesWindow()
         {
             InitializeComponent();
+            this.Owner = App.Current.MainWindow;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

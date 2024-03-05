@@ -11,6 +11,7 @@ namespace BSUIRScheduleDESK.views
         public AnnouncementWindow()
         {
             InitializeComponent();
+            this.Owner = App.Current.MainWindow;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

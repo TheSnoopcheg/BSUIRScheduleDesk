@@ -18,6 +18,7 @@ namespace BSUIRScheduleDESK.views
         public SettingsWindow()
         {
             InitializeComponent();
+            this.Owner = App.Current.MainWindow;
             SelectedIndexes = JsonSerializer.Deserialize<ObservableCollection<int>>(Properties.Settings.Default.indexes)!;
             ThemeIndex = GetThemeIndex();
         }

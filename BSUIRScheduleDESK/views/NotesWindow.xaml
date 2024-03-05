@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
         xmlns:converters="clr-namespace:BSUIRScheduleDESK.templates"
         mc:Ignorable="d"
-        Title="NotesWindow" Height="450" Width="800"
+        Height="450" Width="800"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -14,7 +14,18 @@
         ResizeMode="NoResize"
         MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown"
-        x:Name="noteWindow">
+        x:Name="noteWindow"
+        ShowInTaskbar="False">
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Title" Value="{Binding Title, StringFormat={}Заметки {0} - BSUIR Schedule}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEmployeeNote}" Value="False">
+                    <Setter Property="Title" Value="{Binding Title, StringFormat={}Заметки группы {0} - BSUIR Schedule}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
     <Window.Resources>
         <converters:ButtonEnableConverter x:Key="ButtonEnableConverter"/>
         <DataTemplate x:Key="noteTemplate">

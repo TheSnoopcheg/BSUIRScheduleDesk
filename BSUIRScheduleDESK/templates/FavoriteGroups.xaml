@@ -25,7 +25,7 @@
                                         <Ellipse Height="40"
                                                  Width="40"
                                                  StrokeThickness="1"
-                                                 Stroke="{DynamicResource FavoriteBar.Button.Background.Static}"
+                                                 Stroke="{DynamicResource FavoriteBar.Button.External.Static}"
                                                  StrokeDashArray="5"
                                                  Margin="5"
                                                  HorizontalAlignment="Center"

@@ -4,15 +4,13 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 #if DEBUG
-    using System.Diagnostics;
+using System.Diagnostics;
 #endif
 
 namespace BSUIRScheduleDESK
 {
     public partial class MainWindow : Window
     {
-        [DllImport(@"WindowSizing.dll", CallingConvention = CallingConvention.Cdecl)]
-        private static extern void WindowInitialized(IntPtr window);
         public MainWindow()
         {
             InitializeComponent();

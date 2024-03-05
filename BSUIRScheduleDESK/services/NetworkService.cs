@@ -9,7 +9,6 @@ namespace BSUIRScheduleDESK.services
     public static class NetworkService
     {
         private static HttpClient httpClient = new HttpClient();
-
         public static async Task<T> GetAsync<T>(string? url)
         {
             try

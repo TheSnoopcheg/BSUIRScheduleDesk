@@ -8,7 +8,7 @@
              mc:Ignorable="d">
     <UserControl.Resources>
         <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
-        <local:CenterXConverter x:Key="CenterXConverter"/>
+        <local:CenterTransformConverter x:Key="CenterTransformConverter"/>
         <DataTemplate x:Key="EmployeeGroupsTemplate">
             <Button Command="{Binding Command, ElementName=root}" CommandParameter="{Binding}">
                 <Button.ToolTip>
@@ -66,7 +66,7 @@
                                                    RadiusX="7.5"
                                                    RadiusY="7.5">
                                             <Rectangle.RenderTransform>
-                                                <ScaleTransform ScaleX="0" ScaleY="0" CenterY="10" CenterX="{Binding ElementName=borderStatic, Path=ActualWidth, Converter={StaticResource CenterXConverter}}"/>
+                                                <ScaleTransform ScaleX="0" ScaleY="0" CenterY="10" CenterX="{Binding ElementName=borderStatic, Path=ActualWidth, Converter={StaticResource CenterTransformConverter}}"/>
                                             </Rectangle.RenderTransform>
                                         </Rectangle>
                                         <TextBlock Text="{Binding}" 

@@ -4,7 +4,7 @@ using System.Windows.Data;
 
 namespace BSUIRScheduleDESK.templates
 {
-    public class CenterXConverter : IValueConverter
+    public class CenterTransformConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

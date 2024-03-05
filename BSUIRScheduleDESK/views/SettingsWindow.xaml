@@ -7,7 +7,8 @@
         xmlns:controls="clr-namespace:BSUIRScheduleDESK.templates"
         xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
         mc:Ignorable="d"
-        Title="BSUIR Schedule" Height="250" Width="400"
+        Title="Настройки - BSUIR Schedule" 
+        Height="250" Width="400"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -15,7 +16,8 @@
         MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown"
         x:Name="sWindow"
-    xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+        xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
+        ShowInTaskbar="False">
     <Window.Resources>
         <SolidColorBrush x:Key="TextBox.Static.Background" Color="#FFFFFFFF"/>
         <Style x:Key="ComboBoxEditableTextBox" TargetType="{x:Type TextBox}">
@@ -178,6 +180,13 @@
                     <controls:ColorPicker Text="Неизвестно" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[5], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
                 </StackPanel>
             </StackPanel>
+            <TextBlock Text="© 2023-2024 Dmitry Lantas" 
+                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Bottom"
+                       Margin="0,0,5,2"
+                       Grid.Row="1"
+                       FontSize="10"/>
         </Grid>
     </Border>
 </Window>

@@ -38,6 +38,7 @@ namespace BSUIRScheduleDESK.views
         {
             InitializeComponent();
             this.DataContext = this;
+            this.Owner = App.Current.MainWindow;
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

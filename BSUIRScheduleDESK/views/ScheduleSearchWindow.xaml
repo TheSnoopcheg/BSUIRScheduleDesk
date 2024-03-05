@@ -10,9 +10,10 @@
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        Title="BSUIR Schedule"
+        Title="Поиск - BSUIR Schedule"
         MouseDown="Window_MouseDown"
-        KeyDown="Window_KeyDown">
+        KeyDown="Window_KeyDown"
+        ShowInTaskbar="False">
     <Border Background="{DynamicResource Window.Background.Static}"
             CornerRadius="10"
             BorderThickness="1"

@@ -11,6 +11,8 @@
         <local:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
         <local:DayScheduleTemplateSelector x:Key="DayScheduleTemplateSelector"/>
         <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
+        <local:CenterTransformConverter x:Key="CenterTransformConverter"/>
+        <local:NegativeValueConverter x:Key="NegativeValueConverter"/>
         <DataTemplate x:Key="clearTemplate">
 
         </DataTemplate>
@@ -119,7 +121,8 @@
                     MaxWidth="285"
                     Height="Auto"
                     MaxHeight="260"
-                    HorizontalAlignment="Stretch">
+                    HorizontalAlignment="Stretch"
+                    x:Name="border">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="10"/>
@@ -251,5 +254,19 @@
                 <StackPanel Orientation="Vertical"/>
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
+        <ItemsControl.RenderTransform>
+            <TranslateTransform Y="{Binding ElementName=sch, Path=ActualHeight, Converter={StaticResource NegativeValueConverter}}"/>
+        </ItemsControl.RenderTransform>
+        <ItemsControl.Triggers>
+            <EventTrigger RoutedEvent="Loaded">
+                <EventTrigger.Actions>
+                    <BeginStoryboard>
+                        <Storyboard Storyboard.TargetName="sch" Storyboard.TargetProperty="RenderTransform.Y">
+                            <DoubleAnimation To="0" Duration="0:0:0.35" DecelerationRatio="0.25"/>
+                        </Storyboard>
+                    </BeginStoryboard>
+                </EventTrigger.Actions>
+            </EventTrigger>
+        </ItemsControl.Triggers>
     </ItemsControl>
 </UserControl>

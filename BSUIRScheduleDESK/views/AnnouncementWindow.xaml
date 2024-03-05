@@ -7,14 +7,25 @@
         xmlns:templates="clr-namespace:BSUIRScheduleDESK.templates"
         xmlns:viewmodels="clr-namespace:BSUIRScheduleDESK.viewmodels"
         mc:Ignorable="d"
-        Title="BSUIR Schedule" Height="450" Width="800"
+        Height="450" Width="800"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown"
-        ResizeMode="NoResize">
+        ResizeMode="NoResize"
+        ShowInTaskbar="False">
+    <Window.Style>
+        <Style TargetType="{x:Type Window}">
+            <Setter Property="Title" Value="{Binding Title, StringFormat={}Объявления {0} - BSUIR Schedule}"/>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsEmployeeAnnouncement}" Value="False">
+                    <Setter Property="Title" Value="{Binding Title, StringFormat={}Объявления группы {0} - BSUIR Schedule}"/>
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </Window.Style>
     <Window.Resources>
         <templates:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
         <DataTemplate x:Key="AnnouncementTemplate">

@@ -14,6 +14,7 @@
 
     <Color x:Key="FavoriteBar.Background" R="103" G="134" B="184" A="255"/>
     <Color x:Key="FavoriteBar.Button.Background" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="FavoriteBar.Button.External" R="245" G="245" B="245" A="255"/>
     <Color x:Key="FavoriteBar.Button.Delete.Background" R="255" G="255" B="255" A="255"/>
     <Color x:Key="FavoriteBar.Button.Foreground" R="0" G="0" B="0" A="255"/>
     <Color x:Key="FavoriteBar.Background.MouseOver" R="226" G="226" B="226" A="255"/>
@@ -163,6 +164,7 @@
 
     <SolidColorBrush x:Key="FavoriteBar.Background.Static" Color="{StaticResource FavoriteBar.Background}"/>
     <SolidColorBrush x:Key="FavoriteBar.Button.Background.Static" Color="{StaticResource FavoriteBar.Button.Background}"/>
+    <SolidColorBrush x:Key="FavoriteBar.Button.External.Static" Color="{StaticResource FavoriteBar.Button.External}"/>
     <SolidColorBrush x:Key="FavoriteBar.Button.Delete.Background.Static" Color="{StaticResource FavoriteBar.Button.Delete.Background}"/>
     <SolidColorBrush x:Key="FavoriteBar.Button.Foreground.Static" Color="{StaticResource FavoriteBar.Button.Foreground}"/>
     <SolidColorBrush x:Key="FavoriteBar.MouseOver.Background" Color="{StaticResource FavoriteBar.Background.MouseOver}"/>
