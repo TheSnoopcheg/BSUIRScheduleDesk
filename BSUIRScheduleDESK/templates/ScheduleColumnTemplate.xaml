@@ -31,7 +31,7 @@
                         <ColumnDefinition Width="10"/>
                         <ColumnDefinition/>
                     </Grid.ColumnDefinitions>
-                    <Border CornerRadius="10,0,00,10"
+                    <Border CornerRadius="10,0,0,10"
                             Background="{DynamicResource Schedule.BorderBrush.Static}"/>
                     <Grid Grid.Column="1">
                         <Grid.RowDefinitions>
@@ -43,10 +43,13 @@
                             <RowDefinition MinHeight="30"/>
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/assets/icons8-note-30.png"
-                                   Height="17.5"
-                                   VerticalAlignment="Center"
-                                   Margin="10,0,0,0"/>
+                            <Path Data="{DynamicResource noteIcon}"
+                                  Stretch="Fill"
+                                  Fill="{DynamicResource Schedule.Text.Foreground.Static}"
+                                  Width="13.5"
+                                  Height="13.5"
+                                  VerticalAlignment="Center"
+                                  Margin="10,0,0,0"/>
                             <TextBlock Text="ОБЪЯВЛЕНИЕ"
                                        Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        FontWeight="Bold"
@@ -58,6 +61,7 @@
                                    Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    Margin="10,0,0,0"
                                    VerticalAlignment="Center"
+                                   TextWrapping="Wrap"
                                    Grid.Row="1"/>
                         <StackPanel Orientation="Horizontal"
                                     Grid.Row="2">

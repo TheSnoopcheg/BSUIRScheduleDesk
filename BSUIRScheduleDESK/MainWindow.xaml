@@ -550,7 +550,8 @@
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                                     </Button.RenderTransform>
-                                    <Grid>
+                                    <Grid Width="30"
+                                          Height="30">
                                         <Path Stroke="{DynamicResource Icon.Stroke.Static}" 
                                               Stretch="Fill" 
                                               StrokeThickness="0.85"

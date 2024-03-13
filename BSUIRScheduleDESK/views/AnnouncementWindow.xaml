@@ -42,7 +42,8 @@
                                Foreground="{DynamicResource Border.ElementText.Static}"
                                HorizontalAlignment="Center"
                                FontWeight="DemiBold"/>
-                    <TextBlock HorizontalAlignment="Center">
+                    <TextBlock HorizontalAlignment="Center"
+                               Foreground="{DynamicResource Border.ElementText.Static}">
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}({0} - {1})">
                                 <Binding Path="startTime"/>
