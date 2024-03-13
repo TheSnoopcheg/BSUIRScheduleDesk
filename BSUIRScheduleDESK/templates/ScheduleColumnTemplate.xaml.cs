@@ -9,12 +9,6 @@ namespace BSUIRScheduleDESK.templates
     /// </summary>
     public partial class ScheduleColumnTemplate : UserControl
     {
-        public enum LocationEnum
-        {
-            First,
-            Middle,
-            Last
-        }
         public ScheduleColumnTemplate()
         {
             InitializeComponent(); 
@@ -23,13 +17,13 @@ namespace BSUIRScheduleDESK.templates
         }
         public void OnSub()
         {
-            if (sch.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(sch.ItemsSource).Refresh();
+            if (classesPlates.ItemsSource != null)
+                CollectionViewSource.GetDefaultView(classesPlates.ItemsSource).Refresh();
         }
         public void OnSub(int t)
         {
-            if (sch.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(sch.ItemsSource).Refresh();
+            if (classesPlates.ItemsSource != null)
+                CollectionViewSource.GetDefaultView(classesPlates.ItemsSource).Refresh();
         }
     }
 }

@@ -8,7 +8,7 @@ namespace BSUIRScheduleDESK.viewmodels
 {
     public class FavoriteSchedulesViewModel : Notifier
     {
-        readonly ScheduleModel _model = new ScheduleModel();
+        readonly FavoriteSchedulesModel _model = new FavoriteSchedulesModel();
         public FavoriteSchedulesViewModel()
         {
             EventService.ScheduleFavorited += AddSchedule;

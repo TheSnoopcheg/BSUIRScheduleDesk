@@ -4,11 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
-             xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
+             xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
              mc:Ignorable="d"
              x:Name="root">
     <UserControl.Resources>
-        <local:DateConverter x:Key="DateConverter"/>
+        <converters:DateConverter x:Key="DateConverter"/>
         <DataTemplate x:Key="dateTemplate">
             <TextBlock Text="{Binding Converter={StaticResource DateConverter}}"
                        Foreground="{DynamicResource Schedule.Date.Foreground.Static}"
@@ -70,8 +70,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <ContentPresenter Grid.Row="1"
-                  Content="{Binding}"
-                  x:Name="hw">
+                      Content="{Binding}">
         <ContentPresenter.Style>
             <Style TargetType="{x:Type ContentPresenter}">
                 <Setter Property="ContentTemplate" Value="{StaticResource tableSchedule}"/>

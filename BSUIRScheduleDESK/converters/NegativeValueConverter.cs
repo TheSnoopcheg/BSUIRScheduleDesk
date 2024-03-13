@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Globalization;
-using System.Windows;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.converters
 {
-    internal class ButtonVisibilityConverter : IValueConverter
+    internal class NegativeValueConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return Visibility.Collapsed;
-            if((bool)value == true) return Visibility.Visible;
-            return Visibility.Collapsed;
+            if (value == null) return default;
+            if(value is double v)
+            {
+                return -v;
+            }
+            return default;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

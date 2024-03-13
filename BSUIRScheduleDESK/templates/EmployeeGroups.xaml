@@ -4,11 +4,12 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
+             xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
              x:Name="root"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
-        <local:CenterTransformConverter x:Key="CenterTransformConverter"/>
+        <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
+        <converters:CenterTransformConverter x:Key="CenterTransformConverter"/>
         <DataTemplate x:Key="EmployeeGroupsTemplate">
             <Button Command="{Binding Command, ElementName=root}" CommandParameter="{Binding}">
                 <Button.ToolTip>

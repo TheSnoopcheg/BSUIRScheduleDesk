@@ -5,7 +5,7 @@ using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.converters
 {
     public class ExamSchedulesConverter : IValueConverter
     {

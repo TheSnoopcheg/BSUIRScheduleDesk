@@ -4,13 +4,14 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
+             xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
              xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
              mc:Ignorable="d" >
 
     <UserControl.Resources>
-        <local:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
-        <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
-        <local:DateConverter x:Key="DateConverter"/>
+        <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
+        <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
+        <converters:DateConverter x:Key="DateConverter"/>
 
         <DataTemplate x:Key="examPlateTemplate">
             <Border CornerRadius="10"

@@ -4,15 +4,16 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
+             xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
              mc:Ignorable="d"
-             x:Name="_Schedules">
+             x:Name="favSchedules">
     <UserControl.Resources>
-        <local:EmployeeNameConverter x:Key="EmployeeNameConverter"/>
+        <converters:EmployeeNameConverter x:Key="EmployeeNameConverter"/>
         <DataTemplate x:Key="favButTemplate">
             <RadioButton GroupName="scheduleButton">
                 <RadioButton.Style>
                     <Style TargetType="{x:Type RadioButton}">
-                        <Setter Property="Command" Value="{Binding ElementName=_Schedules, Path=DataContext.OpenSchedule, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Setter Property="Command" Value="{Binding ElementName=favSchedules, Path=DataContext.OpenSchedule, UpdateSourceTrigger=PropertyChanged}"/>
                         <Setter Property="CommandParameter" Value="{Binding}"/>
                         <Setter Property="Focusable" Value="False"/>
                         <Setter Property="Opacity" Value="0"/>
@@ -57,7 +58,7 @@
                                               Padding="0"
                                               HorizontalContentAlignment="Center"
                                               VerticalContentAlignment="Center"
-                                              Command="{Binding ElementName=_Schedules, Path=DataContext.DeleteSchedule, UpdateSourceTrigger=PropertyChanged}"
+                                              Command="{Binding ElementName=favSchedules, Path=DataContext.DeleteSchedule, UpdateSourceTrigger=PropertyChanged}"
                                               CommandParameter="{Binding}"
                                               Style="{DynamicResource ButtonStyle1}">
                                             <Button.RenderTransform>

@@ -4,8 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
-        xmlns:templates="clr-namespace:BSUIRScheduleDESK.templates"
-        xmlns:viewmodels="clr-namespace:BSUIRScheduleDESK.viewmodels"
+        xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
         mc:Ignorable="d"
         Height="450" Width="800"
         AllowsTransparency="True"
@@ -15,7 +14,8 @@
         MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown"
         ResizeMode="NoResize"
-        ShowInTaskbar="False">
+        ShowInTaskbar="False"
+        x:Name="annWindow">
     <Window.Style>
         <Style TargetType="{x:Type Window}">
             <Setter Property="Title" Value="{Binding Title, StringFormat={}Объявления {0} - BSUIR Schedule}"/>
@@ -27,7 +27,7 @@
         </Style>
     </Window.Style>
     <Window.Resources>
-        <templates:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
+        <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
         <DataTemplate x:Key="AnnouncementTemplate">
             <Grid Margin="0, 10, 0, 10">
                 <Grid.ColumnDefinitions>
@@ -122,6 +122,7 @@
                     <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                 </Button.RenderTransform>
             </Button>
+            <!--announcements presentation area-->
             <Border Grid.Row="1" 
                     CornerRadius="10"
                     Background="{DynamicResource Border.Background.Static}"

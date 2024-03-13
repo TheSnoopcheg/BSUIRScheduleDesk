@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.converters
 {
     public class StringsCollectionConverter : IValueConverter
     {

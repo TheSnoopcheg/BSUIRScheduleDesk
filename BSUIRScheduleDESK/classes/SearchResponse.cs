@@ -17,7 +17,7 @@
         public string? specialityAbbrev { get; set; }
         public override string ToString()
         {
-            return name != null ? $"{name} ({specialityAbbrev})" : $"{fio}";
+            return name != null ? $"{name} ({specialityAbbrev})" : academicDepartment != string.Empty ? $"{fio} ({academicDepartment})" : $"{fio}";
         }
         public string? GetUrl()
         {

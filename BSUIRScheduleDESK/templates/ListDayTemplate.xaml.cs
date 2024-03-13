@@ -22,13 +22,13 @@ namespace BSUIRScheduleDESK.templates
         }
         public void OnSub()
         {
-            if (lst.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(lst.ItemsSource).Refresh();
+            if (classesList.ItemsSource != null)
+                CollectionViewSource.GetDefaultView(classesList.ItemsSource).Refresh();
         }
         public void OnSub(int t)
         {
-            if (lst.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(lst.ItemsSource).Refresh();
+            if (classesList.ItemsSource != null)
+                CollectionViewSource.GetDefaultView(classesList.ItemsSource).Refresh();
         }
 
         #region LoadScheduleCommand

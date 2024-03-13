@@ -20,7 +20,7 @@ namespace BSUIRScheduleDESK.views
             set
             {
                 _results = value;
-                OnPropertyChanged(nameof(Results));
+                OnPropertyChanged();
             }
         }
         private SearchResponse? _searchResponse;

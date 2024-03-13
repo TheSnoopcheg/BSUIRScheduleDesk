@@ -6,6 +6,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BSUIRScheduleDESK"
+        xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
         xmlns:templates="clr-namespace:BSUIRScheduleDESK.templates"
         mc:Ignorable="d"
         x:Name="mainWindow"
@@ -17,56 +18,10 @@
         WindowState="Maximized"
         ResizeMode="CanMinimize">
     <Window.Resources>
-        <templates:DateConverter x:Key="DateConverter"/>
-        <templates:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
-        <templates:TabItemVisibilityConverter x:Key="TabItemVisibilityConverter"/>
-        <templates:ButtonVisibilityConverter x:Key="ButtonVisibilityConverter"/>
-        <Style TargetType="{x:Type Button}" x:Key="AddButtonStyle">
-            <Setter Property="Focusable" Value="False"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid>
-                            <Ellipse Height="40"
-                                 Width="40"
-                                 StrokeThickness="1"
-                                 Stroke="{DynamicResource FavoriteBar.Button.External.Static}"
-                                 StrokeDashArray="5"
-                                 Margin="5"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center">
-                            </Ellipse>
-
-                            <Ellipse Height="35"
-                                 Width="35"
-                                 StrokeThickness="1"
-                                 Fill="{DynamicResource FavoriteBar.Button.Background.Static}"
-                                 HorizontalAlignment="Center"
-                                 VerticalAlignment="Center"
-                                 x:Name="some">
-
-                            </Ellipse>
-
-                            <Path Fill="{DynamicResource Icon.Stroke.Static}" 
-                                  Height="20" 
-                                  Width="20" 
-                                  VerticalAlignment="Center" 
-                                  HorizontalAlignment="Center" 
-                                  Stretch="Fill" 
-                                  Data="{StaticResource plusIcon}"/>
-                        </Grid>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="some" Property="Fill" Value="{DynamicResource FavoriteBar.MouseOver.Background}"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="some" Property="Fill" Value="{DynamicResource FavoriteBar.Pressed.Background}"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <converters:DateConverter x:Key="DateConverter"/>
+        <converters:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
+        <converters:TabItemVisibilityConverter x:Key="TabItemVisibilityConverter"/>
+        <converters:ButtonVisibilityConverter x:Key="ButtonVisibilityConverter"/>
         
         <ControlTemplate x:Key="tabSchedule">
             <Grid>
@@ -95,8 +50,8 @@
                         <Path Fill="{DynamicResource Icon.Stroke.Static}"
                               Stretch="Fill"
                               Data="{StaticResource doubleLeftArrowIcon}"
-                              Height="16"
-                              Width="16"/>
+                              Height="15"
+                              Width="15"/>
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
                         </Button.RenderTransform>
@@ -113,7 +68,8 @@
                                        Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                        VerticalAlignment="Center"
                                        HorizontalAlignment="Center"/>
-                            <CheckBox Style="{DynamicResource CheckBoxStyle}" Content="1"
+                            <CheckBox Style="{DynamicResource CheckBoxStyle}" 
+                                      Content="1"
                                       VerticalAlignment="Center"
                                       IsChecked="{Binding Path=FirstSubGroup}"
                                       Margin="5,0,0,0"
@@ -199,12 +155,11 @@
                             Height="25"
                             Padding="0"
                             Command="{Binding CalendarStatusChange}"
-                            CommandParameter="1"
                             Style="{StaticResource ButtonStyle1}">
                         <Path Fill="{DynamicResource Icon.Stroke.Static}"
                               Stretch="Fill"
-                              Height="16"
-                              Width="16"
+                              Height="15"
+                              Width="15"
                               Data="{StaticResource calendarIcon}"/>
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
@@ -220,8 +175,8 @@
                             Style="{StaticResource ButtonStyle1}">
                         <Path Fill="{DynamicResource Icon.Stroke.Static}"
                               Stretch="Fill"
-                              Height="16"
-                              Width="16"
+                              Height="15"
+                              Width="15"
                               Data="{StaticResource doubleRightArrowIcon}"/>
                         <Button.RenderTransform>
                             <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
@@ -229,8 +184,8 @@
                     </Button>
                 </Grid>
                 <templates:DaySchedule Grid.Row="1"
-                           Dates="{Binding DataContext.Dates, ElementName=mainWindow}"
-                           LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow}">
+                                       Dates="{Binding DataContext.Dates, ElementName=mainWindow}"
+                                       LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow}">
                     <templates:DaySchedule.Style>
                         <Style TargetType="{x:Type templates:DaySchedule}">
                             <Setter Property="DataContext" Value="{Binding Schedule.schedules}"/>
@@ -290,8 +245,7 @@
                     <StackPanel HorizontalAlignment="Right"
                                 Orientation="Horizontal"
                                 Margin="0,0,5,0">
-                        <Button x:Name="btnMinimize" 
-                                Style="{StaticResource ButtonStyle}"
+                        <Button Style="{StaticResource ButtonStyle}"
                                 Height="30"
                                 Width="30"
                                 Click="btnMinimize_Click">
@@ -301,8 +255,7 @@
                                   Height="1" 
                                   Data="{StaticResource minimizeIcon}"/>
                         </Button>
-                        <Button x:Name="btnMaximize" 
-                                Style="{StaticResource ButtonStyle}"
+                        <Button Style="{StaticResource ButtonStyle}"
                                 Height="30"
                                 Width="30"
                                 Click="btnMaximize_Click">
@@ -312,8 +265,7 @@
                                   Height="15" 
                                   Data="{StaticResource maximizeIcon}"/>
                         </Button>
-                        <Button x:Name="btnClose"
-                                Style="{StaticResource ButtonStyle}"
+                        <Button Style="{StaticResource ButtonStyle}"
                                 Height="30"
                                 Width="30"
                                 Click="btnClose_Click">
@@ -332,7 +284,7 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <!--favorites bar-->
+                <!--left side bar-->
                 <Border Grid.Column="0" 
                         CornerRadius="0" 
                         Background="{DynamicResource FavoriteBar.Background.Static}">
@@ -344,8 +296,7 @@
                         </Grid.RowDefinitions>
 
                         <!--search button-->
-                        <Button x:Name="btnSearch"
-                                Grid.Row="0"
+                        <Button Grid.Row="0"
                                 Style="{StaticResource ButtonStyle1}"
                                 Height="40"
                                 Width="40"
@@ -362,14 +313,16 @@
                             </Button.RenderTransform>
                         </Button>
                         <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
+                        <!--favorites schedules-->
                         <StackPanel Orientation="Vertical" Grid.Row="1">
                             <templates:FavoriteGroups DataContext="{Binding FavoriteSchedulesViewModel}"/>
+                            <!--add favorite schedule button-->
                             <Button Style="{DynamicResource AddButtonStyle}"
                                     Command="{Binding AddFavoriteScheduleWL}"/>
                         </StackPanel>
                         <Separator Grid.Row="1" VerticalAlignment="Bottom" Margin="0"/>
-                        <Button x:Name="btnSettings"
-                                Grid.Row="2"
+                        <!--settings button-->
+                        <Button Grid.Row="2"
                                 Style="{StaticResource ButtonStyle1}"
                                 Height="40"
                                 Width="40"
@@ -395,24 +348,25 @@
                     </Grid.RowDefinitions>
                     <!--schedule info border-->
                     <Border Margin="10" 
-                                Background="{DynamicResource Border.Background.Static}"
-                                CornerRadius="10"
-                                BorderBrush="{DynamicResource Border.BorderBrush.Static}"
-                                BorderThickness="1">
+                            Background="{DynamicResource Border.Background.Static}"
+                            BorderBrush="{DynamicResource Border.BorderBrush.Static}"
+                            CornerRadius="10"
+                            BorderThickness="1">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
                             <StackPanel Grid.Column="0"
-                                    Orientation="Horizontal">
+                                        Orientation="Horizontal">
+                                <!--schedule name-->
                                 <TextBlock DataContext="{Binding Path=Schedule}"
-                                           x:Name="nameTextBlock"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                            Margin="10,0"
                                            FontSize="14"
-                                           FontWeight="DemiBold">
+                                           FontWeight="DemiBold"
+                                           x:Name="nameTextBlock">
                                     <TextBlock.Style>
                                         <Style TargetType="{x:Type TextBlock}">
                                             <Style.Triggers>
@@ -461,11 +415,12 @@
                                         </ToolTip>
                                     </TextBlock.ToolTip>
                                 </TextBlock>
-                                <TextBlock DataContext="{Binding Path=Schedule.studentGroup}" 
-                                           x:Name="nameAbbrevTextBlock"
+                                <!--abbrev schedule name-->
+                                <TextBlock DataContext="{Binding Path=Schedule.studentGroup}"
                                            Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                            VerticalAlignment="Center"
-                                           FontWeight="DemiBold">
+                                           FontWeight="DemiBold"
+                                           Cursor="Help">
                                     <TextBlock.Text>
                                         <MultiBinding StringFormat="{}{0}, {1}">
                                             <Binding Path="specialityAbbrev"/>
@@ -473,33 +428,25 @@
                                         </MultiBinding>
                                     </TextBlock.Text>
                                     <TextBlock.ToolTip>
-                                        <ToolTip x:Name="groupAbbrevToolTip" Style="{StaticResource ToolTipStyle}" Placement="Bottom" MaxWidth="250">
+                                        <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Bottom" MaxWidth="250">
                                             <TextBlock Text="{Binding specialityName}" TextWrapping="Wrap"/>
                                         </ToolTip>
                                     </TextBlock.ToolTip>
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Cursor" Value="Help"/>
-                                                </Trigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
                                 </TextBlock>
+                                <!--start & end lesson dates block-->
                                 <Grid Margin="20,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
                                     <TextBlock DataContext="{Binding Path=Schedule}"
-                                            Text="{Binding Path=startDate, StringFormat=Начало занятий: {0}}"
+                                               Text="{Binding Path=startDate, StringFormat=Начало занятий: {0}}"
                                                VerticalAlignment="Center"
                                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                FontWeight="DemiBold"
                                                Grid.Row="0"/>
                                     <TextBlock DataContext="{Binding Path=Schedule}"
-                                            Text="{Binding Path=endDate, StringFormat=Конец занятий: {0}}"
+                                               Text="{Binding Path=endDate, StringFormat=Конец занятий: {0}}"
                                                VerticalAlignment="Center"
                                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                FontWeight="DemiBold"
@@ -514,6 +461,7 @@
                                         </Style>
                                     </Grid.Style>
                                 </Grid>
+                                <!--start & end exam dates block-->
                                 <Grid Margin="20,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
@@ -546,15 +494,14 @@
                                         Orientation="Horizontal"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right">
-                                <Button
-                                    x:Name="btnNotes"
-                                    Style="{StaticResource ButtonStyle1}"
-                                    Width="30"
-                                    Height="30"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Right"
-                                    Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource ButtonVisibilityConverter}}"
-                                    Command="{Binding Path=OpenNotesWindow}">
+                                <!--open notes window button-->
+                                <Button Style="{StaticResource ButtonStyle1}"
+                                        Width="30"
+                                        Height="30"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Right"
+                                        Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource ButtonVisibilityConverter}}"
+                                        Command="{Binding Path=OpenNotesWindow}">
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                                     </Button.RenderTransform>
@@ -564,14 +511,13 @@
                                           Width="17.5" 
                                           Data="{StaticResource noteIcon}"/>
                                 </Button>
-                                <Button
-                                    x:Name="btnFavoriteGroup"
-                                    Style="{StaticResource ButtonStyle1}"
-                                    Width="30"
-                                    Height="30"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Right"
-                                    Command="{Binding Path=AddFavoriteSchedule}">
+                                <!--button to make a schedule favorite-->
+                                <Button Style="{StaticResource ButtonStyle1}"
+                                        Width="30"
+                                        Height="30"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding Path=AddFavoriteSchedule}">
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                                     </Button.RenderTransform>
@@ -592,16 +538,15 @@
                                         </Path.Style>
                                     </Path>
                                 </Button>
-                                <Button 
-                                    x:Name="btnAnnuncements"
-                                    Style="{StaticResource ButtonStyle1}"
-                                    Width="30"
-                                    Height="30"
-                                    Padding="0"
-                                    VerticalAlignment="Center"
-                                    HorizontalAlignment="Right"
-                                    Margin="0,0,5,0"
-                                    Command="{Binding Path=OpenAnnouncements}">
+                                <!--open announcements window button-->
+                                <Button Style="{StaticResource ButtonStyle1}"
+                                        Width="30"
+                                        Height="30"
+                                        Padding="0"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Right"
+                                        Margin="0,0,5,0"
+                                        Command="{Binding Path=OpenAnnouncements}">
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                                     </Button.RenderTransform>
@@ -651,6 +596,7 @@
                                 Padding="-10,5,-10,0"
                                 Background="{DynamicResource TabControl.Background.Static}"
                                 SelectedIndex="{Binding SelectedTab}">
+                        <!--current term schedule tab-->
                         <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.schedules, Converter={StaticResource TabItemVisibilityConverter}}">
                             <TabItem.Header>
                                 <StackPanel>
@@ -672,6 +618,7 @@
                                 <Control Template="{StaticResource tabSchedule}" Focusable="False"/>
                             </TabItem.Content>
                         </TabItem>
+                        <!--exam schedule tab-->
                         <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.exams, Converter={StaticResource TabItemVisibilityConverter}}">
                             <TabItem.Header>
                                 <StackPanel>
@@ -691,6 +638,7 @@
                                 </Grid>
                             </TabItem.Content>
                         </TabItem>
+                        <!--previous term schedule tab-->
                         <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.previousSchedules, Converter={StaticResource TabItemVisibilityConverter}}">
                             <TabItem.Header>
                                 <StackPanel>
@@ -712,6 +660,7 @@
                                Margin="0,0,10,0"/>
                 </Grid>
             </Grid>
+            <!--calendar popup-->
             <Popup IsOpen="{Binding Path=IsCalendarOpen}"
                    Placement="Center"
                    AllowsTransparency="True"

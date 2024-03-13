@@ -5,14 +5,15 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
              xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
+             xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
              mc:Ignorable="d" 
              x:Name="root">
     <UserControl.Resources>
-        <local:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
+        <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
+        <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
+        <converters:CenterTransformConverter x:Key="CenterTransformConverter"/>
+        <converters:NegativeValueConverter x:Key="NegativeValueConverter"/>
         <local:DayScheduleTemplateSelector x:Key="DayScheduleTemplateSelector"/>
-        <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
-        <local:CenterTransformConverter x:Key="CenterTransformConverter"/>
-        <local:NegativeValueConverter x:Key="NegativeValueConverter"/>
         <DataTemplate x:Key="clearTemplate">
 
         </DataTemplate>
@@ -244,7 +245,7 @@
             </Border>
         </DataTemplate>
     </UserControl.Resources>
-    <ItemsControl x:Name="sch" 
+    <ItemsControl x:Name="classesPlates" 
                   ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
                   ItemsSource="{Binding}"
                   Focusable="False"
@@ -255,13 +256,13 @@
             </ItemsPanelTemplate>
         </ItemsControl.ItemsPanel>
         <ItemsControl.RenderTransform>
-            <TranslateTransform Y="{Binding ElementName=sch, Path=ActualHeight, Converter={StaticResource NegativeValueConverter}}"/>
+            <TranslateTransform Y="{Binding ElementName=classesPlates, Path=ActualHeight, Converter={StaticResource NegativeValueConverter}}"/>
         </ItemsControl.RenderTransform>
         <ItemsControl.Triggers>
             <EventTrigger RoutedEvent="Loaded">
                 <EventTrigger.Actions>
                     <BeginStoryboard>
-                        <Storyboard Storyboard.TargetName="sch" Storyboard.TargetProperty="RenderTransform.Y">
+                        <Storyboard Storyboard.TargetName="classesPlates" Storyboard.TargetProperty="RenderTransform.Y">
                             <DoubleAnimation To="0" Duration="0:0:0.35" DecelerationRatio="0.25"/>
                         </Storyboard>
                     </BeginStoryboard>

@@ -3,7 +3,7 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.converters
 {
     public class EmployeeNameConverter : IValueConverter
     {

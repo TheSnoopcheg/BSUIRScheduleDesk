@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
-        xmlns:converters="clr-namespace:BSUIRScheduleDESK.templates"
+        xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
         mc:Ignorable="d"
         Height="450" Width="800"
         WindowStyle="None"
@@ -279,6 +279,7 @@
                     <ColumnDefinition/>
                     <ColumnDefinition Width="150"/>
                 </Grid.ColumnDefinitions>
+                <!--notes presentation area-->
                 <Border Grid.Column="0"
                         CornerRadius="10"
                         Margin="10,10,5,10"
@@ -351,6 +352,7 @@
                         <RowDefinition Height="120"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
+                    <!--add, edit, remove buttons-->
                     <StackPanel Margin="5,10,10,10">
                         <Button Style="{DynamicResource ButtonStyle1}"
                                 Height="30"
@@ -398,6 +400,7 @@
                             </Button.RenderTransform>
                         </Button>
                     </StackPanel>
+                    <!--date picker & content input box-->
                     <Grid Grid.Row="1" Margin="5,0,10,10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto"/>

@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace BSUIRScheduleDESK.models
 {
-    public class ScheduleModel
+    public class FavoriteSchedulesModel
     {
         private readonly ObservableCollection<FavoriteSchedule> _favoriteSchedules = new ObservableCollection<FavoriteSchedule>();
         public readonly ReadOnlyObservableCollection<FavoriteSchedule> FavoriteSchedules;
-        public ScheduleModel()
+        public FavoriteSchedulesModel()
         {
             FavoriteSchedules = new ReadOnlyObservableCollection<FavoriteSchedule>(_favoriteSchedules);
 

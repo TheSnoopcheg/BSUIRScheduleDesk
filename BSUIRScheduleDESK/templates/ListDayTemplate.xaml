@@ -5,12 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
              xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
+             xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
              mc:Ignorable="d"
              x:Name="root">
     <UserControl.Resources>
-        <local:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
+        <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
+        <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
         <local:DayScheduleTemplateSelector x:Key="DayScheduleTemplateSelector"/>
-        <local:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
         <DataTemplate x:Key="clearTemplate">
             
         </DataTemplate>
@@ -162,7 +163,7 @@
         <ItemsControl Grid.Row="1" ItemsSource="{Binding}"
                       ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
                       Focusable="False"
-                      x:Name="lst">
+                      x:Name="classesList">
         </ItemsControl>
     </Grid>
 </UserControl>

@@ -5,7 +5,7 @@ using System.Windows.Data;
 using System.Collections.Generic;
 using BSUIRScheduleDESK.classes;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.converters
 {
     public class TabItemVisibilityConverter : IValueConverter
     {

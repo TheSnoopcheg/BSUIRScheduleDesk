@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
              mc:Ignorable="d"
-             x:Name="Control"
+             x:Name="root"
              PreviewKeyDown="Control_KeyDown">
     <UserControl.Resources>
         <Style x:Key="TextBoxStyle" TargetType="{x:Type TextBox}" xmlns:sys="clr-namespace:System;assembly=mscorlib">
@@ -94,25 +94,25 @@
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
-    <Grid x:Name="Root" SnapsToDevicePixels="True" Style="{DynamicResource FocusTextBox}">
+    <Grid SnapsToDevicePixels="True" Style="{DynamicResource FocusTextBox}">
         <Popup x:Name="popup" 
                Placement="Bottom" 
                AllowsTransparency="True" 
                StaysOpen="False" 
                PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}" 
-               IsOpen="{Binding IsDropDownOpen, ElementName=Control}">
+               IsOpen="{Binding IsDropDownOpen, ElementName=root}">
             <Border x:Name="dropDownBorder" 
                     Background="Transparent" 
                     Width="{Binding ActualWidth, ElementName=searchTextBox}" 
-                    MaxHeight="{Binding MaxDropDownHeigth, ElementName=Control}">
+                    MaxHeight="{Binding MaxDropDownHeigth, ElementName=root}">
                 <ListView x:Name="ListView" 
                           BorderBrush="{DynamicResource ListView.BorderBrush.Static}" 
                           BorderThickness="1" 
-                          ItemsSource="{Binding ItemsSource, ElementName=Control}" 
+                          ItemsSource="{Binding ItemsSource, ElementName=root}" 
                           KeyboardNavigation.DirectionalNavigation="Cycle" 
-                          SelectedIndex="{Binding SelectedIndex, ElementName=Control}" 
-                          SelectedItem="{Binding SelectedItem, ElementName=Control}" 
-                          KeyDown="ListView_KeyDown" 
+                          SelectedIndex="{Binding SelectedIndex, ElementName=root}" 
+                          SelectedItem="{Binding SelectedItem, ElementName=root}" 
+                          KeyDown="ListView_KeyDown"
                           ItemContainerStyle="{DynamicResource listViewTemplate}"  
                           Background="{DynamicResource ListView.Background.Static}"
                           Foreground="{DynamicResource ListView.Foreground.Static}"
@@ -122,7 +122,7 @@
             </Border>
         </Popup>
         <TextBox x:Name="searchTextBox" 
-                 Text="{Binding SText, ElementName=Control, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                 Text="{Binding SText, ElementName=root, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                  TabIndex="0" 
                  Style="{DynamicResource TextBoxStyle}"/>
     </Grid>

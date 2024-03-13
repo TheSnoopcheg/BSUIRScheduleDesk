@@ -5,7 +5,7 @@ using System.Windows.Data;
 using System.Diagnostics;
 #endif
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.converters
 {
     public class DateConverter : IValueConverter
     {
