@@ -26,38 +26,42 @@
                        FontWeight="DemiBold"/>
         </DataTemplate>
         <DataTemplate x:Key="tableSchedule">
-            <Border Background="{DynamicResource Border.Background.Static}" Margin="10" CornerRadius="10">
-                <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="35"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-                    <Border Background="{DynamicResource Border.Title.Background.Static}" CornerRadius="10,10,0,0"
+            <Grid>
+                <Border Margin="10" CornerRadius="10" Background="{DynamicResource Border.Background.Static}" Effect="{DynamicResource myShadow}"/>
+                <Border Background="{DynamicResource Border.Background.Static}" Margin="10" CornerRadius="10">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="35"/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <Border Background="{DynamicResource Border.Title.Background.Static}" CornerRadius="10,10,0,0"
                             VerticalAlignment="Top" Grid.Row="0" Height="35">
-                        <ItemsControl ItemsSource="{Binding Dates, ElementName=root}" ItemTemplate="{StaticResource dateTemplate}" Focusable="False">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <UniformGrid Columns="6"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </Border>
-                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
-                        <UniformGrid Columns="6">
-                            <local:ScheduleColumnTemplate DataContext="{Binding Monday}" Grid.Column="0"/>
-                            <local:ScheduleColumnTemplate DataContext="{Binding Tuesday}" Grid.Column="1"/>
-                            <local:ScheduleColumnTemplate DataContext="{Binding Wednesday}" Grid.Column="2"/>
-                            <local:ScheduleColumnTemplate DataContext="{Binding Thursday}" Grid.Column="3"/>
-                            <local:ScheduleColumnTemplate DataContext="{Binding Friday}" Grid.Column="4"/>
-                            <local:ScheduleColumnTemplate DataContext="{Binding Saturday}" Grid.Column="5"/>
-                        </UniformGrid>
-                    </ScrollViewer>
-                </Grid>
-            </Border>
+                            <ItemsControl ItemsSource="{Binding Dates, ElementName=root}" ItemTemplate="{StaticResource dateTemplate}" Focusable="False">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <UniformGrid Columns="6"/>
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </Border>
+                        <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
+                            <UniformGrid Columns="6">
+                                <local:ScheduleColumnTemplate DataContext="{Binding Monday}" Grid.Column="0"/>
+                                <local:ScheduleColumnTemplate DataContext="{Binding Tuesday}" Grid.Column="1"/>
+                                <local:ScheduleColumnTemplate DataContext="{Binding Wednesday}" Grid.Column="2"/>
+                                <local:ScheduleColumnTemplate DataContext="{Binding Thursday}" Grid.Column="3"/>
+                                <local:ScheduleColumnTemplate DataContext="{Binding Friday}" Grid.Column="4"/>
+                                <local:ScheduleColumnTemplate DataContext="{Binding Saturday}" Grid.Column="5"/>
+                            </UniformGrid>
+                        </ScrollViewer>
+                    </Grid>
+                </Border>
+            </Grid>
         </DataTemplate>
         <DataTemplate x:Key="listSchedule">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,5,0,5">
-                <Grid Effect="{DynamicResource myShadow}">
+                <Grid Margin="0,2,0,2">
+                    <Border Background="LightGray" Effect="{DynamicResource myShadow}" CornerRadius="1" Width="700"/>
                     <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
                         <local:ListDayTemplate Date="{Binding Dates[0], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Monday}"/>
                         <local:ListDayTemplate Date="{Binding Dates[1], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Tuesday}"/>
