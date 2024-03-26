@@ -42,7 +42,7 @@
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>
                     </Border>
-                    <ScrollViewer VerticalScrollBarVisibility="Hidden" Grid.Row="1">
+                    <ScrollViewer VerticalScrollBarVisibility="Auto" Grid.Row="1">
                         <UniformGrid Columns="6">
                             <local:ScheduleColumnTemplate DataContext="{Binding Monday}" Grid.Column="0"/>
                             <local:ScheduleColumnTemplate DataContext="{Binding Tuesday}" Grid.Column="1"/>
@@ -56,21 +56,21 @@
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="listSchedule">
-            <ScrollViewer VerticalScrollBarVisibility="Hidden" Margin="0,5,0,5" Effect="{StaticResource myShadow}">
-                <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
-                    <local:ListDayTemplate Date="{Binding Dates[0], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Monday}"/>
-                    <local:ListDayTemplate Date="{Binding Dates[1], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Tuesday}"/>
-                    <local:ListDayTemplate Date="{Binding Dates[2], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Wednesday}"/>
-                    <local:ListDayTemplate Date="{Binding Dates[3], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Thursday}"/>
-                    <local:ListDayTemplate Date="{Binding Dates[4], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Friday}"/>
-                    <local:ListDayTemplate Date="{Binding Dates[5], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Saturday}"/>
-                </StackPanel>
-                
+            <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,5,0,5">
+                <Grid Effect="{DynamicResource myShadow}">
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                        <local:ListDayTemplate Date="{Binding Dates[0], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Monday}"/>
+                        <local:ListDayTemplate Date="{Binding Dates[1], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Tuesday}"/>
+                        <local:ListDayTemplate Date="{Binding Dates[2], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Wednesday}"/>
+                        <local:ListDayTemplate Date="{Binding Dates[3], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Thursday}"/>
+                        <local:ListDayTemplate Date="{Binding Dates[4], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Friday}"/>
+                        <local:ListDayTemplate Date="{Binding Dates[5], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Saturday}"/>
+                    </StackPanel>
+                </Grid>
             </ScrollViewer>
         </DataTemplate>
     </UserControl.Resources>
-    <ContentPresenter Grid.Row="1"
-                      Content="{Binding}">
+    <ContentPresenter Content="{Binding}">
         <ContentPresenter.Style>
             <Style TargetType="{x:Type ContentPresenter}">
                 <Setter Property="ContentTemplate" Value="{StaticResource tableSchedule}"/>

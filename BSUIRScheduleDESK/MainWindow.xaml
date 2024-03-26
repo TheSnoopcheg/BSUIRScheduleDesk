@@ -313,13 +313,15 @@
                             </Button.RenderTransform>
                         </Button>
                         <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
-                        <!--favorites schedules-->
-                        <StackPanel Orientation="Vertical" Grid.Row="1">
-                            <templates:FavoriteGroups DataContext="{Binding FavoriteSchedulesViewModel}"/>
-                            <!--add favorite schedule button-->
-                            <Button Style="{DynamicResource AddButtonStyle}"
-                                    Command="{Binding AddFavoriteScheduleWL}"/>
-                        </StackPanel>
+                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                            <!--favorites schedules-->
+                            <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
+                                <templates:FavoriteGroups DataContext="{Binding FavoriteSchedulesViewModel}"/>
+                                <!--add favorite schedule button-->
+                                <Button Style="{DynamicResource AddButtonStyle}"
+                                        Command="{Binding AddFavoriteScheduleWL}"/>
+                            </StackPanel>
+                        </ScrollViewer>
                         <Separator Grid.Row="1" VerticalAlignment="Bottom" Margin="0"/>
                         <!--settings button-->
                         <Button Grid.Row="2"
@@ -611,8 +613,8 @@
 
 
                     <!--schedule-->
-                    <TabControl Style="{DynamicResource TabControlStyle}" Grid.Row="1" Margin="10,0,10,0"
-                                Padding="-10,5,-10,0"
+                    <TabControl Style="{DynamicResource TabControlStyle}" Grid.Row="1" Margin="5,0,5,0"
+                                Padding="0,5,0,0"
                                 Background="{DynamicResource TabControl.Background.Static}"
                                 SelectedIndex="{Binding SelectedTab}">
                         <!--current term schedule tab-->

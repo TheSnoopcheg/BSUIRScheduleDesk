@@ -870,7 +870,7 @@
                 </Setter>
             </Style>
             
-            <DropShadowEffect x:Key="myShadow" BlurRadius="10" Opacity="0.4" ShadowDepth="0"/>
+            <DropShadowEffect x:Key="myShadow" BlurRadius="5" Opacity="0.4" ShadowDepth="0"/>
             
             <Style x:Key="ExpanderDownHeaderStyle" TargetType="{x:Type ToggleButton}">
                 <Setter Property="Template">
@@ -959,6 +959,99 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+            </Style>
+            
+            <Style x:Key="ScrollBarThumb" TargetType="{x:Type Thumb}">
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="IsTabStop" Value="false" />
+                <Setter Property="Focusable" Value="false" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type Thumb}">
+                            <Border CornerRadius="2"
+                                    Background="{TemplateBinding Background}"
+                                    BorderBrush="{TemplateBinding BorderBrush}"
+                                    BorderThickness="1" />
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+
+            <ControlTemplate x:Key="VerticalScrollBar"
+                             TargetType="{x:Type ScrollBar}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="0.00001*" />
+                    </Grid.RowDefinitions>
+                    <Track x:Name="PART_Track"
+                           Grid.Row="0"
+                           IsDirectionReversed="true">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Opacity="0"
+                                          Focusable="False"
+                                          Command="ScrollBar.PageUpCommand"/>
+                        </Track.DecreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb Style="{StaticResource ScrollBarThumb}"
+                                   Margin="1,0,1,0"
+                                   Background="{TemplateBinding Background}">
+                            </Thumb>
+                        </Track.Thumb>
+                        <Track.IncreaseRepeatButton>
+                            <RepeatButton Opacity="0"
+                                          Focusable="False"
+                                          Command="ScrollBar.PageDownCommand"/>
+                        </Track.IncreaseRepeatButton>
+                    </Track>
+                </Grid>
+            </ControlTemplate>
+
+            <ControlTemplate x:Key="HorizontalScrollBar"
+                             TargetType="{x:Type ScrollBar}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="0.00001*" />
+                    </Grid.ColumnDefinitions>
+                    <Track x:Name="PART_Track"
+                           Grid.Column="0"
+                           IsDirectionReversed="False">
+                        <Track.DecreaseRepeatButton>
+                            <RepeatButton Opacity="0"
+                                          Focusable="False"
+                                          Command="ScrollBar.PageLeftCommand"/>
+                        </Track.DecreaseRepeatButton>
+                        <Track.Thumb>
+                            <Thumb Style="{StaticResource ScrollBarThumb}"
+                                   Margin="0,1,0,1"
+                                   Background="{TemplateBinding Background}">
+                            </Thumb>
+                        </Track.Thumb>
+                        <Track.IncreaseRepeatButton>
+                            <RepeatButton Opacity="0"
+                                          Focusable="False"
+                                          Command="ScrollBar.PageRightCommand"/>
+                        </Track.IncreaseRepeatButton>
+                    </Track>
+                </Grid>
+            </ControlTemplate>
+
+            <Style x:Key="{x:Type ScrollBar}" TargetType="{x:Type ScrollBar}">
+                <Setter Property="SnapsToDevicePixels" Value="True" />
+                <Setter Property="OverridesDefaultStyle" Value="true" />
+                <Setter Property="Background" Value="{DynamicResource ScrollBar.Background.Static}"/>
+                <Style.Triggers>
+                    <Trigger Property="Orientation" Value="Horizontal">
+                        <Setter Property="Width" Value="Auto" />
+                        <Setter Property="Height" Value="7" />
+                        <Setter Property="Template" Value="{StaticResource HorizontalScrollBar}" />
+                    </Trigger>
+                    <Trigger Property="Orientation" Value="Vertical">
+                        <Setter Property="Width" Value="7" />
+                        <Setter Property="Height" Value="Auto" />
+                        <Setter Property="Template" Value="{StaticResource VerticalScrollBar}" />
+                    </Trigger>
+                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </Application.Resources>

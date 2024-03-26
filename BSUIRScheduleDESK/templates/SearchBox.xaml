@@ -117,7 +117,7 @@
                           Background="{DynamicResource ListView.Background.Static}"
                           Foreground="{DynamicResource ListView.Foreground.Static}"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled" 
-                          ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                          ScrollViewer.VerticalScrollBarVisibility="Auto">
                 </ListView>
             </Border>
         </Popup>

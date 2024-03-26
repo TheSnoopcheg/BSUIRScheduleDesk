@@ -197,7 +197,7 @@
                             </TextBlock>
                         </Grid>
                     </Border>
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Hidden" Focusable="False">
+                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False">
                         <ItemsControl ItemsSource="{Binding Announcements, UpdateSourceTrigger=PropertyChanged}"
                                       ItemTemplate="{StaticResource AnnouncementTemplate}" Focusable="False">
                             <ItemsControl.ItemsPanel>

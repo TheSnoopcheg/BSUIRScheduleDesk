@@ -133,15 +133,12 @@
             </RadioButton>
         </DataTemplate>
     </UserControl.Resources>
-    <ScrollViewer VerticalScrollBarVisibility="Hidden">
-        <ItemsControl ItemsSource="{Binding FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
-                      ItemTemplate="{StaticResource favButTemplate}" Focusable="False">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Vertical"/>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-        </ItemsControl>
-    </ScrollViewer>
-    
+    <ItemsControl ItemsSource="{Binding FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
+                  ItemTemplate="{StaticResource favButTemplate}" Focusable="False">
+        <ItemsControl.ItemsPanel>
+            <ItemsPanelTemplate>
+                <StackPanel Orientation="Vertical"/>
+            </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+    </ItemsControl>
 </UserControl>

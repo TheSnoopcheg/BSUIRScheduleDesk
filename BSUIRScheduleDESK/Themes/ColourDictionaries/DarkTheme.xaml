@@ -152,6 +152,8 @@
 
     <Color x:Key="Notes.HasItemsEllipse.Background" R="245" G="245" B="245" A="255"/>
 
+    <Color x:Key="ScrollBar.Background" R="211" G="211" B="211" A="255"/>
+
     <SolidColorBrush x:Key="Window.Background.Static" Color="{StaticResource Window.Background}"/>
     <SolidColorBrush x:Key="Window.Title.Static" Color="{StaticResource Window.Title}"/>
     <SolidColorBrush x:Key="Window.Title.Icon.Static" Color="{StaticResource Window.Title.Icon}"/>
@@ -303,4 +305,6 @@
     <SolidColorBrush x:Key="DatePicker.Button.Pressed.Background" Color="{StaticResource DatePicker.Button.Background.Pressed}"/>
 
     <SolidColorBrush x:Key="Notes.HasItemsEllipse.Background.Static" Color="{StaticResource Notes.HasItemsEllipse.Background}"/>
+
+    <SolidColorBrush x:Key="ScrollBar.Background.Static" Color="{StaticResource ScrollBar.Background}"/>
 </ResourceDictionary>
