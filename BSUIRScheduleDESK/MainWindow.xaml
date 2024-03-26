@@ -618,7 +618,7 @@
                                 Background="{DynamicResource TabControl.Background.Static}"
                                 SelectedIndex="{Binding SelectedTab}">
                         <!--current term schedule tab-->
-                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.schedules, Converter={StaticResource TabItemVisibilityConverter}}">
+                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.schedules, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Schedules}">
                             <TabItem.Header>
                                 <StackPanel>
                                     <TextBlock FontSize="14">
@@ -640,7 +640,7 @@
                             </TabItem.Content>
                         </TabItem>
                         <!--exam schedule tab-->
-                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.exams, Converter={StaticResource TabItemVisibilityConverter}}">
+                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Exams}">
                             <TabItem.Header>
                                 <StackPanel>
                                     <TextBlock Text="Сессия" FontSize="14"/>
@@ -648,6 +648,7 @@
                             </TabItem.Header>
                             <TabItem.Content>
                                 <Grid>
+                                    <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10" Effect="{DynamicResource myShadow}"/>
                                     <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10">
                                         <ScrollViewer VerticalScrollBarVisibility="Hidden">
                                             <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
@@ -660,7 +661,7 @@
                             </TabItem.Content>
                         </TabItem>
                         <!--previous term schedule tab-->
-                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.previousSchedules, Converter={StaticResource TabItemVisibilityConverter}}">
+                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=PreviusSchedule}">
                             <TabItem.Header>
                                 <StackPanel>
                                     <TextBlock Text="{Binding Schedule.previousTerm}" FontSize="14"/>

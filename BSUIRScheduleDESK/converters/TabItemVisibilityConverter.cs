@@ -2,7 +2,6 @@
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using System.Collections.Generic;
 using BSUIRScheduleDESK.classes;
 
 namespace BSUIRScheduleDESK.converters
@@ -11,14 +10,23 @@ namespace BSUIRScheduleDESK.converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null)
+            if (value == null) return Visibility.Collapsed;
+            if( parameter == null ) return Visibility.Collapsed;
+            if(value is GroupSchedule v)
             {
-                return Visibility.Collapsed;
-            }
-            if(value is List<Schedule> v)
-            {
-                if(v.Count == 0)
-                    return Visibility.Collapsed;
+                string? param = parameter as string;
+                if(param == "Exams")
+                {
+                    if (v.exams == null || v.exams.Count == 0) return Visibility.Collapsed;
+                }
+                else if(param == "Schedule")
+                {
+                    if(v.schedules == null) return Visibility.Collapsed;
+                }
+                else if(param == "PreviusSchedule")
+                {
+                    if(v.previousSchedules == null) return Visibility.Collapsed;
+                }
             }
             return Visibility.Visible;
         }
