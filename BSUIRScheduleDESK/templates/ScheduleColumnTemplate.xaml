@@ -176,7 +176,7 @@
                                 <TextBlock.ToolTip>
                                     <ToolTip Placement="Top" HasDropShadow="True" Style="{DynamicResource ToolTipStyle}" MaxWidth="200">
                                         <TextBlock Text="{Binding subjectFullName}"
-                                           TextWrapping="Wrap"/>
+                                                   TextWrapping="Wrap"/>
                                     </ToolTip>
                                 </TextBlock.ToolTip>
                     </TextBlock>

@@ -150,6 +150,8 @@
     <Color x:Key="DatePicker.Button.Background.MouseOver" R="33" G="33" B="33" A="255"/>
     <Color x:Key="DatePicker.Button.Background.Pressed" R="22" G="22" B="22" A="255"/>
 
+    <Color x:Key="Notes.HasItemsEllipse.Background" R="245" G="245" B="245" A="255"/>
+
     <SolidColorBrush x:Key="Window.Background.Static" Color="{StaticResource Window.Background}"/>
     <SolidColorBrush x:Key="Window.Title.Static" Color="{StaticResource Window.Title}"/>
     <SolidColorBrush x:Key="Window.Title.Icon.Static" Color="{StaticResource Window.Title.Icon}"/>
@@ -299,4 +301,6 @@
     <SolidColorBrush x:Key="DatePicker.BorderBrush.Static" Color="{StaticResource DatePicker.BorderBrush}"/>
     <SolidColorBrush x:Key="DatePicker.Button.MouseOver.Background" Color="{StaticResource DatePicker.Button.Background.MouseOver}"/>
     <SolidColorBrush x:Key="DatePicker.Button.Pressed.Background" Color="{StaticResource DatePicker.Button.Background.Pressed}"/>
+
+    <SolidColorBrush x:Key="Notes.HasItemsEllipse.Background.Static" Color="{StaticResource Notes.HasItemsEllipse.Background}"/>
 </ResourceDictionary>

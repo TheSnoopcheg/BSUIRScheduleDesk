@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Data;
 
 namespace BSUIRScheduleDESK.converters
@@ -17,37 +18,22 @@ namespace BSUIRScheduleDESK.converters
                 case "Employee":
                     {
                         var values = value as List<Employee>;
-                        List<string> list = new List<string>();
-                        foreach (Employee s in values!)
-                        {
-                            list.Add(s.ToString());
-                        }
-                        return string.Join("\n", list);
+                        return string.Join("\n", values?.Select(s => s.ToString()) ?? Enumerable.Empty<string>());
                     }
                 case "Group":
                     {
                         var values = value as List<StudentGroup>;
-                        List<string> list = new List<string>();
-                        foreach (StudentGroup s in values!)
-                        {
-                            list.Add(s.name!);
-                        }
-                        return string.Join("\n", list);
+                        return string.Join("\n", values?.Select(s => s.name!) ?? Enumerable.Empty<string>());
                     }
                 case "Auditories":
                     {
                         List<string>? values = value as List<string>;
-                        return string.Join("\n", values);
+                        return string.Join("\n", values!);
                     }
                 case "Weeks":
                     {
                         List<int>? values = value as List<int>;
-                        List<string> list = new List<string>();
-                        foreach (int i in values!)
-                        {
-                            list.Add(i.ToString());
-                        }
-                        return string.Join(", ", list);
+                        return string.Join(", ", values?.Select(i => i.ToString()) ?? Enumerable.Empty<string>());
                     }
                 case "SubGroup":
                     {

@@ -495,22 +495,40 @@
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right">
                                 <!--open notes window button-->
-                                <Button Style="{StaticResource ButtonStyle1}"
-                                        Width="30"
-                                        Height="30"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource ButtonVisibilityConverter}}"
-                                        Command="{Binding Path=OpenNotesWindow}">
-                                    <Button.RenderTransform>
-                                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
-                                    </Button.RenderTransform>
-                                    <Path Fill="{DynamicResource Icon.Stroke.Static}" 
-                                          Stretch="Fill" 
-                                          Height="17.5" 
-                                          Width="17.5" 
-                                          Data="{StaticResource noteIcon}"/>
-                                </Button>
+                                <Grid>
+                                    <Button Style="{StaticResource ButtonStyle1}"
+                                            Width="30"
+                                            Height="30"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Right"
+                                            Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource ButtonVisibilityConverter}}"
+                                            Command="{Binding Path=OpenNotesWindow}">
+                                        <Button.RenderTransform>
+                                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                                        </Button.RenderTransform>
+                                        <Path Fill="{DynamicResource Icon.Stroke.Static}" 
+                                              Stretch="Fill" 
+                                              Height="17.5" 
+                                              Width="17.5" 
+                                              Data="{StaticResource noteIcon}"/>
+                                    </Button>
+                                    <Ellipse Fill="{DynamicResource Notes.HasItemsEllipse.Background.Static}"
+                                             Height="10"
+                                             Width="10"
+                                             HorizontalAlignment="Right"
+                                             VerticalAlignment="Top"
+                                             Margin="0,3,3,0">
+                                        <Ellipse.Style>
+                                            <Style TargetType="{x:Type Ellipse}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Path=Notes.Count}" Value="0">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Ellipse.Style>
+                                    </Ellipse>
+                                </Grid>
                                 <!--button to make a schedule favorite-->
                                 <Button Style="{StaticResource ButtonStyle1}"
                                         Width="30"
