@@ -80,6 +80,16 @@
                                       Style="{DynamicResource CheckBoxStyle}"
                                       Margin="5,0,0,0"
                                       HorizontalAlignment="Center"/>
+                            <TextBlock Text="Показывать экзамены:"
+                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="15,0,0,0"/>
+                            <CheckBox Style="{DynamicResource CheckBoxStyle}"
+                                      VerticalAlignment="Center"
+                                      HorizontalAlignment="Center"
+                                      IsChecked="{Binding Path=ShowExams}"
+                                      Margin="5,0,0,0"/>
                         </StackPanel>
                         <TextBlock Text="{Binding CurrentWeek, StringFormat=Неделя: {0}}"
                                    Foreground="{DynamicResource TextBlock.Foreground.Static}"

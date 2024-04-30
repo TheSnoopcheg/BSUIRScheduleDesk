@@ -12,7 +12,7 @@ namespace BSUIRScheduleDESK.templates
         public ScheduleColumnTemplate()
         {
             InitializeComponent(); 
-            EventService.SubgroupUpdated += OnSub;
+            EventService.SchedulePresentationUpdated += OnSub;
             EventService.WeekUpdated += OnSub;
         }
         public void OnSub()

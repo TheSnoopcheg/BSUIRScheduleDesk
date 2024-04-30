@@ -17,7 +17,10 @@
 
         public override string ToString()
         {
-            return $"{lastName} {firstName![0]}. {middleName![0]}.";
+            if (middleName == null)
+                return $"{lastName} {firstName![0]}.";
+            else
+                return $"{lastName} {firstName![0]}. {middleName![0]}.";
         }
         public string GetFullName()
         {

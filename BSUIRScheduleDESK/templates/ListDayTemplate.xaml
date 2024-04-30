@@ -15,6 +15,126 @@
         <DataTemplate x:Key="clearTemplate">
             
         </DataTemplate>
+        <DataTemplate x:Key="sessionItemTemplate">
+            <Border Background="{DynamicResource Schedule.Background.Static}"
+                    Width="Auto"
+                    Height="Auto"
+                    BorderThickness="0,0.25,0,0.25"
+                    BorderBrush="{DynamicResource Schedule.BorderBrush.Static}">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="4"/>
+                        <ColumnDefinition Width="40"/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                        <ColumnDefinition Width="55"/>
+                    </Grid.ColumnDefinitions>
+                    <Border Grid.Column="0">
+                        <Border.Style>
+                            <Style TargetType="{x:Type Border}">
+                                <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=OneWay}"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛК">
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=OneWay}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ПЗ">
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=OneWay}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛР">
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=OneWay}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Экзамен">
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=OneWay}"/>
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Консультация">
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=OneWay}"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Border.Style>
+                    </Border>
+                    <Grid Grid.Column="1"
+                          Margin="2,0">
+                        <TextBlock Text="{Binding startLessonTime}"
+                                   Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                   VerticalAlignment="Top"
+                                   FontWeight="DemiBold"
+                                   FontSize="13"/>
+                        <TextBlock Text="{Binding endLessonTime}"
+                                   Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                   VerticalAlignment="Bottom"/>
+                    </Grid>
+                    <Grid Grid.Column="2">
+                        <Grid.RowDefinitions>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                            <RowDefinition/>
+                        </Grid.RowDefinitions>
+                        <StackPanel Orientation="Horizontal" Grid.Row="0">
+                            <TextBlock Text="{Binding subject}"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       FontWeight="DemiBold"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"
+                                       Cursor="Help">
+                                <TextBlock.ToolTip>
+                                    <ToolTip Placement="Top" HasDropShadow="True" Style="{DynamicResource ToolTipStyle}" MaxWidth="200">
+                                        <TextBlock Text="{Binding subjectFullName}"
+                                           TextWrapping="Wrap"/>
+                                    </ToolTip>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                            <TextBlock Text="{Binding lessonTypeAbbrev, StringFormat=({0})}"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       HorizontalAlignment="Center"
+                                       Margin="5,0"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Grid.Row="1">
+                            <TextBlock Text="Дата:"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       Margin="10,0,0,0"/>
+                            <TextBlock Text="{Binding dateLesson}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                       FontWeight="DemiBold"
+                                       Margin="5,0"/>
+                        </StackPanel>
+                        <TextBlock Grid.Row="2"
+                                   Foreground="{DynamicResource Schedule.Note.Foreground.Static}"
+                                   Text="{Binding note}"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   Margin="10,0"/>
+                    </Grid>
+                    <local:EmployeeGroups Grid.Column="3"
+                                          Margin="10,2.5,0,0"
+                                          MaxHeight="50"
+                                          HorizontalAlignment="Right"
+                                          Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}">
+                        <local:EmployeeGroups.Style>
+                            <Style TargetType="{x:Type local:EmployeeGroups}">
+                                <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
+                            </Style>
+                        </local:EmployeeGroups.Style>
+                    </local:EmployeeGroups>
+                    <Grid Grid.Column="4">
+                        <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
+                                   Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                   VerticalAlignment="Top"
+                                   HorizontalAlignment="Right"
+                                   TextWrapping="Wrap"
+                                   Margin="0, 0, 5, 0"/>
+                        <TextBlock Text="{Binding numSubgroup, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=SubGroup}"
+                                   Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                   VerticalAlignment="Bottom"
+                                   HorizontalAlignment="Right"
+                                   Margin="0,0,5,0"/>
+                    </Grid>
+                </Grid>
+            </Border>
+        </DataTemplate>
         <DataTemplate x:Key="announcementTemplate">
             <Border Background="{DynamicResource Schedule.Background.Static}"
                     Width="Auto"
@@ -119,22 +239,22 @@
                     <Border Grid.Column="0">
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
-                                <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}"/>
+                                <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=OneWay}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛК">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=OneWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ПЗ">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=OneWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛР">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=OneWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Экзамен">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=OneWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Консультация">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=OneWay}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

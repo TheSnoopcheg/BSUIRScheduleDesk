@@ -13,13 +13,16 @@
         <DataTemplate x:Key="EmployeeGroupsTemplate">
             <Button Command="{Binding Command, ElementName=root}" CommandParameter="{Binding}">
                 <Button.ToolTip>
-                    <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Top" MaxWidth="200">
+                    <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Top" MaxWidth="200" >
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
                                 <RowDefinition/>
                             </Grid.RowDefinitions>
-                            <Image Grid.Row="0" Height="100">
+                            <Image Grid.Row="0" 
+                                   Height="100"
+                                   Stretch="UniformToFill"
+                                   Width="100">
                                 <Image.Clip>
                                     <EllipseGeometry RadiusX="45" RadiusY="45" Center="50, 50"/>
                                 </Image.Clip>

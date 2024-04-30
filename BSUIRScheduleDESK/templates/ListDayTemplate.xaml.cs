@@ -17,7 +17,7 @@ namespace BSUIRScheduleDESK.templates
         public ListDayTemplate()
         {
             InitializeComponent();
-            EventService.SubgroupUpdated += OnSub;
+            EventService.SchedulePresentationUpdated += OnSub;
             EventService.WeekUpdated += OnSub;
         }
         public void OnSub()

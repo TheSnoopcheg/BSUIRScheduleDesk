@@ -92,7 +92,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 _firstsubgroup = value;
                 Properties.Settings.Default.firstsubgroup = value;
                 Properties.Settings.Default.Save();
-                EventService.SubgroupUpdated_Invoke();
+                EventService.SchedulePresentationUpdated_Invoke();
             }
         }
         private bool _secondsubgroup;
@@ -104,7 +104,19 @@ namespace BSUIRScheduleDESK.viewmodels
                 _secondsubgroup = value;
                 Properties.Settings.Default.secondsubgroup = value;
                 Properties.Settings.Default.Save();
-                EventService.SubgroupUpdated_Invoke();
+                EventService.SchedulePresentationUpdated_Invoke();
+            }
+        }
+        private bool _showExams;
+        public bool ShowExams
+        {
+            get => _showExams;
+            set
+            {
+                _showExams = value;
+                Properties.Settings.Default.showexams = value;
+                Properties.Settings.Default.Save();
+                EventService.SchedulePresentationUpdated_Invoke();
             }
         }
         private ObservableCollection<Note>? _notes = new ObservableCollection<Note>();
@@ -137,7 +149,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public string Build { get; set; } = "build:000024556pre-release 26.03.2024";
+        public string Build { get; set; } = "30.04.2024pre-release";
 
         #endregion
 
@@ -361,7 +373,6 @@ namespace BSUIRScheduleDESK.viewmodels
             WeekDiff += offset;
             ChangeDates(offset);
             int weekDiff = offset % 4;
-            Debug.WriteLine(weekDiff);
             CurrentWeek += weekDiff;
             if(useEvent)
                 EventService.WeekUpdated_Invoke(weekDiff);
@@ -445,6 +456,7 @@ namespace BSUIRScheduleDESK.viewmodels
             }
             _firstsubgroup = Properties.Settings.Default.firstsubgroup;
             _secondsubgroup = Properties.Settings.Default.secondsubgroup;
+            _showExams = Properties.Settings.Default.showexams;
             CurrentWeek = Properties.Settings.Default.currentweek;
             Dates = _model.Dates;
             LoadRecentSchedule();

@@ -41,5 +41,8 @@
     <Setting Name="currentTheme" Type="System.String" Scope="User">
       <Value Profile="(Default)">IISTheme</Value>
     </Setting>
+    <Setting Name="showexams" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
   </Settings>
 </SettingsFile>

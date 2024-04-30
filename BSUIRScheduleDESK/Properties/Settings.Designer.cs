@@ -177,5 +177,17 @@ namespace BSUIRScheduleDESK.Properties {
                 this["currentTheme"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool showexams {
+            get {
+                return ((bool)(this["showexams"]));
+            }
+            set {
+                this["showexams"] = value;
+            }
+        }
     }
 }
