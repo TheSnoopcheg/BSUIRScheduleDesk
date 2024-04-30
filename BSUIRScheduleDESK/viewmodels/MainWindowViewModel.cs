@@ -64,25 +64,6 @@ namespace BSUIRScheduleDESK.viewmodels
             {
                 if(value != null)
                 {
-                    string? url = value?.employee == null ? value?.studentGroup?.name : value.employee.urlId;
-                    if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
-                    {
-                        value!.favorited = true;
-                    }
-                    if(DateTime.TryParse(value!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(value!.endExamsDate, out DateTime endExamsDate))
-                    {
-                        if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
-                            SelectedTab = 1;
-                        else
-                            SelectedTab = 0;
-                    }
-                    if (value.favorited)
-                    {
-                        Task.Run(async () =>
-                        {
-                            Notes = await NoteService.LoadNotes(value.GetUrl());
-                        });
-                    }
                     _groupSchedule = value;
                     OnPropertyChanged();
                 }
@@ -179,6 +160,7 @@ namespace BSUIRScheduleDESK.viewmodels
                                 await _model.LoadSchedule(response.GetUrl(), ScheduleService.LoadingType.Server);
                                 Schedule = _model.Schedule;
                                 Announcements = _model.Announcements;
+                                EventService.ScheduleLoaded_Invoke();
                             }
                         }
                         else { }
@@ -298,9 +280,9 @@ namespace BSUIRScheduleDESK.viewmodels
                         var ve = obj as Employee;
                         var vs = obj as StudentGroup;
                         await _model.LoadSchedule(ve == null ? vs?.name : ve.urlId, ScheduleService.LoadingType.Server);
-                        BackCurrentWeek();
                         Schedule = _model.Schedule;
                         Announcements = _model.Announcements;
+                        EventService.ScheduleLoaded_Invoke();
                     }));
             }
         }
@@ -340,11 +322,7 @@ namespace BSUIRScheduleDESK.viewmodels
                         if (obj is DateTime date)
                         {
                             int weeks = -(DateService.GetWeekDiff(date, Dates![0]));
-                            WeekDiff += weeks;
-                            ChangeDates(weeks);
-                            int wd = weeks % 4;
-                            CurrentWeek += wd;
-                            EventService.WeekUpdated_Invoke(wd);
+                            GoToWeekByOff(weeks, true);
                             IsCalendarOpen = false;
                         }
                     }));
@@ -378,19 +356,26 @@ namespace BSUIRScheduleDESK.viewmodels
                 Dates![i] = Dates[i].AddDays(diff * 7);
             }
         }
+        private void GoToWeekByOff(int offset, bool useEvent)
+        {
+            WeekDiff += offset;
+            ChangeDates(offset);
+            int weekDiff = offset % 4;
+            Debug.WriteLine(weekDiff);
+            CurrentWeek += weekDiff;
+            if(useEvent)
+                EventService.WeekUpdated_Invoke(weekDiff);
+        }
         private void BackCurrentWeek()
         {
-            int wd = Properties.Settings.Default.currentweek - CurrentWeek;
-            EventService.WeekUpdated_Invoke(wd);
-            ChangeDates(-WeekDiff);
-            CurrentWeek = Properties.Settings.Default.currentweek;
-            WeekDiff = 0;
+            GoToWeekByOff(-WeekDiff, true);
         }        
         private async void LoadFavoriteSchedule(FavoriteSchedule schedule)
         {
             await _model.LoadSchedule(schedule.UrlId, ScheduleService.LoadingType.Local);
             Schedule = _model.Schedule;
             Announcements = _model.Announcements;
+            EventService.ScheduleLoaded_Invoke();
         }
 
         private async void LoadRecentSchedule()
@@ -398,6 +383,7 @@ namespace BSUIRScheduleDESK.viewmodels
             await _model.LoadSchedule("recent", ScheduleService.LoadingType.Local);
             Schedule = _model.Schedule;
             Announcements = _model.Announcements;
+            EventService.ScheduleLoaded_Invoke();
         }
         private async void OnScheduleUnFavorited(FavoriteSchedule schedule)
         {
@@ -416,6 +402,35 @@ namespace BSUIRScheduleDESK.viewmodels
             EventService.CurrentWeekUpdated -= OnCurrentWeekUpdate;
         }
 
+        private void OnScheduleLoaded()
+        {
+            string? url = Schedule?.employee == null ? Schedule?.studentGroup?.name : Schedule.employee.urlId;
+            if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
+            {
+                Schedule!.favorited = true;
+                _model.Schedule!.favorited = true;
+                OnPropertyChanged(nameof(Schedule));
+            }
+            if (DateTime.TryParse(Schedule!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule!.endExamsDate, out DateTime endExamsDate))
+            {
+                if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
+                    SelectedTab = 1;
+                else
+                    SelectedTab = 0;
+            }
+            if (Schedule.favorited)
+            {
+                Task.Run(async () =>
+                {
+                    Notes = await NoteService.LoadNotes(Schedule.GetUrl());
+                });
+            }
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                GoToWeekByOff(-WeekDiff + 1, false);
+            else
+                GoToWeekByOff(-WeekDiff, false);
+        }
+
         #endregion
         public MainWindowViewModel()
         {
@@ -423,6 +438,7 @@ namespace BSUIRScheduleDESK.viewmodels
             _model = new MainWindowModel();
             EventService.FavoriteScheduleSelected += LoadFavoriteSchedule;
             EventService.ScheduleUnFavorited += OnScheduleUnFavorited;
+            EventService.ScheduleLoaded += OnScheduleLoaded;
             if(Properties.Settings.Default.currentweek == 0 || Properties.Settings.Default.laststartup == DateTime.MinValue)
             {
                 EventService.CurrentWeekUpdated += OnCurrentWeekUpdate;
@@ -430,11 +446,6 @@ namespace BSUIRScheduleDESK.viewmodels
             _firstsubgroup = Properties.Settings.Default.firstsubgroup;
             _secondsubgroup = Properties.Settings.Default.secondsubgroup;
             CurrentWeek = Properties.Settings.Default.currentweek;
-            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-            {
-                WeekDiff += 1;
-                CurrentWeek += 1;
-            }
             Dates = _model.Dates;
             LoadRecentSchedule();
         }

@@ -23,7 +23,7 @@
                     BorderBrush="{DynamicResource Schedule.BorderBrush.Static}">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3"/>
+                        <ColumnDefinition Width="4"/>
                         <ColumnDefinition Width="40"/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -110,7 +110,7 @@
                     BorderBrush="{DynamicResource Schedule.BorderBrush.Static}">
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="3"/>
+                        <ColumnDefinition Width="4"/>
                         <ColumnDefinition Width="40"/>
                         <ColumnDefinition/>
                         <ColumnDefinition/>

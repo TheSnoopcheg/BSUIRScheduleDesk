@@ -52,7 +52,7 @@ namespace BSUIRScheduleDESK.models
                 Name = groupschedule.employee == null ? groupschedule.studentGroup?.name : groupschedule.employee.ToString(),
                 UrlId = groupschedule.employee == null ? groupschedule.studentGroup?.name : groupschedule.employee.urlId
             };
-            FavoriteSchedule? favoriteSchedule = _favoriteSchedules.FirstOrDefault<FavoriteSchedule>(u => u.UrlId == schedule.UrlId);
+            FavoriteSchedule? favoriteSchedule = _favoriteSchedules.First(u => u.UrlId == schedule.UrlId);
             if(favoriteSchedule != null)
             {
                 if (!isProc)

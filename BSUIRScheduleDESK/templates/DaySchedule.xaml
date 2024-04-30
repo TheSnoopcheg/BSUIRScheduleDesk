@@ -60,9 +60,9 @@
         </DataTemplate>
         <DataTemplate x:Key="listSchedule">
             <ScrollViewer VerticalScrollBarVisibility="Auto" Margin="0,5,0,5">
-                <Grid Margin="0,2,0,2">
-                    <Border Background="LightGray" Effect="{DynamicResource myShadow}" CornerRadius="1" Width="700"/>
-                    <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
+                <Grid Margin="0,2,0,0">
+                    <Border Background="White" Effect="{DynamicResource myShadow}" Height="{Binding ElementName=listSchedules, Path=ActualHeight}" CornerRadius="1" Width="700" VerticalAlignment="Top"/>
+                    <StackPanel x:Name="listSchedules" Orientation="Vertical" HorizontalAlignment="Center" VerticalAlignment="Top">
                         <local:ListDayTemplate Date="{Binding Dates[0], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Monday}"/>
                         <local:ListDayTemplate Date="{Binding Dates[1], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Tuesday}"/>
                         <local:ListDayTemplate Date="{Binding Dates[2], ElementName=root, Converter={StaticResource DateConverter}, ConverterParameter=linear}" DataContext="{Binding Wednesday}"/>

@@ -8,12 +8,12 @@ namespace BSUIRScheduleDESK.converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return default;
+            if (value == null) return 0;
             if(value is double v)
             {
                 return -v;
             }
-            return default;
+            return 0;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

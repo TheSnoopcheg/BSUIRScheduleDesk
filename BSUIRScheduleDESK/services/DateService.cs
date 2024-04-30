@@ -12,6 +12,8 @@ namespace BSUIRScheduleDESK.services
             DateTime today = DateTime.Today;
             CultureInfo culture = CultureInfo.CurrentCulture;
             int weekOffset = culture.DateTimeFormat.FirstDayOfWeek - today.DayOfWeek;
+            if (today.DayOfWeek == 0)
+                weekOffset -= 7;
             DateTime startOfWeek = today.AddDays(weekOffset);
             return Enumerable.Range(0, 6).Select(i => startOfWeek.AddDays(i)).ToList();
         }

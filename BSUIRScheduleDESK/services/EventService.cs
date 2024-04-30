@@ -1,5 +1,6 @@
 ﻿using BSUIRScheduleDESK.classes;
 using System;
+using System.Security.Policy;
 
 namespace BSUIRScheduleDESK.services
 {
@@ -11,7 +12,13 @@ namespace BSUIRScheduleDESK.services
         public static event Action<FavoriteSchedule>? ScheduleUnFavorited;
         public static event Action<int>? WeekUpdated;
         public static event Action? CurrentWeekUpdated;
+        public static event Action? ScheduleLoaded;
 
+
+        public static void ScheduleLoaded_Invoke()
+        {
+            ScheduleLoaded?.Invoke();
+        }
         public static void CurrentWeekUpdated_Invoke()
         {
             CurrentWeekUpdated!.Invoke();
