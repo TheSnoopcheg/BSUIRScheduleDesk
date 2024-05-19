@@ -16,12 +16,7 @@ namespace BSUIRScheduleDESK.services
                 weekOffset -= 7;
             DateTime startOfWeek = today.AddDays(weekOffset);
             return Enumerable.Range(0, 6).Select(i => startOfWeek.AddDays(i)).ToList();
-        }
-
-        public static bool IsWeekContainsDay(DateTime date)
-        {
-            return GetCurrentWeekDates().Contains(date);
-        }
+        } 
 
         public static int GetWeekDiff(DateTime d1, DateTime d2, DayOfWeek startOfWeek = DayOfWeek.Monday)
         {

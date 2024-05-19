@@ -149,7 +149,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public string Build { get; set; } = "30.04.2024pre-release";
+        public string Build { get; set; } = "19.05.2024pre-release";
 
         #endregion
 
@@ -243,8 +243,8 @@ namespace BSUIRScheduleDESK.viewmodels
                         {
                             Schedule.favorited = !Schedule.favorited;
                             OnPropertyChanged(nameof(Schedule));
-                            await _model.SaveRecentSchedule(Schedule);
                             EventService.ScheduleFavorited_Invoke(Schedule, true);
+                            await _model.SaveRecentSchedule(Schedule);
                             Notes = await NoteService.LoadNotes(Schedule.GetUrl());
                         }
                     }));
@@ -413,33 +413,38 @@ namespace BSUIRScheduleDESK.viewmodels
             EventService.CurrentWeekUpdated -= OnCurrentWeekUpdate;
         }
 
-        private void OnScheduleLoaded()
+        private async void OnScheduleLoaded()
         {
-            string? url = Schedule?.employee == null ? Schedule?.studentGroup?.name : Schedule.employee.urlId;
-            if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
+            if(Schedule != null)
             {
-                Schedule!.favorited = true;
-                _model.Schedule!.favorited = true;
-                OnPropertyChanged(nameof(Schedule));
-            }
-            if (DateTime.TryParse(Schedule!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule!.endExamsDate, out DateTime endExamsDate))
-            {
-                if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
-                    SelectedTab = 1;
-                else
-                    SelectedTab = 0;
-            }
-            if (Schedule.favorited)
-            {
-                Task.Run(async () =>
+                string? url = Schedule?.employee == null ? Schedule?.studentGroup?.name : Schedule.employee.urlId;
+                if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
                 {
-                    Notes = await NoteService.LoadNotes(Schedule.GetUrl());
-                });
+                    Schedule!.favorited = true;
+                    _model.Schedule!.favorited = true;
+                    OnPropertyChanged(nameof(Schedule));
+                    await _model.SaveRecentSchedule(Schedule);
+                }
+                if (DateTime.TryParse(Schedule!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule!.endExamsDate, out DateTime endExamsDate))
+                {
+                    if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
+                        SelectedTab = 1;
+                    else
+                        SelectedTab = 0;
+                }
+                if (Schedule.favorited)
+                {
+                    await _model.CheckScheduleUpdate();
+                    _ = Task.Run(async () =>
+                    {
+                        Notes = await NoteService.LoadNotes(Schedule.GetUrl());
+                    });
+                }
+                if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                    GoToWeekByOff(-WeekDiff + 1, false);
+                else
+                    GoToWeekByOff(-WeekDiff, false);
             }
-            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-                GoToWeekByOff(-WeekDiff + 1, false);
-            else
-                GoToWeekByOff(-WeekDiff, false);
         }
 
         #endregion

@@ -2,6 +2,7 @@
 using BSUIRScheduleDESK.services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -45,14 +46,14 @@ namespace BSUIRScheduleDESK.models
             Properties.Settings.Default.favoriteschedules = json;
             Properties.Settings.Default.Save();
         }
-        public async void AddSchedule(GroupSchedule groupschedule, bool isProc)
+        public async void AddSchedule(GroupSchedule groupschedule, bool isProc) // isProc - determines the need to delete a schedule if it already exists
         {
             FavoriteSchedule? schedule = new FavoriteSchedule()
             {
                 Name = groupschedule.employee == null ? groupschedule.studentGroup?.name : groupschedule.employee.ToString(),
                 UrlId = groupschedule.employee == null ? groupschedule.studentGroup?.name : groupschedule.employee.urlId
             };
-            FavoriteSchedule? favoriteSchedule = _favoriteSchedules.First(u => u.UrlId == schedule.UrlId);
+            FavoriteSchedule? favoriteSchedule = _favoriteSchedules.FirstOrDefault(u => u.UrlId == schedule.UrlId);
             if(favoriteSchedule != null)
             {
                 if (!isProc)

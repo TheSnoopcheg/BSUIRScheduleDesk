@@ -1,7 +1,11 @@
-﻿using BSUIRScheduleDESK.services;
+﻿using BSUIRScheduleDESK.classes;
+using BSUIRScheduleDESK.services;
 using BSUIRScheduleDESK.viewmodels;
+using BSUIRScheduleDESK.views;
 using System;
+using System.Diagnostics;
 using System.IO;
+using System.Text.Json;
 using System.Windows;
 
 using n = BSUIRScheduleDESK.Properties.Settings;
@@ -38,13 +42,30 @@ namespace BSUIRScheduleDESK
             this.MainWindow.DataContext = mwvm;
             MainWindow.Show();
             base.OnStartup(e);
+            ShowUpdateInfo();
             string? path = Directory.GetCurrentDirectory() + @"\data";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
         }
-
+        private void ShowUpdateInfo()
+        {
+            string? path = Directory.GetCurrentDirectory() + @"\updates\update.json";
+            string? updateInfoJson = File.ReadAllText(path);
+            UpdateInfo updateInfo = JsonSerializer.Deserialize<UpdateInfo>(updateInfoJson)!;
+            if (updateInfo != null)
+            {
+                if (!updateInfo.IsShowed)
+                {
+                    ModalWindow modalWindow = new ModalWindow($"Обновление от {updateInfo.UpdateDate}", Directory.GetCurrentDirectory() + @"\updates\update.png", updateInfo.Content, ModalWindowButtons.OK);
+                    modalWindow.ShowDialog();
+                    updateInfo.IsShowed = true;
+                    updateInfoJson = JsonSerializer.Serialize(updateInfo);
+                    File.WriteAllText(path, updateInfoJson);
+                }
+            }
+        }
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             File.WriteAllText($"{Directory.GetCurrentDirectory()}\\crash.log", $"[{DateTime.Now}] {e.ExceptionObject}");

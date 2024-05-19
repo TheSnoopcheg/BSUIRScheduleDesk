@@ -154,6 +154,13 @@
 
     <Color x:Key="ScrollBar.Background" R="211" G="211" B="211" A="255"/>
 
+    <Color x:Key="ModalWindow.Background" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="ModalWindow.Text.Foreground" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="ModalWindow.Button.Background" R="0" G="0" B="0" A="0"/>
+    <Color x:Key="ModalWindow.Button.Background.MouseOver" R="235" G="235" B="235" A="255"/>
+    <Color x:Key="ModalWindow.Button.Background.Pressed" R="215" G="215" B="215" A="255"/>
+    <Color x:Key="ModalWindow.Button.Foreground" R="52" G="97" B="207" A="255"/>
+
     <SolidColorBrush x:Key="Window.Background.Static" Color="{StaticResource Window.Background}"/>
     <SolidColorBrush x:Key="Window.Title.Static" Color="{StaticResource Window.Title}"/>
     <SolidColorBrush x:Key="Window.Title.Icon.Static" Color="{StaticResource Window.Title.Icon}"/>
@@ -307,4 +314,11 @@
     <SolidColorBrush x:Key="Notes.HasItemsEllipse.Background.Static" Color="{StaticResource Notes.HasItemsEllipse.Background}"/>
 
     <SolidColorBrush x:Key="ScrollBar.Background.Static" Color="{StaticResource ScrollBar.Background}"/>
+
+    <SolidColorBrush x:Key="ModalWinodw.Background.Static" Color="{StaticResource ModalWindow.Background}"/>
+    <SolidColorBrush x:Key="ModalWinodw.Text.Foreground.Static" Color="{StaticResource ModalWindow.Text.Foreground}"/>
+    <SolidColorBrush x:Key="ModalWindow.Button.Static.Background" Color="{StaticResource ModalWindow.Button.Background}"/>
+    <SolidColorBrush x:Key="ModalWindow.Button.MouseOver.Background" Color="{StaticResource ModalWindow.Button.Background.MouseOver}"/>
+    <SolidColorBrush x:Key="ModalWindow.Button.Pressed.Background" Color="{StaticResource ModalWindow.Button.Background.Pressed}"/>
+    <SolidColorBrush x:Key="ModalWindow.Button.Static.Foreground" Color="{StaticResource ModalWindow.Button.Foreground}"/>
 </ResourceDictionary>

@@ -2,8 +2,10 @@
 using BSUIRScheduleDESK.services;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using System.Windows;
 using System;
+using BSUIRScheduleDESK.views;
+using System.Diagnostics;
+using System.Windows;
 
 namespace BSUIRScheduleDESK.models
 {
@@ -40,33 +42,29 @@ namespace BSUIRScheduleDESK.models
                         Announcements = await NetworkService.GetAsync<ObservableCollection<Announcement>>($"https://iis.bsuir.by/api/v1/announcements/employees?url-id={schedule.employee!.urlId}");
                     }
                 }
-                if (schedule.favorited)
-                {
-                    schedule = await CheckLastUpdate(schedule);
-                }
                 Schedule = schedule;
             }
         }
-        public async Task<GroupSchedule> CheckLastUpdate(GroupSchedule? schedule)
+        public async Task CheckScheduleUpdate()
         {
             UpdateDate updateDate;
-            if (schedule != null)
+            if (Schedule != null)
             {
-                if(await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
+                if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
                 {
-                    string? url = schedule.GetUrl();
+                    string? url = Schedule.GetUrl();
                     updateDate = await ScheduleService.GetLastUpdate(url);
-                    if(updateDate != schedule.updateDate)
+                    if(updateDate != Schedule.updateDate)
                     {
-                        if(MessageBox.Show($"Расписание [{schedule.GetName()}] было обновлено. Загрузить?", "BSUIR Schedule", MessageBoxButton.YesNo) == MessageBoxResult.Yes)
+                        ModalWindow mw = new ModalWindow("Расписание БГУИР", "", $"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", ModalWindowButtons.YesNo);
+                        if (mw.ShowDialog() == true)
                         {
-                            schedule = await ScheduleService.LoadSchedule(url, ScheduleService.LoadingType.Server);
-                            await ScheduleService.SaveSchedule(schedule, url);
+                            Schedule = await ScheduleService.LoadSchedule(url, ScheduleService.LoadingType.Server);
+                            await ScheduleService.SaveSchedule(Schedule, url);
                         }
                     }
                 }
             }
-            return schedule!;
         }
         public MainWindowModel()
         {
