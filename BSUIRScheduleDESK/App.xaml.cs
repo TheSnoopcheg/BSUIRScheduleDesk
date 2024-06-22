@@ -52,7 +52,7 @@ namespace BSUIRScheduleDESK
         }
         private void IsAnotherProcessExist()
         {
-            string? processName = "BSUIRScheduleDESK";
+            string? processName = Process.GetCurrentProcess().ProcessName;
             Process[] processes = Process.GetProcesses().Where(u => u.ProcessName == processName).ToArray();
             if(processes.Length > 1)
             {
@@ -82,7 +82,7 @@ namespace BSUIRScheduleDESK
         }
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
-            File.WriteAllText($"{Directory.GetCurrentDirectory()}\\crash.log", $"[{DateTime.Now}] {e.ExceptionObject}");
+            File.WriteAllText($"{Directory.GetCurrentDirectory()}\\crash.log", $"[{DateTime.Now}] [{sender}] \n{e.ExceptionObject}");
             MessageBox.Show("Упс.. Отправьте, пожалуйста, файл crash.log в телеграм @snoopcheg\nДля запуска попробуйте удалить recent.json в папке data", "Critical error", MessageBoxButton.OK, MessageBoxImage.Error);
         }
     }

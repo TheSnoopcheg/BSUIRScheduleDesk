@@ -151,42 +151,55 @@
                       Width="15"
                       Data="{StaticResource closeIcon}"/>
             </Button>
-            <StackPanel Grid.Row="1"
-                        Orientation="Vertical"
-                        Margin="10">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Тема"
-                               VerticalAlignment="Center"
-                               Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
-                    <ComboBox Style="{DynamicResource ComboBoxStyle}" ItemsSource="{Binding Themes, Mode=OneTime, ElementName=sWindow}" 
-                              SelectedIndex="{Binding ThemeIndex, ElementName=sWindow}"
-                              Width="75"
-                              Margin="5,0,0,0"
-                              HorizontalAlignment="Left"
-                              VerticalAlignment="Center"
-                              SelectionChanged="ComboBox_SelectionChanged"/>
-                </StackPanel>
-                <TextBlock Text="Цвета"
-                           FontSize="14"
-                           Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
+            <Grid Grid.Row="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical"
-                            Margin="5,0,0,0"
-                            HorizontalAlignment="Left">
-                    <controls:ColorPicker Text="Лекция" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0], Mode=TwoWay, ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                    <controls:ColorPicker Text="Практическая работа" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[1], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                    <controls:ColorPicker Text="Лабораторная работа" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[2], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                    <controls:ColorPicker Text="Экзамен" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[3], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                    <controls:ColorPicker Text="Консультация" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[4], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                    <controls:ColorPicker Text="Неизвестно" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[5], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                            Margin="10"
+                            Grid.Column="0">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Тема"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
+                        <ComboBox Style="{DynamicResource ComboBoxStyle}" ItemsSource="{Binding Themes, Mode=OneTime, ElementName=sWindow}" 
+                                  SelectedIndex="{Binding ThemeIndex, ElementName=sWindow}"
+                                  Width="75"
+                                  Margin="5,0,0,0"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"
+                                  SelectionChanged="ComboBox_SelectionChanged"/>
+                    </StackPanel>
+                    <TextBlock Text="Цвета"
+                               FontSize="14"
+                               Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
+                    <StackPanel Orientation="Vertical"
+                                Margin="5,0,0,0"
+                                HorizontalAlignment="Left">
+                        <controls:ColorPicker Text="Лекция" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0], Mode=TwoWay, ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="Практическая работа" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[1], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="Лабораторная работа" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[2], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="Экзамен" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[3], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="Консультация" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[4], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="Неизвестно" Margin="1" Color="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[5], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
-            <TextBlock Text="© 2023-2024 Dmitry Lantas" 
-                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                       HorizontalAlignment="Right"
-                       VerticalAlignment="Bottom"
-                       Margin="0,0,5,2"
-                       Grid.Row="1"
-                       FontSize="10"/>
+                <StackPanel Orientation="Vertical"
+                            Grid.Column="1"
+                            HorizontalAlignment="Right"
+                            VerticalAlignment="Bottom"
+                            Margin="5">
+                    <TextBlock Text="{Binding Path=Version, ElementName=sWindow, StringFormat=Версия: {0}}"
+                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                               HorizontalAlignment="Right"
+                               FontSize="10"/>
+                    <TextBlock Text="© 2023-2024 Dmitry Lantas" 
+                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                               HorizontalAlignment="Right"
+                               FontSize="10"/>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Border>
 </Window>

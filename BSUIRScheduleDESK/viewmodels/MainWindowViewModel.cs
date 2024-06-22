@@ -152,7 +152,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public string Build { get; set; } = "13.06.2024pre-release";
+        public Version Build { get; set; } = new Version(1, 0, 1);
 
         #endregion
 

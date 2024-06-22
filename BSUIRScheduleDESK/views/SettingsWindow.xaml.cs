@@ -98,5 +98,7 @@ namespace BSUIRScheduleDESK.views
                 default: throw new ArgumentOutOfRangeException();
             }
         }
+
+        public Version Version { get; set; } = new Version(1,0,1);
     }
 }
