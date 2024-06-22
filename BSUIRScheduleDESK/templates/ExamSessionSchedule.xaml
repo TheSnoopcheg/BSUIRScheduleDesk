@@ -140,10 +140,9 @@
             <Border CornerRadius="10"
                     Background="{DynamicResource Schedule.Background.Static}"
                     Margin="5"
-                    MinWidth="285"
-                    MaxWidth="285"
+                    Width="285"
                     Height="Auto"
-                    MaxHeight="260"
+                    MaxHeight="300"
                     VerticalAlignment="Top"
                     HorizontalAlignment="Stretch">
                 <Grid>
@@ -198,7 +197,8 @@
                                    Text="{Binding note}"
                                    Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    Margin="10,0,0,0"
-                                   VerticalAlignment="Center"/>
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"/>
                         <StackPanel Orientation="Horizontal"
                                     Grid.Row="2"
                                     VerticalAlignment="Center">
@@ -222,6 +222,7 @@
                                 Grid.Row="3"
                                 Margin="10,0,0,5"
                                 VerticalAlignment="Top"
+                                MaxHeight="100"
                                 Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                             <local:EmployeeGroups.Style>
                                 <Style TargetType="{x:Type local:EmployeeGroups}">

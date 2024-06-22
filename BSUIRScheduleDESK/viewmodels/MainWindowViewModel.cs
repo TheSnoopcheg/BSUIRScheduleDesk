@@ -6,6 +6,9 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Threading.Tasks;
+using System.Runtime.CompilerServices;
+using System.Threading;
+
 
 #if DEBUG
 using System.Diagnostics;
@@ -149,7 +152,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public string Build { get; set; } = "19.05.2024pre-release";
+        public string Build { get; set; } = "13.06.2024pre-release";
 
         #endregion
 
@@ -169,9 +172,8 @@ namespace BSUIRScheduleDESK.viewmodels
                             SearchResponse? response = scheduleSearchWindow.FSearchResponce;
                             if(response != null)
                             {
-                                await _model.LoadSchedule(response.GetUrl(), ScheduleService.LoadingType.Server);
-                                Schedule = _model.Schedule;
-                                Announcements = _model.Announcements;
+                                if(await _model.LoadSchedule(response.GetUrl(), ScheduleService.LoadingType.Server))
+                                    Schedule = _model.Schedule;
                                 EventService.ScheduleLoaded_Invoke();
                             }
                         }
@@ -197,7 +199,6 @@ namespace BSUIRScheduleDESK.viewmodels
                                 GroupSchedule tSchedule = await ScheduleService.LoadSchedule(response.GetUrl(), ScheduleService.LoadingType.ServerWP);
                                 if(Schedule != null)
                                 {
-
                                     if (Schedule.Compare(tSchedule))
                                     {
                                         _model.Schedule!.favorited = true;
@@ -291,9 +292,8 @@ namespace BSUIRScheduleDESK.viewmodels
                     {
                         var ve = obj as Employee;
                         var vs = obj as StudentGroup;
-                        await _model.LoadSchedule(ve == null ? vs?.name : ve.urlId, ScheduleService.LoadingType.Server);
-                        Schedule = _model.Schedule;
-                        Announcements = _model.Announcements;
+                        if(await _model.LoadSchedule(ve == null ? vs?.name : ve.urlId, ScheduleService.LoadingType.Server))
+                            Schedule = _model.Schedule;
                         EventService.ScheduleLoaded_Invoke();
                     }));
             }
@@ -383,23 +383,20 @@ namespace BSUIRScheduleDESK.viewmodels
         }        
         private async void LoadFavoriteSchedule(FavoriteSchedule schedule)
         {
-            await _model.LoadSchedule(schedule.UrlId, ScheduleService.LoadingType.Local);
-            Schedule = _model.Schedule;
-            Announcements = _model.Announcements;
+            if(await _model.LoadSchedule(schedule.UrlId, ScheduleService.LoadingType.Local))
+                Schedule = _model.Schedule;
             EventService.ScheduleLoaded_Invoke();
         }
 
         private async void LoadRecentSchedule()
         {
-            await _model.LoadSchedule("recent", ScheduleService.LoadingType.Local);
-            Schedule = _model.Schedule;
-            Announcements = _model.Announcements;
+            if(await _model.LoadSchedule("recent", ScheduleService.LoadingType.Local))
+                Schedule = _model.Schedule;
             EventService.ScheduleLoaded_Invoke();
         }
         private async void OnScheduleUnFavorited(FavoriteSchedule schedule)
         {
-            
-            if ((Schedule?.employee == null ? Schedule?.studentGroup?.name : Schedule.employee.urlId) == schedule.UrlId)
+            if (Schedule!.GetUrl() == schedule.UrlId)
             {
                 _model.Schedule!.favorited = false;
                 Schedule!.favorited = false;
@@ -415,36 +412,39 @@ namespace BSUIRScheduleDESK.viewmodels
 
         private async void OnScheduleLoaded()
         {
-            if(Schedule != null)
+            if (Schedule == null) return;
+            string? url = Schedule.GetUrl();
+
+            if (await _model.LoadAnnouncements(url))
+                Announcements = _model.Announcements;
+
+            if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
             {
-                string? url = Schedule?.employee == null ? Schedule?.studentGroup?.name : Schedule.employee.urlId;
-                if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
-                {
-                    Schedule!.favorited = true;
-                    _model.Schedule!.favorited = true;
-                    OnPropertyChanged(nameof(Schedule));
-                    await _model.SaveRecentSchedule(Schedule);
-                }
-                if (DateTime.TryParse(Schedule!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule!.endExamsDate, out DateTime endExamsDate))
-                {
-                    if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
-                        SelectedTab = 1;
-                    else
-                        SelectedTab = 0;
-                }
-                if (Schedule.favorited)
-                {
-                    await _model.CheckScheduleUpdate();
-                    _ = Task.Run(async () =>
-                    {
-                        Notes = await NoteService.LoadNotes(Schedule.GetUrl());
-                    });
-                }
-                if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-                    GoToWeekByOff(-WeekDiff + 1, false);
-                else
-                    GoToWeekByOff(-WeekDiff, false);
+                Schedule!.favorited = true;
+                _model.Schedule!.favorited = true;
+                OnPropertyChanged(nameof(Schedule));
+                await _model.SaveRecentSchedule(Schedule);
             }
+
+            if (Schedule.favorited)
+            {
+                if (await _model.CheckScheduleUpdate())
+                    Schedule = _model.Schedule;
+                if (await _model.LoadNotes(url))
+                    Notes = _model.Notes;
+            }
+            if (DateTime.TryParse(Schedule!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule!.endExamsDate, out DateTime endExamsDate))
+            {
+                if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
+                    SelectedTab = 1;
+                else
+                    SelectedTab = 0;
+            }
+
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                GoToWeekByOff(-WeekDiff + 1, false);
+            else
+                GoToWeekByOff(-WeekDiff, false);
         }
 
         #endregion

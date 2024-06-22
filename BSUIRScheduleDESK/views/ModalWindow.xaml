@@ -29,8 +29,8 @@
                 MouseDown="Border_MouseDown">
             <Grid>
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="30"/>
-                    <RowDefinition MaxHeight="50" Height="auto"/>
+                    <RowDefinition Height="35"/>
+                    <RowDefinition MaxHeight="100" Height="auto"/>
                     <RowDefinition MinHeight="0" MaxHeight="250" Height="auto"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
@@ -48,7 +48,8 @@
                         HorizontalAlignment="Right"
                         VerticalAlignment="Center"
                         IsCancel="True"
-                        Grid.Row="0">
+                        Grid.Row="0"
+                        Margin="0,0,5,0">
                     <Path Data="{DynamicResource closeIcon}"
                           Stretch="Fill"
                           Width="12.5"

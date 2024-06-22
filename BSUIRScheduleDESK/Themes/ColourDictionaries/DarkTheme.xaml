@@ -159,7 +159,7 @@
     <Color x:Key="ModalWindow.Button.Background" R="0" G="0" B="0" A="0"/>
     <Color x:Key="ModalWindow.Button.Background.MouseOver" R="29" G="29" B="29" A="255"/>
     <Color x:Key="ModalWindow.Button.Background.Pressed" R="25" G="25" B="25" A="255"/>
-    <Color x:Key="ModalWindow.Button.Foreground" R="60" G="105" B="215" A="255"/>
+    <Color x:Key="ModalWindow.Button.Foreground" R="65" G="150" B="250" A="255"/>
 
 
     <SolidColorBrush x:Key="Window.Background.Static" Color="{StaticResource Window.Background}"/>

@@ -5,9 +5,9 @@ using BSUIRScheduleDESK.views;
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Windows;
-
 using n = BSUIRScheduleDESK.Properties.Settings;
 
 namespace BSUIRScheduleDESK
@@ -19,6 +19,7 @@ namespace BSUIRScheduleDESK
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            IsAnotherProcessExist();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{n.Default.currentTheme}.xaml", UriKind.Relative)};
             if (n.Default.currentweek == 0 || n.Default.laststartup == DateTime.MinValue)
@@ -49,20 +50,33 @@ namespace BSUIRScheduleDESK
                 Directory.CreateDirectory(path);
             }
         }
+        private void IsAnotherProcessExist()
+        {
+            string? processName = "BSUIRScheduleDESK";
+            Process[] processes = Process.GetProcesses().Where(u => u.ProcessName == processName).ToArray();
+            if(processes.Length > 1)
+            {
+                MessageBox.Show("Данная программа уже запущена.", "Расписание БГУИР", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.Shutdown();
+            }
+        }
         private void ShowUpdateInfo()
         {
             string? path = Directory.GetCurrentDirectory() + @"\updates\update.json";
-            string? updateInfoJson = File.ReadAllText(path);
-            UpdateInfo updateInfo = JsonSerializer.Deserialize<UpdateInfo>(updateInfoJson)!;
-            if (updateInfo != null)
+            if (File.Exists(path))
             {
-                if (!updateInfo.IsShowed)
+                string? updateInfoJson = File.ReadAllText(path);
+                UpdateInfo updateInfo = JsonSerializer.Deserialize<UpdateInfo>(updateInfoJson)!;
+                if (updateInfo != null)
                 {
-                    ModalWindow modalWindow = new ModalWindow($"Обновление от {updateInfo.UpdateDate}", Directory.GetCurrentDirectory() + @"\updates\update.png", updateInfo.Content, ModalWindowButtons.OK);
-                    modalWindow.ShowDialog();
-                    updateInfo.IsShowed = true;
-                    updateInfoJson = JsonSerializer.Serialize(updateInfo);
-                    File.WriteAllText(path, updateInfoJson);
+                    if (!updateInfo.IsShowed)
+                    {
+                        ModalWindow modalWindow = new ModalWindow($"Обновление от {updateInfo.UpdateDate}", Directory.GetCurrentDirectory() + @"\updates\update.png", updateInfo.Content, ModalWindowButtons.OK);
+                        modalWindow.ShowDialog();
+                        updateInfo.IsShowed = true;
+                        updateInfoJson = JsonSerializer.Serialize(updateInfo);
+                        File.WriteAllText(path, updateInfoJson);
+                    }
                 }
             }
         }
