@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System;
 using BSUIRScheduleDESK.views;
-using System.Diagnostics;
-using System.Windows;
 
 namespace BSUIRScheduleDESK.models
 {
@@ -78,8 +76,8 @@ namespace BSUIRScheduleDESK.models
                     updateDate = await ScheduleService.GetLastUpdate(url);
                     if(updateDate != Schedule.updateDate)
                     {
-                        ModalWindow mw = new ModalWindow("Расписание БГУИР", "", $"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", ModalWindowButtons.YesNo);
-                        if (mw.ShowDialog() == true)
+                        ModalWindowResult result = ModalWindow.Show($"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", "Расписание БГУИР", "", ModalWindowButtons.YesNo);
+                        if (result == ModalWindowResult.Yes)
                         {
                             Schedule = await ScheduleService.LoadSchedule(url, ScheduleService.LoadingType.Server);
                             await ScheduleService.SaveSchedule(Schedule, url);

@@ -2,9 +2,6 @@
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-#if DEBUG
-using System.Diagnostics;
-#endif
 
 namespace BSUIRScheduleDESK
 {
@@ -16,7 +13,7 @@ namespace BSUIRScheduleDESK
             this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
             this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized);
         }
-
+        
         void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
             this.WindowState = WindowState.Maximized;
@@ -31,10 +28,16 @@ namespace BSUIRScheduleDESK
         {
             if(e.ChangedButton == MouseButton.Left)
             {
-                DragMove();
+                if (e.ClickCount == 2)
+                    AbjustWindowSize();
+                else
+                    DragMove();
             }
         }
-
+        private void AbjustWindowSize()
+        {
+            WindowState = WindowState == WindowState.Normal ? WindowState.Maximized : WindowState.Normal;
+        }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             Application.Current.Shutdown();
@@ -47,9 +50,7 @@ namespace BSUIRScheduleDESK
 
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
-            if (WindowState == WindowState.Normal)
-                WindowState = WindowState.Maximized;
-            else WindowState = WindowState.Normal;
+            AbjustWindowSize();
         }
 
         private void Calendar_GotMouseCapture(object sender, MouseEventArgs e)

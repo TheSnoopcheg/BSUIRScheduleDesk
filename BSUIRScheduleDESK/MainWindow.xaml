@@ -14,9 +14,7 @@
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
-        WindowStyle="None"
-        WindowState="Maximized"
-        ResizeMode="CanMinimize">
+        WindowStyle="None">
     <Window.Resources>
         <converters:DateConverter x:Key="DateConverter"/>
         <converters:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
@@ -234,24 +232,23 @@
             Background="{DynamicResource Window.Background.Static}">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="35"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
 
             <!--Title bar-->
             <Border Grid.Row="0"
                     Background="{DynamicResource Window.Title.Static}"
-                    CornerRadius="0"
+                    Height="35"
                     MouseDown="Border_MouseDown">
                 <Grid>
-                    <Grid Margin="15, 0"
-                          HorizontalAlignment="Center">
-                        <TextBlock Text="Расписание БГУИР"
-                                   Foreground="{DynamicResource Window.TitleText.Static}"
-                                   VerticalAlignment="Center"
-                                   FontSize="16"
-                                   FontWeight="DemiBold"/>
-                    </Grid>
+                    <TextBlock Text="Расписание БГУИР"
+                               Foreground="{DynamicResource Window.TitleText.Static}"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Center"
+                               Margin="15,0"
+                               FontSize="16"
+                               FontWeight="DemiBold"/>    
                     <StackPanel HorizontalAlignment="Right"
                                 Orientation="Horizontal"
                                 Margin="0,0,5,0">
@@ -290,13 +287,13 @@
             </Border>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="60"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
                 <!--left side bar-->
-                <Border Grid.Column="0" 
-                        CornerRadius="0" 
+                <Border Grid.Column="0"
+                        Width="60"
                         Background="{DynamicResource FavoriteBar.Background.Static}">
                     <Grid>
                         <Grid.RowDefinitions>

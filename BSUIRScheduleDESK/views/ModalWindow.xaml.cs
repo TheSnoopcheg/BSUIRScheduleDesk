@@ -1,76 +1,173 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace BSUIRScheduleDESK.views
 {
-    /// <summary>
-    /// Interaction logic for ModalWindow.xaml
-    /// </summary>
-
-    public enum ModalWindowButtons{
+    public enum ModalWindowButtons
+    {
         OK,
         OKCancel,
         YesNo,
         YesNoCancel
     }
+    public enum ModalWindowResult
+    {
+        OK,
+        Canceled,
+        Yes,
+        No
+    }
+    /// <summary>
+    /// Interaction logic for ModalWindow.xaml
+    /// </summary>=
     public partial class ModalWindow : Window
     {
-        public ModalWindow() : this("Undefined")
-        { }
-        public ModalWindow(string? wTitle) : this(wTitle, "")
-        { }
-        public ModalWindow(string? wTitle, string? imageUrl) : this(wTitle, imageUrl, "")
-        { }
-        public ModalWindow(string? wTitle, string? imageUrl, string? wContent) : this(wTitle, imageUrl, wContent, ModalWindowButtons.OK) 
-        { }
-        public ModalWindow(string? wTitle, string? imageUrl, string? wContent, ModalWindowButtons buttons)
+        private static ModalWindowResult result = ModalWindowResult.OK;
+
+        private Button OK
         {
-            WTitle = wTitle;
-            ImageUrl = imageUrl;
-            WContent = wContent;
-            Buttons = buttons;
+            get
+            {
+                var b = GetStyledButton();
+                b.Content = nameof(OK);
+                b.Click += delegate { result = ModalWindowResult.OK; Close(); };
+                return b;
+            }
+        }
+        private Button Cancel
+        {
+            get
+            {
+                var b = GetStyledButton();
+                b.Content = nameof(Cancel);
+                b.Click += delegate { result = ModalWindowResult.Canceled; Close(); };
+                return b;
+            }
+        }
+        private Button Yes
+        {
+            get
+            {
+                var b = GetStyledButton();
+                b.Content = nameof(Yes);
+                b.Click += delegate { result = ModalWindowResult.Yes; Close(); };
+                return b;
+            }
+        }
+        private Button No
+        {
+            get
+            {
+                var b = GetStyledButton();
+                b.Content = nameof(No);
+                b.Click += delegate { result = ModalWindowResult.No; Close(); };
+                return b;
+            }
+        }
+
+        private ModalWindow(string wContent = "", string wTitle = "", string wImageUrl = "", ModalWindowButtons wButtons=ModalWindowButtons.OK)
+        {
             InitializeComponent();
-            this.Owner = App.Current.MainWindow;
-        }
-        private ModalWindowButtons _buttons;
-        public ModalWindowButtons Buttons
-        {
-            get => _buttons;
-            private set => _buttons = value;
-        }
-        private string? _wTitle;
-        public string? WTitle
-        {
-            get => _wTitle;
-            private set => _wTitle = value;
+            
+            MakeUpWindow(wContent, wTitle, wImageUrl, wButtons);
+
+            if(this != App.Current.MainWindow)
+                this.Owner = App.Current.MainWindow;
         }
 
-        private string? _imageUrl;
-        public string? ImageUrl
+        public static ModalWindowResult Show(string content)
         {
-            get => _imageUrl;
-            private set => _imageUrl = value;
+            new ModalWindow(content).ShowDialog();
+            return result;
+        }
+        public static ModalWindowResult Show(string content, string title)
+        {
+            new ModalWindow(content, title).ShowDialog();
+            return result;
+        }
+        public static ModalWindowResult Show(string content, string title, string imageUrl)
+        {
+            new ModalWindow(content, title, imageUrl).ShowDialog();
+            return result;
+        }
+        public static ModalWindowResult Show(string content, string title, string imageUrl, ModalWindowButtons buttons)
+        {
+            new ModalWindow(content, title, imageUrl, buttons).ShowDialog();
+            return result;
         }
 
-        private string? _wContent;
-        public string? WContent
+        private void MakeUpWindow(string content, string title, string imageUrl, ModalWindowButtons buttons)
         {
-            get => _wContent;
-            private set => _wContent = value;
+            TitleBlock.Text = title;
+            ContentBlock.Text = content;
+
+            ImageBlock.Source = GetImageSource(imageUrl);
+            switch(buttons)
+            {
+                case ModalWindowButtons.OK:
+                    ButtonsPanel.Children.Add(OK);
+                    break;
+                case ModalWindowButtons.OKCancel:
+                    ButtonsPanel.Children.Add(OK);
+                    ButtonsPanel.Children.Add(Cancel);
+                    break;
+                case ModalWindowButtons.YesNo:
+                    ButtonsPanel.Children.Add(Yes);
+                    ButtonsPanel.Children.Add(No);
+                    break;
+                case ModalWindowButtons.YesNoCancel:
+                    ButtonsPanel.Children.Add(Yes);
+                    ButtonsPanel.Children.Add(No);
+                    ButtonsPanel.Children.Add(Cancel);
+                    break;
+                default:
+                    ButtonsPanel.Children.Add(OK);
+                    break;
+            }
         }
 
-        private void firstButton_Click(object sender, RoutedEventArgs e)
+        private BitmapSource GetImageSource(string imageUrl)
         {
-            this.DialogResult = true;
+            try
+            {
+                return new BitmapImage(new System.Uri(imageUrl));
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        private Button GetStyledButton()
+        {
+            Button b = new Button();
+            try
+            {
+                Style style = FindResource("ModalWindowButtonStyle") as Style;
+                if(style != null) 
+                    b.Style = style;
+            }
+            catch { }
+            return b;
         }
 
         private void Border_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape)
             {
-                this.DialogResult = false;
+                result = ModalWindowResult.Canceled;
+                Close();
             }
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e)
+        {
+            result = ModalWindowResult.Canceled;
+            Close();
         }
 
         private void Border_MouseDown(object sender, MouseButtonEventArgs e)
@@ -79,11 +176,6 @@ namespace BSUIRScheduleDESK.views
             {
                 DragMove();
             }
-        }
-
-        private void secondButton_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult= false;
         }
     }
 }

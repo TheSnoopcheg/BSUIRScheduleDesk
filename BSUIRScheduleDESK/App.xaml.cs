@@ -56,7 +56,7 @@ namespace BSUIRScheduleDESK
             Process[] processes = Process.GetProcesses().Where(u => u.ProcessName == processName).ToArray();
             if(processes.Length > 1)
             {
-                MessageBox.Show("Данная программа уже запущена.", "Расписание БГУИР", MessageBoxButton.OK, MessageBoxImage.Error);
+                ModalWindow.Show("Данная программа уже запущена.", "Расписание БГУИР", "", ModalWindowButtons.OK);
                 this.Shutdown();
             }
         }
@@ -71,8 +71,7 @@ namespace BSUIRScheduleDESK
                 {
                     if (!updateInfo.IsShowed)
                     {
-                        ModalWindow modalWindow = new ModalWindow($"Обновление от {updateInfo.UpdateDate}", Directory.GetCurrentDirectory() + @"\updates\update.png", updateInfo.Content, ModalWindowButtons.OK);
-                        modalWindow.ShowDialog();
+                        ModalWindow.Show(updateInfo.Content!, $"Обновление от {updateInfo.UpdateDate}", Directory.GetCurrentDirectory() + @"\updates\update.png", ModalWindowButtons.OK);
                         updateInfo.IsShowed = true;
                         updateInfoJson = JsonSerializer.Serialize(updateInfo);
                         File.WriteAllText(path, updateInfoJson);
