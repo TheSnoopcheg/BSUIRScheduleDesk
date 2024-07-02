@@ -3,20 +3,19 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System;
-using System.Diagnostics;
 
 namespace BSUIRScheduleDESK.services
 {
+    public enum LoadingType
+    {
+        Server,
+        ServerWP,
+        Local
+    }
     public static class ScheduleService
     {
         private const string PATH = @"\data\";
         private const string RECENTPATH = "recent";
-        public enum LoadingType
-        {
-            Server,
-            ServerWP,
-            Local
-        }
 
         public static async Task<GroupSchedule> LoadSchedule(string? url, LoadingType loadingType)
         {

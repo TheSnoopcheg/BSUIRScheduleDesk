@@ -118,13 +118,8 @@
                         <local:EmployeeGroups Grid.Row="3"
                                               Margin="10,0"
                                               MaxHeight="100"
-                                              Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=2}}">
-                            <local:EmployeeGroups.Style>
-                                <Style TargetType="{x:Type local:EmployeeGroups}">
-                                    <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
-                                </Style>
-                            </local:EmployeeGroups.Style>
-                        </local:EmployeeGroups>
+                                              Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=2}}"
+                                              DataContext="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
                         <TextBlock Grid.Row="4"
                                    Text="{Binding note}"
                                    VerticalAlignment="Center"
@@ -237,13 +232,8 @@
                         </StackPanel>
 
                         <local:EmployeeGroups Grid.Row="5"
-                                              Margin="10,0">
-                            <local:EmployeeGroups.Style>
-                                <Style TargetType="{x:Type local:EmployeeGroups}">
-                                    <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
-                                </Style>
-                            </local:EmployeeGroups.Style>
-                        </local:EmployeeGroups>
+                                              Margin="10,0"
+                                              DataContext="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
                     </Grid>
                 </Grid>
             </Border>
@@ -349,13 +339,8 @@
                         <local:EmployeeGroups Grid.Row="3"
                                               Margin="10,0"
                                               MaxHeight="100"
-                                              Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=2}}">
-                            <local:EmployeeGroups.Style>
-                                <Style TargetType="{x:Type local:EmployeeGroups}">
-                                    <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
-                                </Style>
-                            </local:EmployeeGroups.Style>
-                        </local:EmployeeGroups>
+                                              Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl,AncestorLevel=2}}"
+                                              DataContext="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
                         <TextBlock Grid.Row="4"
                                    Text="{Binding note}"
                                    VerticalAlignment="Center"

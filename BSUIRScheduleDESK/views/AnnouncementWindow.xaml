@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
         xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
+        xmlns:controls="clr-namespace:BSUIRScheduleDESK.templates"
         mc:Ignorable="d"
         Height="450" Width="800"
         AllowsTransparency="True"
@@ -28,8 +29,10 @@
     </Window.Style>
     <Window.Resources>
         <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
+        <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
         <DataTemplate x:Key="AnnouncementTemplate">
-            <Grid Margin="0, 10, 0, 10">
+            <Grid Margin="0, 10, 0, 10"
+                  MaxHeight="100">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="100"/>
                     <ColumnDefinition Width="100"/>
@@ -59,22 +62,19 @@
                 <TextBlock Grid.Column="2" Text="{Binding content}"
                            Foreground="{DynamicResource Border.ElementText.Static}"
                            HorizontalAlignment="Center"
-                           VerticalAlignment="Center"/>
-                <TextBlock Grid.Column="3"
-                           Foreground="{DynamicResource Border.ElementText.Static}"
-                           HorizontalAlignment="Center"
-                           VerticalAlignment="Center">
-                    <TextBlock.Style>
-                        <Style TargetType="{x:Type TextBlock}">
-                            <Setter Property="Text" Value="{Binding employee}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.IsEmployeeAnnouncement}" Value="True">
-                                    <Setter Property="Text" Value="{Binding studentGroups, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Group}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TextBlock.Style>
-                </TextBlock>
+                           VerticalAlignment="Center"
+                           TextWrapping="Wrap"/>
+                <controls:EmployeeGroups Grid.Column="3"
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.LoadScheduleCommand}">
+                    <controls:EmployeeGroups.DataContext>
+                        <MultiBinding Converter="{StaticResource EmployeeOrGroupConverter}" ConverterParameter="Type">
+                            <Binding RelativeSource="{RelativeSource AncestorType=Grid}" Path="DataContext"/>
+                            <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext.IsEmployeeAnnouncement"/>
+                        </MultiBinding>
+                    </controls:EmployeeGroups.DataContext>
+                </controls:EmployeeGroups>
             </Grid>
         </DataTemplate>
     </Window.Resources>

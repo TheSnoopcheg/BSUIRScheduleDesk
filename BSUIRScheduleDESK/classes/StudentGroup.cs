@@ -1,4 +1,6 @@
-﻿namespace BSUIRScheduleDESK.classes
+﻿using System.Windows.Navigation;
+
+namespace BSUIRScheduleDESK.classes
 {
     public class StudentGroup
     {
@@ -14,7 +16,7 @@
         public int course { get; set; }
         public string? calendarId { get; set; }
         public int specialityDepartmentEducationFormId { get; set; }
-
+        public string? urlId { get => name; }
         public int educationDegree { get; set; }
         public override string ToString()
         {

@@ -10,10 +10,14 @@
     <UserControl.Resources>
         <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
         <converters:CenterTransformConverter x:Key="CenterTransformConverter"/>
+        <converters:ToolTipVisibilityConverter x:Key="ToolTipVisibilityConverter"/>
         <DataTemplate x:Key="EmployeeGroupsTemplate">
-            <Button Command="{Binding Command, ElementName=root}" CommandParameter="{Binding}">
+            <Button Command="{Binding Command, ElementName=root}" CommandParameter="{Binding urlId}">
                 <Button.ToolTip>
-                    <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Top" MaxWidth="200" >
+                    <ToolTip Style="{StaticResource ToolTipStyle}" 
+                             Placement="Top" 
+                             MaxWidth="200"
+                             Visibility="{Binding ., Converter={StaticResource ToolTipVisibilityConverter}}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>

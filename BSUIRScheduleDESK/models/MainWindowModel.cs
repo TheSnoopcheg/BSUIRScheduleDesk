@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System;
 using BSUIRScheduleDESK.views;
+using System.Collections.Generic;
 
 namespace BSUIRScheduleDESK.models
 {
@@ -25,7 +26,7 @@ namespace BSUIRScheduleDESK.models
         {
             await ScheduleService.SaveRecentSchedule(schedule);
         }
-        public async Task<bool> LoadSchedule(string? url, ScheduleService.LoadingType loadingType)
+        public async Task<bool> LoadSchedule(string? url, LoadingType loadingType)
         {
             GroupSchedule schedule = await ScheduleService.LoadSchedule(url, loadingType);
             if(schedule != null)
@@ -79,7 +80,7 @@ namespace BSUIRScheduleDESK.models
                         ModalWindowResult result = ModalWindow.Show($"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", "Расписание БГУИР", "", ModalWindowButtons.YesNo);
                         if (result == ModalWindowResult.Yes)
                         {
-                            Schedule = await ScheduleService.LoadSchedule(url, ScheduleService.LoadingType.Server);
+                            Schedule = await ScheduleService.LoadSchedule(url, LoadingType.Server);
                             await ScheduleService.SaveSchedule(Schedule, url);
                             return true;
                         }

@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK
+namespace BSUIRScheduleDESK.views
 {
     public partial class MainWindow : Window
     {

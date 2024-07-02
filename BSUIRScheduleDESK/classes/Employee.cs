@@ -17,7 +17,9 @@
 
         public override string ToString()
         {
-            if (middleName == null)
+            if (lastName == null)
+                return firstName!;
+            else if (middleName == null)
                 return $"{lastName} {firstName![0]}.";
             else
                 return $"{lastName} {firstName![0]}. {middleName![0]}.";

@@ -112,13 +112,8 @@
                                           Margin="10,2.5,0,0"
                                           MaxHeight="50"
                                           HorizontalAlignment="Right"
-                                          Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}">
-                        <local:EmployeeGroups.Style>
-                            <Style TargetType="{x:Type local:EmployeeGroups}">
-                                <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
-                            </Style>
-                        </local:EmployeeGroups.Style>
-                    </local:EmployeeGroups>
+                                          Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
+                                          DataContext="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
                     <Grid Grid.Column="4">
                         <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
                                    Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
@@ -205,13 +200,8 @@
                                           Margin="10,2.5,0,0"
                                           MaxHeight="50"
                                           HorizontalAlignment="Right"
-                                          Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}">
-                        <local:EmployeeGroups.Style>
-                            <Style TargetType="{x:Type local:EmployeeGroups}">
-                                <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
-                            </Style>
-                        </local:EmployeeGroups.Style>
-                    </local:EmployeeGroups>
+                                          Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
+                                          DataContext="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
                     <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
                                Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                VerticalAlignment="Top"
@@ -319,13 +309,8 @@
                                           Margin="10,2.5,0,0"
                                           MaxHeight="50"
                                           HorizontalAlignment="Right"
-                                          Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}">
-                        <local:EmployeeGroups.Style>
-                            <Style TargetType="{x:Type local:EmployeeGroups}">
-                                <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
-                            </Style>
-                        </local:EmployeeGroups.Style>
-                    </local:EmployeeGroups>
+                                          Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl, AncestorLevel=2}}"
+                                          DataContext="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
                     <Grid Grid.Column="4">
                         <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
                                    Foreground="{DynamicResource Schedule.Text.Foreground.Static}"

@@ -171,9 +171,7 @@ namespace BSUIRScheduleDESK.viewmodels
                             SearchResponse? response = scheduleSearchWindow.FSearchResponce;
                             if(response != null)
                             {
-                                if(await _model.LoadSchedule(response.GetUrl(), ScheduleService.LoadingType.Server))
-                                    Schedule = _model.Schedule;
-                                EventService.ScheduleLoaded_Invoke();
+                                await LoadSchedule(response.GetUrl(), LoadingType.Server);
                             }
                         }
                         else { }
@@ -195,7 +193,7 @@ namespace BSUIRScheduleDESK.viewmodels
                             SearchResponse? response = scheduleSearchWindow.FSearchResponce;
                             if (response != null)
                             {
-                                GroupSchedule tSchedule = await ScheduleService.LoadSchedule(response.GetUrl(), ScheduleService.LoadingType.ServerWP);
+                                GroupSchedule tSchedule = await ScheduleService.LoadSchedule(response.GetUrl(), LoadingType.ServerWP);
                                 if(Schedule != null)
                                 {
                                     if (Schedule.Compare(tSchedule))
@@ -224,7 +222,9 @@ namespace BSUIRScheduleDESK.viewmodels
                         if(Schedule != null)
                         {
                             AnnouncementWindow announcementWindow = new AnnouncementWindow();
-                            announcementWindow.DataContext = new AnnouncementViewModel(Announcements!, Schedule!.GetName());
+                            AnnouncementViewModel announcementVW = new AnnouncementViewModel(Announcements!, Schedule!.GetName());
+                            announcementWindow.DataContext = announcementVW;
+                            announcementVW.OnRequestClose += async (s, e) => { announcementWindow.Close(); await LoadSchedule(announcementVW.Url, LoadingType.Server);  };
                             announcementWindow.ShowDialog();
                         }
                     }));
@@ -289,11 +289,8 @@ namespace BSUIRScheduleDESK.viewmodels
                 return loadScheduleBS ??
                     (loadScheduleBS = new RelayCommand(async obj =>
                     {
-                        var ve = obj as Employee;
-                        var vs = obj as StudentGroup;
-                        if(await _model.LoadSchedule(ve == null ? vs?.name : ve.urlId, ScheduleService.LoadingType.Server))
-                            Schedule = _model.Schedule;
-                        EventService.ScheduleLoaded_Invoke();
+                        if (obj is not string url) return;
+                        await LoadSchedule(url, LoadingType.Server);
                     }));
             }
         }
@@ -380,18 +377,20 @@ namespace BSUIRScheduleDESK.viewmodels
         {
             GoToWeekByOff(-WeekDiff, true);
         }        
-        private async void LoadFavoriteSchedule(FavoriteSchedule schedule)
+        private async Task LoadSchedule(string? url, LoadingType loadingType)
         {
-            if(await _model.LoadSchedule(schedule.UrlId, ScheduleService.LoadingType.Local))
+            if (await _model.LoadSchedule(url, loadingType))
                 Schedule = _model.Schedule;
             EventService.ScheduleLoaded_Invoke();
+        }
+        private async void LoadFavoriteSchedule(FavoriteSchedule schedule)
+        {
+            await LoadSchedule(schedule.UrlId, LoadingType.Local);
         }
 
         private async void LoadRecentSchedule()
         {
-            if(await _model.LoadSchedule("recent", ScheduleService.LoadingType.Local))
-                Schedule = _model.Schedule;
-            EventService.ScheduleLoaded_Invoke();
+            await LoadSchedule("recent", LoadingType.Local);
         }
         private async void OnScheduleUnFavorited(FavoriteSchedule schedule)
         {
