@@ -33,7 +33,7 @@ namespace BSUIRScheduleDESK.views
             get
             {
                 var b = GetStyledButton();
-                b.Content = nameof(OK);
+                b.Content = "ОК";
                 b.Click += delegate { result = ModalWindowResult.OK; Close(); };
                 return b;
             }
@@ -43,7 +43,7 @@ namespace BSUIRScheduleDESK.views
             get
             {
                 var b = GetStyledButton();
-                b.Content = nameof(Cancel);
+                b.Content = "Отмена";
                 b.Click += delegate { result = ModalWindowResult.Canceled; Close(); };
                 return b;
             }
@@ -53,7 +53,7 @@ namespace BSUIRScheduleDESK.views
             get
             {
                 var b = GetStyledButton();
-                b.Content = nameof(Yes);
+                b.Content = "Да";
                 b.Click += delegate { result = ModalWindowResult.Yes; Close(); };
                 return b;
             }
@@ -63,7 +63,7 @@ namespace BSUIRScheduleDESK.views
             get
             {
                 var b = GetStyledButton();
-                b.Content = nameof(No);
+                b.Content = "Нет";
                 b.Click += delegate { result = ModalWindowResult.No; Close(); };
                 return b;
             }

@@ -448,7 +448,7 @@
                                     </TextBlock.ToolTip>
                                 </TextBlock>
                                 <!--start & end lesson dates block-->
-                                <Grid Margin="20,0">
+                                <Grid Margin="10,0,0,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>
@@ -476,7 +476,7 @@
                                     </Grid.Style>
                                 </Grid>
                                 <!--start & end exam dates block-->
-                                <Grid Margin="20,0">
+                                <Grid Margin="10,0,0,0">
                                     <Grid.RowDefinitions>
                                         <RowDefinition/>
                                         <RowDefinition/>

@@ -243,11 +243,11 @@
         </DataTemplate>
 
         <Style x:Key="examPlateStyle" TargetType="{x:Type ContentPresenter}">
-            <Setter Property="ContentTemplate" Value="{DynamicResource examPlateTemplate}"/>
+            <Setter Property="ContentTemplate" Value="{StaticResource examPlateTemplate}"/>
             <Setter Property="Focusable" Value="False"/>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding announcement}" Value="True">
-                    <Setter Property="ContentTemplate" Value="{DynamicResource announcementTemplate}"/>
+                    <Setter Property="ContentTemplate" Value="{StaticResource announcementTemplate}"/>
                 </DataTrigger>
             </Style.Triggers>
         </Style>

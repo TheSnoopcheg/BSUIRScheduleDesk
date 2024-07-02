@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System;
 using BSUIRScheduleDESK.views;
-using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace BSUIRScheduleDESK.models
 {
@@ -73,12 +73,14 @@ namespace BSUIRScheduleDESK.models
                 if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
                 {
                     string? url = Schedule.GetUrl();
+                    Debug.WriteLine(url);
                     var schedule = await ScheduleService.LoadSchedule(url, LoadingType.Server);
                     if(!Schedule.Compare(schedule))
                     {
                         ModalWindowResult result = ModalWindow.Show($"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", "Расписание БГУИР", "", ModalWindowButtons.YesNo);
                         if (result == ModalWindowResult.Yes)
                         {
+                            schedule.favorited = Schedule.favorited;
                             Schedule = schedule;
                             await ScheduleService.SaveSchedule(Schedule, url);
                             return true;

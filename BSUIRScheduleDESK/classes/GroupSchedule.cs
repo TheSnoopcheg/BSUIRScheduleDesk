@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace BSUIRScheduleDESK.classes
@@ -18,12 +19,16 @@ namespace BSUIRScheduleDESK.classes
         public string? endDate { get; set; }
         public string? startExamsDate { get; set; }
         public string? endExamsDate { get; set; }
+        [JsonIgnore]
         public bool favorited { get; set; }
+        [JsonIgnore]
         public UpdateDate? updateDate { get; set; }
         public string? currentPeriod { get; set; }
         public bool Compare(GroupSchedule right)
         {
-            return this.GetUrl() == right.GetUrl() && this.schedules == right.schedules;
+            string thisObj = JsonSerializer.Serialize(this);
+            string rightObj = JsonSerializer.Serialize(right);
+            return thisObj.Equals(rightObj);
         }
         public string? GetName()
         {
