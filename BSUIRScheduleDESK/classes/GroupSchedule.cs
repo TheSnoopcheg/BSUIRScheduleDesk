@@ -23,9 +23,7 @@ namespace BSUIRScheduleDESK.classes
         public string? currentPeriod { get; set; }
         public bool Compare(GroupSchedule right)
         {
-            string? lOp = this.studentGroup == null ? this.employee!.urlId : this.studentGroup.name;
-            string? rOp = right.studentGroup == null ? right.employee!.urlId : right.studentGroup.name;
-            return lOp == rOp;
+            return this.GetUrl() == right.GetUrl() && this.schedules == right.schedules;
         }
         public string? GetName()
         {

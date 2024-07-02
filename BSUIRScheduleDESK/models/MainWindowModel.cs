@@ -68,19 +68,18 @@ namespace BSUIRScheduleDESK.models
         }
         public async Task<bool> CheckScheduleUpdate()
         {
-            UpdateDate updateDate;
             if (Schedule != null)
             {
                 if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
                 {
                     string? url = Schedule.GetUrl();
-                    updateDate = await ScheduleService.GetLastUpdate(url);
-                    if(updateDate != Schedule.updateDate)
+                    var schedule = await ScheduleService.LoadSchedule(url, LoadingType.Server);
+                    if(!Schedule.Compare(schedule))
                     {
                         ModalWindowResult result = ModalWindow.Show($"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", "Расписание БГУИР", "", ModalWindowButtons.YesNo);
                         if (result == ModalWindowResult.Yes)
                         {
-                            Schedule = await ScheduleService.LoadSchedule(url, LoadingType.Server);
+                            Schedule = schedule;
                             await ScheduleService.SaveSchedule(Schedule, url);
                             return true;
                         }

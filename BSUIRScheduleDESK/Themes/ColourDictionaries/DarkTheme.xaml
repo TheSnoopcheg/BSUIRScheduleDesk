@@ -4,7 +4,7 @@
     <Color x:Key="Window.Title" R="33" G="33" B="33" A="255"/>
     <Color x:Key="Window.Title.Icon" R="255" G="255" B="255" A="255"/>
     <Color x:Key="Window.TitleText" R="255" G="255" B="255" A="255"/>
-    <Color x:Key="Window.BorderBrush" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="Window.BorderBrush" R="195" G="195" B="195" A="155"/>
     <Color x:Key="SubWindow.TitleText" R="255" G="255" B="255" A="255"/>
     <Color x:Key="SubWindow.Button.Background" R="44" G="44" B="44" A="255"/>
     <Color x:Key="SubWindow.Button.Foreground" R="245" G="245" B="245" A="255"/>
@@ -95,7 +95,7 @@
     <Color x:Key="Expander.Arrow.Stroke.Disabled" R="112" G="112" B="112" A="255"/>
 
     <Color x:Key="ComboBox.Background" R="88" G="88" B="88" A="255"/>
-    <Color x:Key="ComboBox.Border" R="172" G="172" B="172" A="0"/>
+    <Color x:Key="ComboBox.Border" R="212" G="212" B="212" A="255"/>
     <Color x:Key="ComboBox.Glyph" R="196" G="196" B="196" A="255"/>
     <Color x:Key="ComboBox.Background.MouseOver" R="236" G="244" B="252" A="255"/>
     <Color x:Key="ComboBox.Border.MouseOver" R="126" G="180" B="234" A="0"/>
@@ -116,9 +116,9 @@
     <Color x:Key="Exams.Expander.BorderBrush" R="128" G="128" B="128" A="255"/>
     <Color x:Key="Exams.Expander.Header.Foreground" R="245" G="245" B="245" A="255"/>
     <Color x:Key="Exams.Expander.Header.Background" R="88" G="88" B="88" A="255"/>
-    <Color x:Key="Exams.Date.Border.BorderBrush" R="0" G="0" B="0" A="255"/>
-    <Color x:Key="Exams.Date.Border.Background" R="255" G="255" B="255" A="255"/>
-    <Color x:Key="Exams.Date.Border.Foreground" R="0" G="0" B="0" A="255"/>
+    <Color x:Key="Exams.Date.Border.BorderBrush" R="255" G="255" B="255" A="255"/>
+    <Color x:Key="Exams.Date.Border.Background" R="45" G="45" B="45" A="255"/>
+    <Color x:Key="Exams.Date.Border.Foreground" R="255" G="255" B="255" A="255"/>
 
     <Color x:Key="Schedule.Date.Foreground" R="245" G="245" B="245" A="255"/>
     <Color x:Key="Schedule.Background" R="77" G="77" B="77" A="255"/>
@@ -152,7 +152,8 @@
 
     <Color x:Key="Notes.HasItemsEllipse.Background" R="245" G="245" B="245" A="255"/>
 
-    <Color x:Key="ScrollBar.Background" R="211" G="211" B="211" A="255"/>
+    <Color x:Key="ScrollBar.Thumb.Background" R="151" G="151" B="151" A="255"/>
+    <Color x:Key="ScrollBar.Thumb.Background.MouseOver" R="211" G="211" B="211" A="255"/>
 
     <Color x:Key="ModalWindow.Background" R="33" G="33" B="33" A="255"/>
     <Color x:Key="ModalWindow.Text.Foreground" R="245" G="245" B="245" A="255"/>
@@ -314,7 +315,8 @@
 
     <SolidColorBrush x:Key="Notes.HasItemsEllipse.Background.Static" Color="{StaticResource Notes.HasItemsEllipse.Background}"/>
 
-    <SolidColorBrush x:Key="ScrollBar.Background.Static" Color="{StaticResource ScrollBar.Background}"/>
+    <SolidColorBrush x:Key="ScrollBar.Thumb.Static.Background" Color="{StaticResource ScrollBar.Thumb.Background}"/>
+    <SolidColorBrush x:Key="ScrollBar.Thumb.MouseOver.Background" Color="{StaticResource ScrollBar.Thumb.Background.MouseOver}"/>
     
     <SolidColorBrush x:Key="ModalWinodw.Background.Static" Color="{StaticResource ModalWindow.Background}"/>
     <SolidColorBrush x:Key="ModalWinodw.Text.Foreground.Static" Color="{StaticResource ModalWindow.Text.Foreground}"/>

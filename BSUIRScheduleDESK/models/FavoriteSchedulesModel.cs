@@ -50,8 +50,8 @@ namespace BSUIRScheduleDESK.models
         {
             FavoriteSchedule? schedule = new FavoriteSchedule()
             {
-                Name = groupschedule.employee == null ? groupschedule.studentGroup?.name : groupschedule.employee.ToString(),
-                UrlId = groupschedule.employee == null ? groupschedule.studentGroup?.name : groupschedule.employee.urlId
+                Name = groupschedule.GetName(),
+                UrlId = groupschedule.GetUrl()
             };
             FavoriteSchedule? favoriteSchedule = _favoriteSchedules.FirstOrDefault(u => u.UrlId == schedule.UrlId);
             if(favoriteSchedule != null)

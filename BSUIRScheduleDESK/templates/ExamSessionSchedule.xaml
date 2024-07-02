@@ -11,6 +11,7 @@
     <UserControl.Resources>
         <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
         <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
+        <converters:IsMonthExpandedConverter x:Key="IsMonthExpandedConverter"/>
         <converters:DateConverter x:Key="DateConverter"/>
 
         <DataTemplate x:Key="examPlateTemplate">
@@ -257,8 +258,14 @@
                     <RowDefinition Height="20"/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <Border CornerRadius="10" Height="20" Background="{DynamicResource Exams.Date.Border.Background.Static}" Width="150"
-                        BorderBrush="{DynamicResource Exams.Date.Border.BorderBrush.Static}" BorderThickness="1" VerticalAlignment="Top" HorizontalAlignment="Center">
+                <Border CornerRadius="10" 
+                        Height="20" 
+                        Width="150"
+                        Background="{DynamicResource Exams.Date.Border.Background.Static}" 
+                        BorderBrush="{DynamicResource Exams.Date.Border.BorderBrush.Static}" 
+                        BorderThickness="1" 
+                        VerticalAlignment="Top" 
+                        HorizontalAlignment="Center">
                     <TextBlock Text="{Binding Key, Converter={StaticResource DateConverter}}"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource Exams.Date.Border.Foreground.Static}"
@@ -276,7 +283,13 @@
         </DataTemplate>
         
         <DataTemplate x:Key="monthTemplate">
-            <Expander BorderBrush="{DynamicResource Exams.Expander.BorderBrush.Static}" BorderThickness="1" Margin="15,5,15,5" Style="{DynamicResource ExpanderStyle}" Focusable="False" HorizontalContentAlignment="Center" IsExpanded="True">
+            <Expander BorderBrush="{DynamicResource Exams.Expander.BorderBrush.Static}" 
+                      BorderThickness="1" 
+                      Margin="15,5,15,5" 
+                      Style="{DynamicResource ExpanderStyle}" 
+                      Focusable="False" 
+                      HorizontalContentAlignment="Center" 
+                      IsExpanded="{Binding Key, Converter={StaticResource IsMonthExpandedConverter}, Mode=OneWay}">
                 <Expander.Header>
                     <TextBlock Text="{Binding Key, Converter={StaticResource DateConverter}, ConverterParameter=monthyear}" Foreground="{DynamicResource Exams.Expander.Header.Foreground.Static}" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center"/>
                 </Expander.Header>
