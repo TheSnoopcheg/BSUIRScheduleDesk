@@ -8,7 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Windows;
-using n = BSUIRScheduleDESK.Properties.Settings;
+using set = BSUIRScheduleDESK.Properties.Settings;
 
 namespace BSUIRScheduleDESK
 {
@@ -21,24 +21,24 @@ namespace BSUIRScheduleDESK
         {
             IsAnotherProcessExist();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{n.Default.currentTheme}.xaml", UriKind.Relative)};
-            if (n.Default.currentweek == 0 || n.Default.laststartup == DateTime.MinValue)
+            App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{set.Default.currentTheme}.xaml", UriKind.Relative)};
+            if (set.Default.currentweek == 0 || set.Default.laststartup == DateTime.MinValue)
             {
                 var up = ScheduleService.UpdateCurrentWeekAsync();
             }
-            int wd = DateService.GetWeekDiff(n.Default.laststartup, DateTime.Today);
+            int wd = DateService.GetWeekDiff(set.Default.laststartup, DateTime.Today);
             if (wd != 0)
             {
-                n.Default.currentweek += wd % 4;
-                if(n.Default.currentweek >= 5)
+                set.Default.currentweek += wd % 4;
+                if(set.Default.currentweek >= 5)
                 {
-                    n.Default.currentweek -= 4;
-                    n.Default.Save();
+                    set.Default.currentweek -= 4;
+                    set.Default.Save();
                 }
             }
             MainWindowViewModel mwvm = new MainWindowViewModel();
-            n.Default.laststartup = DateTime.Today;
-            n.Default.Save();
+            set.Default.laststartup = DateTime.Today;
+            set.Default.Save();
             this.MainWindow = new MainWindow();
             this.MainWindow.DataContext = mwvm;
             MainWindow.Show();
@@ -49,6 +49,11 @@ namespace BSUIRScheduleDESK
             {
                 Directory.CreateDirectory(path);
             }
+        }
+        protected override void OnExit(ExitEventArgs e)
+        {
+            set.Default.Save();
+            base.OnExit(e);
         }
         private void IsAnotherProcessExist()
         {

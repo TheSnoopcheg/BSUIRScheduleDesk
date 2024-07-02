@@ -8,6 +8,7 @@
         xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
         xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
         xmlns:templates="clr-namespace:BSUIRScheduleDESK.templates"
+        xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Height="450" Width="800"
@@ -69,12 +70,12 @@
                             <CheckBox Style="{DynamicResource CheckBoxStyle}" 
                                       Content="1"
                                       VerticalAlignment="Center"
-                                      IsChecked="{Binding Path=FirstSubGroup}"
+                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=firstsubgroup}"
                                       Margin="5,0,0,0"
                                       HorizontalAlignment="Center"/>
                             <CheckBox Content="2"
                                       VerticalAlignment="Center"
-                                      IsChecked="{Binding Path=SecondSubGroup}"
+                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=secondsubgroup}"
                                       Style="{DynamicResource CheckBoxStyle}"
                                       Margin="5,0,0,0"
                                       HorizontalAlignment="Center"/>
@@ -86,7 +87,7 @@
                             <CheckBox Style="{DynamicResource CheckBoxStyle}"
                                       VerticalAlignment="Center"
                                       HorizontalAlignment="Center"
-                                      IsChecked="{Binding Path=ShowExams}"
+                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}"
                                       Margin="5,0,0,0"/>
                         </StackPanel>
                         <TextBlock Text="{Binding CurrentWeek, StringFormat=Неделя: {0}}"
@@ -225,6 +226,10 @@
                 <DataTrigger Binding="{Binding Path=Schedule.employee}" Value="{x:Null}">
                     <Setter Property="Title" Value="{Binding Path=Schedule.studentGroup.name, StringFormat={}{0} - BSUIR Schedule}"/>
                 </DataTrigger>
+                <Trigger Property="WindowState" Value="Normal">
+                    <Setter Property="BorderThickness" Value="1"/>
+                    <Setter Property="BorderBrush" Value="{DynamicResource Window.BorderBrush.Static}"/>
+                </Trigger>
             </Style.Triggers>
         </Style>
     </Window.Style>
@@ -660,12 +665,23 @@
                                 <Grid>
                                     <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10" Effect="{DynamicResource myShadow}"/>
                                     <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10">
-                                        <ScrollViewer VerticalScrollBarVisibility="Hidden">
+                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
                                             <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
                                                                            LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
                                                                            Margin="0,10,0,10"
                                                                            HorizontalAlignment="Stretch"/>
                                         </ScrollViewer>
+                                        <Border.OpacityMask>
+                                            <VisualBrush>
+                                                <VisualBrush.Visual>
+                                                    <Border Background="Black"
+                                                            SnapsToDevicePixels="True"
+                                                            CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
+                                                            Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
+                                                            Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}"/>
+                                                </VisualBrush.Visual>
+                                            </VisualBrush>
+                                        </Border.OpacityMask>
                                     </Border>
                                 </Grid>
                             </TabItem.Content>

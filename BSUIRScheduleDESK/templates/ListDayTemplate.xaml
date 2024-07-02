@@ -11,9 +11,9 @@
     <UserControl.Resources>
         <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
         <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
-        <local:DayScheduleTemplateSelector x:Key="DayScheduleTemplateSelector"/>
+        <converters:WeekContainsConverter x:Key="WeekContainsConverter"/>
         <DataTemplate x:Key="clearTemplate">
-            
+
         </DataTemplate>
         <DataTemplate x:Key="sessionItemTemplate">
             <Border Background="{DynamicResource Schedule.Background.Static}"
@@ -209,7 +209,7 @@
                                Margin="0, 0, 5, 0"
                                TextWrapping="Wrap"
                                Grid.Column="4"/>
-                    </Grid>
+                </Grid>
             </Border>
         </DataTemplate>
         <DataTemplate x:Key="scheduleTemplate">
@@ -327,6 +327,106 @@
                 </Grid>
             </Border>
         </DataTemplate>
+        <DataTemplate x:Key="CommonTemplate">
+            <Grid>
+                <ContentPresenter x:Name="itemTemplate" 
+                                  Content="{Binding}"
+                                  ContentTemplate="{StaticResource clearTemplate}"/>
+            </Grid>
+            <DataTemplate.Triggers>
+                <DataTrigger Binding="{Binding announcement}" Value="True">
+                    <Setter Property="ContentTemplate" TargetName="itemTemplate" Value="{StaticResource announcementTemplate}"/>
+                </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding numSubgroup}" Value="0"/>
+                        <Condition Value="True">
+                            <Condition.Binding>
+                                <MultiBinding Converter="{StaticResource WeekContainsConverter}">
+                                    <Binding Path="weekNumber"/>
+                                    <Binding Source="{x:Static properties:Settings.Default}" Path="openedweek"/>
+                                </MultiBinding>
+                            </Condition.Binding>
+                        </Condition>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ContentTemplate" TargetName="itemTemplate" Value="{StaticResource scheduleTemplate}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding numSubgroup}" Value="1"/>
+                        <Condition Binding="{Binding Source={x:Static properties:Settings.Default}, Path=firstsubgroup}" Value="True"/>
+                        <Condition Value="True">
+                            <Condition.Binding>
+                                <MultiBinding Converter="{StaticResource WeekContainsConverter}">
+                                    <Binding Path="weekNumber"/>
+                                    <Binding Source="{x:Static properties:Settings.Default}" Path="openedweek"/>
+                                </MultiBinding>
+                            </Condition.Binding>
+                        </Condition>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ContentTemplate" TargetName="itemTemplate" Value="{StaticResource scheduleTemplate}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding numSubgroup}" Value="2"/>
+                        <Condition Binding="{Binding Source={x:Static properties:Settings.Default}, Path=secondsubgroup}" Value="True"/>
+                        <Condition Value="True">
+                            <Condition.Binding>
+                                <MultiBinding Converter="{StaticResource WeekContainsConverter}">
+                                    <Binding Path="weekNumber"/>
+                                    <Binding Source="{x:Static properties:Settings.Default}" Path="openedweek"/>
+                                </MultiBinding>
+                            </Condition.Binding>
+                        </Condition>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ContentTemplate" TargetName="itemTemplate" Value="{StaticResource scheduleTemplate}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding lessonTypeAbbrev}" Value="Экзамен"/>
+                        <Condition Binding="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}" Value="True"/>
+                        <Condition Value="True">
+                            <Condition.Binding>
+                                <MultiBinding Converter="{StaticResource WeekContainsConverter}">
+                                    <Binding Path="weekNumber"/>
+                                    <Binding Source="{x:Static properties:Settings.Default}" Path="openedweek"/>
+                                </MultiBinding>
+                            </Condition.Binding>
+                        </Condition>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ContentTemplate" TargetName="itemTemplate" Value="{StaticResource sessionItemTemplate}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding lessonTypeAbbrev}" Value="Консультация"/>
+                        <Condition Binding="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}" Value="True"/>
+                        <Condition Value="True">
+                            <Condition.Binding>
+                                <MultiBinding Converter="{StaticResource WeekContainsConverter}">
+                                    <Binding Path="weekNumber"/>
+                                    <Binding Source="{x:Static properties:Settings.Default}" Path="openedweek"/>
+                                </MultiBinding>
+                            </Condition.Binding>
+                        </Condition>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ContentTemplate" TargetName="itemTemplate" Value="{StaticResource sessionItemTemplate}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding lessonTypeAbbrev}" Value="Экзамен"/>
+                        <Condition Binding="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ContentTemplate" TargetName="itemTemplate" Value="{StaticResource clearTemplate}"/>
+                </MultiDataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding lessonTypeAbbrev}" Value="Консультация"/>
+                        <Condition Binding="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}" Value="False"/>
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="ContentTemplate" TargetName="itemTemplate" Value="{StaticResource clearTemplate}"/>
+                </MultiDataTrigger>
+            </DataTemplate.Triggers>
+        </DataTemplate>
     </UserControl.Resources>
     <Grid Width="700">
         <Grid.RowDefinitions>
@@ -350,7 +450,7 @@
                        VerticalAlignment="Center"/>
         </Border>
         <ItemsControl Grid.Row="1" ItemsSource="{Binding}"
-                      ItemTemplateSelector="{StaticResource DayScheduleTemplateSelector}"
+                      ItemTemplate="{StaticResource CommonTemplate}"
                       Focusable="False"
                       x:Name="classesList">
         </ItemsControl>

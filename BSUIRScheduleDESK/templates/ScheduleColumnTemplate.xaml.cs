@@ -11,19 +11,7 @@ namespace BSUIRScheduleDESK.templates
     {
         public ScheduleColumnTemplate()
         {
-            InitializeComponent(); 
-            EventService.SchedulePresentationUpdated += OnSub;
-            EventService.WeekUpdated += OnSub;
-        }
-        public void OnSub()
-        {
-            if (classesPlates.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(classesPlates.ItemsSource).Refresh();
-        }
-        public void OnSub(int t)
-        {
-            if (classesPlates.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(classesPlates.ItemsSource).Refresh();
+            InitializeComponent();
         }
     }
 }

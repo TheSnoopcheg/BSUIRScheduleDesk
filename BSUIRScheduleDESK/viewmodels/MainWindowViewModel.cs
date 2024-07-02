@@ -65,17 +65,14 @@ namespace BSUIRScheduleDESK.viewmodels
             get { return _groupSchedule!; }
             set
             {
-                if(value != null)
-                {
-                    _groupSchedule = value;
-                    OnPropertyChanged();
-                }
+                _groupSchedule = value;
+                OnPropertyChanged();
             }
         }
         private int _currentWeek;
         public int CurrentWeek
         {
-            get => _currentWeek;
+            get { return _currentWeek; }
             set
             {
                 if (value >= 5)
@@ -83,43 +80,8 @@ namespace BSUIRScheduleDESK.viewmodels
                 else if (value <= 0)
                     value += 4;
                 _currentWeek = value;
+                Properties.Settings.Default.openedweek = value;
                 OnPropertyChanged();
-            }
-        }
-        private bool _firstsubgroup;
-        public bool FirstSubGroup
-        {
-            get => _firstsubgroup;
-            set
-            {
-                _firstsubgroup = value;
-                Properties.Settings.Default.firstsubgroup = value;
-                Properties.Settings.Default.Save();
-                EventService.SchedulePresentationUpdated_Invoke();
-            }
-        }
-        private bool _secondsubgroup;
-        public bool SecondSubGroup
-        {
-            get => _secondsubgroup;
-            set
-            {
-                _secondsubgroup = value;
-                Properties.Settings.Default.secondsubgroup = value;
-                Properties.Settings.Default.Save();
-                EventService.SchedulePresentationUpdated_Invoke();
-            }
-        }
-        private bool _showExams;
-        public bool ShowExams
-        {
-            get => _showExams;
-            set
-            {
-                _showExams = value;
-                Properties.Settings.Default.showexams = value;
-                Properties.Settings.Default.Save();
-                EventService.SchedulePresentationUpdated_Invoke();
             }
         }
         private ObservableCollection<Note>? _notes = new ObservableCollection<Note>();
@@ -275,7 +237,6 @@ namespace BSUIRScheduleDESK.viewmodels
                             WeekDiff += res;
                             CurrentWeek += res;
                             ChangeDates(res);
-                            EventService.WeekUpdated_Invoke(res);
                         }
                     }));
             }
@@ -370,8 +331,6 @@ namespace BSUIRScheduleDESK.viewmodels
             ChangeDates(offset);
             int weekDiff = offset % 4;
             CurrentWeek += weekDiff;
-            if(useEvent)
-                EventService.WeekUpdated_Invoke(weekDiff);
         }
         private void BackCurrentWeek()
         {
@@ -423,14 +382,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged(nameof(Schedule));
                 await _model.SaveRecentSchedule(Schedule);
             }
-
-            if (Schedule.favorited)
-            {
-                if (await _model.CheckScheduleUpdate())
-                    Schedule = _model.Schedule;
-                if (await _model.LoadNotes(url))
-                    Notes = _model.Notes;
-            }
+            
             if (DateTime.TryParse(Schedule!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule!.endExamsDate, out DateTime endExamsDate))
             {
                 if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
@@ -443,6 +395,14 @@ namespace BSUIRScheduleDESK.viewmodels
                 GoToWeekByOff(-WeekDiff + 1, false);
             else
                 GoToWeekByOff(-WeekDiff, false);
+
+            if (Schedule.favorited)
+            {
+                if (await _model.LoadNotes(url))
+                    Notes = _model.Notes;
+                if (await _model.CheckScheduleUpdate())
+                    Schedule = _model.Schedule;
+            }
         }
 
         #endregion
@@ -457,9 +417,6 @@ namespace BSUIRScheduleDESK.viewmodels
             {
                 EventService.CurrentWeekUpdated += OnCurrentWeekUpdate;
             }
-            _firstsubgroup = Properties.Settings.Default.firstsubgroup;
-            _secondsubgroup = Properties.Settings.Default.secondsubgroup;
-            _showExams = Properties.Settings.Default.showexams;
             CurrentWeek = Properties.Settings.Default.currentweek;
             Dates = _model.Dates;
             LoadRecentSchedule();

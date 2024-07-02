@@ -163,7 +163,8 @@
                         <TextBlock Text="Тема"
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
-                        <ComboBox Style="{DynamicResource ComboBoxStyle}" ItemsSource="{Binding Themes, Mode=OneTime, ElementName=sWindow}" 
+                        <ComboBox Style="{DynamicResource ComboBoxStyle}" 
+                                  ItemsSource="{Binding Themes, Mode=OneTime, ElementName=sWindow}" 
                                   SelectedIndex="{Binding ThemeIndex, ElementName=sWindow}"
                                   Width="75"
                                   Margin="5,0,0,0"

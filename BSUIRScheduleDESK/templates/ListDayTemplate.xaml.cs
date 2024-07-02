@@ -17,35 +17,7 @@ namespace BSUIRScheduleDESK.templates
         public ListDayTemplate()
         {
             InitializeComponent();
-            EventService.SchedulePresentationUpdated += OnSub;
-            EventService.WeekUpdated += OnSub;
         }
-        public void OnSub()
-        {
-            if (classesList.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(classesList.ItemsSource).Refresh();
-        }
-        public void OnSub(int t)
-        {
-            if (classesList.ItemsSource != null)
-                CollectionViewSource.GetDefaultView(classesList.ItemsSource).Refresh();
-        }
-
-        #region LoadScheduleCommand
-
-        public static readonly DependencyProperty LoadScheduleCommandProperty = DependencyProperty.Register(
-            "LoadScheduleCommand",
-            typeof(ICommand),
-            typeof(ListDayTemplate),
-            new FrameworkPropertyMetadata(null));
-
-        public ICommand LoadScheduleCommand
-        {
-            get { return (ICommand)GetValue(LoadScheduleCommandProperty); }
-            set { SetValue(LoadScheduleCommandProperty, value); }
-        }
-
-        #endregion
 
         #region Date
 
