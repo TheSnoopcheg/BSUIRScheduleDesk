@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-#if DEBUG
-using System.Diagnostics;
-#endif
 
 namespace BSUIRScheduleDESK.converters
 {

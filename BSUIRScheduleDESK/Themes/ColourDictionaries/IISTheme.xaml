@@ -152,7 +152,7 @@
 
     <Color x:Key="Notes.HasItemsEllipse.Background" R="245" G="245" B="245" A="255"/>
 
-    <Color x:Key="ScrollBar.Thumb.Background" R="211" G="211" B="211" A="255"/>
+    <Color x:Key="ScrollBar.Thumb.Background" R="191" G="191" B="191" A="255"/>
     <Color x:Key="ScrollBar.Thumb.Background.MouseOver" R="191" G="191" B="191" A="255"/>
 
     <Color x:Key="ModalWindow.Background" R="255" G="255" B="255" A="255"/>
@@ -161,6 +161,9 @@
     <Color x:Key="ModalWindow.Button.Background.MouseOver" R="235" G="235" B="235" A="255"/>
     <Color x:Key="ModalWindow.Button.Background.Pressed" R="215" G="215" B="215" A="255"/>
     <Color x:Key="ModalWindow.Button.Foreground" R="52" G="97" B="207" A="255"/>
+
+    <Color x:Key="SchedulePresenter.TodayBorder.Background" R="0" G="0" B="0" A="17"/>
+    <Color x:Key="ScheduleTime.Text.Foreground" R="0" G="0" B="0" A="255"/>
 
     <SolidColorBrush x:Key="Window.Background.Static" Color="{StaticResource Window.Background}"/>
     <SolidColorBrush x:Key="Window.Title.Static" Color="{StaticResource Window.Title}"/>
@@ -323,4 +326,7 @@
     <SolidColorBrush x:Key="ModalWindow.Button.MouseOver.Background" Color="{StaticResource ModalWindow.Button.Background.MouseOver}"/>
     <SolidColorBrush x:Key="ModalWindow.Button.Pressed.Background" Color="{StaticResource ModalWindow.Button.Background.Pressed}"/>
     <SolidColorBrush x:Key="ModalWindow.Button.Static.Foreground" Color="{StaticResource ModalWindow.Button.Foreground}"/>
+
+    <SolidColorBrush x:Key="SchedulePresenter.TodayBorder.Background.Static" Color="{StaticResource SchedulePresenter.TodayBorder.Background}"/>
+    <SolidColorBrush x:Key="ScheduleTime.Text.Foreground.Static" Color="{StaticResource ScheduleTime.Text.Foreground}"/>
 </ResourceDictionary>

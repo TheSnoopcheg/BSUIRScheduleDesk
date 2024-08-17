@@ -2,7 +2,6 @@
 using BSUIRScheduleDESK.services;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using System;
 using BSUIRScheduleDESK.views;
 using System.Diagnostics;
 
@@ -10,7 +9,6 @@ namespace BSUIRScheduleDESK.models
 {
     public class MainWindowModel
     {
-        public ObservableCollection<DateTime>? Dates { get; set; }
         public ObservableCollection<Announcement>? Announcements { get; set; }
         public ObservableCollection<Note>? Notes { get; set; }
         private GroupSchedule? _schedule;
@@ -90,9 +88,6 @@ namespace BSUIRScheduleDESK.models
             }
             return false;
         }
-        public MainWindowModel()
-        {
-            Dates = new ObservableCollection<DateTime>(DateService.GetCurrentWeekDates());
-        }
+        public MainWindowModel() { }
     }
 }

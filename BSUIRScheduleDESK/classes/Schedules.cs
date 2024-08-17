@@ -19,5 +19,7 @@ namespace BSUIRScheduleDESK.classes
         public List<Schedule>? Saturday { get; set; }
         [JsonPropertyName("Воскресенье")]
         public List<Schedule>? Sunday { get; set; }
+
+        public bool IsEmpty { get => Monday == null && Tuesday == null && Wednesday == null && Thursday == null && Friday == null && Saturday == null; }
     }
 }

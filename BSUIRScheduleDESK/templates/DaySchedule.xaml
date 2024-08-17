@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
+        xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
              xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
              mc:Ignorable="d"
              x:Name="root">
@@ -82,7 +83,7 @@
                     <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=WindowState}" Value="Normal">
                         <Setter Property="ContentTemplate" Value="{StaticResource listSchedule}"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding}" Value="{x:Null}">
+                    <DataTrigger Binding="{Binding IsEmpty}" Value="True">
                         <Setter Property="ContentTemplate" Value="{StaticResource emptySchedule}"/>
                     </DataTrigger>
                 </Style.Triggers>

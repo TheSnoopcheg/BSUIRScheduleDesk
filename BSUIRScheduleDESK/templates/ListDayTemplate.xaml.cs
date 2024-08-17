@@ -1,11 +1,5 @@
-﻿using BSUIRScheduleDESK.services;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-#if DEBUG
-using System.Diagnostics;
-#endif
 
 namespace BSUIRScheduleDESK.templates
 {

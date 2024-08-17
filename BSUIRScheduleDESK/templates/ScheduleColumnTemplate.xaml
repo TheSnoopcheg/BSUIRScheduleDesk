@@ -297,7 +297,7 @@
                                                    TextWrapping="Wrap"/>
                                     </ToolTip>
                                 </TextBlock.ToolTip>
-                    </TextBlock>
+                            </TextBlock>
                             <TextBlock Text="{Binding lessonTypeAbbrev, StringFormat=({0})}"
                                        Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        VerticalAlignment="Center"

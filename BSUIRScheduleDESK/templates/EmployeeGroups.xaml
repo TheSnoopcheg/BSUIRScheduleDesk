@@ -48,7 +48,7 @@
                 </Button.ToolTip>
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Margin" Value="0,0,5,5"/>
+                        <Setter Property="Margin" Value="0, 2.5,5,2.5"/>
                         <Setter Property="Height" Value="20"/>
                         <Setter Property="HorizontalAlignment" Value="Left"/>
                         <Setter Property="Width" Value="Auto"/>

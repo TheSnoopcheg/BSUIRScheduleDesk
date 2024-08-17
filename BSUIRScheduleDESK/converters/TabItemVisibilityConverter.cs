@@ -25,7 +25,7 @@ namespace BSUIRScheduleDESK.converters
                 }
                 else if(param == "PreviusSchedule")
                 {
-                    if(v.previousSchedules == null) return Visibility.Collapsed;
+                    if(v.previousSchedules == null || v.previousTerm == v.currentTerm) return Visibility.Collapsed;
                 }
             }
             return Visibility.Visible;

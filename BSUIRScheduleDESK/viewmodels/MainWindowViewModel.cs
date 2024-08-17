@@ -6,13 +6,6 @@ using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
-using System.Threading;
-
-
-#if DEBUG
-using System.Diagnostics;
-#endif
 
 namespace BSUIRScheduleDESK.viewmodels
 {
@@ -32,32 +25,11 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-
-        private bool isCalendarOpen = false;
-        public bool IsCalendarOpen
-        {
-            get { return isCalendarOpen; }
-            set
-            {
-                isCalendarOpen = value;
-                OnPropertyChanged();
-            }
-        }
         private FavoriteSchedulesViewModel favoriteSchedulesViewModel;
         public FavoriteSchedulesViewModel FavoriteSchedulesViewModel
         {
             get { return favoriteSchedulesViewModel;}
             set { favoriteSchedulesViewModel = value; }
-        }
-        private ObservableCollection<DateTime>? _dates = new ObservableCollection<DateTime>();
-        public ObservableCollection<DateTime>? Dates
-        {
-            get { return _dates; }
-            set
-            {
-                _dates = value;
-                OnPropertyChanged();
-            }
         }
         private GroupSchedule? _groupSchedule;
         public GroupSchedule? Schedule
@@ -75,12 +47,7 @@ namespace BSUIRScheduleDESK.viewmodels
             get { return _currentWeek; }
             set
             {
-                if (value >= 5)
-                    value -= 4;
-                else if (value <= 0)
-                    value += 4;
                 _currentWeek = value;
-                Properties.Settings.Default.openedweek = value;
                 OnPropertyChanged();
             }
         }
@@ -101,16 +68,6 @@ namespace BSUIRScheduleDESK.viewmodels
             set
             {
                 _announcements = value;
-                OnPropertyChanged();
-            }
-        }
-        private int weekDiff = 0;
-        public int WeekDiff
-        {
-            get { return weekDiff; }
-            set
-            {
-                weekDiff = value;
                 OnPropertyChanged();
             }
         }
@@ -212,35 +169,6 @@ namespace BSUIRScheduleDESK.viewmodels
                     }));
             }
         }
-        private ICommand? backToCurrentWeek;
-        public ICommand BackToCurrentWeek
-        {
-            get
-            {
-                return backToCurrentWeek ??
-                    (backToCurrentWeek = new RelayCommand(obj =>
-                    {
-                        BackCurrentWeek();
-                    }));
-            }
-        }
-        private ICommand? changeWeekNum;
-        public ICommand ChangeWeekNum
-        {
-            get
-            {
-                return changeWeekNum ??
-                    (changeWeekNum = new RelayCommand(obj =>
-                    {
-                        if (int.TryParse(obj.ToString(), out int res))
-                        {
-                            WeekDiff += res;
-                            CurrentWeek += res;
-                            ChangeDates(res);
-                        }
-                    }));
-            }
-        }
         // command to load schedule from schedule' plate
         private ICommand? loadScheduleBS;
         public ICommand LoadScheduleBS
@@ -268,35 +196,6 @@ namespace BSUIRScheduleDESK.viewmodels
                     }));
             }
         }
-        private ICommand? calendarStatusChange;
-        public ICommand CalendarStatusChange
-        {
-            get
-            {
-                return calendarStatusChange ??
-                    (calendarStatusChange = new RelayCommand(obj =>
-                    {
-                        IsCalendarOpen = !IsCalendarOpen;
-                    }));
-            }
-        }
-        private ICommand? openSelectedWeek;
-        public ICommand OpenSelectedWeek
-        {
-            get
-            {
-                return openSelectedWeek ??
-                    (openSelectedWeek = new RelayCommand(obj =>
-                    {
-                        if (obj is DateTime date)
-                        {
-                            int weeks = -(DateService.GetWeekDiff(date, Dates![0]));
-                            GoToWeekByOff(weeks, true);
-                            IsCalendarOpen = false;
-                        }
-                    }));
-            }
-        }
         private ICommand? openNotesWindow;
         public ICommand OpenNotesWindow
         {
@@ -318,24 +217,6 @@ namespace BSUIRScheduleDESK.viewmodels
         #endregion
 
         #region Methods
-        private void ChangeDates(int diff)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                Dates![i] = Dates[i].AddDays(diff * 7);
-            }
-        }
-        private void GoToWeekByOff(int offset, bool useEvent)
-        {
-            WeekDiff += offset;
-            ChangeDates(offset);
-            int weekDiff = offset % 4;
-            CurrentWeek += weekDiff;
-        }
-        private void BackCurrentWeek()
-        {
-            GoToWeekByOff(-WeekDiff, true);
-        }        
         private async Task LoadSchedule(string? url, LoadingType loadingType)
         {
             if (await _model.LoadSchedule(url, loadingType))
@@ -390,12 +271,6 @@ namespace BSUIRScheduleDESK.viewmodels
                 else
                     SelectedTab = 0;
             }
-
-            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-                GoToWeekByOff(-WeekDiff + 1, false);
-            else
-                GoToWeekByOff(-WeekDiff, false);
-
             if (Schedule.favorited)
             {
                 if (await _model.LoadNotes(url))
@@ -417,8 +292,6 @@ namespace BSUIRScheduleDESK.viewmodels
             {
                 EventService.CurrentWeekUpdated += OnCurrentWeekUpdate;
             }
-            CurrentWeek = Properties.Settings.Default.currentweek;
-            Dates = _model.Dates;
             LoadRecentSchedule();
         }
     }

@@ -17,197 +17,10 @@
         WindowStartupLocation="CenterScreen"
         WindowStyle="None">
     <Window.Resources>
-        <converters:DateConverter x:Key="DateConverter"/>
         <converters:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
         <converters:TabItemVisibilityConverter x:Key="TabItemVisibilityConverter"/>
         <converters:ButtonVisibilityConverter x:Key="ButtonVisibilityConverter"/>
 
-        <ControlTemplate x:Key="tabSchedule">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="35"/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-                <Grid Grid.Row="0"
-                      Margin="15,0,15,0">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="75"/>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="25"/>
-                        <ColumnDefinition Width="25"/>
-                        <ColumnDefinition Width="25"/>
-                    </Grid.ColumnDefinitions>
-                    <Button Grid.Column="0"
-                            Command="{Binding ChangeWeekNum}"
-                            CommandParameter="-1"
-                            HorizontalAlignment="Left"
-                            VerticalAlignment="Center"
-                            Height="25"
-                            Width="25"
-                            Padding="0"
-                            Style="{StaticResource ButtonStyle1}">
-                        <Path Fill="{DynamicResource Icon.Stroke.Static}"
-                              Stretch="Fill"
-                              Data="{StaticResource doubleLeftArrowIcon}"
-                              Height="15"
-                              Width="15"/>
-                        <Button.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
-                        </Button.RenderTransform>
-                    </Button>
-                    <Grid HorizontalAlignment="Center"
-                          Grid.Column="1">
-                        <Grid.RowDefinitions>
-                            <RowDefinition/>
-                            <RowDefinition/>
-                        </Grid.RowDefinitions>
-                        <StackPanel Orientation="Horizontal"
-                                    Grid.Row="0">
-                            <TextBlock Text="Подгруппы:"
-                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"/>
-                            <CheckBox Style="{DynamicResource CheckBoxStyle}" 
-                                      Content="1"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=firstsubgroup}"
-                                      Margin="5,0,0,0"
-                                      HorizontalAlignment="Center"/>
-                            <CheckBox Content="2"
-                                      VerticalAlignment="Center"
-                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=secondsubgroup}"
-                                      Style="{DynamicResource CheckBoxStyle}"
-                                      Margin="5,0,0,0"
-                                      HorizontalAlignment="Center"/>
-                            <TextBlock Text="Показывать экзамены:"
-                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                       VerticalAlignment="Center"
-                                       HorizontalAlignment="Center"
-                                       Margin="15,0,0,0"/>
-                            <CheckBox Style="{DynamicResource CheckBoxStyle}"
-                                      VerticalAlignment="Center"
-                                      HorizontalAlignment="Center"
-                                      IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}"
-                                      Margin="5,0,0,0"/>
-                        </StackPanel>
-                        <TextBlock Text="{Binding CurrentWeek, StringFormat=Неделя: {0}}"
-                                   Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                   Margin="5,0"
-                                   Grid.Row="1"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Bottom"/>
-                    </Grid>
-                    <Button Grid.Column="2"
-                            VerticalAlignment="Center"
-                            Width="25"
-                            Height="25"
-                            Padding="0"
-                            Command="{Binding BackToCurrentWeek}">
-                        <Button.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
-                        </Button.RenderTransform>
-                        <Path Fill="{DynamicResource Icon.Stroke.Static}"
-                              Stretch="Fill"
-                              Height="12"
-                              Width="16"
-                              Data="{DynamicResource returnIcon}"/>
-                        <Button.ToolTip>
-                            <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Bottom">
-                                <TextBlock Text="К текущей"/>
-                            </ToolTip>
-                        </Button.ToolTip>
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Background" Value="Transparent"/>
-                                <Setter Property="BorderThickness" Value="0"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                <Setter Property="Padding" Value="5"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="true" CornerRadius="20" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
-                                                <ContentPresenter x:Name="contentPresenter" Focusable="False" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="true">
-                                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource Button1.MouseOver.Background}"/>
-                                                </Trigger>
-                                                <Trigger Property="IsPressed" Value="true">
-                                                    <Setter Property="Background" TargetName="border" Value="{DynamicResource Button1.Pressed.Background}"/>
-                                                </Trigger>
-                                                <DataTrigger Binding="{Binding WeekDiff}" Value="0">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                                <EventTrigger RoutedEvent="Button.Click">
-                                                    <EventTrigger.Actions>
-                                                        <BeginStoryboard>
-                                                            <Storyboard>
-                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleX" 
-                                                                                 To="0.8" Duration="0:0:0.1" AutoReverse="True"/>
-                                                                <DoubleAnimation Storyboard.TargetProperty="RenderTransform.ScaleY" 
-                                                                                 To="0.8" Duration="0:0:0.1" AutoReverse="True"/>
-                                                            </Storyboard>
-                                                        </BeginStoryboard>
-                                                    </EventTrigger.Actions>
-                                                </EventTrigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                    <Button Grid.Column="3"
-                            VerticalAlignment="Center"
-                            Width="25"
-                            Height="25"
-                            Padding="0"
-                            Command="{Binding CalendarStatusChange}"
-                            Style="{StaticResource ButtonStyle1}">
-                        <Path Fill="{DynamicResource Icon.Stroke.Static}"
-                              Stretch="Fill"
-                              Height="15"
-                              Width="15"
-                              Data="{StaticResource calendarIcon}"/>
-                        <Button.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
-                        </Button.RenderTransform>
-                    </Button>
-                    <Button Grid.Column="4"
-                            VerticalAlignment="Center"
-                            Width="25"
-                            Height="25"
-                            Padding="0"
-                            Command="{Binding ChangeWeekNum}"
-                            CommandParameter="1"
-                            Style="{StaticResource ButtonStyle1}">
-                        <Path Fill="{DynamicResource Icon.Stroke.Static}"
-                              Stretch="Fill"
-                              Height="15"
-                              Width="15"
-                              Data="{StaticResource doubleRightArrowIcon}"/>
-                        <Button.RenderTransform>
-                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="12.5" CenterY="12.5"/>
-                        </Button.RenderTransform>
-                    </Button>
-                </Grid>
-                <templates:DaySchedule Grid.Row="1"
-                                       Dates="{Binding DataContext.Dates, ElementName=mainWindow}"
-                                       LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow}">
-                    <templates:DaySchedule.Style>
-                        <Style TargetType="{x:Type templates:DaySchedule}">
-                            <Setter Property="DataContext" Value="{Binding Schedule.schedules}"/>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.SelectedTab}" Value="2">
-                                    <Setter Property="DataContext" Value="{Binding Schedule.previousSchedules}"/>
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </templates:DaySchedule.Style>
-                </templates:DaySchedule>
-            </Grid>
-        </ControlTemplate>
     </Window.Resources>
     <Window.Style>
         <Style TargetType="{x:Type Window}">
@@ -251,7 +64,6 @@
                                Foreground="{DynamicResource Window.TitleText.Static}"
                                VerticalAlignment="Center"
                                HorizontalAlignment="Center"
-                               Margin="15,0"
                                FontSize="16"
                                FontWeight="DemiBold"/>    
                     <StackPanel HorizontalAlignment="Right"
@@ -324,7 +136,9 @@
                                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
                             </Button.RenderTransform>
                         </Button>
+
                         <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
+
                         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                             <!--favorites schedules-->
                             <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
@@ -334,7 +148,9 @@
                                         Command="{Binding AddFavoriteScheduleWL}"/>
                             </StackPanel>
                         </ScrollViewer>
+
                         <Separator Grid.Row="1" VerticalAlignment="Bottom" Margin="0"/>
+
                         <!--settings button-->
                         <Button Grid.Row="2"
                                 Style="{StaticResource ButtonStyle1}"
@@ -360,6 +176,7 @@
                         <RowDefinition Height="60"/>
                         <RowDefinition/>
                     </Grid.RowDefinitions>
+
                     <!--schedule info border-->
                     <Border Margin="10" 
                             Background="{DynamicResource Border.Background.Static}"
@@ -409,7 +226,11 @@
                                         </Style>
                                     </TextBlock.Style>
                                     <TextBlock.ToolTip>
-                                        <ToolTip x:Name="nameToolTip" Background="Transparent" BorderThickness="0" Placement="Bottom" Width="110" Height="110">
+                                        <ToolTip Background="Transparent" 
+                                                 BorderThickness="0" 
+                                                 Placement="Bottom" 
+                                                 Width="110"
+                                                 Height="110">
                                             <Image Height="100">
                                                 <Image.Clip>
                                                     <EllipseGeometry RadiusX="45" RadiusY="45" Center="50, 50"/>
@@ -453,14 +274,12 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock DataContext="{Binding Path=Schedule}"
-                                               Text="{Binding Path=startDate, StringFormat=Начало занятий: {0}}"
+                                    <TextBlock Text="{Binding Path=Schedule.startDate, StringFormat=Начало занятий: {0}}"
                                                VerticalAlignment="Center"
                                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                FontWeight="DemiBold"
                                                Grid.Row="0"/>
-                                    <TextBlock DataContext="{Binding Path=Schedule}"
-                                               Text="{Binding Path=endDate, StringFormat=Конец занятий: {0}}"
+                                    <TextBlock Text="{Binding Path=Schedule.endDate, StringFormat=Конец занятий: {0}}"
                                                VerticalAlignment="Center"
                                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                FontWeight="DemiBold"
@@ -481,14 +300,12 @@
                                         <RowDefinition/>
                                         <RowDefinition/>
                                     </Grid.RowDefinitions>
-                                    <TextBlock DataContext="{Binding Path=Schedule}"
-                                            Text="{Binding Path=startExamsDate, StringFormat=Начало сессии: {0}}"
+                                    <TextBlock Text="{Binding Path=Schedule.startExamsDate, StringFormat=Начало сессии: {0}}"
                                                VerticalAlignment="Center"
                                                FontWeight="DemiBold"
                                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                                Grid.Row="0"/>
-                                    <TextBlock DataContext="{Binding Path=Schedule}"
-                                            Text="{Binding Path=endExamsDate, StringFormat=Конец сессии: {0}}"
+                                    <TextBlock Text="{Binding Path=Schedule.endExamsDate, StringFormat=Конец сессии: {0}}"
                                                VerticalAlignment="Center"
                                                FontWeight="DemiBold"
                                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
@@ -506,6 +323,7 @@
                             </StackPanel>
                             <StackPanel Grid.Column="1"
                                         Orientation="Horizontal"
+                                        Margin="0,0,5,0"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right">
                                 <!--open notes window button-->
@@ -574,54 +392,51 @@
                                     </Path>
                                 </Button>
                                 <!--open announcements window button-->
-                                <Button Style="{StaticResource ButtonStyle1}"
-                                        Width="30"
-                                        Height="30"
-                                        Padding="0"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right"
-                                        Margin="0,0,5,0"
-                                        Command="{Binding Path=OpenAnnouncements}">
-                                    <Button.RenderTransform>
-                                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
-                                    </Button.RenderTransform>
-                                    <Grid Width="30"
-                                          Height="30">
+                                <Grid>
+                                    <Button Style="{StaticResource ButtonStyle1}"
+                                            Width="30"
+                                            Height="30"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Right"
+                                            Command="{Binding Path=OpenAnnouncements}">
+                                        <Button.RenderTransform>
+                                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                                        </Button.RenderTransform>
                                         <Path Stroke="{DynamicResource Icon.Stroke.Static}" 
                                               Stretch="Fill" 
                                               StrokeThickness="0.85"
                                               Height="17.5" 
                                               Width="17.5" 
                                               Data="{StaticResource announcementIcon}"/>
-                                        <Grid VerticalAlignment="Top"
-                                              HorizontalAlignment="Right"
-                                              Margin="0,2,2,0">
-                                            <Ellipse Fill="{DynamicResource WarningSign.Background.Static}"
-                                                     Height="12"
-                                                     Width="12"
-                                                     HorizontalAlignment="Center"
-                                                     VerticalAlignment="Center"/>
-                                            <TextBlock Text="!"
-                                                       Foreground="{DynamicResource WarningSign.Text.Foreground.Static}"
-                                                       VerticalAlignment="Center"
-                                                       HorizontalAlignment="Center"
-                                                       FontSize="10"
-                                                       FontWeight="DemiBold"/>
-                                            <Grid.Style>
-                                                <Style TargetType="{x:Type Grid}">
-                                                    <Style.Triggers>
-                                                        <DataTrigger Binding="{Binding Announcements.Count}" Value="0">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                        <DataTrigger Binding="{Binding Announcements}" Value="{x:Null}">
-                                                            <Setter Property="Visibility" Value="Hidden"/>
-                                                        </DataTrigger>
-                                                    </Style.Triggers>
-                                                </Style>
-                                            </Grid.Style>
-                                        </Grid>
+                                    </Button>
+                                    <Grid VerticalAlignment="Top"
+                                          HorizontalAlignment="Right"
+                                          Margin="0,2,2,0">
+                                        <Ellipse Fill="{DynamicResource WarningSign.Background.Static}"
+                                                 Height="12"
+                                                 Width="12"
+                                                 HorizontalAlignment="Center"
+                                                 VerticalAlignment="Center"/>
+                                        <TextBlock Text="!"
+                                                   Foreground="{DynamicResource WarningSign.Text.Foreground.Static}"
+                                                   VerticalAlignment="Center"
+                                                   HorizontalAlignment="Center"
+                                                   FontSize="10"
+                                                   FontWeight="DemiBold"/>
+                                        <Grid.Style>
+                                            <Style TargetType="{x:Type Grid}">
+                                                <Style.Triggers>
+                                                    <DataTrigger Binding="{Binding Announcements.Count}" Value="0">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                    <DataTrigger Binding="{Binding Announcements}" Value="{x:Null}">
+                                                        <Setter Property="Visibility" Value="Hidden"/>
+                                                    </DataTrigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Grid.Style>
                                     </Grid>
-                                </Button>
+                                </Grid>
                             </StackPanel>
                         </Grid>
                     </Border>
@@ -651,7 +466,17 @@
                                 </StackPanel>
                             </TabItem.Header>
                             <TabItem.Content>
-                                <Control Template="{StaticResource tabSchedule}" Focusable="False"/>
+                                <Grid>
+                                    <templates:SchedulePresenter Schedules="{Binding Schedule.schedules}"
+                                                                 CurrentWeek="{Binding Source={x:Static properties:Settings.Default}, Path=currentweek}"
+                                                                 FirstSubGroup="{Binding Source={x:Static properties:Settings.Default}, Path=firstsubgroup}"
+                                                                 SecondSubGroup="{Binding Source={x:Static properties:Settings.Default}, Path=secondsubgroup}"
+                                                                 ShowExams="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}"
+                                                                 WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
+                                                                 Command="{Binding LoadScheduleBS}"/>
+
+                                </Grid>
+
                             </TabItem.Content>
                         </TabItem>
                         <!--exam schedule tab-->
@@ -695,67 +520,19 @@
                             </TabItem.Header>
                             <TabItem.Content>
                                 <Grid>
-                                    <Control Template="{StaticResource tabSchedule}" Focusable="False"/>
+                                    <templates:SchedulePresenter Schedules="{Binding Schedule.previousSchedules}"
+                                                                 CurrentWeek="{Binding Source={x:Static properties:Settings.Default}, Path=currentweek}"
+                                                                 FirstSubGroup="{Binding Source={x:Static properties:Settings.Default}, Path=firstsubgroup}"
+                                                                 SecondSubGroup="{Binding Source={x:Static properties:Settings.Default}, Path=secondsubgroup}"
+                                                                 ShowExams="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}"
+                                                                 WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
+                                                                 Command="{Binding LoadScheduleBS}"/>
                                 </Grid>
                             </TabItem.Content>
                         </TabItem>
                     </TabControl>
                 </Grid>
             </Grid>
-            <!--calendar popup-->
-            <Popup IsOpen="{Binding Path=IsCalendarOpen}"
-                   Placement="Center"
-                   AllowsTransparency="True"
-                   StaysOpen="False">
-                <StackPanel Orientation="Vertical">
-                    <Calendar FirstDayOfWeek="Monday"
-                              Style="{StaticResource CalendarStyle}"
-                              Margin="0"
-                              GotMouseCapture="Calendar_GotMouseCapture"
-                              x:Name="calendar"
-                              SelectionMode="SingleDate"
-                              SelectedDate="{Binding DataContext.Dates[0], ElementName=mainWindow, Mode=OneWay}"
-                              DisplayDate="{Binding DataContext.Dates[0], ElementName=mainWindow, Mode=OneWay}">
-
-                    </Calendar>
-                    <Button Command="{Binding OpenSelectedWeek}"
-                            CommandParameter="{Binding ElementName=calendar, Path=SelectedDate}">
-                        <Button.Style>
-                            <Style TargetType="{x:Type Button}">
-                                <Setter Property="Margin" Value="0,-10,0,0"/>
-                                <Setter Property="Height" Value="20"/>
-                                <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                <Setter Property="BorderBrush" Value="{DynamicResource Calendar.Button.Static.BorderBrush}"/>
-                                <Setter Property="Background" Value="{DynamicResource Calendar.Button.Static.Background}"/>
-                                <Setter Property="Foreground" Value="{DynamicResource Calendar.Button.Static.Foreground}"/>
-                                <Setter Property="Focusable" Value="False"/>
-                                <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                                <Setter Property="VerticalContentAlignment" Value="Center"/>
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="{x:Type Button}">
-                                            <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" SnapsToDevicePixels="True" CornerRadius="0,0,7.5,7.5" BorderThickness="1">
-                                                <TextBlock Text="Перейти" 
-                                                           Margin="5,0,5,0"
-                                                           Foreground="{TemplateBinding Foreground}"
-                                                           HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                           VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter TargetName="border" Property="Background" Value="{DynamicResource Calendar.Button.MouseOver.Background}"/>
-                                                    <Setter TargetName="border" Property="BorderThickness" Value="0"/>
-                                                    <Setter Property="Foreground" Value="{DynamicResource Calendar.Button.MouseOver.Foreground}"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                    </Button>
-                </StackPanel>
-            </Popup>
         </Grid>
     </Border>
 </Window>

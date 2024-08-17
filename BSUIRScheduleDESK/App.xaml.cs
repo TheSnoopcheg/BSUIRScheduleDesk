@@ -22,6 +22,11 @@ namespace BSUIRScheduleDESK
             IsAnotherProcessExist();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{set.Default.currentTheme}.xaml", UriKind.Relative)};
+            string? path = Directory.GetCurrentDirectory() + @"\data";
+            if (!Directory.Exists(path))
+            {
+                Directory.CreateDirectory(path);
+            }
             if (set.Default.currentweek == 0 || set.Default.laststartup == DateTime.MinValue)
             {
                 var up = ScheduleService.UpdateCurrentWeekAsync();
@@ -42,13 +47,8 @@ namespace BSUIRScheduleDESK
             this.MainWindow = new MainWindow();
             this.MainWindow.DataContext = mwvm;
             MainWindow.Show();
-            base.OnStartup(e);
             ShowUpdateInfo();
-            string? path = Directory.GetCurrentDirectory() + @"\data";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
+            base.OnStartup(e);
         }
         protected override void OnExit(ExitEventArgs e)
         {
@@ -87,7 +87,7 @@ namespace BSUIRScheduleDESK
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             File.WriteAllText($"{Directory.GetCurrentDirectory()}\\crash.log", $"[{DateTime.Now}] [{sender}] \n{e.ExceptionObject}");
-            MessageBox.Show("Упс.. Отправьте, пожалуйста, файл crash.log в телеграм @snoopcheg\nДля запуска попробуйте удалить recent.json в папке data", "Critical error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ModalWindow.Show("Упс.. Отправьте, пожалуйста, файл crash.log в телеграм @snoopcheg\nДля запуска попробуйте удалить recent.json в папке data", "Critical error", null, ModalWindowButtons.OK);
         }
     }
 }

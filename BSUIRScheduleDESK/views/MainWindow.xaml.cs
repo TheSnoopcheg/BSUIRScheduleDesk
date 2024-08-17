@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 
 namespace BSUIRScheduleDESK.views
@@ -51,15 +50,6 @@ namespace BSUIRScheduleDESK.views
         private void btnMaximize_Click(object sender, RoutedEventArgs e)
         {
             AbjustWindowSize();
-        }
-
-        private void Calendar_GotMouseCapture(object sender, MouseEventArgs e)
-        {
-            UIElement? originalElement = e.OriginalSource as UIElement;
-            if (originalElement is CalendarDayButton || originalElement is CalendarItem)
-            {
-                originalElement.ReleaseMouseCapture();
-            }
         }
     }
 }

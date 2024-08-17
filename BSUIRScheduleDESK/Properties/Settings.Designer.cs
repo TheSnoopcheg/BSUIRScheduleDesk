@@ -189,17 +189,5 @@ namespace BSUIRScheduleDESK.Properties {
                 this["showexams"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("0")]
-        public int openedweek {
-            get {
-                return ((int)(this["openedweek"]));
-            }
-            set {
-                this["openedweek"] = value;
-            }
-        }
     }
 }
