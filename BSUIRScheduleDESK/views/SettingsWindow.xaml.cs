@@ -1,12 +1,14 @@
 ﻿using System.Windows;
-using System.Windows.Input;
 using System.Text.Json;
+using System.Windows.Input;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System;
 using BSUIRScheduleDESK.Themes;
+using BSUIRScheduleDESK.classes;
+using BSUIRScheduleDESK.services;
 
 namespace BSUIRScheduleDESK.views
 {
@@ -19,12 +21,12 @@ namespace BSUIRScheduleDESK.views
         {
             InitializeComponent();
             this.Owner = App.Current.MainWindow;
-            SelectedIndexes = JsonSerializer.Deserialize<ObservableCollection<int>>(Properties.Settings.Default.indexes)!;
+            SelectedIndexes = JsonSerializer.Deserialize<ObservableCollection<int>>(Config.Instance.Indexes)!;
             ThemeIndex = GetThemeIndex();
         }
         private int GetThemeIndex()
         {
-            switch(Properties.Settings.Default.currentTheme)
+            switch (Config.Instance.CurrentTheme)
             {
                 case "IISTheme": return 0;
                 case "DarkTheme": return 1;
@@ -79,8 +81,9 @@ namespace BSUIRScheduleDESK.views
         public List<string> Themes { get => themes; }
         private void ColorPicker_ColorChanged()
         {
-            Properties.Settings.Default.indexes = JsonSerializer.Serialize(selectedIndexes);
-            Properties.Settings.Default.Save(); 
+            EventService.ColorsUpdated_Invoke();
+            Config.Instance.Indexes = JsonSerializer.Serialize(selectedIndexes);
+            Config.Instance.Save(); 
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;

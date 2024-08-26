@@ -750,9 +750,12 @@
                                               Margin="0,0,5,0"
                                               Style="{StaticResource SchedulePresenterCheckBoxStyle}"
                                               x:Name="PART_SecondSubGroup"/>
+                                    <!--Collapsed for better times-->
                                     <TextBlock Text="Показывать экзамены: "
+                                               Visibility="Collapsed"
                                                Margin="5,0,0,0"/>
                                     <CheckBox Style="{StaticResource SchedulePresenterCheckBoxStyle}"
+                                              Visibility="Collapsed"
                                               x:Name="PART_ShowExams"/>
                                 </StackPanel>
                                 <TextBlock Grid.Row="1"
@@ -846,8 +849,8 @@
                                         <Border Grid.Row="8" Background="{DynamicResource Border.Title.Background.Static}"/>
                                         <Border Grid.Row="10" Background="{DynamicResource Border.Title.Background.Static}"/>
                                     </Grid>
-                                    <ScrollViewer.OpacityMask >
-                                        <VisualBrush Visual="{Binding ElementName=Mask}"/>
+                                    <ScrollViewer.OpacityMask>
+                                        <VisualBrush Visual="{Binding Source={x:Reference Mask}}"/>
                                     </ScrollViewer.OpacityMask>
                                 </ScrollViewer>
                                 <Grid x:Name="PART_ScheduleView"
@@ -900,8 +903,8 @@
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
                                         </Grid>
-                                        <ScrollViewer.OpacityMask >
-                                            <VisualBrush Visual="{Binding ElementName=Mask}"/>
+                                        <ScrollViewer.OpacityMask>
+                                            <VisualBrush Visual="{Binding Source={x:Reference Mask}}"/>
                                         </ScrollViewer.OpacityMask>
                                     </ScrollViewer>
                                 </Grid>

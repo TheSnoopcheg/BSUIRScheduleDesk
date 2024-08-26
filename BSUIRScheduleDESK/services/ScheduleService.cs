@@ -121,8 +121,8 @@ namespace BSUIRScheduleDESK.services
             if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
             {
                 int week = await NetworkService.GetAsync<int>($"https://iis.bsuir.by/api/v1/schedule/current-week");
-                Properties.Settings.Default.currentweek = week;
-                Properties.Settings.Default.Save();
+                Config.Instance.CurrentWeek = week;
+                Config.Instance.Save();
                 EventService.CurrentWeekUpdated_Invoke();
             }
         }

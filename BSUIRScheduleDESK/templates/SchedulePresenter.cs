@@ -156,7 +156,6 @@ namespace BSUIRScheduleDESK.templates
             {
                 schedulePresenter.SetUp();
             }
-            Properties.Settings.Default.Save();
         }
 
         public bool FirstSubGroup

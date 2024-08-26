@@ -1,5 +1,8 @@
 ﻿using BSUIRScheduleDESK.classes;
+using BSUIRScheduleDESK.services;
 using System;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +23,8 @@ namespace BSUIRScheduleDESK.templates
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SchedulePlate), new FrameworkPropertyMetadata(typeof(SchedulePlate)));
         }
-        public SchedulePlate() : base() { }
+        public SchedulePlate() : base() { EventService.ColorsUpdated += EventService_ColorsUpdated; }
+
 
         #region ScheduleProperty
 
@@ -172,24 +176,28 @@ namespace BSUIRScheduleDESK.templates
             switch (Schedule.lessonTypeAbbrev)
             {
                 case "ЛК":
-                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Properties.Settings.Default.lecturecolor));
+                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.Instance.LectureColor));
                     break;
                 case "ПЗ":
-                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Properties.Settings.Default.practicecolor));
+                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.Instance.PracticeColor));
                     break;
                 case "ЛР":
-                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Properties.Settings.Default.labcolor));
+                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.Instance.LabColor));
                     break;
                 case "Экзамен":
-                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Properties.Settings.Default.examcolor));
+                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.Instance.ExamColor));
                     break;
                 case "Консультация":
-                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Properties.Settings.Default.consultationcolor));
+                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.Instance.ConsultationColor));
                     break;
                 default:
-                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Properties.Settings.Default.unknowncolor));
+                    _typeBorder.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(Config.Instance.UnknownColor));
                     break;
             }
+        }
+        private void EventService_ColorsUpdated()
+        {
+            SetUpColor();
         }
 
         private const string PART_TypeBorder = "PART_TypeBorder";

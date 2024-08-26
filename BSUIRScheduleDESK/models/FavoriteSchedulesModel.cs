@@ -22,7 +22,7 @@ namespace BSUIRScheduleDESK.models
         }
         private async Task LoadFavoriteSchedulesAsync()
         {
-            var stream = new MemoryStream(Encoding.Default.GetBytes(Properties.Settings.Default.favoriteschedules));
+            var stream = new MemoryStream(Encoding.Default.GetBytes(Config.Instance.FavoriteSchedules));
             if (stream.Length > 0)
             {
                 List<FavoriteSchedule>? list = await JsonSerializer.DeserializeAsync<List<FavoriteSchedule>>(stream);
@@ -42,8 +42,8 @@ namespace BSUIRScheduleDESK.models
                 using var reader = new StreamReader(stream);
                 json = await reader.ReadToEndAsync();
             }
-            Properties.Settings.Default.favoriteschedules = json;
-            Properties.Settings.Default.Save();
+            Config.Instance.FavoriteSchedules = json;
+            Config.Instance.Save();
         }
         public async void AddSchedule(GroupSchedule groupschedule, bool isProc) // isProc - determines the need to delete a schedule if it already exists
         {

@@ -8,7 +8,7 @@
         xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
         xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
         xmlns:templates="clr-namespace:BSUIRScheduleDESK.templates"
-        xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
+        xmlns:classes="clr-namespace:BSUIRScheduleDESK.classes"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Height="450" Width="800"
@@ -46,493 +46,486 @@
             </Style.Triggers>
         </Style>
     </Window.Style>
-    <Border CornerRadius="0"
-            Background="{DynamicResource Window.Background.Static}">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto"/>
-                <RowDefinition/>
-            </Grid.RowDefinitions>
+    <Grid Background="{DynamicResource Window.Background.Static}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
 
-            <!--Title bar-->
-            <Border Grid.Row="0"
-                    Background="{DynamicResource Window.Title.Static}"
-                    Height="35"
-                    MouseDown="Border_MouseDown">
-                <Grid>
-                    <TextBlock Text="Расписание БГУИР"
-                               Foreground="{DynamicResource Window.TitleText.Static}"
-                               VerticalAlignment="Center"
-                               HorizontalAlignment="Center"
-                               FontSize="16"
-                               FontWeight="DemiBold"/>    
-                    <StackPanel HorizontalAlignment="Right"
-                                Orientation="Horizontal"
-                                Margin="0,0,5,0">
-                        <Button Style="{StaticResource ButtonStyle}"
-                                Height="30"
-                                Width="30"
-                                Click="btnMinimize_Click">
-                            <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
-                                  Stretch="Fill" 
-                                  Width="15" 
-                                  Height="1" 
-                                  Data="{StaticResource minimizeIcon}"/>
-                        </Button>
-                        <Button Style="{StaticResource ButtonStyle}"
-                                Height="30"
-                                Width="30"
-                                Click="btnMaximize_Click">
-                            <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
-                                  Stretch="Fill" 
-                                  Width="15" 
-                                  Height="15" 
-                                  Data="{StaticResource maximizeIcon}"/>
-                        </Button>
-                        <Button Style="{StaticResource ButtonStyle}"
-                                Height="30"
-                                Width="30"
-                                Click="btnClose_Click">
-                            <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
-                                  Stretch="Fill" 
-                                  Width="15" 
-                                  Height="15" 
-                                  Data="{StaticResource closeIcon}"/>
-                        </Button>
+        <!--Title bar-->
+        <Grid Grid.Row="0"
+              Background="{DynamicResource Window.Title.Static}"
+              Height="35"
+              MouseDown="Title_MouseDown">
+            <TextBlock Text="Расписание БГУИР"
+                       Foreground="{DynamicResource Window.TitleText.Static}"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       FontSize="16"
+                       FontWeight="DemiBold"/>
+            <StackPanel HorizontalAlignment="Right"
+                        Orientation="Horizontal"
+                        Margin="0,0,5,0">
+                <Button Style="{StaticResource ButtonStyle}"
+                        Height="30"
+                        Width="30"
+                        Click="btnMinimize_Click">
+                    <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
+                          Stretch="Fill" 
+                          Width="15" 
+                          Height="1" 
+                          Data="{StaticResource minimizeIcon}"/>
+                </Button>
+                <Button Style="{StaticResource ButtonStyle}"
+                        Height="30"
+                        Width="30"
+                        Click="btnMaximize_Click">
+                    <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
+                          Stretch="Fill" 
+                          Width="15" 
+                          Height="15" 
+                          Data="{StaticResource maximizeIcon}"/>
+                </Button>
+                <Button Style="{StaticResource ButtonStyle}"
+                        Height="30"
+                        Width="30"
+                        Click="btnClose_Click">
+                    <Path Fill="{DynamicResource Window.Title.Icon.Static}" 
+                          Stretch="Fill" 
+                          Width="15" 
+                          Height="15" 
+                          Data="{StaticResource closeIcon}"/>
+                </Button>
+            </StackPanel>
+        </Grid>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <!--left side bar-->
+            <Grid Grid.Column="0"
+                      Width="60"
+                      Background="{DynamicResource FavoriteBar.Background.Static}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition/>
+                    <RowDefinition Height="60"/>
+                </Grid.RowDefinitions>
+
+                <!--search button-->
+                <Button Grid.Row="0"
+                        Style="{StaticResource ButtonStyle1}"
+                        Height="40"
+                        Width="40"
+                        Background="{DynamicResource FavoriteBar.Button.Background.Static}"
+                        Margin="0"
+                        Command="{Binding SearchSchedule}">
+                    <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                          Height="25" 
+                          Width="25" 
+                          Stretch="Fill" 
+                          Data="{StaticResource searchIcon}"/>
+                    <Button.RenderTransform>
+                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
+                    </Button.RenderTransform>
+                </Button>
+
+                <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
+
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                    <!--favorites schedules-->
+                    <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
+                        <templates:FavoriteGroups DataContext="{Binding FavoriteSchedulesViewModel}"/>
+                        <!--add favorite schedule button-->
+                        <Button Style="{DynamicResource AddButtonStyle}"
+                                Command="{Binding AddFavoriteScheduleWL}"/>
                     </StackPanel>
-                </Grid>
-            </Border>
-            <Grid Grid.Row="1">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+                </ScrollViewer>
 
-                <!--left side bar-->
-                <Border Grid.Column="0"
-                        Width="60"
-                        Background="{DynamicResource FavoriteBar.Background.Static}">
+                <Separator Grid.Row="1" VerticalAlignment="Bottom" Margin="0"/>
+
+                <!--settings button-->
+                <Button Grid.Row="2"
+                        Style="{StaticResource ButtonStyle1}"
+                        Height="40"
+                        Width="40"
+                        Background="{DynamicResource FavoriteBar.Button.Background.Static}"
+                        Command="{Binding OpenSettingsWindow}">
+                    <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                          Stretch="Fill" 
+                          Height="25"
+                          Width="25"
+                          Data="{StaticResource settingsIcon}"/>
+                    <Button.RenderTransform>
+                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
+                    </Button.RenderTransform>
+                </Button>
+            </Grid>
+
+            <!--schedule area-->
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="60"/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <!--schedule info border-->
+                <Border Margin="10" 
+                        Background="{DynamicResource Border.Background.Static}"
+                        BorderBrush="{DynamicResource Border.BorderBrush.Static}"
+                        CornerRadius="10"
+                        BorderThickness="1">
                     <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="60"/>
-                            <RowDefinition/>
-                            <RowDefinition Height="60"/>
-                        </Grid.RowDefinitions>
-
-                        <!--search button-->
-                        <Button Grid.Row="0"
-                                Style="{StaticResource ButtonStyle1}"
-                                Height="40"
-                                Width="40"
-                                Background="{DynamicResource FavoriteBar.Button.Background.Static}"
-                                Margin="0"
-                                Command="{Binding SearchSchedule}">
-                            <Path Fill="{DynamicResource Icon.Stroke.Static}"
-                                  Height="25" 
-                                  Width="25" 
-                                  Stretch="Fill" 
-                                  Data="{StaticResource searchIcon}"/>
-                            <Button.RenderTransform>
-                                <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
-                            </Button.RenderTransform>
-                        </Button>
-
-                        <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
-
-                        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                            <!--favorites schedules-->
-                            <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
-                                <templates:FavoriteGroups DataContext="{Binding FavoriteSchedulesViewModel}"/>
-                                <!--add favorite schedule button-->
-                                <Button Style="{DynamicResource AddButtonStyle}"
-                                        Command="{Binding AddFavoriteScheduleWL}"/>
-                            </StackPanel>
-                        </ScrollViewer>
-
-                        <Separator Grid.Row="1" VerticalAlignment="Bottom" Margin="0"/>
-
-                        <!--settings button-->
-                        <Button Grid.Row="2"
-                                Style="{StaticResource ButtonStyle1}"
-                                Height="40"
-                                Width="40"
-                                Background="{DynamicResource FavoriteBar.Button.Background.Static}"
-                                Command="{Binding OpenSettingsWindow}">
-                            <Path Fill="{DynamicResource Icon.Stroke.Static}"
-                                  Stretch="Fill" 
-                                  Height="25"
-                                  Width="25"
-                                  Data="{StaticResource settingsIcon}"/>
-                            <Button.RenderTransform>
-                                <ScaleTransform ScaleX="1" ScaleY="1" CenterX="20" CenterY="20"/>
-                            </Button.RenderTransform>
-                        </Button>
-                    </Grid>
-                </Border>
-
-                <!--schedule area-->
-                <Grid Grid.Column="1">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="60"/>
-                        <RowDefinition/>
-                    </Grid.RowDefinitions>
-
-                    <!--schedule info border-->
-                    <Border Margin="10" 
-                            Background="{DynamicResource Border.Background.Static}"
-                            BorderBrush="{DynamicResource Border.BorderBrush.Static}"
-                            CornerRadius="10"
-                            BorderThickness="1">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition/>
-                            </Grid.ColumnDefinitions>
-                            <StackPanel Grid.Column="0"
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <StackPanel Grid.Column="0"
                                         Orientation="Horizontal">
-                                <!--schedule name-->
-                                <TextBlock DataContext="{Binding Path=Schedule}"
+                            <!--schedule name-->
+                            <TextBlock DataContext="{Binding Path=Schedule}"
+                                       VerticalAlignment="Center"
+                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                                       Margin="10,0"
+                                       FontSize="14"
+                                       FontWeight="DemiBold"
+                                       x:Name="nameTextBlock">
+                                <TextBlock.Style>
+                                    <Style TargetType="{x:Type TextBlock}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=studentGroup}" Value="{x:Null}">
+                                                <Setter Property="Text">
+                                                    <Setter.Value>
+                                                        <MultiBinding StringFormat="{}{0} {1} {2}">
+                                                            <Binding Path="employee.lastName"/>
+                                                            <Binding Path="employee.firstName"/>
+                                                            <Binding Path="employee.middleName"/>
+                                                        </MultiBinding>
+                                                    </Setter.Value>
+                                                </Setter>
+                                            </DataTrigger>
+                                            <DataTrigger Binding="{Binding Path=employee}" Value="{x:Null}">
+                                                <Setter Property="Text" Value="{Binding Path=studentGroup.name}"/>
+                                            </DataTrigger>
+                                            <MultiDataTrigger>
+                                                <MultiDataTrigger.Conditions>
+                                                    <Condition Binding="{Binding ElementName=nameTextBlock, Path=IsMouseOver}" Value="True"/>
+                                                    <Condition Binding="{Binding Path=studentGroup}" Value="{x:Null}"/>
+                                                </MultiDataTrigger.Conditions>
+                                                <Setter Property="Cursor" Value="Help"/>
+                                            </MultiDataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </TextBlock.Style>
+                                <TextBlock.ToolTip>
+                                    <ToolTip Background="Transparent" 
+                                             BorderThickness="0" 
+                                             Placement="Bottom" 
+                                             Width="110"
+                                             Height="110">
+                                        <Image Height="100">
+                                            <Image.Clip>
+                                                <EllipseGeometry RadiusX="45" RadiusY="45" Center="50, 50"/>
+                                            </Image.Clip>
+                                            <Image.Style>
+                                                <Style TargetType="{x:Type Image}">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding studentGroup}" Value="{x:Null}">
+                                                            <Setter Property="Source" Value="{Binding employee.photoLink}"/>
+                                                            <Setter Property="Visibility" Value="Visible"/>
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Image.Style>
+                                        </Image>
+                                    </ToolTip>
+                                </TextBlock.ToolTip>
+                            </TextBlock>
+                            <!--abbrev schedule name-->
+                            <TextBlock DataContext="{Binding Path=Schedule.studentGroup}"
+                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                                       VerticalAlignment="Center"
+                                       FontWeight="DemiBold"
+                                       Cursor="Help">
+                                <TextBlock.Text>
+                                    <MultiBinding StringFormat="{}{0}, {1}">
+                                        <Binding Path="specialityAbbrev"/>
+                                        <Binding Path="facultyAbbrev"/>
+                                    </MultiBinding>
+                                </TextBlock.Text>
+                                <TextBlock.ToolTip>
+                                    <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Bottom" MaxWidth="250">
+                                        <TextBlock Text="{Binding specialityName}" TextWrapping="Wrap"/>
+                                    </ToolTip>
+                                </TextBlock.ToolTip>
+                                </TextBlock>
+                            <!--start & end lesson dates block-->
+                            <Grid Margin="10,0,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Path=Schedule.startDate, StringFormat=Начало занятий: {0}}"
                                            VerticalAlignment="Center"
                                            Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                           Margin="10,0"
-                                           FontSize="14"
                                            FontWeight="DemiBold"
-                                           x:Name="nameTextBlock">
-                                    <TextBlock.Style>
-                                        <Style TargetType="{x:Type TextBlock}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=studentGroup}" Value="{x:Null}">
-                                                    <Setter Property="Text">
-                                                        <Setter.Value>
-                                                            <MultiBinding StringFormat="{}{0} {1} {2}">
-                                                                <Binding Path="employee.lastName"/>
-                                                                <Binding Path="employee.firstName"/>
-                                                                <Binding Path="employee.middleName"/>
-                                                            </MultiBinding>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=employee}" Value="{x:Null}">
-                                                    <Setter Property="Text" Value="{Binding Path=studentGroup.name}"/>
-                                                </DataTrigger>
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding ElementName=nameTextBlock, Path=IsMouseOver}" Value="True"/>
-                                                        <Condition Binding="{Binding Path=studentGroup}" Value="{x:Null}"/>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <Setter Property="Cursor" Value="Help"/>
-                                                </MultiDataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                    <TextBlock.ToolTip>
-                                        <ToolTip Background="Transparent" 
-                                                 BorderThickness="0" 
-                                                 Placement="Bottom" 
-                                                 Width="110"
-                                                 Height="110">
-                                            <Image Height="100">
-                                                <Image.Clip>
-                                                    <EllipseGeometry RadiusX="45" RadiusY="45" Center="50, 50"/>
-                                                </Image.Clip>
-                                                <Image.Style>
-                                                    <Style TargetType="{x:Type Image}">
-                                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                                        <Style.Triggers>
-                                                            <DataTrigger Binding="{Binding studentGroup}" Value="{x:Null}">
-                                                                <Setter Property="Source" Value="{Binding employee.photoLink}"/>
-                                                                <Setter Property="Visibility" Value="Visible"/>
-                                                            </DataTrigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Image.Style>
-                                            </Image>
-                                        </ToolTip>
-                                    </TextBlock.ToolTip>
-                                </TextBlock>
-                                <!--abbrev schedule name-->
-                                <TextBlock DataContext="{Binding Path=Schedule.studentGroup}"
+                                           Grid.Row="0"/>
+                                <TextBlock Text="{Binding Path=Schedule.endDate, StringFormat=Конец занятий: {0}}"
+                                           VerticalAlignment="Center"
                                            Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                                           FontWeight="DemiBold"
+                                           Grid.Row="1"/>
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Schedule.startDate}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+                            <!--start & end exam dates block-->
+                            <Grid Margin="10,0,0,0">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition/>
+                                    <RowDefinition/>
+                                </Grid.RowDefinitions>
+                                <TextBlock Text="{Binding Path=Schedule.startExamsDate, StringFormat=Начало сессии: {0}}"
                                            VerticalAlignment="Center"
                                            FontWeight="DemiBold"
-                                           Cursor="Help">
-                                    <TextBlock.Text>
-                                        <MultiBinding StringFormat="{}{0}, {1}">
-                                            <Binding Path="specialityAbbrev"/>
-                                            <Binding Path="facultyAbbrev"/>
-                                        </MultiBinding>
-                                    </TextBlock.Text>
-                                    <TextBlock.ToolTip>
-                                        <ToolTip Style="{StaticResource ToolTipStyle}" Placement="Bottom" MaxWidth="250">
-                                            <TextBlock Text="{Binding specialityName}" TextWrapping="Wrap"/>
-                                        </ToolTip>
-                                    </TextBlock.ToolTip>
-                                </TextBlock>
-                                <!--start & end lesson dates block-->
-                                <Grid Margin="10,0,0,0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding Path=Schedule.startDate, StringFormat=Начало занятий: {0}}"
-                                               VerticalAlignment="Center"
-                                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                               FontWeight="DemiBold"
-                                               Grid.Row="0"/>
-                                    <TextBlock Text="{Binding Path=Schedule.endDate, StringFormat=Конец занятий: {0}}"
-                                               VerticalAlignment="Center"
-                                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                               FontWeight="DemiBold"
-                                               Grid.Row="1"/>
-                                    <Grid.Style>
-                                        <Style TargetType="{x:Type Grid}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=Schedule.startDate}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-                                </Grid>
-                                <!--start & end exam dates block-->
-                                <Grid Margin="10,0,0,0">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition/>
-                                        <RowDefinition/>
-                                    </Grid.RowDefinitions>
-                                    <TextBlock Text="{Binding Path=Schedule.startExamsDate, StringFormat=Начало сессии: {0}}"
-                                               VerticalAlignment="Center"
-                                               FontWeight="DemiBold"
-                                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                               Grid.Row="0"/>
-                                    <TextBlock Text="{Binding Path=Schedule.endExamsDate, StringFormat=Конец сессии: {0}}"
-                                               VerticalAlignment="Center"
-                                               FontWeight="DemiBold"
-                                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                               Grid.Row="1"/>
-                                    <Grid.Style>
-                                        <Style TargetType="{x:Type Grid}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=Schedule.startExamsDate}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
-                                </Grid>
-                            </StackPanel>
-                            <StackPanel Grid.Column="1"
-                                        Orientation="Horizontal"
-                                        Margin="0,0,5,0"
-                                        VerticalAlignment="Center"
-                                        HorizontalAlignment="Right">
-                                <!--open notes window button-->
-                                <Grid>
-                                    <Button Style="{StaticResource ButtonStyle1}"
-                                            Width="30"
-                                            Height="30"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Right"
-                                            Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource ButtonVisibilityConverter}}"
-                                            Command="{Binding Path=OpenNotesWindow}">
-                                        <Button.RenderTransform>
-                                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
-                                        </Button.RenderTransform>
-                                        <Path Fill="{DynamicResource Icon.Stroke.Static}" 
-                                              Stretch="Fill" 
-                                              Height="17.5" 
-                                              Width="17.5" 
-                                              Data="{StaticResource noteIcon}"/>
-                                    </Button>
-                                    <Ellipse Fill="{DynamicResource Notes.HasItemsEllipse.Background.Static}"
-                                             Height="10"
-                                             Width="10"
-                                             HorizontalAlignment="Right"
-                                             VerticalAlignment="Top"
-                                             Margin="0,3,3,0">
-                                        <Ellipse.Style>
-                                            <Style TargetType="{x:Type Ellipse}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=Notes.Count}" Value="0">
-                                                        <Setter Property="Visibility" Value="Hidden"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Path=Schedule.favorited}" Value="False">
-                                                        <Setter Property="Visibility" Value="Hidden"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Ellipse.Style>
-                                    </Ellipse>
-                                </Grid>
-                                <!--button to make a schedule favorite-->
+                                           Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                                           Grid.Row="0"/>
+                                <TextBlock Text="{Binding Path=Schedule.endExamsDate, StringFormat=Конец сессии: {0}}"
+                                           VerticalAlignment="Center"
+                                           FontWeight="DemiBold"
+                                           Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                                           Grid.Row="1"/>
+                                <Grid.Style>
+                                    <Style TargetType="{x:Type Grid}">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding Path=Schedule.startExamsDate}" Value="{x:Null}">
+                                                <Setter Property="Visibility" Value="Collapsed"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </Grid.Style>
+                            </Grid>
+                        </StackPanel>
+                        <StackPanel Grid.Column="1"
+                                    Orientation="Horizontal"
+                                    Margin="0,0,5,0"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right">
+                            <!--open notes window button-->
+                            <Grid>
                                 <Button Style="{StaticResource ButtonStyle1}"
                                         Width="30"
                                         Height="30"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right"
-                                        Command="{Binding Path=AddFavoriteSchedule}">
+                                        Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource ButtonVisibilityConverter}}"
+                                        Command="{Binding Path=OpenNotesWindow}">
+                                    <Button.RenderTransform>
+                                        <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                                    </Button.RenderTransform>
+                                    <Path Fill="{DynamicResource Icon.Stroke.Static}" 
+                                          Stretch="Fill" 
+                                          Height="17.5" 
+                                          Width="17.5" 
+                                          Data="{StaticResource noteIcon}"/>
+                                </Button>
+                                <Ellipse Fill="{DynamicResource Notes.HasItemsEllipse.Background.Static}"
+                                         Height="10"
+                                         Width="10"
+                                         HorizontalAlignment="Right"
+                                         VerticalAlignment="Top"
+                                         Margin="0,3,3,0">
+                                    <Ellipse.Style>
+                                        <Style TargetType="{x:Type Ellipse}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Notes.Count}" Value="0">
+                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Path=Schedule.favorited}" Value="False">
+                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Ellipse.Style>
+                                </Ellipse>
+                            </Grid>
+                            <!--button to make a schedule favorite-->
+                            <Button Style="{StaticResource ButtonStyle1}"
+                                    Width="30"
+                                    Height="30"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Command="{Binding Path=AddFavoriteSchedule}">
+                                <Button.RenderTransform>
+                                    <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                                </Button.RenderTransform>
+                                <Path Stroke="{DynamicResource Icon.Stroke.Static}" 
+                                      StrokeThickness="0.75" 
+                                      Stretch="Fill" 
+                                      Height="17.5" 
+                                      Width="17.5" 
+                                      Data="{StaticResource starIcon}">
+                                    <Path.Style>
+                                        <Style TargetType="{x:Type Path}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Path=Schedule.favorited}" Value="True">
+                                                    <Setter Property="Fill" Value="{DynamicResource Icon.Star.Favorited.Fill}"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Path.Style>
+                                </Path>
+                            </Button>
+                            <!--open announcements window button-->
+                            <Grid>
+                                <Button Style="{StaticResource ButtonStyle1}"
+                                        Width="30"
+                                        Height="30"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding Path=OpenAnnouncements}">
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                                     </Button.RenderTransform>
                                     <Path Stroke="{DynamicResource Icon.Stroke.Static}" 
-                                          StrokeThickness="0.75" 
                                           Stretch="Fill" 
+                                          StrokeThickness="0.85"
                                           Height="17.5" 
                                           Width="17.5" 
-                                          Data="{StaticResource starIcon}">
-                                        <Path.Style>
-                                            <Style TargetType="{x:Type Path}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Path=Schedule.favorited}" Value="True">
-                                                        <Setter Property="Fill" Value="{DynamicResource Icon.Star.Favorited.Fill}"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Path.Style>
-                                    </Path>
+                                          Data="{StaticResource announcementIcon}"/>
                                 </Button>
-                                <!--open announcements window button-->
-                                <Grid>
-                                    <Button Style="{StaticResource ButtonStyle1}"
-                                            Width="30"
-                                            Height="30"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Right"
-                                            Command="{Binding Path=OpenAnnouncements}">
-                                        <Button.RenderTransform>
-                                            <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
-                                        </Button.RenderTransform>
-                                        <Path Stroke="{DynamicResource Icon.Stroke.Static}" 
-                                              Stretch="Fill" 
-                                              StrokeThickness="0.85"
-                                              Height="17.5" 
-                                              Width="17.5" 
-                                              Data="{StaticResource announcementIcon}"/>
-                                    </Button>
-                                    <Grid VerticalAlignment="Top"
-                                          HorizontalAlignment="Right"
-                                          Margin="0,2,2,0">
-                                        <Ellipse Fill="{DynamicResource WarningSign.Background.Static}"
-                                                 Height="12"
-                                                 Width="12"
-                                                 HorizontalAlignment="Center"
-                                                 VerticalAlignment="Center"/>
-                                        <TextBlock Text="!"
-                                                   Foreground="{DynamicResource WarningSign.Text.Foreground.Static}"
-                                                   VerticalAlignment="Center"
-                                                   HorizontalAlignment="Center"
-                                                   FontSize="10"
-                                                   FontWeight="DemiBold"/>
-                                        <Grid.Style>
-                                            <Style TargetType="{x:Type Grid}">
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Announcements.Count}" Value="0">
-                                                        <Setter Property="Visibility" Value="Hidden"/>
-                                                    </DataTrigger>
-                                                    <DataTrigger Binding="{Binding Announcements}" Value="{x:Null}">
-                                                        <Setter Property="Visibility" Value="Hidden"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </Grid.Style>
-                                    </Grid>
+                                <Grid VerticalAlignment="Top"
+                                      HorizontalAlignment="Right"
+                                      Margin="0,2,2,0">
+                                    <Ellipse Fill="{DynamicResource WarningSign.Background.Static}"
+                                             Height="12"
+                                             Width="12"
+                                             HorizontalAlignment="Center"
+                                             VerticalAlignment="Center"/>
+                                    <TextBlock Text="!"
+                                               Foreground="{DynamicResource WarningSign.Text.Foreground.Static}"
+                                               VerticalAlignment="Center"
+                                               HorizontalAlignment="Center"
+                                               FontSize="10"
+                                               FontWeight="DemiBold"/>
+                                    <Grid.Style>
+                                        <Style TargetType="{x:Type Grid}">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Announcements.Count}" Value="0">
+                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding Announcements}" Value="{x:Null}">
+                                                    <Setter Property="Visibility" Value="Hidden"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </Grid.Style>
                                 </Grid>
+                            </Grid>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+
+                <!--schedule-->
+                <TabControl Style="{DynamicResource TabControlStyle}" Grid.Row="1" Margin="5,0,5,0"
+                            Padding="0,5,0,0"
+                            Background="{DynamicResource TabControl.Background.Static}"
+                            SelectedIndex="{Binding SelectedTab}">
+                    <!--current term schedule tab-->
+                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.schedules, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Schedules}">
+                        <TabItem.Header>
+                            <StackPanel>
+                                <TextBlock FontSize="14">
+                                    <TextBlock.Style>
+                                        <Style TargetType="{x:Type TextBlock}">
+                                            <Setter Property="Text" Value="{Binding Schedule.currentTerm}"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding Schedule.currentTerm}" Value="{x:Null}">
+                                                    <Setter Property="Text" Value="Занятия"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
-                        </Grid>
-                    </Border>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <Grid>
+                                <templates:SchedulePresenter Schedules="{Binding Schedule.schedules}"
+                                                             FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
+                                                             SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
+                                                             ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
+                                                             CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
+                                                             WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
+                                                             Command="{Binding LoadScheduleBS}"/>
 
+                            </Grid>
 
-                    <!--schedule-->
-                    <TabControl Style="{DynamicResource TabControlStyle}" Grid.Row="1" Margin="5,0,5,0"
-                                Padding="0,5,0,0"
-                                Background="{DynamicResource TabControl.Background.Static}"
-                                SelectedIndex="{Binding SelectedTab}">
-                        <!--current term schedule tab-->
-                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.schedules, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Schedules}">
-                            <TabItem.Header>
-                                <StackPanel>
-                                    <TextBlock FontSize="14">
-                                        <TextBlock.Style>
-                                            <Style TargetType="{x:Type TextBlock}">
-                                                <Setter Property="Text" Value="{Binding Schedule.currentTerm}"/>
-                                                <Style.Triggers>
-                                                    <DataTrigger Binding="{Binding Schedule.currentTerm}" Value="{x:Null}">
-                                                        <Setter Property="Text" Value="Занятия"/>
-                                                    </DataTrigger>
-                                                </Style.Triggers>
-                                            </Style>
-                                        </TextBlock.Style>
-                                    </TextBlock>
-                                </StackPanel>
-                            </TabItem.Header>
-                            <TabItem.Content>
-                                <Grid>
-                                    <templates:SchedulePresenter Schedules="{Binding Schedule.schedules}"
-                                                                 CurrentWeek="{Binding Source={x:Static properties:Settings.Default}, Path=currentweek}"
-                                                                 FirstSubGroup="{Binding Source={x:Static properties:Settings.Default}, Path=firstsubgroup}"
-                                                                 SecondSubGroup="{Binding Source={x:Static properties:Settings.Default}, Path=secondsubgroup}"
-                                                                 ShowExams="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}"
-                                                                 WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
-                                                                 Command="{Binding LoadScheduleBS}"/>
-
-                                </Grid>
-
-                            </TabItem.Content>
-                        </TabItem>
-                        <!--exam schedule tab-->
-                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Exams}">
-                            <TabItem.Header>
-                                <StackPanel>
-                                    <TextBlock Text="Сессия" FontSize="14"/>
-                                </StackPanel>
-                            </TabItem.Header>
-                            <TabItem.Content>
-                                <Grid>
-                                    <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10" Effect="{DynamicResource myShadow}"/>
-                                    <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10">
-                                        <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                            <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
-                                                                           LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
-                                                                           Margin="0,10,0,10"
-                                                                           HorizontalAlignment="Stretch"/>
-                                        </ScrollViewer>
-                                        <Border.OpacityMask>
-                                            <VisualBrush>
-                                                <VisualBrush.Visual>
-                                                    <Border Background="Black"
-                                                            SnapsToDevicePixels="True"
-                                                            CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
-                                                            Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
-                                                            Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}"/>
-                                                </VisualBrush.Visual>
-                                            </VisualBrush>
-                                        </Border.OpacityMask>
-                                    </Border>
-                                </Grid>
-                            </TabItem.Content>
-                        </TabItem>
-                        <!--previous term schedule tab-->
-                        <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=PreviusSchedule}">
-                            <TabItem.Header>
-                                <StackPanel>
-                                    <TextBlock Text="{Binding Schedule.previousTerm}" FontSize="14"/>
-                                </StackPanel>
-                            </TabItem.Header>
-                            <TabItem.Content>
-                                <Grid>
-                                    <templates:SchedulePresenter Schedules="{Binding Schedule.previousSchedules}"
-                                                                 CurrentWeek="{Binding Source={x:Static properties:Settings.Default}, Path=currentweek}"
-                                                                 FirstSubGroup="{Binding Source={x:Static properties:Settings.Default}, Path=firstsubgroup}"
-                                                                 SecondSubGroup="{Binding Source={x:Static properties:Settings.Default}, Path=secondsubgroup}"
-                                                                 ShowExams="{Binding Source={x:Static properties:Settings.Default}, Path=showexams}"
-                                                                 WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
-                                                                 Command="{Binding LoadScheduleBS}"/>
-                                </Grid>
-                            </TabItem.Content>
-                        </TabItem>
-                    </TabControl>
-                </Grid>
+                        </TabItem.Content>
+                    </TabItem>
+                    <!--exam schedule tab-->
+                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Exams}">
+                        <TabItem.Header>
+                            <StackPanel>
+                                <TextBlock Text="Сессия" FontSize="14"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <Grid>
+                                <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10" Effect="{DynamicResource myShadow}"/>
+                                <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
+                                        <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
+                                                                       LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
+                                                                       Margin="0,10,0,10"
+                                                                       HorizontalAlignment="Stretch"/>
+                                    </ScrollViewer>
+                                    <Border.OpacityMask>
+                                        <VisualBrush>
+                                            <VisualBrush.Visual>
+                                                <Border Background="Black"
+                                                        SnapsToDevicePixels="True"
+                                                        CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
+                                                        Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
+                                                        Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}"/>
+                                            </VisualBrush.Visual>
+                                        </VisualBrush>
+                                    </Border.OpacityMask>
+                                </Border>
+                            </Grid>
+                        </TabItem.Content>
+                    </TabItem>
+                    <!--previous term schedule tab-->
+                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=PreviusSchedule}">
+                        <TabItem.Header>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Schedule.previousTerm}" FontSize="14"/>
+                            </StackPanel>
+                        </TabItem.Header>
+                        <TabItem.Content>
+                            <Grid>
+                                <templates:SchedulePresenter Schedules="{Binding Schedule.previousSchedules}"
+                                                             FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
+                                                             SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
+                                                             ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
+                                                             CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
+                                                             WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
+                                                             Command="{Binding LoadScheduleBS}"/>
+                            </Grid>
+                        </TabItem.Content>
+                    </TabItem>
+                </TabControl>
             </Grid>
         </Grid>
-    </Border>
+    </Grid>
 </Window>

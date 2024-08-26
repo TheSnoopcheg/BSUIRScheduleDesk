@@ -234,7 +234,8 @@ namespace BSUIRScheduleDESK.viewmodels
         }
         private async void OnScheduleUnFavorited(FavoriteSchedule schedule)
         {
-            if (Schedule!.GetUrl() == schedule.UrlId)
+            if (Schedule == null) return;
+            if (Schedule.GetUrl() == schedule.UrlId)
             {
                 _model.Schedule!.favorited = false;
                 Schedule!.favorited = false;
@@ -244,7 +245,7 @@ namespace BSUIRScheduleDESK.viewmodels
         }
         private void OnCurrentWeekUpdate()
         {
-            CurrentWeek = Properties.Settings.Default.currentweek;
+            CurrentWeek = Config.Instance.CurrentWeek;
             EventService.CurrentWeekUpdated -= OnCurrentWeekUpdate;
         }
 
@@ -288,7 +289,7 @@ namespace BSUIRScheduleDESK.viewmodels
             EventService.FavoriteScheduleSelected += LoadFavoriteSchedule;
             EventService.ScheduleUnFavorited += OnScheduleUnFavorited;
             EventService.ScheduleLoaded += OnScheduleLoaded;
-            if(Properties.Settings.Default.currentweek == 0 || Properties.Settings.Default.laststartup == DateTime.MinValue)
+            if(Config.Instance.CurrentWeek == 0 || Config.Instance.LastStartup == DateTime.MinValue)
             {
                 EventService.CurrentWeekUpdated += OnCurrentWeekUpdate;
             }

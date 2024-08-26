@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.templates"
              xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
-             xmlns:properties="clr-namespace:BSUIRScheduleDESK.Properties"
+             xmlns:classes="clr-namespace:BSUIRScheduleDESK.classes"
              mc:Ignorable="d" >
 
     <UserControl.Resources>
@@ -33,22 +33,22 @@
                     <Border CornerRadius="10,0,0,10">
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
-                                <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}"/>
+                                <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=UnknownColor, Mode=TwoWay}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛК">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=LectureColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ПЗ">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=PracticeColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛР">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=LabColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Экзамен">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=ExamColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Консультация">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=ConsultationColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -155,22 +155,22 @@
                     <Border CornerRadius="10,0,0,10">
                         <Border.Style>
                             <Style TargetType="{x:Type Border}">
-                                <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=unknowncolor, Mode=TwoWay}"/>
+                                <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=UnknownColor, Mode=TwoWay}"/>
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛК">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=lecturecolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=LectureColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ПЗ">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=practicecolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=PracticeColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="ЛР">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=labcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=LabColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Экзамен">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=examcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=ExamColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                     <DataTrigger Binding="{Binding lessonTypeAbbrev}" Value="Консультация">
-                                        <Setter Property="Background" Value="{Binding Source={x:Static properties:Settings.Default}, Path=consultationcolor, Mode=TwoWay}"/>
+                                        <Setter Property="Background" Value="{Binding Source={x:Static classes:Config.Instance}, Path=ConsultationColor, Mode=TwoWay}"/>
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>

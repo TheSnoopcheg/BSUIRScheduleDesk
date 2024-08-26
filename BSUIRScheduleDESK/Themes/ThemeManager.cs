@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using BSUIRScheduleDESK.classes;
+using System.Windows;
 
 namespace BSUIRScheduleDESK.Themes
 {
@@ -11,14 +12,14 @@ namespace BSUIRScheduleDESK.Themes
             {
                 return;
             }
-            if(themeName == Properties.Settings.Default.currentTheme)
+            if (themeName == Config.Instance.CurrentTheme)
             {
                 return;
             }
             App.Current.Resources.MergedDictionaries.RemoveAt(0);
             App.Current.Resources.MergedDictionaries.Insert(0, new ResourceDictionary() { Source = new System.Uri($"Themes/ColourDictionaries/{themeName}.xaml", System.UriKind.Relative) });
-            Properties.Settings.Default.currentTheme = themeName;
-            Properties.Settings.Default.Save();
+            Config.Instance.CurrentTheme = themeName;
+            Config.Instance.Save();
         }
     }
 }

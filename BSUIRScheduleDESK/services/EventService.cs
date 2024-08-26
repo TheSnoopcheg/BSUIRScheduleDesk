@@ -10,6 +10,11 @@ namespace BSUIRScheduleDESK.services
         public static event Action<FavoriteSchedule>? ScheduleUnFavorited;
         public static event Action? CurrentWeekUpdated;
         public static event Action? ScheduleLoaded;
+        public static event Action? ColorsUpdated;
+        public static void ColorsUpdated_Invoke()
+        {
+            ColorsUpdated?.Invoke();
+        }
         public static void ScheduleLoaded_Invoke()
         {
             ScheduleLoaded?.Invoke();

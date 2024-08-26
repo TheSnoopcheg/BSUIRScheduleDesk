@@ -23,7 +23,7 @@ namespace BSUIRScheduleDESK.views
             WindowSizing.WindowInitialized(this);
         }
 
-        private void Border_MouseDown(object sender, MouseButtonEventArgs e)
+        private void Title_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if(e.ChangedButton == MouseButton.Left)
             {
