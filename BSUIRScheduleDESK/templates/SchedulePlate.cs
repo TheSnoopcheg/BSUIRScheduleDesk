@@ -15,6 +15,7 @@ namespace BSUIRScheduleDESK.templates
     }
     public class SchedulePlate : Control
     {
+        private const int MAX_WEEK = 4;
         static SchedulePlate()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SchedulePlate), new FrameworkPropertyMetadata(typeof(SchedulePlate)));
@@ -98,6 +99,8 @@ namespace BSUIRScheduleDESK.templates
             _auditoriesLabel = (TextBlock)GetTemplateChild(PART_AuditoriesLabel);
             _subGroupsLabel = (TextBlock)GetTemplateChild(PART_SubgroupsLabel);
             _scheduleTime = (ScheduleTime)GetTemplateChild(PART_ScheduleTime);
+            _timeLabel = (TextBlock)GetTemplateChild(PART_TimeLabel);
+            _timePanel = (StackPanel)GetTemplateChild(PART_TimePanel);
 
             _employeeGroups.Command = Command;
 
@@ -112,6 +115,11 @@ namespace BSUIRScheduleDESK.templates
             {
                 _subjectInfo.Visibility = Visibility.Collapsed;
                 _announcement.Visibility = Visibility.Visible;
+                if(_timeLabel != null)
+                {
+                    _timeLabel.Text = Schedule.startLessonTime;
+                    _timePanel.Visibility = Visibility.Visible;
+                }
             }
             else
             {
@@ -138,7 +146,7 @@ namespace BSUIRScheduleDESK.templates
             else
             {
                 _datesWeeksLabel.Text = "Недели: ";
-                if(Schedule.weekNumber.Count != 4)
+                if(Schedule.weekNumber.Count != MAX_WEEK)
                     _boldDatesWeeksLabel.Text = string.Join(", ", Schedule.weekNumber?.Select(i => i.ToString()) ?? Enumerable.Empty<string>());
                 else
                 {
@@ -158,6 +166,7 @@ namespace BSUIRScheduleDESK.templates
                 if (TimeOnly.TryParse(Schedule.startLessonTime, out TimeOnly time))
                     _scheduleTime.StartTime = time;
         }
+
         private void SetUpColor()
         {
             switch (Schedule.lessonTypeAbbrev)
@@ -197,6 +206,8 @@ namespace BSUIRScheduleDESK.templates
         private const string PART_AuditoriesLabel = "PART_AuditoriesLabel";
         private const string PART_SubgroupsLabel = "PART_SubgroupsLabel";
         private const string PART_ScheduleTime = "PART_ScheduleTime";
+        private const string PART_TimeLabel = "PART_TimeLabel";
+        private const string PART_TimePanel = "PART_TimePanel";
 
         private Border _typeBorder;
         private StackPanel _subjectInfo;
@@ -212,5 +223,7 @@ namespace BSUIRScheduleDESK.templates
         private TextBlock _auditoriesLabel;
         private TextBlock _subGroupsLabel;
         private ScheduleTime _scheduleTime;
+        private TextBlock _timeLabel;
+        private StackPanel _timePanel;
     }
 }

@@ -23,14 +23,14 @@ namespace BSUIRScheduleDESK.templates
 
         private Dictionary<TimeOnly, int> StartLessonDict = new Dictionary<TimeOnly, int>()
         {
-            { TimeOnly.Parse("9:00"),1},
-            { TimeOnly.Parse("10:35"), 2},
-            { TimeOnly.Parse("12:25"), 3},
-            { TimeOnly.Parse("14:00"), 4},
-            { TimeOnly.Parse("15:50"), 5},
-            { TimeOnly.Parse("17:25"), 6}, 
-            { TimeOnly.Parse("19:00"), 7},
-            { TimeOnly.Parse("20:40"), 8}
+            { TimeOnly.Parse("9:00"), 0},
+            { TimeOnly.Parse("10:35"), 1},
+            { TimeOnly.Parse("12:25"), 2},
+            { TimeOnly.Parse("14:00"), 3},
+            { TimeOnly.Parse("15:50"), 4},
+            { TimeOnly.Parse("17:25"), 5}, 
+            { TimeOnly.Parse("19:00"), 6},
+            { TimeOnly.Parse("20:40"), 7}
         };
         static SchedulePresenter()
         {
@@ -49,7 +49,7 @@ namespace BSUIRScheduleDESK.templates
             base.OnApplyTemplate();
 
             _scheduleView = (Grid)GetTemplateChild(PART_ScheduleView);
-            _testView = (Grid)GetTemplateChild(PART_TestView);
+            _maximizedView = (Grid)GetTemplateChild(PART_MaximizedView);
             _normalView = (Grid)GetTemplateChild(PART_NormalScheduleView);
             _previousButton = (Button)GetTemplateChild(PART_PreviousWeekButton);
             _nextButton = (Button) GetTemplateChild(PART_NextWeekButton);
@@ -243,20 +243,20 @@ namespace BSUIRScheduleDESK.templates
         private static void OnWindowStateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not SchedulePresenter schedulePresenter) return;
-            if (schedulePresenter._testView == null || schedulePresenter._scheduleView == null) return;
+            if (schedulePresenter._maximizedView == null || schedulePresenter._scheduleView == null) return;
             if(e.NewValue != null)
             {
                 schedulePresenter.SetUp();
                 if(schedulePresenter.WindowState == WindowState.Maximized)
                 {
                     schedulePresenter._normalView.SetValue(VisibilityProperty, Visibility.Collapsed);
-                    schedulePresenter._testView.SetValue(VisibilityProperty, Visibility.Visible);
+                    schedulePresenter._maximizedView.SetValue(VisibilityProperty, Visibility.Visible);
                     schedulePresenter._scheduleView.SetValue(VisibilityProperty, Visibility.Visible);
                 }
                 else if(schedulePresenter.WindowState == WindowState.Normal)
                 {
                     schedulePresenter._normalView.SetValue(VisibilityProperty, Visibility.Visible);
-                    schedulePresenter._testView.SetValue(VisibilityProperty, Visibility.Collapsed);
+                    schedulePresenter._maximizedView.SetValue(VisibilityProperty, Visibility.Collapsed);
                     schedulePresenter._scheduleView.SetValue(VisibilityProperty, Visibility.Collapsed);
                 }
             }
@@ -271,7 +271,7 @@ namespace BSUIRScheduleDESK.templates
 
         private void SetUp()
         {
-            if(_scheduleView == null || _testView == null || _normalView == null) return;
+            if(_scheduleView == null || _maximizedView == null || _normalView == null) return;
 
             CleanGrid();
 
@@ -282,6 +282,9 @@ namespace BSUIRScheduleDESK.templates
             else if (WindowState == WindowState.Normal)
                 SetUpNormal();
         }
+
+        #region SetUpMethods
+
         private void SetUpNormal()
         {
             SetUpDatesNormal();
@@ -295,19 +298,21 @@ namespace BSUIRScheduleDESK.templates
             SetMaximizedSchedulePlates();
         }
 
+        #endregion
+
         private void CleanGrid()
         {
             StackPanel? panel;
-            for(int i= 0; i<_testView.Children.Count; i++)
+            for(int i= 0; i < _maximizedView.Children.Count; i++)
             {
-                if (_testView.Children[i] is not UIElement element) continue;
+                if (_maximizedView.Children[i] is not UIElement element) continue;
                 if (element is Border) continue;
                 if (element is TextBlock) continue;
                 panel = element as StackPanel;
                 if(panel != null) panel.Children.Clear();
                 else
                 {
-                    _testView.Children.Remove(element);
+                    _maximizedView.Children.Remove(element);
                     i--;
                 }
             }
@@ -356,44 +361,46 @@ namespace BSUIRScheduleDESK.templates
         {
             TimeOnly minTime = TimeOnly.MaxValue;
             TimeOnly maxTime = TimeOnly.MinValue;
+            TimeOnly sTime = TimeOnly.Parse("9:00");
 
             foreach(var prop in Schedules.GetType().GetProperties())
             {
                 if (prop.GetValue(Schedules) is not List<Schedule> list || list.Count == 0) continue;
-                var flist = list
-                    .Where(i => i.weekNumber.Contains(CurrentWeek))
+                var lList = list
+                    .Where(i => i.weekNumber.Contains(CurrentWeek) || _dates.Contains(DateTime.Parse(i.startLessonDate!)))
                     .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup)).ToList();
-                if (flist.Count == 0) continue;
-                var firstItem = flist[0];
-                if (minTime != TimeOnly.Parse("9:00"))
+                foreach(var lesson in lList)
                 {
-                    if(TimeOnly.TryParse(firstItem.startLessonTime, out TimeOnly result))
-                    {
-                        if (result < minTime) minTime = result;
-                    }
-                }
-                var lastItem = flist[flist.Count - 1];
-                if(maxTime != TimeOnly.Parse("20:40"))
-                {
-                    if(TimeOnly.TryParse(lastItem.startLessonTime, out TimeOnly result))
-                    {
-                        if(result > maxTime) maxTime = result;
-                    }
+                    if (lesson.announcement)
+                        if (!_dates.Contains(DateTime.Parse(lesson.startLessonDate!)))
+                            continue;
+                    if (!TimeOnly.TryParse(lesson.startLessonTime, out TimeOnly time)) continue;
+                    if (time < sTime) minTime = sTime;
+                    else if(time < minTime) minTime = time;
+                    if(time > maxTime) maxTime = time;
                 }
             }
-            _minRow = StartLessonDict[minTime];
-            _maxRow = StartLessonDict[maxTime];
+            _minRow = StartLessonDict[GetNearestTime(minTime)];
+            _maxRow = StartLessonDict[GetNearestTime(maxTime)];
+        }
+
+        private TimeOnly GetNearestTime(TimeOnly time)
+        {
+            var bestMatch = StartLessonDict.OrderBy(e => Math.Abs((time - e.Key).TotalMinutes)).FirstOrDefault();
+            if (bestMatch.Key == default)
+                return TimeOnly.Parse("9:00");
+            return bestMatch.Key;
         }
         private void SetSchedulesTimes()
         {
-            if (_testView == null) return;
+            if (_maximizedView == null) return;
             for(int i = _minRow; i <= _maxRow; i++)
             {
                 ScheduleTime time = new ScheduleTime();
                 time.SetValue(Grid.RowProperty, i);
                 time.SetValue(Grid.ColumnProperty, 0);
                 time.SetValue(ScheduleTime.StartTimeProperty, StartLessonDict.FirstOrDefault(x => x.Value == i).Key);
-                _testView.Children.Add(time);
+                _maximizedView.Children.Add(time);
             }
         }
 
@@ -414,7 +421,7 @@ namespace BSUIRScheduleDESK.templates
                 textBlock.SetValue(Grid.RowProperty, 0);
                 _scheduleView.Children.Add(textBlock);
             }
-            for(int i = 1; i < GRID_ROWS; i++)
+            for(int i = 0; i < GRID_ROWS; i++)
             {
                 for(int j = 1; j < GRID_COLS; j++)
                 {
@@ -422,7 +429,7 @@ namespace BSUIRScheduleDESK.templates
                     panel.SetValue(StackPanel.OrientationProperty, Orientation.Vertical);
                     panel.SetValue(Grid.RowProperty, i);
                     panel.SetValue(Grid.ColumnProperty, j);
-                    _testView.Children.Add(panel);
+                    _maximizedView.Children.Add(panel);
                 }
             }
         }
@@ -461,14 +468,18 @@ namespace BSUIRScheduleDESK.templates
                 col++;
                 if (prop.GetValue(Schedules) is not List<Schedule> list || list.Count == 0) continue;
                 var flist = list
-                    .Where(i => i.weekNumber.Contains(CurrentWeek))
+                    .Where(i => i.weekNumber.Contains(CurrentWeek) || _dates.Contains(DateTime.Parse(i.startLessonDate!)))
                     .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
                 foreach(var item in flist)
                 {
                     if (string.IsNullOrEmpty(item.startLessonTime)) continue;
-                    if (GetElementInGridPosition(_testView ,col, StartLessonDict[TimeOnly.Parse(item.startLessonTime)]) is not StackPanel panel) continue;
+                    if (item.announcement)
+                        if (!_dates.Contains(DateTime.Parse(item.startLessonDate!)))
+                            continue;
+                    int row = StartLessonDict[GetNearestTime(TimeOnly.Parse(item.startLessonTime))];
+                    if (GetElementInGridPosition(_maximizedView ,col, row) is not StackPanel panel) continue;
                     SchedulePlate plate = new SchedulePlate();
-                    plate.SetValue(Grid.RowProperty, StartLessonDict[TimeOnly.Parse(item.startLessonTime)]);
+                    plate.SetValue(Grid.RowProperty, row);
                     plate.SetValue(Grid.ColumnProperty, col);
                     plate.SetValue(SchedulePlate.ScheduleProperty, item);
                     plate.SetValue(SchedulePlate.CommandProperty, Command);
@@ -491,15 +502,20 @@ namespace BSUIRScheduleDESK.templates
                     continue;
                 }
                 var flist = list
-                    .Where(i => i.weekNumber.Contains(CurrentWeek))
-                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup)).ToList();
-                if(flist.Count == 0)
+                    .Where(i => i.weekNumber.Contains(CurrentWeek) || _dates.Contains(DateTime.Parse(i.startLessonDate!)))
+                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup))
+                    .OrderBy(i => TimeOnly.Parse(i.startLessonTime!));
+                if(flist.Count() == 0)
                 {
                     AddNoLessonTextBlock(panel);
                     continue;
                 }
                 foreach (var item in flist)
                 {
+                    if (string.IsNullOrEmpty(item.startLessonTime)) continue;
+                    if (item.announcement)
+                        if (!_dates.Contains(DateTime.Parse(item.startLessonDate!)))
+                            continue;
                     SchedulePlate plate = new SchedulePlate();
                     plate.SetValue(SchedulePlate.ScheduleProperty, item);
                     plate.SetValue(SchedulePlate.CommandProperty, Command);
@@ -547,10 +563,7 @@ namespace BSUIRScheduleDESK.templates
                 ReturnButtonStatusUpdate();
                 return;
             }
-            int newWeek = CurrentWeek + offset;
-            if (newWeek > 4) newWeek -= 4;
-            else if (newWeek < 1) newWeek += 4;
-            CurrentWeek = newWeek;
+            CurrentWeek = (CurrentWeek + offset + 3) % 4 + 1;
         }
         private void BackCurrentWeek()
         {
@@ -682,7 +695,7 @@ namespace BSUIRScheduleDESK.templates
         #endregion
 
         private const string PART_ScheduleView = "PART_ScheduleView";
-        private const string PART_TestView = "PART_TestView";
+        private const string PART_MaximizedView = "PART_MaximizedView";
         private const string PART_NormalScheduleView = "PART_NormalScheduleView";
         private const string PART_PreviousWeekButton = "PART_PreviousWeekButton";
         private const string PART_NextWeekButton = "PART_NextWeekButton";
@@ -698,7 +711,7 @@ namespace BSUIRScheduleDESK.templates
         private const string PART_TodayBorder = "PART_TodayBorder";
 
         private Grid _scheduleView;
-        private Grid _testView;
+        private Grid _maximizedView;
         private Grid _normalView;
         private Button _previousButton;
         private Button _nextButton;

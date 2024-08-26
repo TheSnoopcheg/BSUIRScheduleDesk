@@ -813,6 +813,11 @@
                                 Margin="10"
                                 Grid.Row="1"
                                 Effect="{DynamicResource myShadow}"/>
+                        <Border CornerRadius="10"
+                                Background="Black"
+                                Margin="10"
+                                Grid.Row="1"
+                                x:Name="Mask"/>
                         <Border Background="{DynamicResource Border.Background.Static}"
                                 CornerRadius="10"
                                 Margin="10"
@@ -841,6 +846,9 @@
                                         <Border Grid.Row="8" Background="{DynamicResource Border.Title.Background.Static}"/>
                                         <Border Grid.Row="10" Background="{DynamicResource Border.Title.Background.Static}"/>
                                     </Grid>
+                                    <ScrollViewer.OpacityMask >
+                                        <VisualBrush Visual="{Binding ElementName=Mask}"/>
+                                    </ScrollViewer.OpacityMask>
                                 </ScrollViewer>
                                 <Grid x:Name="PART_ScheduleView"
                                       HorizontalAlignment="Stretch"
@@ -871,7 +879,7 @@
                                                   Grid.ColumnSpan="7"
                                                   VerticalScrollBarVisibility="Auto"
                                                   Style="{StaticResource ScrollViewerStyle}">
-                                        <Grid x:Name="PART_TestView">
+                                        <Grid x:Name="PART_MaximizedView">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="45"/>
                                                 <ColumnDefinition Width="*"/>
@@ -892,20 +900,12 @@
                                                 <RowDefinition Height="Auto"/>
                                             </Grid.RowDefinitions>
                                         </Grid>
+                                        <ScrollViewer.OpacityMask >
+                                            <VisualBrush Visual="{Binding ElementName=Mask}"/>
+                                        </ScrollViewer.OpacityMask>
                                     </ScrollViewer>
                                 </Grid>
                             </Grid>
-                            <Border.OpacityMask>
-                                <VisualBrush>
-                                    <VisualBrush.Visual>
-                                        <Border Background="Black"
-                                                SnapsToDevicePixels="True"
-                                                CornerRadius="{Binding CornerRadius, RelativeSource={RelativeSource AncestorType=Border}}"
-                                                Width="{Binding ActualWidth, RelativeSource={RelativeSource AncestorType=Border}}"
-                                                Height="{Binding ActualHeight, RelativeSource={RelativeSource AncestorType=Border}}"/>
-                                    </VisualBrush.Visual>
-                                </VisualBrush>
-                            </Border.OpacityMask>
                         </Border>
                         <Popup Placement="Center"
                                AllowsTransparency="True"
@@ -993,11 +993,11 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal"
                                 Visibility="Visible"
+                                Margin="10,0,0,0"
                                 x:Name="PART_SubjectInfo">
                         <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    FontWeight="DemiBold"
                                    VerticalAlignment="Center"
-                                   Margin="10,0,0,0"
                                    Cursor="Help"
                                    x:Name="PART_SubjectName">
                             <TextBlock.ToolTip>
@@ -1018,14 +1018,14 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 Visibility="Collapsed"
+                                Margin="10,0,0,0"
                                 x:Name="PART_Announcement">
                         <Path Data="{DynamicResource noteIcon}"
                               Stretch="Fill"
                               Fill="{DynamicResource Schedule.Text.Foreground.Static}"
                               Width="13.5"
                               Height="13.5"
-                              VerticalAlignment="Center"
-                              Margin="10,0,0,0"/>
+                              VerticalAlignment="Center"/>
                         <TextBlock Text="ОБЪЯВЛЕНИЕ"
                                    Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    FontWeight="Bold"
@@ -1049,11 +1049,25 @@
                                    FontWeight="DemiBold"
                                    x:Name="PART_BoldDatesWeeksLabel"/>
                     </StackPanel>
-                    <templates:EmployeeGroups Grid.Row="3"
+                    <StackPanel Orientation="Horizontal"
+                                Margin="10,0,0,0"
+                                Grid.Row="3"
+                                Visibility="Collapsed"
+                                x:Name="PART_TimePanel">
+                        <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                   VerticalAlignment="Center"
+                                   Text="Время: "/>
+                        <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
+                                   VerticalAlignment="Center"
+                                   TextWrapping="Wrap"
+                                   FontWeight="DemiBold"
+                                   x:Name="PART_TimeLabel"/>
+                    </StackPanel>
+                    <templates:EmployeeGroups Grid.Row="4"
                                               Margin="10,0"
                                               MaxHeight="100"
                                               x:Name="PART_EmployeeGroups"/>
-                    <TextBlock Grid.Row="4"
+                    <TextBlock Grid.Row="5"
                                VerticalAlignment="Center"
                                TextWrapping="Wrap"
                                Margin="10,0,0,0"
@@ -1105,11 +1119,11 @@
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal" 
                                 Grid.Row="0"
+                                Margin="10,0,0,0"
                                 x:Name="PART_SubjectInfo">
                         <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    FontWeight="DemiBold"
                                    VerticalAlignment="Center"
-                                   Margin="10,0,0,0"
                                    Cursor="Help"
                                    x:Name="PART_SubjectName">
                             <TextBlock.ToolTip>
@@ -1130,14 +1144,14 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"
                                 Visibility="Collapsed"
+                                Margin="10,0,0,0"
                                 x:Name="PART_Announcement">
                         <Path Data="{DynamicResource noteIcon}"
                               Stretch="Fill"
                               Fill="{DynamicResource Schedule.Text.Foreground.Static}"
                               Width="13.5"
                               Height="13.5"
-                              VerticalAlignment="Center"
-                              Margin="10,0,0,0"/>
+                              VerticalAlignment="Center"/>
                         <TextBlock Text="ОБЪЯВЛЕНИЕ"
                                    Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    FontWeight="Bold"
@@ -1150,10 +1164,11 @@
                                TextWrapping="Wrap"
                                Grid.Row="1"
                                x:Name="PART_AnnouncementText"/>
-                    <StackPanel Orientation="Horizontal" Grid.Row="2">
+                    <StackPanel Orientation="Horizontal" 
+                                Grid.Row="2"
+                                Margin="10,0,0,0">
                         <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    VerticalAlignment="Center"
-                                   Margin="10,0,0,0"
                                    x:Name="PART_DatesWeeksLabel"/>
                         <TextBlock VerticalAlignment="Center"
                                    Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
@@ -1173,17 +1188,16 @@
                                           MaxHeight="50"
                                           HorizontalAlignment="Right"
                                           x:Name="PART_EmployeeGroups"/>
-                <Grid Grid.Column="4">
+                <Grid Grid.Column="4"
+                      Margin="0,0,5,0">
                     <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                VerticalAlignment="Top"
                                HorizontalAlignment="Right"
                                TextWrapping="Wrap"
-                               Margin="0,0,5,0"
                                x:Name="PART_AuditoriesLabel"/>    
                     <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                VerticalAlignment="Bottom"
                                HorizontalAlignment="Right"
-                               Margin="0,0,5,0"
                                x:Name="PART_SubgroupsLabel"/>
                 </Grid>
             </Grid>

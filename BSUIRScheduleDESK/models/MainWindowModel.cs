@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using BSUIRScheduleDESK.views;
 using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace BSUIRScheduleDESK.models
 {

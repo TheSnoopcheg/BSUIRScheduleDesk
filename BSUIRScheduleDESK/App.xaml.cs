@@ -22,25 +22,22 @@ namespace BSUIRScheduleDESK
             IsAnotherProcessExist();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{set.Default.currentTheme}.xaml", UriKind.Relative)};
+            
             string? path = Directory.GetCurrentDirectory() + @"\data";
             if (!Directory.Exists(path))
             {
                 Directory.CreateDirectory(path);
             }
+
             if (set.Default.currentweek == 0 || set.Default.laststartup == DateTime.MinValue)
             {
                 var up = ScheduleService.UpdateCurrentWeekAsync();
             }
+
             int wd = DateService.GetWeekDiff(set.Default.laststartup, DateTime.Today);
-            if (wd != 0)
-            {
-                set.Default.currentweek += wd % 4;
-                if(set.Default.currentweek >= 5)
-                {
-                    set.Default.currentweek -= 4;
-                    set.Default.Save();
-                }
-            }
+            set.Default.currentweek = (set.Default.currentweek + wd + 3) % 4 + 1;
+            set.Default.Save();
+
             MainWindowViewModel mwvm = new MainWindowViewModel();
             set.Default.laststartup = DateTime.Today;
             set.Default.Save();
