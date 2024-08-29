@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace BSUIRScheduleDESK.services
 {
-    public static class NetworkService
+    public class NetworkService : INetworkService
     {
-        private static HttpClient httpClient = new HttpClient();
-        public static async Task<T> GetAsync<T>(string? url)
+        private HttpClient httpClient = new HttpClient();
+        public async Task<T> GetAsync<T>(string? url)
         {
             try
             {

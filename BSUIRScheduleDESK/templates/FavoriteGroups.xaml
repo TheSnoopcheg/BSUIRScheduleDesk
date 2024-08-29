@@ -13,7 +13,7 @@
             <RadioButton GroupName="scheduleButton">
                 <RadioButton.Style>
                     <Style TargetType="{x:Type RadioButton}">
-                        <Setter Property="Command" Value="{Binding ElementName=favSchedules, Path=DataContext.OpenSchedule, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Setter Property="Command" Value="{Binding ElementName=favSchedules, Path=LoadCommand}"/>
                         <Setter Property="CommandParameter" Value="{Binding}"/>
                         <Setter Property="Focusable" Value="False"/>
                         <Setter Property="Opacity" Value="0"/>
@@ -58,7 +58,7 @@
                                               Padding="0"
                                               HorizontalContentAlignment="Center"
                                               VerticalContentAlignment="Center"
-                                              Command="{Binding ElementName=favSchedules, Path=DataContext.DeleteSchedule, UpdateSourceTrigger=PropertyChanged}"
+                                              Command="{Binding ElementName=favSchedules, Path=DeleteCommand}"
                                               CommandParameter="{Binding}"
                                               Style="{DynamicResource ButtonStyle1}">
                                             <Button.RenderTransform>
@@ -133,7 +133,7 @@
             </RadioButton>
         </DataTemplate>
     </UserControl.Resources>
-    <ItemsControl ItemsSource="{Binding FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
+    <ItemsControl ItemsSource="{Binding ElementName=favSchedules, Path=Schedules}"
                   ItemTemplate="{StaticResource favButTemplate}" Focusable="False">
         <ItemsControl.ItemsPanel>
             <ItemsPanelTemplate>

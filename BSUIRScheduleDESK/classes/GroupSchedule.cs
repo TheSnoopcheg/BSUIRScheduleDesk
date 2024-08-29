@@ -21,8 +21,6 @@ namespace BSUIRScheduleDESK.classes
         public string? endExamsDate { get; set; }
         [JsonIgnore]
         public bool favorited { get; set; }
-        [JsonIgnore]
-        public UpdateDate? updateDate { get; set; }
         public string? currentPeriod { get; set; }
         public bool Compare(GroupSchedule right)
         {
@@ -38,9 +36,5 @@ namespace BSUIRScheduleDESK.classes
         {
             return employee == null ? studentGroup?.name : employee.urlId;
         }
-    }
-    public record class UpdateDate
-    {
-        public string? lastUpdateDate { get; set; }
     }
 }

@@ -5,9 +5,9 @@ using System.Linq;
 
 namespace BSUIRScheduleDESK.services
 {
-    public static class DateService
+    public class DateService : IDateService
     {
-        public static List<DateTime> GetCurrentWeekDates()
+        public List<DateTime> GetCurrentWeekDates()
         {
             DateTime today = DateTime.Today;
             CultureInfo culture = CultureInfo.CurrentCulture;
@@ -18,7 +18,7 @@ namespace BSUIRScheduleDESK.services
             return Enumerable.Range(0, 6).Select(i => startOfWeek.AddDays(i)).ToList();
         } 
 
-        public static int GetWeekDiff(DateTime d1, DateTime d2, DayOfWeek startOfWeek = DayOfWeek.Monday)
+        public int GetWeekDiff(DateTime d1, DateTime d2, DayOfWeek startOfWeek = DayOfWeek.Monday)
         {
             var diff = d2.Subtract(d1);
 

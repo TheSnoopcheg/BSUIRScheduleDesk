@@ -77,7 +77,14 @@ namespace BSUIRScheduleDESK.templates
             typeof(SearchBox),
             new FrameworkPropertyMetadata(
                 string.Empty,
-                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
+                FrameworkPropertyMetadataOptions.BindsTwoWayByDefault,
+                new PropertyChangedCallback(OnTextChanged)));
+
+        private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is not SearchBox searchBox) return;
+            searchBox.TextChanged.Invoke();
+        }
 
         public string SText
         {
@@ -173,5 +180,6 @@ namespace BSUIRScheduleDESK.templates
         }
 
         public event Action ItemSelected;
+        public event Action TextChanged;
     }
 }

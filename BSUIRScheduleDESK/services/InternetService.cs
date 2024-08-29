@@ -6,17 +6,11 @@ using System.Threading.Tasks;
 
 namespace BSUIRScheduleDESK.services
 {
-    public static class Internet
+    public class InternetService : IInternetService
     {
-        private static HttpClient _httpClient = new HttpClient();
-        public enum ConnectionStatus
-        {
-            NotConnected,
-            LimitedAccess,
-            Connected
-        }
-
-        public static ConnectionStatus CheckInternet()
+        private HttpClient _httpClient = new HttpClient();
+        
+        public ConnectionStatus CheckInternet()
         {
             // Проверить подключение к dns.msftncsi.com
             try
@@ -67,13 +61,13 @@ namespace BSUIRScheduleDESK.services
             }
 
         }
-        public static ConnectionStatus PingServer(string? url)
+        public ConnectionStatus PingServer(string? url)
         {
             Ping ping = new Ping();
             PingReply pingReply = ping.Send(url!);
             return pingReply.Status == IPStatus.Success ? ConnectionStatus.Connected : ConnectionStatus.NotConnected;
         }
-        public static async Task<ConnectionStatus> CheckServerAccess(string? url)
+        public async Task<ConnectionStatus> CheckServerAccessAsync(string? url)
         {
             try
             {

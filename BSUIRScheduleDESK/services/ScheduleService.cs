@@ -6,18 +6,22 @@ using System;
 
 namespace BSUIRScheduleDESK.services
 {
-    public enum LoadingType
-    {
-        Server,
-        ServerWP,
-        Local
-    }
-    public static class ScheduleService
+    
+    public class ScheduleService : IScheduleService
     {
         private const string PATH = @"\data\";
         private const string RECENTPATH = "recent";
 
-        public static async Task<GroupSchedule> LoadSchedule(string? url, LoadingType loadingType)
+        private readonly INetworkService _networkService;
+        private readonly IInternetService _internetService;
+
+        public ScheduleService(INetworkService networkService, IInternetService internetService)
+        {
+            _networkService = networkService;
+            _internetService = internetService;
+        }
+
+        public async Task<GroupSchedule> LoadScheduleAsync(string? url, LoadingType loadingType)
         {
             GroupSchedule? schedule = new GroupSchedule();
             if (loadingType == LoadingType.Server || loadingType == LoadingType.ServerWP)
@@ -37,11 +41,11 @@ namespace BSUIRScheduleDESK.services
             }
             if (schedule != null && loadingType != LoadingType.ServerWP)
             {
-                await SaveRecentSchedule(schedule);
+                await SaveRecentScheduleAsync(schedule);
             }
             return schedule!;
         }
-        private static async Task<GroupSchedule> LocalLoad(string? path)
+        private async Task<GroupSchedule> LocalLoad(string? path)
         {
             GroupSchedule? schedule = new GroupSchedule();
             try
@@ -58,25 +62,24 @@ namespace BSUIRScheduleDESK.services
             }
             return schedule!;
         }
-        private static async Task<GroupSchedule> ServerLoad(string? url, LoadingType preLoadingType = LoadingType.Server)
+        private async Task<GroupSchedule> ServerLoad(string? url, LoadingType preLoadingType = LoadingType.Server)
         {
             GroupSchedule? schedule = new GroupSchedule();
             try
             {
                 if (int.TryParse(url, out int numVal))
                 {
-                    schedule = await NetworkService.GetAsync<GroupSchedule>($"https://iis.bsuir.by/api/v1/schedule?studentGroup={url}");
+                    schedule = await _networkService.GetAsync<GroupSchedule>($"https://iis.bsuir.by/api/v1/schedule?studentGroup={url}");
                 }
                 else
                 {
-                    schedule = await NetworkService.GetAsync<GroupSchedule>($"https://iis.bsuir.by/api/v1/employees/schedule/{url}");
+                    schedule = await _networkService.GetAsync<GroupSchedule>($"https://iis.bsuir.by/api/v1/employees/schedule/{url}");
                 }
                 if (schedule != null)
                 {
-                    schedule.updateDate = await GetLastUpdate(url);
                     if (preLoadingType == LoadingType.Local)
                     {
-                        await SaveSchedule(schedule, url);
+                        await SaveScheduleAsync(schedule, url);
                     }
                 }
             }
@@ -85,11 +88,11 @@ namespace BSUIRScheduleDESK.services
             return schedule!;
         }
 
-        public static async Task SaveRecentSchedule(GroupSchedule schedule)
+        public async Task SaveRecentScheduleAsync(GroupSchedule schedule)
         {
-            await SaveSchedule(schedule, RECENTPATH);
+            await SaveScheduleAsync(schedule, RECENTPATH);
         }
-        public static async Task SaveSchedule(GroupSchedule schedule, string? path)
+        public async Task SaveScheduleAsync(GroupSchedule schedule, string? path)
         {
             using (FileStream createStream = File.Create($"{Directory.GetCurrentDirectory() + PATH + path}.json"))
             {
@@ -97,33 +100,17 @@ namespace BSUIRScheduleDESK.services
                 await createStream.DisposeAsync();
             }
         }
-        public static void DeleteSchedule(FavoriteSchedule? schedule)
+        public void DeleteSchedule(string? url)
         {
-            File.Delete($"{Directory.GetCurrentDirectory() + PATH + schedule?.UrlId}.json");
+            File.Delete($"{Directory.GetCurrentDirectory() + PATH + url}.json");
         }
-        public static async Task<UpdateDate> GetLastUpdate(string? url)
+        public async Task UpdateCurrentWeekAsync()
         {
-            if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
+            if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") == ConnectionStatus.Connected)
             {
-                if (int.TryParse(url, out var id))
-                {
-                    return await NetworkService.GetAsync<UpdateDate>($"https://iis.bsuir.by/api/v1/last-update-date/student-group?groupNumber={url}");
-                }
-                else
-                {
-                    return await NetworkService.GetAsync<UpdateDate>($"https://iis.bsuir.by/api/v1/last-update-date/employee?url-id={url}");
-                }
-            }
-            return default;
-        }
-        public static async Task UpdateCurrentWeekAsync()
-        {
-            if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
-            {
-                int week = await NetworkService.GetAsync<int>($"https://iis.bsuir.by/api/v1/schedule/current-week");
+                int week = await _networkService.GetAsync<int>($"https://iis.bsuir.by/api/v1/schedule/current-week");
                 Config.Instance.CurrentWeek = week;
                 Config.Instance.Save();
-                EventService.CurrentWeekUpdated_Invoke();
             }
         }
     }

@@ -16,6 +16,16 @@ namespace BSUIRScheduleDESK
     /// </summary>
     public partial class App : Application
     {
+        private readonly IMainWindowViewModel _mainWindowViewModel;
+        private readonly IScheduleService _scheduleService;
+        private readonly IDateService _dateService;
+        public App() : base() { }
+        public App(IScheduleService scheduleService, IDateService dateService, IMainWindowViewModel mainWindowViewModel) : base()
+        {
+            _scheduleService = scheduleService;
+            _dateService = dateService;
+            _mainWindowViewModel = mainWindowViewModel;
+        }
         protected override void OnStartup(StartupEventArgs e)
         {
             IsAnotherProcessExist();
@@ -30,18 +40,17 @@ namespace BSUIRScheduleDESK
 
             if(Config.Instance.CurrentWeek == 0 || Config.Instance.LastStartup == DateTime.MinValue)
             {
-                var up = ScheduleService.UpdateCurrentWeekAsync();
+                var up = _scheduleService.UpdateCurrentWeekAsync();
             }
 
-            int wd = DateService.GetWeekDiff(Config.Instance.LastStartup, DateTime.Today);
+            int wd = _dateService.GetWeekDiff(Config.Instance.LastStartup, DateTime.Today);
             Config.Instance.CurrentWeek = (Config.Instance.CurrentWeek + wd + 3) % 4 + 1;
             Config.Instance.Save();
 
-            MainWindowViewModel mwvm = new MainWindowViewModel();
             Config.Instance.LastStartup = DateTime.Today;
             Config.Instance.Save();
             this.MainWindow = new MainWindow();
-            this.MainWindow.DataContext = mwvm;
+            this.MainWindow.DataContext = _mainWindowViewModel;
             MainWindow.Show();
             ShowUpdateInfo();
             base.OnStartup(e);

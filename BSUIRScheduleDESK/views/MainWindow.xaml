@@ -137,7 +137,9 @@
                 <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
                     <!--favorites schedules-->
                     <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
-                        <templates:FavoriteGroups DataContext="{Binding FavoriteSchedulesViewModel}"/>
+                        <templates:FavoriteGroups Schedules="{Binding Path=FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
+                                                  LoadCommand="{Binding Path=LoadFavoriteSchedule}"
+                                                  DeleteCommand="{Binding Path=DeleteFavoriteSchedule}"/>
                         <!--add favorite schedule button-->
                         <Button Style="{DynamicResource AddButtonStyle}"
                                 Command="{Binding AddFavoriteScheduleWL}"/>
@@ -341,21 +343,10 @@
                                 <Ellipse Fill="{DynamicResource Notes.HasItemsEllipse.Background.Static}"
                                          Height="10"
                                          Width="10"
+                                         Visibility="{Binding NotesExistenceVisibility}"
                                          HorizontalAlignment="Right"
                                          VerticalAlignment="Top"
                                          Margin="0,3,3,0">
-                                    <Ellipse.Style>
-                                        <Style TargetType="{x:Type Ellipse}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Path=Notes.Count}" Value="0">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Path=Schedule.favorited}" Value="False">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Ellipse.Style>
                                 </Ellipse>
                             </Grid>
                             <!--button to make a schedule favorite-->
@@ -405,6 +396,7 @@
                                 </Button>
                                 <Grid VerticalAlignment="Top"
                                       HorizontalAlignment="Right"
+                                      Visibility="{Binding AnnouncementsExistenceVisibility}"
                                       Margin="0,2,2,0">
                                     <Ellipse Fill="{DynamicResource WarningSign.Background.Static}"
                                              Height="12"
@@ -417,18 +409,6 @@
                                                HorizontalAlignment="Center"
                                                FontSize="10"
                                                FontWeight="DemiBold"/>
-                                    <Grid.Style>
-                                        <Style TargetType="{x:Type Grid}">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding Announcements.Count}" Value="0">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                                <DataTrigger Binding="{Binding Announcements}" Value="{x:Null}">
-                                                    <Setter Property="Visibility" Value="Hidden"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </Grid.Style>
                                 </Grid>
                             </Grid>
                         </StackPanel>

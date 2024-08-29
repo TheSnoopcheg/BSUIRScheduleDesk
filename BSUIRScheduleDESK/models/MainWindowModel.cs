@@ -3,15 +3,19 @@ using BSUIRScheduleDESK.services;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using BSUIRScheduleDESK.views;
+using System.Linq;
 using System.Diagnostics;
-using System.Collections.Generic;
 
 namespace BSUIRScheduleDESK.models
 {
-    public class MainWindowModel
+    public class MainWindowModel : IMainWindowModel
     {
-        public ObservableCollection<Announcement>? Announcements { get; set; }
-        public ObservableCollection<Note>? Notes { get; set; }
+        private readonly IScheduleService _scheduleService;
+        private readonly INoteService _noteService;
+        private readonly INetworkService _networkService;
+        private readonly IInternetService _internetService;
+        private readonly IFavoriteSchedulesService _favoriteSchedulesService;
+
         private GroupSchedule? _schedule;
         public GroupSchedule? Schedule
         {
@@ -21,59 +25,67 @@ namespace BSUIRScheduleDESK.models
                 _schedule = value;
             }
         }
-        public async Task SaveRecentSchedule(GroupSchedule schedule)
+        private ObservableCollection<FavoriteSchedule> _favoriteSchedules;
+        public ObservableCollection<FavoriteSchedule> FavoriteSchedules
         {
-            await ScheduleService.SaveRecentSchedule(schedule);
+            get => _favoriteSchedules;
+            set
+            {
+                _favoriteSchedules = value;
+            }
         }
-        public async Task<bool> LoadSchedule(string? url, LoadingType loadingType)
+        public async Task SaveRecentScheduleAsync(GroupSchedule schedule)
         {
-            GroupSchedule schedule = await ScheduleService.LoadSchedule(url, loadingType);
+            await _scheduleService.SaveRecentScheduleAsync(schedule);
+        }
+        public async Task<bool> LoadScheduleAsync(string? url, LoadingType loadingType)
+        {
+            GroupSchedule schedule = await _scheduleService.LoadScheduleAsync(url, loadingType);
             if(schedule != null)
             {
-                Schedule = schedule;
+                if (loadingType != LoadingType.ServerWP)
+                    Schedule = schedule;
+                else                                            // shitcoding
+                    await AddFavoriteScheduleAsync(schedule);
                 return true;
             }
             return false;
         }
-        public async Task<bool> LoadNotes(string? url)
+
+        public async Task AddFavoriteScheduleAsync(GroupSchedule schedule)
+        { 
+            var favSchedule = new FavoriteSchedule { Name = schedule.GetName(), UrlId=schedule.GetUrl() };
+            FavoriteSchedules.Add(favSchedule);
+            await _scheduleService.SaveScheduleAsync(schedule, favSchedule.UrlId);
+            await _favoriteSchedulesService.SaveFavoriteSchedulesAsync(FavoriteSchedules);
+        }
+        public async Task DeleteFavoriteScheduleAsync(FavoriteSchedule schedule)
         {
-            ObservableCollection<Note> notes;
-            notes = await NoteService.LoadNotes(url);
-            if(notes != null)
-            {
-                Notes = notes;
-                return true;
-            }
-            return false;
+            var scheduleToDelete = FavoriteSchedules.FirstOrDefault(s => s.UrlId == schedule.UrlId);
+            if (scheduleToDelete == null) return;
+            FavoriteSchedules.Remove(scheduleToDelete);
+            _scheduleService.DeleteSchedule(schedule.UrlId);
+            await _favoriteSchedulesService.SaveFavoriteSchedulesAsync(FavoriteSchedules);
         }
-        public async Task<bool> LoadAnnouncements(string? url)
+        public async Task DeleteFavoriteScheduleAsync(GroupSchedule schedule)
         {
-            ObservableCollection<Announcement> announcements;
-            if (int.TryParse(url, out var id))
-            {
-                announcements = await NetworkService.GetAsync<ObservableCollection<Announcement>>($"https://iis.bsuir.by/api/v1/announcements/student-groups?name={url}");
-            }
-            else
-            {
-                announcements = await NetworkService.GetAsync<ObservableCollection<Announcement>>($"https://iis.bsuir.by/api/v1/announcements/employees?url-id={url}");
-            }
-            if(announcements != null)
-            {
-                Announcements = announcements;
-                return true;
-            }
-            return false;
-            
+            var favSchedule = new FavoriteSchedule { Name = schedule.GetName(), UrlId = schedule.GetUrl() };
+            await DeleteFavoriteScheduleAsync(favSchedule);
         }
-        public async Task<bool> CheckScheduleUpdate()
+
+        public bool IsScheduleFavorited(string url)
+        {
+            return FavoriteSchedules.Any(s => s.UrlId == url);
+        }
+
+        public async Task<bool> UpdateScheduleAsync()
         {
             if (Schedule != null)
             {
-                if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
+                if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") == ConnectionStatus.Connected)
                 {
                     string? url = Schedule.GetUrl();
-                    Debug.WriteLine(url);
-                    var schedule = await ScheduleService.LoadSchedule(url, LoadingType.Server);
+                    var schedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.Server);
                     if(!Schedule.Compare(schedule))
                     {
                         ModalWindowResult result = ModalWindow.Show($"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", "Расписание БГУИР", "", ModalWindowButtons.YesNo);
@@ -81,7 +93,7 @@ namespace BSUIRScheduleDESK.models
                         {
                             schedule.favorited = Schedule.favorited;
                             Schedule = schedule;
-                            await ScheduleService.SaveSchedule(Schedule, url);
+                            await _scheduleService.SaveScheduleAsync(Schedule, url);
                             return true;
                         }
                     }
@@ -89,6 +101,23 @@ namespace BSUIRScheduleDESK.models
             }
             return false;
         }
-        public MainWindowModel() { }
+        private async Task LoadFavoriteSchedules()
+        {
+            FavoriteSchedules = await _favoriteSchedulesService.LoadFavoriteSchedulesAsync();
+        }
+        public MainWindowModel(IScheduleService scheduleService, 
+                               INoteService noteService, 
+                               INetworkService networkService, 
+                               IInternetService internetService, 
+                               IFavoriteSchedulesService favoriteSchedulesService)
+        {
+            _scheduleService = scheduleService;
+            _noteService = noteService;
+            _networkService = networkService;
+            _internetService = internetService;
+            _favoriteSchedulesService = favoriteSchedulesService;
+
+            var _ = LoadFavoriteSchedules();
+        }
     }
 }
