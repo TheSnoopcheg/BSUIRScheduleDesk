@@ -1,6 +1,6 @@
 ﻿using System.Windows.Navigation;
 
-namespace BSUIRScheduleDESK.classes
+namespace BSUIRScheduleDESK.Classes
 {
     public class StudentGroup
     {

@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-                    xmlns:templates="clr-namespace:BSUIRScheduleDESK.templates">
+                    xmlns:templates="clr-namespace:BSUIRScheduleDESK.Controls">
     <PathGeometry x:Key="doubleLeftArrowIcon" Figures="M1052 92.168 959.701 0-.234 959.935 959.701 1920l92.299-92.43-867.636-867.635L1052 92.168ZM1920 92.168 1827.7 0 867.766 959.935 1827.7 1920l92.3-92.43-867.64-867.635L1920 92.168Z"/>
     <PathGeometry x:Key="doubleRightArrowIcon" Figures="M0 92.168 92.299 0l959.931 959.935L92.299 1920 0 1827.57l867.636-867.635L0 92.168ZM868 92.168 960.299 0l959.931 959.935L960.299 1920 868 1827.57l867.64-867.635L868 92.168Z"/>
     <PathGeometry x:Key="returnIcon" Figures="M384.834,180.699c-0.698,0-348.733,0-348.733,0l73.326-82.187c4.755-5.33,4.289-13.505-1.041-18.26
@@ -734,7 +734,8 @@
                             </Button>
 
                             <Grid Grid.Column="1"
-                                  HorizontalAlignment="Center">
+                                  HorizontalAlignment="Center"
+                                  Margin="60,0,0,0">
                                 <Grid.RowDefinitions>
                                     <RowDefinition/>
                                     <RowDefinition/>
@@ -827,7 +828,8 @@
                                 Grid.Row="1">
                             <Grid>
                                 <ScrollViewer Style="{StaticResource ScrollViewerStyle}">
-                                    <Grid x:Name="PART_NormalScheduleView">
+                                    <Grid x:Name="PART_NormalScheduleView"
+                                          Visibility="Collapsed">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="25"/>
                                             <RowDefinition Height="Auto"/>

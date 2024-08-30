@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.viewmodels
+namespace BSUIRScheduleDESK.ViewModels
 {
     public interface INoteViewModel
     {

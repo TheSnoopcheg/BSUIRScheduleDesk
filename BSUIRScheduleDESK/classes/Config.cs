@@ -5,15 +5,15 @@ using System.Runtime.CompilerServices;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.classes
+namespace BSUIRScheduleDESK.Classes
 {
     public class Config : INotifyPropertyChanged
     {
         private static Config instance;
-        private static ConfigLoader loader = new ConfigLoader();
+        private static ConfigService service = new ConfigService();
         static Config()
         {
-            instance = loader.Load();
+            instance = service.Load();
         }
         public static Config Instance
         {
@@ -177,7 +177,7 @@ namespace BSUIRScheduleDESK.classes
 
         public void Save()
         {
-            loader.Save(this);
+            service.Save(this);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -187,12 +187,12 @@ namespace BSUIRScheduleDESK.classes
         }
     }
 
-    internal class ConfigLoader
+    internal class ConfigService
     {
         private const string PATH = @"\config.json";
         private string configPath;
 
-        public ConfigLoader()
+        public ConfigService()
         {
             configPath = Directory.GetCurrentDirectory() + PATH;
             if(!File.Exists(configPath))
@@ -200,7 +200,6 @@ namespace BSUIRScheduleDESK.classes
                 Save(new Config());
             }
         }
-
         public async Task<Config> LoadAsync()
         {
             Config? config = new Config();
@@ -219,7 +218,6 @@ namespace BSUIRScheduleDESK.classes
             else
                 return config;
         }
-
         public async void SaveAsync(Config config)
         {
             using(var fs = new FileStream(configPath, FileMode.Create, FileAccess.Write))

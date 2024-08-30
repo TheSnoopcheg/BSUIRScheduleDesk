@@ -1,14 +1,14 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.models;
-using BSUIRScheduleDESK.services;
-using BSUIRScheduleDESK.views;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Models;
+using BSUIRScheduleDESK.Services;
+using BSUIRScheduleDESK.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace BSUIRScheduleDESK.viewmodels
+namespace BSUIRScheduleDESK.ViewModels
 {
     public class MainWindowViewModel : Notifier, IMainWindowViewModel
     {
@@ -29,8 +29,8 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        private GroupSchedule? _groupSchedule;
-        public GroupSchedule? Schedule
+        private Schedule? _groupSchedule;
+        public Schedule? Schedule
         {
             get { return _groupSchedule!; }
             set
@@ -69,47 +69,29 @@ namespace BSUIRScheduleDESK.viewmodels
                         if (scheduleSearchWindow.ShowDialog() == true)
                         {
                             SearchResponse? response = _scheduleSearchViewModel.SearchResponse;
-                            if(response != null)
-                            {
-                                await LoadScheduleAsync(response.GetUrl(), LoadingType.Server);
-                            }
+                            if (response == null) return;
+
+                            await LoadScheduleAsync(response.GetUrl(), LoadingType.Server);
                         }
                     }));
             }
         }
-        // command to add favorite schedule without presentation
-        private ICommand? addFavoriteScheduleWL;
-        public ICommand AddFavoriteScheduleWL
+        
+        // command to load schedule from schedule's plate
+        private ICommand? loadScheduleFromPlate;
+        public ICommand LoadScheduleFromPlate
         {
             get
             {
-                return addFavoriteScheduleWL ??
-                    (addFavoriteScheduleWL = new RelayCommand(async obj =>
+                return loadScheduleFromPlate ??
+                    (loadScheduleFromPlate = new RelayCommand(async obj =>
                     {
-                        ScheduleSearchWindow scheduleSearchWindow = new ScheduleSearchWindow();
-                        _scheduleSearchViewModel.ClearInput();
-                        scheduleSearchWindow.DataContext = _scheduleSearchViewModel;
-                        if (scheduleSearchWindow.ShowDialog() == true)
-                        {
-                            SearchResponse? response = _scheduleSearchViewModel.SearchResponse;
-                            if (response != null)
-                            {
-                                await LoadScheduleAsync(response.GetUrl(), LoadingType.ServerWP);
-                                if (Schedule != null)
-                                {
-                                    if (Schedule.GetUrl() == response.GetUrl())
-                                    {
-                                        _model.Schedule!.favorited = true;
-                                        Schedule.favorited = true;
-                                        await _model.SaveRecentScheduleAsync(Schedule);
-                                        OnPropertyChanged(nameof(Schedule));
-                                    }
-                                }
-                            }
-                        }
+                        if (obj is not string url) return;
+                        await LoadScheduleAsync(url, LoadingType.Server);
                     }));
             }
         }
+
         private ICommand? openAnnouncements;
         public ICommand OpenAnnouncements
         {
@@ -118,54 +100,17 @@ namespace BSUIRScheduleDESK.viewmodels
                 return openAnnouncements ??
                     (openAnnouncements = new RelayCommand(obj =>
                     {
-                        if(Schedule != null)
+                        if (Schedule != null)
                         {
                             AnnouncementWindow announcementWindow = new AnnouncementWindow();
                             announcementWindow.DataContext = _announcementViewModel;
-                            _announcementViewModel.OnRequestClose += async (s, e) => { announcementWindow.Close(); await LoadScheduleAsync(_announcementViewModel.CommandUrl, LoadingType.Server);  };
+                            _announcementViewModel.OnRequestClose += async (s, e) => { announcementWindow.Close(); await LoadScheduleAsync(_announcementViewModel.CommandUrl, LoadingType.Server); };
                             announcementWindow.ShowDialog();
                         }
                     }));
             }
         }
 
-        private ICommand? addFavoriteSchedule;
-        public ICommand AddFavoriteSchedule
-        {
-            get
-            {
-                return addFavoriteSchedule ??
-                    (addFavoriteSchedule = new RelayCommand(async obj =>
-                    {
-                        if(Schedule != null)
-                        {
-                            if (Schedule.favorited)
-                                await _model.DeleteFavoriteScheduleAsync(Schedule);
-                            else
-                                await _model.AddFavoriteScheduleAsync(Schedule);
-
-                            Schedule.favorited = !Schedule.favorited;
-                            OnPropertyChanged(nameof(Schedule));
-                            await _model.SaveRecentScheduleAsync(Schedule);
-                            await _noteViewModel.SetNotes(Schedule.GetName() ,Schedule.GetUrl());
-                        }
-                    }));
-            }
-        }
-        // command to load schedule from schedule's plate
-        private ICommand? loadScheduleBS;
-        public ICommand LoadScheduleBS
-        {
-            get
-            {
-                return loadScheduleBS ??
-                    (loadScheduleBS = new RelayCommand(async obj =>
-                    {
-                        if (obj is not string url) return;
-                        await LoadScheduleAsync(url, LoadingType.Server);
-                    }));
-            }
-        }
         private ICommand? openSettingsWindow;
         public ICommand OpenSettingsWindow
         {
@@ -179,6 +124,7 @@ namespace BSUIRScheduleDESK.viewmodels
                     }));
             }
         }
+
         private ICommand? openNotesWindow;
         public ICommand OpenNotesWindow
         {
@@ -192,6 +138,61 @@ namespace BSUIRScheduleDESK.viewmodels
                             NotesWindow notesWindow = new NotesWindow();
                             notesWindow.DataContext = _noteViewModel;
                             notesWindow.ShowDialog();
+                        }
+                    }));
+            }
+        }
+
+        private ICommand? addFavoriteSchedule;
+        public ICommand AddFavoriteSchedule
+        {
+            get
+            {
+                return addFavoriteSchedule ??
+                    (addFavoriteSchedule = new RelayCommand(async obj =>
+                    {
+                        if (Schedule != null)
+                        {
+                            if (Schedule.favorited)
+                                await _model.DeleteFavoriteScheduleAsync(Schedule);
+                            else
+                                await _model.AddFavoriteScheduleAsync(Schedule);
+
+                            Schedule.favorited = !Schedule.favorited;
+                            OnPropertyChanged(nameof(Schedule));
+                            await _model.SaveRecentScheduleAsync(Schedule);
+                            await _noteViewModel.SetNotes(Schedule.GetName(), Schedule.GetUrl());
+                        }
+                    }));
+            }
+        }
+
+        // command to add favorite schedule without presentation
+        private ICommand? addFavoriteScheduleWP;
+        public ICommand AddFavoriteScheduleWP
+        {
+            get
+            {
+                return addFavoriteScheduleWP ??
+                    (addFavoriteScheduleWP = new RelayCommand(async obj =>
+                    {
+                        ScheduleSearchWindow scheduleSearchWindow = new ScheduleSearchWindow();
+                        _scheduleSearchViewModel.ClearInput();
+                        scheduleSearchWindow.DataContext = _scheduleSearchViewModel;
+                        if (scheduleSearchWindow.ShowDialog() == true)
+                        {
+                            SearchResponse? response = _scheduleSearchViewModel.SearchResponse;
+                            if (response == null) return;
+
+                            await LoadScheduleAsync(response.GetUrl(), LoadingType.ServerWP);
+
+                            if (Schedule == null) return;
+                            if (Schedule.GetUrl() != response.GetUrl()) return;
+
+                            _model.Schedule!.favorited = true;
+                            Schedule.favorited = true;
+                            await _model.SaveRecentScheduleAsync(Schedule);
+                            OnPropertyChanged(nameof(Schedule));
                         }
                     }));
             }
@@ -233,6 +234,7 @@ namespace BSUIRScheduleDESK.viewmodels
         #endregion
 
         #region Methods
+
         private async Task LoadScheduleAsync(string? url, LoadingType loadingType)
         {
             if (await _model.LoadScheduleAsync(url, loadingType))

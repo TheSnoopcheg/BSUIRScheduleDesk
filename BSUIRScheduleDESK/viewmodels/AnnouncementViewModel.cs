@@ -1,11 +1,11 @@
-﻿using BSUIRScheduleDESK.models;
+﻿using BSUIRScheduleDESK.Models;
+using BSUIRScheduleDESK.Classes;
 using System.Collections.ObjectModel;
-using BSUIRScheduleDESK.classes;
 using System.Windows.Input;
 using System;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.viewmodels
+namespace BSUIRScheduleDESK.ViewModels
 {
     public class AnnouncementViewModel : Notifier, IAnnouncementViewModel
     {

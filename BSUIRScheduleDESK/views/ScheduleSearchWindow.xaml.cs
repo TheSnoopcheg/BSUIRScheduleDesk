@@ -1,9 +1,7 @@
-﻿using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
-using BSUIRScheduleDESK.templates;
 
-namespace BSUIRScheduleDESK.views
+namespace BSUIRScheduleDESK.Views
 {
     /// <summary>
     /// Логика взаимодействия для ScheduleSearchWindow.xaml

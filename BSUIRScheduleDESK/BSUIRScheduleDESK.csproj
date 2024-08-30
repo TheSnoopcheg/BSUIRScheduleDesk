@@ -5,13 +5,13 @@
     <TargetFramework>net8.0-windows7.0</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>assets\appicon.ico</ApplicationIcon>
-    <StartupObject>BSUIRScheduleDESK.Program</StartupObject>
+    <ApplicationIcon>Assets\appicon.ico</ApplicationIcon>
+    <StartupObject>BSUIRScheduleDESK.App</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="assets\icons8-santa-hat-48.png" />
-    <None Remove="assets\snow.png" />
+    <None Remove="Assets\icons8-santa-hat-48.png" />
+    <None Remove="Assets\snow.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="assets\appicon.ico" />
+    <Content Include="Assets\appicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,8 +37,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="assets\icons8-santa-hat-48.png" />
-    <Resource Include="assets\snow.png" />
+    <Resource Include="Assets\icons8-santa-hat-48.png" />
+    <Resource Include="Assets\snow.png" />
     <Resource Include="Themes\ColourDictionaries\DarkTheme.xaml" />
   </ItemGroup>
 

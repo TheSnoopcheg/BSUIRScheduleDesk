@@ -1,15 +1,13 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Services;
 using System;
-using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.Controls
 {
     public enum PlateState
     {
@@ -30,7 +28,7 @@ namespace BSUIRScheduleDESK.templates
 
         public static readonly DependencyProperty ScheduleProperty = DependencyProperty.Register(
             "Schedule",
-            typeof(Schedule),
+            typeof(Lesson),
             typeof(SchedulePlate),
             new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnScheduleChanged)));
 
@@ -47,9 +45,9 @@ namespace BSUIRScheduleDESK.templates
             }
         }
 
-        public Schedule Schedule
+        public Lesson Schedule
         {
-            get { return (Schedule)GetValue(ScheduleProperty); }
+            get { return (Lesson)GetValue(ScheduleProperty); }
             set { SetValue(ScheduleProperty, value); }
         }
 
@@ -150,8 +148,9 @@ namespace BSUIRScheduleDESK.templates
             else
             {
                 _datesWeeksLabel.Text = "Недели: ";
-                if(Schedule.weekNumber.Count != MAX_WEEK)
-                    _boldDatesWeeksLabel.Text = string.Join(", ", Schedule.weekNumber?.Select(i => i.ToString()) ?? Enumerable.Empty<string>());
+                if(Schedule.weekNumber != null)
+                    if(Schedule.weekNumber.Count != MAX_WEEK)
+                        _boldDatesWeeksLabel.Text = string.Join(", ", Schedule.weekNumber?.Select(i => i.ToString()) ?? Enumerable.Empty<string>());
                 else
                 {
                     _boldDatesWeeksLabel.Visibility = Visibility.Collapsed;
@@ -161,7 +160,8 @@ namespace BSUIRScheduleDESK.templates
                 if(Schedule.numSubgroup != 0)
                     _subGroupsLabel.Text = Schedule.numSubgroup.ToString() + " п.";
             }
-            _auditoriesLabel.Text = string.Join("\n", Schedule.auditories!);
+            if(Schedule.auditories != null)
+                _auditoriesLabel.Text = string.Join("\n", Schedule.auditories);
             if (Schedule.employees == null)
                 _employeeGroups.DataContext = Schedule.studentGroups;
             else

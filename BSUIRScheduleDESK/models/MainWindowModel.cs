@@ -1,12 +1,11 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Views;
+using BSUIRScheduleDESK.Services;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using BSUIRScheduleDESK.views;
 using System.Linq;
-using System.Diagnostics;
 
-namespace BSUIRScheduleDESK.models
+namespace BSUIRScheduleDESK.Models
 {
     public class MainWindowModel : IMainWindowModel
     {
@@ -16,8 +15,8 @@ namespace BSUIRScheduleDESK.models
         private readonly IInternetService _internetService;
         private readonly IFavoriteSchedulesService _favoriteSchedulesService;
 
-        private GroupSchedule? _schedule;
-        public GroupSchedule? Schedule
+        private Schedule? _schedule;
+        public Schedule? Schedule
         {
             get => _schedule!;
             set
@@ -34,13 +33,13 @@ namespace BSUIRScheduleDESK.models
                 _favoriteSchedules = value;
             }
         }
-        public async Task SaveRecentScheduleAsync(GroupSchedule schedule)
+        public async Task SaveRecentScheduleAsync(Schedule schedule)
         {
             await _scheduleService.SaveRecentScheduleAsync(schedule);
         }
         public async Task<bool> LoadScheduleAsync(string? url, LoadingType loadingType)
         {
-            GroupSchedule schedule = await _scheduleService.LoadScheduleAsync(url, loadingType);
+            Schedule schedule = await _scheduleService.LoadScheduleAsync(url, loadingType);
             if(schedule != null)
             {
                 if (loadingType != LoadingType.ServerWP)
@@ -52,8 +51,9 @@ namespace BSUIRScheduleDESK.models
             return false;
         }
 
-        public async Task AddFavoriteScheduleAsync(GroupSchedule schedule)
-        { 
+        public async Task AddFavoriteScheduleAsync(Schedule schedule)
+        {
+            if (FavoriteSchedules.Any(s => s.UrlId == schedule.GetUrl())) return;
             var favSchedule = new FavoriteSchedule { Name = schedule.GetName(), UrlId=schedule.GetUrl() };
             FavoriteSchedules.Add(favSchedule);
             await _scheduleService.SaveScheduleAsync(schedule, favSchedule.UrlId);
@@ -67,7 +67,7 @@ namespace BSUIRScheduleDESK.models
             _scheduleService.DeleteSchedule(schedule.UrlId);
             await _favoriteSchedulesService.SaveFavoriteSchedulesAsync(FavoriteSchedules);
         }
-        public async Task DeleteFavoriteScheduleAsync(GroupSchedule schedule)
+        public async Task DeleteFavoriteScheduleAsync(Schedule schedule)
         {
             var favSchedule = new FavoriteSchedule { Name = schedule.GetName(), UrlId = schedule.GetUrl() };
             await DeleteFavoriteScheduleAsync(favSchedule);

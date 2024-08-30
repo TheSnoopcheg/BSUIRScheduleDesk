@@ -2,20 +2,14 @@
 using System.Windows;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.views
+namespace BSUIRScheduleDESK.Views
 {
     public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
-            this.Loaded += new RoutedEventHandler(MainWindow_Loaded);
             this.SourceInitialized += new EventHandler(MainWindow_SourceInitialized);
-        }
-        
-        void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            this.WindowState = WindowState.Maximized;
         }
 
         void MainWindow_SourceInitialized(object sender, EventArgs e)

@@ -1,4 +1,4 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,7 +8,7 @@ using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Globalization;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.Controls
 {
     public class SchedulePresenter : Control
     {
@@ -19,6 +19,7 @@ namespace BSUIRScheduleDESK.templates
         private const int GRID_COLS = 7;
         private int _currentWeek = 0;
         private int _weekDiff = 0;
+
         private List<DateTime> _dates = new List<DateTime>();
 
         private Dictionary<TimeOnly, int> StartLessonDict = new Dictionary<TimeOnly, int>()
@@ -90,7 +91,7 @@ namespace BSUIRScheduleDESK.templates
 
         public static readonly DependencyProperty SchedulesProperty = DependencyProperty.Register(
             "Schedules",
-            typeof(Schedules),
+            typeof(Lessons),
             typeof(SchedulePresenter),
             new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnSchedulesChanged)));
 
@@ -103,9 +104,9 @@ namespace BSUIRScheduleDESK.templates
             }
         }
 
-        public Schedules Schedules
+        public Lessons Schedules
         {
-            get { return (Schedules)GetValue(SchedulesProperty); }
+            get { return (Lessons)GetValue(SchedulesProperty); }
             set { SetValue(SchedulesProperty, value); }
         }
 
@@ -246,18 +247,6 @@ namespace BSUIRScheduleDESK.templates
             if(e.NewValue != null)
             {
                 schedulePresenter.SetUp();
-                if(schedulePresenter.WindowState == WindowState.Maximized)
-                {
-                    schedulePresenter._normalView.SetValue(VisibilityProperty, Visibility.Collapsed);
-                    schedulePresenter._maximizedView.SetValue(VisibilityProperty, Visibility.Visible);
-                    schedulePresenter._scheduleView.SetValue(VisibilityProperty, Visibility.Visible);
-                }
-                else if(schedulePresenter.WindowState == WindowState.Normal)
-                {
-                    schedulePresenter._normalView.SetValue(VisibilityProperty, Visibility.Visible);
-                    schedulePresenter._maximizedView.SetValue(VisibilityProperty, Visibility.Collapsed);
-                    schedulePresenter._scheduleView.SetValue(VisibilityProperty, Visibility.Collapsed);
-                }
             }
         }
         public WindowState WindowState
@@ -283,19 +272,25 @@ namespace BSUIRScheduleDESK.templates
         }
 
         #region SetUpMethods
-
+        
         private void SetUpNormal()
         {
             SetUpDatesNormal();
             SetNormalSchedulePlates();
-        }
+            _normalView.SetValue(VisibilityProperty, Visibility.Visible);
+            _maximizedView.SetValue(VisibilityProperty, Visibility.Collapsed);
+            _scheduleView.SetValue(VisibilityProperty, Visibility.Collapsed);
+}
         private void SetUpMaximized()
         {
             GetWeeklyTimeRange();
             SetUpDatesMaximized();
             SetSchedulesTimes();
             SetMaximizedSchedulePlates();
-        }
+            _normalView.SetValue(VisibilityProperty, Visibility.Collapsed);
+            _maximizedView.SetValue(VisibilityProperty, Visibility.Visible);
+            _scheduleView.SetValue(VisibilityProperty, Visibility.Visible);
+}
 
         #endregion
 
@@ -364,15 +359,16 @@ namespace BSUIRScheduleDESK.templates
 
             foreach(var prop in Schedules.GetType().GetProperties())
             {
-                if (prop.GetValue(Schedules) is not List<Schedule> list || list.Count == 0) continue;
+                if (prop.GetValue(Schedules) is not List<Lesson> list || list.Count == 0) continue;
                 var lList = list
-                    .Where(i => i.weekNumber.Contains(CurrentWeek) || _dates.Contains(DateTime.Parse(i.startLessonDate!)))
+                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
                     .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup)).ToList();
                 foreach(var lesson in lList)
                 {
                     if (lesson.announcement)
-                        if (!_dates.Contains(DateTime.Parse(lesson.startLessonDate!)))
-                            continue;
+                        if(DateTime.TryParse(lesson.startLessonDate, out DateTime date))
+                            if (!_dates.Contains(date))
+                                continue;
                     if (!TimeOnly.TryParse(lesson.startLessonTime, out TimeOnly time)) continue;
                     if (time < sTime) minTime = sTime;
                     else if(time < minTime) minTime = time;
@@ -462,21 +458,24 @@ namespace BSUIRScheduleDESK.templates
         private void SetMaximizedSchedulePlates()
         {
             int col = 0;
+            int row = 0;
             foreach(var prop in Schedules.GetType().GetProperties())
             {
                 col++;
-                if (prop.GetValue(Schedules) is not List<Schedule> list || list.Count == 0) continue;
+                if (prop.GetValue(Schedules) is not List<Lesson> list || list.Count == 0) continue;
                 var flist = list
-                    .Where(i => i.weekNumber.Contains(CurrentWeek) || _dates.Contains(DateTime.Parse(i.startLessonDate!)))
+                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
                     .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
                 foreach(var item in flist)
                 {
                     if (string.IsNullOrEmpty(item.startLessonTime)) continue;
                     if (item.announcement)
-                        if (!_dates.Contains(DateTime.Parse(item.startLessonDate!)))
-                            continue;
-                    int row = StartLessonDict[GetNearestTime(TimeOnly.Parse(item.startLessonTime))];
-                    if (GetElementInGridPosition(_maximizedView ,col, row) is not StackPanel panel) continue;
+                        if(DateTime.TryParse(item.startLessonDate, out DateTime date))
+                            if (!_dates.Contains(date))
+                                continue;
+                    if (!TimeOnly.TryParse(item.startLessonTime, out TimeOnly time)) continue;
+                    row = StartLessonDict[GetNearestTime(time)];
+                    if (GetElementInGridPosition(_maximizedView, col, row) is not StackPanel panel) continue;
                     SchedulePlate plate = new SchedulePlate();
                     plate.SetValue(Grid.RowProperty, row);
                     plate.SetValue(Grid.ColumnProperty, col);
@@ -495,15 +494,15 @@ namespace BSUIRScheduleDESK.templates
             for(int i = 0; i < properties.Length; i++)
             {
                 if (GetElementInGridPosition(_normalView, 0, i * 2 + 1) is not StackPanel panel) continue;
-                if (properties[i].GetValue(Schedules) is not List<Schedule> list || list.Count == 0)
+                if (properties[i].GetValue(Schedules) is not List<Lesson> list || list.Count == 0)
                 {
                     AddNoLessonTextBlock(panel);
                     continue;
                 }
                 var flist = list
-                    .Where(i => i.weekNumber.Contains(CurrentWeek) || _dates.Contains(DateTime.Parse(i.startLessonDate!)))
+                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
                     .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup))
-                    .OrderBy(i => TimeOnly.Parse(i.startLessonTime!));
+                    .OrderBy(i => TimeOnly.TryParse(i.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
                 if(flist.Count() == 0)
                 {
                     AddNoLessonTextBlock(panel);
@@ -513,8 +512,9 @@ namespace BSUIRScheduleDESK.templates
                 {
                     if (string.IsNullOrEmpty(item.startLessonTime)) continue;
                     if (item.announcement)
-                        if (!_dates.Contains(DateTime.Parse(item.startLessonDate!)))
-                            continue;
+                        if (DateTime.TryParse(item.startLessonDate, out DateTime date))
+                            if (!_dates.Contains(date))
+                                continue;
                     SchedulePlate plate = new SchedulePlate();
                     plate.SetValue(SchedulePlate.ScheduleProperty, item);
                     plate.SetValue(SchedulePlate.CommandProperty, Command);

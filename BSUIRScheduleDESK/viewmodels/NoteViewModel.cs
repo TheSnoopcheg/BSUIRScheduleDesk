@@ -1,11 +1,11 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.models;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Models;
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.viewmodels
+namespace BSUIRScheduleDESK.ViewModels
 {
     public class NoteViewModel : Notifier, INoteViewModel
     {

@@ -1,9 +1,8 @@
-﻿using BSUIRScheduleDESK.classes;
-using System;
+﻿using BSUIRScheduleDESK.Classes;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.models
+namespace BSUIRScheduleDESK.Models
 {
     public interface IAnnouncementModel
     {

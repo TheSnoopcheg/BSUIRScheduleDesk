@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
     public class DateService : IDateService
     {

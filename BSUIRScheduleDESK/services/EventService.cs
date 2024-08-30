@@ -1,7 +1,6 @@
-﻿using BSUIRScheduleDESK.classes;
-using System;
+﻿using System;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
     public static class EventService
     {

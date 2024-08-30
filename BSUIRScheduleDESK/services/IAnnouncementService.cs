@@ -1,8 +1,8 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
     public interface IAnnouncementService
     {

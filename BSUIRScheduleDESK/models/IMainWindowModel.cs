@@ -1,19 +1,19 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Services;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.models
+namespace BSUIRScheduleDESK.Models
 {
     public interface IMainWindowModel
     {
-        GroupSchedule Schedule { get; set; }
+        Schedule Schedule { get; set; }
         ObservableCollection<FavoriteSchedule> FavoriteSchedules { get; }
-        Task SaveRecentScheduleAsync(GroupSchedule schedule);
+        Task SaveRecentScheduleAsync(Schedule schedule);
         Task<bool> LoadScheduleAsync(string? url, LoadingType loadingType);
-        Task AddFavoriteScheduleAsync(GroupSchedule schedule);
+        Task AddFavoriteScheduleAsync(Schedule schedule);
         Task DeleteFavoriteScheduleAsync(FavoriteSchedule schedule);
-        Task DeleteFavoriteScheduleAsync(GroupSchedule schedule);
+        Task DeleteFavoriteScheduleAsync(Schedule schedule);
         bool IsScheduleFavorited(string url);
         Task<bool> UpdateScheduleAsync();
     }

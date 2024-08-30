@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.Controls
 {
     public class ScheduleTime : Control
     {

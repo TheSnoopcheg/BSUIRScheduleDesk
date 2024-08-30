@@ -1,11 +1,11 @@
-﻿using System;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Services;
+using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
-using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
 
-namespace BSUIRScheduleDESK.models
+namespace BSUIRScheduleDESK.Models
 {
     public class AnnouncementModel : IAnnouncementModel
     {
@@ -29,7 +29,7 @@ namespace BSUIRScheduleDESK.models
         {
             var announcements = await _announcementService.LoadAnnouncementsAsync(url);
             if (announcements == null) return false;
-            Announcements = new ObservableCollection<Announcement>(announcements.OrderBy(a => DateTime.Parse(a.date!)));
+            Announcements = new ObservableCollection<Announcement>(announcements.OrderBy(a => DateTime.TryParse(a.date, out DateTime date) ? date : DateTime.MinValue));
             return true;
         }
     }

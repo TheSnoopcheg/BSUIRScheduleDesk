@@ -1,11 +1,11 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Services;
 using System;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.models
+namespace BSUIRScheduleDESK.Models
 {
     public class NoteModel : INoteModel
     {

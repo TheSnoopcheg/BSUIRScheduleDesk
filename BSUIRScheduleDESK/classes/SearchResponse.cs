@@ -1,4 +1,4 @@
-﻿namespace BSUIRScheduleDESK.classes
+﻿namespace BSUIRScheduleDESK.Classes
 {
     public class SearchResponse
     {

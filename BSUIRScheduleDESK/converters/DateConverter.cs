@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.converters
+namespace BSUIRScheduleDESK.Converters
 {
     public class DateConverter : IValueConverter
     {
@@ -11,8 +11,10 @@ namespace BSUIRScheduleDESK.converters
             if (value == null) return null;
             if(value is string str)
             {
-                DateTime date = DateTime.Parse(str);
-                return date.ToString("d") + date.ToString(", ddd");
+                if(DateTime.TryParse(str, out DateTime dt))
+                    return dt.ToString("d") + dt.ToString(", ddd");
+                else
+                    return string.Empty;
             }
             else
             {

@@ -1,4 +1,4 @@
-﻿namespace BSUIRScheduleDESK.viewmodels
+﻿namespace BSUIRScheduleDESK.ViewModels
 {
     public interface IMainWindowViewModel
     {

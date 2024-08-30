@@ -1,8 +1,8 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.models;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Models;
 using System.Collections.ObjectModel;
 
-namespace BSUIRScheduleDESK.viewmodels
+namespace BSUIRScheduleDESK.ViewModels
 {
     public class ScheduleSearchViewModel : Notifier, IScheduleSearchViewModel
     {

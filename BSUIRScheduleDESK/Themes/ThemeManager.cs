@@ -1,4 +1,4 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System.Windows;
 
 namespace BSUIRScheduleDESK.Themes

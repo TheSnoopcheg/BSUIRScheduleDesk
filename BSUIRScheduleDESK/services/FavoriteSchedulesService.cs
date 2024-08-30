@@ -1,11 +1,11 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System.IO;
 using System.Text.Json;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
     public class FavoriteSchedulesService : IFavoriteSchedulesService
     {

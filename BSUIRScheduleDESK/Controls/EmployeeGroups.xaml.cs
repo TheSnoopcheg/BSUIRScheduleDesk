@@ -2,7 +2,7 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.Controls
 {
     /// <summary>
     /// Interaction logic for EmployeeGroups.xaml

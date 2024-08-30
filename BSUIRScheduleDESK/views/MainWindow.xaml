@@ -1,20 +1,21 @@
 ﻿<!--© 2023 - 2024 Dmitry Lantas (TheSnoopcheg)-->
 
-<Window x:Class="BSUIRScheduleDESK.views.MainWindow"
+<Window x:Class="BSUIRScheduleDESK.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
-        xmlns:converters="clr-namespace:BSUIRScheduleDESK.converters"
-        xmlns:templates="clr-namespace:BSUIRScheduleDESK.templates"
-        xmlns:classes="clr-namespace:BSUIRScheduleDESK.classes"
+        xmlns:local="clr-namespace:BSUIRScheduleDESK.Views"
+        xmlns:converters="clr-namespace:BSUIRScheduleDESK.Converters"
+        xmlns:templates="clr-namespace:BSUIRScheduleDESK.Controls"
+        xmlns:classes="clr-namespace:BSUIRScheduleDESK.Classes"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Height="450" Width="800"
         AllowsTransparency="True"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
+        WindowState="Maximized"
         WindowStyle="None">
     <Window.Resources>
         <converters:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
@@ -134,15 +135,15 @@
 
                 <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
 
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False">
                     <!--favorites schedules-->
                     <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
-                        <templates:FavoriteGroups Schedules="{Binding Path=FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
+                        <templates:FavoriteSchedules Schedules="{Binding Path=FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
                                                   LoadCommand="{Binding Path=LoadFavoriteSchedule}"
                                                   DeleteCommand="{Binding Path=DeleteFavoriteSchedule}"/>
                         <!--add favorite schedule button-->
                         <Button Style="{DynamicResource AddButtonStyle}"
-                                Command="{Binding AddFavoriteScheduleWL}"/>
+                                Command="{Binding AddFavoriteScheduleWP}"/>
                     </StackPanel>
                 </ScrollViewer>
 
@@ -346,6 +347,7 @@
                                          Visibility="{Binding NotesExistenceVisibility}"
                                          HorizontalAlignment="Right"
                                          VerticalAlignment="Top"
+                                         IsHitTestVisible="False"
                                          Margin="0,3,3,0">
                                 </Ellipse>
                             </Grid>
@@ -401,6 +403,7 @@
                                     <Ellipse Fill="{DynamicResource WarningSign.Background.Static}"
                                              Height="12"
                                              Width="12"
+                                             IsHitTestVisible="False"
                                              HorizontalAlignment="Center"
                                              VerticalAlignment="Center"/>
                                     <TextBlock Text="!"
@@ -422,7 +425,7 @@
                             Background="{DynamicResource TabControl.Background.Static}"
                             SelectedIndex="{Binding SelectedTab}">
                     <!--current term schedule tab-->
-                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.schedules, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Schedules}">
+                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.lessons, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Schedules}">
                         <TabItem.Header>
                             <StackPanel>
                                 <TextBlock FontSize="14">
@@ -441,13 +444,13 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <Grid>
-                                <templates:SchedulePresenter Schedules="{Binding Schedule.schedules}"
+                                <templates:SchedulePresenter Schedules="{Binding Schedule.lessons}"
                                                              FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
                                                              SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
                                                              CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
-                                                             Command="{Binding LoadScheduleBS}"/>
+                                                             Command="{Binding LoadScheduleFromPlate}"/>
 
                             </Grid>
 
@@ -466,7 +469,7 @@
                                 <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10">
                                     <ScrollViewer VerticalScrollBarVisibility="Auto">
                                         <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
-                                                                       LoadScheduleCommand="{Binding DataContext.LoadScheduleBS, ElementName=mainWindow, Mode=OneWay}"
+                                                                       LoadScheduleCommand="{Binding DataContext.LoadScheduleFromPlate, ElementName=mainWindow, Mode=OneWay}"
                                                                        Margin="0,10,0,10"
                                                                        HorizontalAlignment="Stretch"/>
                                     </ScrollViewer>
@@ -494,13 +497,13 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <Grid>
-                                <templates:SchedulePresenter Schedules="{Binding Schedule.previousSchedules}"
+                                <templates:SchedulePresenter Schedules="{Binding Schedule.previousLessons}"
                                                              FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
                                                              SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
                                                              CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
-                                                             Command="{Binding LoadScheduleBS}"/>
+                                                             Command="{Binding LoadScheduleFromPlate}"/>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

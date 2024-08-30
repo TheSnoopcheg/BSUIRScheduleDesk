@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using BSUIRScheduleDESK.Themes;
+using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Services;
+using System.Windows;
 using System.Text.Json;
 using System.Windows.Input;
 using System.ComponentModel;
@@ -6,11 +9,8 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
 using System;
-using BSUIRScheduleDESK.Themes;
-using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
 
-namespace BSUIRScheduleDESK.views
+namespace BSUIRScheduleDESK.Views
 {
     /// <summary>
     /// Interaction logic for SettingsWindow.xaml

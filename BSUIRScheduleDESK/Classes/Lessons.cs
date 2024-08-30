@@ -1,24 +1,24 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace BSUIRScheduleDESK.classes
+namespace BSUIRScheduleDESK.Classes
 {
-    public class Schedules
+    public class Lessons
     {
         [JsonPropertyName("Понедельник")]
-        public List<Schedule>? Monday { get; set; }
+        public List<Lesson>? Monday { get; set; }
         [JsonPropertyName("Вторник")]
-        public List<Schedule>? Tuesday { get; set; }
+        public List<Lesson>? Tuesday { get; set; }
         [JsonPropertyName("Среда")]
-        public List<Schedule>? Wednesday { get; set; }
+        public List<Lesson>? Wednesday { get; set; }
         [JsonPropertyName("Четверг")]
-        public List<Schedule>? Thursday { get; set; }
+        public List<Lesson>? Thursday { get; set; }
         [JsonPropertyName("Пятница")]
-        public List<Schedule>? Friday { get; set; }
+        public List<Lesson>? Friday { get; set; }
         [JsonPropertyName("Суббота")]
-        public List<Schedule>? Saturday { get; set; }
+        public List<Lesson>? Saturday { get; set; }
         [JsonPropertyName("Воскресенье")]
-        public List<Schedule>? Sunday { get; set; }
+        public List<Lesson>? Sunday { get; set; }
 
         public bool IsEmpty { get => Monday == null && Tuesday == null && Wednesday == null && Thursday == null && Friday == null && Saturday == null; }
     }

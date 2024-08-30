@@ -1,10 +1,10 @@
-﻿using System;
+﻿using BSUIRScheduleDESK.Classes;
+using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
-using BSUIRScheduleDESK.classes;
 
-namespace BSUIRScheduleDESK.converters
+namespace BSUIRScheduleDESK.Converters
 {
     public class TabItemVisibilityConverter : IValueConverter
     {
@@ -12,7 +12,7 @@ namespace BSUIRScheduleDESK.converters
         {
             if (value == null) return Visibility.Collapsed;
             if( parameter == null ) return Visibility.Collapsed;
-            if(value is GroupSchedule v)
+            if(value is Schedule v)
             {
                 string? param = parameter as string;
                 if(param == "Exams")
@@ -21,11 +21,11 @@ namespace BSUIRScheduleDESK.converters
                 }
                 else if(param == "Schedule")
                 {
-                    if(v.schedules == null) return Visibility.Collapsed;
+                    if(v.lessons == null) return Visibility.Collapsed;
                 }
                 else if(param == "PreviusSchedule")
                 {
-                    if(v.previousSchedules == null || v.previousTerm == v.currentTerm) return Visibility.Collapsed;
+                    if(v.previousLessons == null || v.previousTerm == v.currentTerm) return Visibility.Collapsed;
                 }
             }
             return Visibility.Visible;

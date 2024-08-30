@@ -1,11 +1,12 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.converters
+
+namespace BSUIRScheduleDESK.Converters
 {
     public class EmployeeOrGroupConverter : IValueConverter, IMultiValueConverter
     {
@@ -17,7 +18,7 @@ namespace BSUIRScheduleDESK.converters
             {
                 case "Type":
                     {
-                        Schedule? schedule = value as Schedule;
+                        Lesson? schedule = value as Lesson;
                         if (schedule?.employees == null)
                             return schedule?.studentGroups!.OrderBy(s => s.name)!;
                         return schedule?.employees!;

@@ -1,7 +1,9 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
-using BSUIRScheduleDESK.viewmodels;
-using BSUIRScheduleDESK.views;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Models;
+using BSUIRScheduleDESK.Services;
+using BSUIRScheduleDESK.ViewModels;
+using BSUIRScheduleDESK.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -16,22 +18,22 @@ namespace BSUIRScheduleDESK
     /// </summary>
     public partial class App : Application
     {
-        private readonly IMainWindowViewModel _mainWindowViewModel;
-        private readonly IScheduleService _scheduleService;
-        private readonly IDateService _dateService;
-        public App() : base() { }
-        public App(IScheduleService scheduleService, IDateService dateService, IMainWindowViewModel mainWindowViewModel) : base()
-        {
-            _scheduleService = scheduleService;
-            _dateService = dateService;
-            _mainWindowViewModel = mainWindowViewModel;
-        }
+        private IMainWindowViewModel _mainWindowViewModel;
+        private IScheduleService _scheduleService;
+        private IDateService _dateService;
+        public IServiceProvider ServiceProvider { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
             IsAnotherProcessExist();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{Config.Instance.CurrentTheme}.xaml", UriKind.Relative)};
-            
+
+            ConfigureServices();
+
+            _mainWindowViewModel = ServiceProvider.GetService<IMainWindowViewModel>()!;
+            _scheduleService = ServiceProvider.GetService<IScheduleService>()!;
+            _dateService = ServiceProvider.GetService<IDateService>()!;
+
             string? dataPath = Directory.GetCurrentDirectory() + @"\data";
             if (!Directory.Exists(dataPath))
             {
@@ -55,6 +57,33 @@ namespace BSUIRScheduleDESK
             ShowUpdateInfo();
             base.OnStartup(e);
         }
+
+        private void ConfigureServices()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<App>();
+
+            services.AddSingleton<IMainWindowModel, MainWindowModel>();
+            services.AddSingleton<IScheduleSearchModel, ScheduleSearchModel>();
+            services.AddSingleton<IAnnouncementModel, AnnouncementModel>();
+            services.AddSingleton<INoteModel, NoteModel>();
+
+            services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
+            services.AddSingleton<IScheduleSearchViewModel, ScheduleSearchViewModel>();
+            services.AddSingleton<INoteViewModel, NoteViewModel>();
+            services.AddSingleton<IAnnouncementViewModel, AnnouncementViewModel>();
+
+            services.AddSingleton<IDateService, DateService>();
+            services.AddSingleton<INetworkService, NetworkService>();
+            services.AddSingleton<IInternetService, InternetService>();
+
+            services.AddTransient<INoteService, NoteService>();
+            services.AddTransient<IFavoriteSchedulesService, FavoriteSchedulesService>();
+            services.AddTransient<IAnnouncementService, AnnouncementService>();
+            services.AddTransient<IScheduleService, ScheduleService>();
+            ServiceProvider = services.BuildServiceProvider();
+        }
+
         protected override void OnExit(ExitEventArgs e)
         {
             Config.Instance.Save();

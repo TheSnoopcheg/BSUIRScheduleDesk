@@ -1,17 +1,17 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.templates
+namespace BSUIRScheduleDESK.Controls
 {
     /// <summary>
     /// Логика взаимодействия для FavoriteGroups.xaml
     /// </summary>
-    public partial class FavoriteGroups : UserControl
+    public partial class FavoriteSchedules : UserControl
     {
-        public FavoriteGroups()
+        public FavoriteSchedules()
         {
             InitializeComponent();
         }
@@ -21,7 +21,7 @@ namespace BSUIRScheduleDESK.templates
         public static readonly DependencyProperty LoadCommandProperty = DependencyProperty.Register(
             "LoadCommand",
             typeof(ICommand),
-            typeof(FavoriteGroups));
+            typeof(FavoriteSchedules));
 
         public ICommand LoadCommand
         {
@@ -36,7 +36,7 @@ namespace BSUIRScheduleDESK.templates
         public static readonly DependencyProperty DeleteCommandProperty = DependencyProperty.Register(
             "DeleteCommand",
             typeof(ICommand),
-            typeof(FavoriteGroups));
+            typeof(FavoriteSchedules));
 
         public ICommand DeleteCommand
         {
@@ -46,12 +46,12 @@ namespace BSUIRScheduleDESK.templates
 
         #endregion
 
-        #region
+        #region FavoriteSchedulesProperty
 
         public static readonly DependencyProperty SchedulesProperty = DependencyProperty.Register(
             "Schedules",
             typeof(ObservableCollection<FavoriteSchedule>),
-            typeof(FavoriteGroups));
+            typeof(FavoriteSchedules));
 
         public ObservableCollection<FavoriteSchedule> Schedules
         {

@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
     public enum ConnectionStatus
     {

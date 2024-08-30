@@ -1,10 +1,10 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
     
     public class ScheduleService : IScheduleService
@@ -21,9 +21,9 @@ namespace BSUIRScheduleDESK.services
             _internetService = internetService;
         }
 
-        public async Task<GroupSchedule> LoadScheduleAsync(string? url, LoadingType loadingType)
+        public async Task<Schedule> LoadScheduleAsync(string? url, LoadingType loadingType)
         {
-            GroupSchedule? schedule = new GroupSchedule();
+            Schedule? schedule = new Schedule();
             if (loadingType == LoadingType.Server || loadingType == LoadingType.ServerWP)
             {
                 schedule = await ServerLoad(url);
@@ -45,14 +45,14 @@ namespace BSUIRScheduleDESK.services
             }
             return schedule!;
         }
-        private async Task<GroupSchedule> LocalLoad(string? path)
+        private async Task<Schedule> LocalLoad(string? path)
         {
-            GroupSchedule? schedule = new GroupSchedule();
+            Schedule? schedule = new Schedule();
             try
             {
                 using (FileStream openStream = File.OpenRead($"{Directory.GetCurrentDirectory() + PATH + path}.json"))
                 {
-                    schedule = await JsonSerializer.DeserializeAsync<GroupSchedule>(openStream);
+                    schedule = await JsonSerializer.DeserializeAsync<Schedule>(openStream);
                     await openStream.DisposeAsync();
                 }
             }
@@ -62,18 +62,18 @@ namespace BSUIRScheduleDESK.services
             }
             return schedule!;
         }
-        private async Task<GroupSchedule> ServerLoad(string? url, LoadingType preLoadingType = LoadingType.Server)
+        private async Task<Schedule> ServerLoad(string? url, LoadingType preLoadingType = LoadingType.Server)
         {
-            GroupSchedule? schedule = new GroupSchedule();
+            Schedule? schedule = new Schedule();
             try
             {
                 if (int.TryParse(url, out int numVal))
                 {
-                    schedule = await _networkService.GetAsync<GroupSchedule>($"https://iis.bsuir.by/api/v1/schedule?studentGroup={url}");
+                    schedule = await _networkService.GetAsync<Schedule>($"https://iis.bsuir.by/api/v1/schedule?studentGroup={url}");
                 }
                 else
                 {
-                    schedule = await _networkService.GetAsync<GroupSchedule>($"https://iis.bsuir.by/api/v1/employees/schedule/{url}");
+                    schedule = await _networkService.GetAsync<Schedule>($"https://iis.bsuir.by/api/v1/employees/schedule/{url}");
                 }
                 if (schedule != null)
                 {
@@ -88,15 +88,15 @@ namespace BSUIRScheduleDESK.services
             return schedule!;
         }
 
-        public async Task SaveRecentScheduleAsync(GroupSchedule schedule)
+        public async Task SaveRecentScheduleAsync(Schedule schedule)
         {
             await SaveScheduleAsync(schedule, RECENTPATH);
         }
-        public async Task SaveScheduleAsync(GroupSchedule schedule, string? path)
+        public async Task SaveScheduleAsync(Schedule schedule, string? path)
         {
             using (FileStream createStream = File.Create($"{Directory.GetCurrentDirectory() + PATH + path}.json"))
             {
-                await JsonSerializer.SerializeAsync<GroupSchedule>(createStream, schedule);
+                await JsonSerializer.SerializeAsync<Schedule>(createStream, schedule);
                 await createStream.DisposeAsync();
             }
         }

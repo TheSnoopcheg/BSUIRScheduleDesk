@@ -1,9 +1,9 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Services;
 using System;
 using System.Collections.ObjectModel;
 
-namespace BSUIRScheduleDESK.models
+namespace BSUIRScheduleDESK.Models
 {
     public class ScheduleSearchModel : IScheduleSearchModel
     {

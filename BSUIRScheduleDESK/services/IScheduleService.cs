@@ -1,7 +1,7 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
     public enum LoadingType
     {
@@ -11,9 +11,9 @@ namespace BSUIRScheduleDESK.services
     }
     public interface IScheduleService
     {
-        Task<GroupSchedule> LoadScheduleAsync(string? url, LoadingType loadingType);
-        Task SaveRecentScheduleAsync(GroupSchedule schedule);
-        Task SaveScheduleAsync(GroupSchedule schedule, string? path);
+        Task<Schedule> LoadScheduleAsync(string? url, LoadingType loadingType);
+        Task SaveRecentScheduleAsync(Schedule schedule);
+        Task SaveScheduleAsync(Schedule schedule, string? path);
         void DeleteSchedule(string? ulr);
         Task UpdateCurrentWeekAsync();
     }
