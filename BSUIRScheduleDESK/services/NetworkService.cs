@@ -8,7 +8,15 @@ namespace BSUIRScheduleDESK.Services
 {
     public class NetworkService : INetworkService
     {
-        private HttpClient httpClient = new HttpClient();
+        private readonly HttpClient httpClient;
+        private readonly HttpClientHandler httpHandler;
+
+        public NetworkService()
+        {
+            httpHandler = new HttpClientHandler();
+            httpHandler.CheckCertificateRevocationList = true;
+            httpClient = new HttpClient(httpHandler);
+        }
         public async Task<T> GetAsync<T>(string? url)
         {
             try

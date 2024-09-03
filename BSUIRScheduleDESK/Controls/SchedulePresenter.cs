@@ -64,6 +64,7 @@ namespace BSUIRScheduleDESK.Controls
             _calendar = (System.Windows.Controls.Calendar)GetTemplateChild(PART_Calendar);
             _openDateButton = (Button)GetTemplateChild(PART_OpenDateButton);
             _todayBorder = (Border)GetTemplateChild(PART_TodayBorder);
+            _emptyMessage = (TextBlock)GetTemplateChild(PART_EmptyMessage);
 
             _previousButton.Click += PreviousButton_Click;
             _nextButton.Click += NextButton_Click;
@@ -87,27 +88,24 @@ namespace BSUIRScheduleDESK.Controls
             SetUpDatesMaximized();
         }
 
-        #region SchedulesProperty
+        #region LessonsProperty
 
-        public static readonly DependencyProperty SchedulesProperty = DependencyProperty.Register(
-            "Schedules",
+        public static readonly DependencyProperty LessonsProperty = DependencyProperty.Register(
+            "Lessons",
             typeof(Lessons),
             typeof(SchedulePresenter),
-            new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnSchedulesChanged)));
+            new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnLessonsChanged)));
 
-        private static void OnSchedulesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnLessonsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not SchedulePresenter schedulePresenter) return;
-            if (e.NewValue != null)
-            {
-                schedulePresenter.SetUp();
-            }
+            schedulePresenter.SetUp();
         }
 
-        public Lessons Schedules
+        public Lessons Lessons
         {
-            get { return (Lessons)GetValue(SchedulesProperty); }
-            set { SetValue(SchedulesProperty, value); }
+            get { return (Lessons)GetValue(LessonsProperty); }
+            set { SetValue(LessonsProperty, value); }
         }
 
         #endregion
@@ -263,7 +261,14 @@ namespace BSUIRScheduleDESK.Controls
 
             CleanGrid();
 
-            if (Schedules == null || Schedules.IsEmpty) return;
+            if (Lessons == null || Lessons.IsEmpty)
+            {
+                _scheduleView.SetValue(VisibilityProperty, Visibility.Collapsed);
+                _normalView.SetValue(VisibilityProperty, Visibility.Collapsed);
+                _emptyMessage.SetValue(VisibilityProperty, Visibility.Visible);
+                return;
+            }
+            _emptyMessage.SetValue(VisibilityProperty, Visibility.Collapsed);
 
             if (WindowState == WindowState.Maximized)
                 SetUpMaximized();
@@ -357,9 +362,9 @@ namespace BSUIRScheduleDESK.Controls
             TimeOnly maxTime = TimeOnly.MinValue;
             TimeOnly sTime = TimeOnly.Parse("9:00");
 
-            foreach(var prop in Schedules.GetType().GetProperties())
+            foreach(var prop in Lessons.GetType().GetProperties())
             {
-                if (prop.GetValue(Schedules) is not List<Lesson> list || list.Count == 0) continue;
+                if (prop.GetValue(Lessons) is not List<Lesson> list || list.Count == 0) continue;
                 var lList = list
                     .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
                     .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup)).ToList();
@@ -459,10 +464,10 @@ namespace BSUIRScheduleDESK.Controls
         {
             int col = 0;
             int row = 0;
-            foreach(var prop in Schedules.GetType().GetProperties())
+            foreach(var prop in Lessons.GetType().GetProperties())
             {
                 col++;
-                if (prop.GetValue(Schedules) is not List<Lesson> list || list.Count == 0) continue;
+                if (prop.GetValue(Lessons) is not List<Lesson> list || list.Count == 0) continue;
                 var flist = list
                     .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
                     .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
@@ -490,11 +495,11 @@ namespace BSUIRScheduleDESK.Controls
 
         private void SetNormalSchedulePlates()
         {
-            var properties = Schedules.GetType().GetProperties();
+            var properties = Lessons.GetType().GetProperties();
             for(int i = 0; i < properties.Length; i++)
             {
                 if (GetElementInGridPosition(_normalView, 0, i * 2 + 1) is not StackPanel panel) continue;
-                if (properties[i].GetValue(Schedules) is not List<Lesson> list || list.Count == 0)
+                if (properties[i].GetValue(Lessons) is not List<Lesson> list || list.Count == 0)
                 {
                     AddNoLessonTextBlock(panel);
                     continue;
@@ -708,6 +713,7 @@ namespace BSUIRScheduleDESK.Controls
         private const string PART_Calendar = "PART_Calendar";
         private const string PART_OpenDateButton = "PART_OpenDateButton";
         private const string PART_TodayBorder = "PART_TodayBorder";
+        private const string PART_EmptyMessage = "PART_EmptyMessage";
 
         private Grid _scheduleView;
         private Grid _maximizedView;
@@ -724,5 +730,6 @@ namespace BSUIRScheduleDESK.Controls
         private System.Windows.Controls.Calendar _calendar;
         private Button _openDateButton;
         private Border _todayBorder;
+        private TextBlock _emptyMessage;
     }
 }

@@ -444,7 +444,7 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <Grid>
-                                <templates:SchedulePresenter Schedules="{Binding Schedule.lessons}"
+                                <templates:SchedulePresenter Lessons="{Binding Schedule.lessons}"
                                                              FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
                                                              SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
@@ -497,7 +497,7 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <Grid>
-                                <templates:SchedulePresenter Schedules="{Binding Schedule.previousLessons}"
+                                <templates:SchedulePresenter Lessons="{Binding Schedule.previousLessons}"
                                                              FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
                                                              SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"

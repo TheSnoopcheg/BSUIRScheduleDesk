@@ -178,8 +178,21 @@ namespace BSUIRScheduleDESK.Controls
                 ItemSelected.Invoke();
             }
         }
+        private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (sender is not ListViewItem item) return;
+            ItemSelected.Invoke();
+            e.Handled = true;
+        }
+
+        private void ListViewItem_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (sender is not ListViewItem item) return;
+            SelectedItem = item.DataContext;
+        }
 
         public event Action ItemSelected;
         public event Action TextChanged;
+
     }
 }

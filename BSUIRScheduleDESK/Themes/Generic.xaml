@@ -827,6 +827,13 @@
                                 Margin="10"
                                 Grid.Row="1">
                             <Grid>
+                                <TextBlock Text='Здесь ничего нет. Чтобы загрузить расписание, нажмите "🔍︎".'
+                                           Foreground="{DynamicResource Border.Empty.Static}"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center"
+                                           FontSize="15"
+                                           FontWeight="DemiBold"
+                                           x:Name="PART_EmptyMessage"/>
                                 <ScrollViewer Style="{StaticResource ScrollViewerStyle}">
                                     <Grid x:Name="PART_NormalScheduleView"
                                           Visibility="Collapsed">

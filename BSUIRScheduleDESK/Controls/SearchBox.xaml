@@ -69,6 +69,8 @@
         <Style x:Key="listViewTemplate" TargetType="{x:Type ListViewItem}">
             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
             <Setter Property="Background" Value="{DynamicResource ListView.Item.Static.Background}"/>
+            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="ListViewItem_PreviewMouseLeftButtonDown"/>
+            <EventSetter Event="MouseEnter" Handler="ListViewItem_MouseEnter"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -77,6 +79,11 @@
                         </Border>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="border" Property="Background" Value="{DynamicResource ListView.Item.Selected.Background}"/>
+                                <Setter TargetName="border" Property="BorderThickness" Value="1"/>
+                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource ListView.Item.Selected.BorderBrush}"/>
+                            </Trigger>
+                            <Trigger Property="IsMouseOver" Value="True">
                                 <Setter TargetName="border" Property="Background" Value="{DynamicResource ListView.Item.Selected.Background}"/>
                                 <Setter TargetName="border" Property="BorderThickness" Value="1"/>
                                 <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource ListView.Item.Selected.BorderBrush}"/>
