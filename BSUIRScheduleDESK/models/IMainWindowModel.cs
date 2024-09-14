@@ -7,7 +7,7 @@ namespace BSUIRScheduleDESK.Models
 {
     public interface IMainWindowModel
     {
-        Schedule Schedule { get; set; }
+        Schedule? Schedule { get; set; }
         ObservableCollection<FavoriteSchedule> FavoriteSchedules { get; }
         Task SaveRecentScheduleAsync(Schedule schedule);
         Task<bool> LoadScheduleAsync(string? url, LoadingType loadingType);

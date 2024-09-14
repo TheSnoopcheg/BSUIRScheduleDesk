@@ -10,6 +10,7 @@ using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Windows;
+using System.Collections.Generic;
 
 namespace BSUIRScheduleDESK
 {
@@ -101,22 +102,18 @@ namespace BSUIRScheduleDESK
         }
         private void ShowUpdateInfo()
         {
-            string? path = Directory.GetCurrentDirectory() + @"\updates\update.json";
-            if (File.Exists(path))
+            string? path = Directory.GetCurrentDirectory() + @"\updates\";
+            if (!Directory.Exists(path)) return;
+            List<UpdateInfo> updates = Directory.GetFiles(path).Select(f => JsonSerializer.Deserialize<UpdateInfo>(File.ReadAllText(f))).Where(u => u.IsShowed == false).ToList();
+            if (updates.Count == 0) return;
+            string text = string.Empty;
+            foreach(var update in updates)
             {
-                string? updateInfoJson = File.ReadAllText(path);
-                UpdateInfo updateInfo = JsonSerializer.Deserialize<UpdateInfo>(updateInfoJson)!;
-                if (updateInfo != null)
-                {
-                    if (!updateInfo.IsShowed)
-                    {
-                        ModalWindow.Show(updateInfo.Content!, $"Обновление от {updateInfo.UpdateDate}", Directory.GetCurrentDirectory() + @"\updates\update.png", ModalWindowButtons.OK);
-                        updateInfo.IsShowed = true;
-                        updateInfoJson = JsonSerializer.Serialize(updateInfo);
-                        File.WriteAllText(path, updateInfoJson);
-                    }
-                }
+                text += $"Обновление от {update.UpdateDate}:\n{update.Content}\n\n";
+                update.IsShowed = true;
+                File.WriteAllText($"{path}{update.UpdateDate}.json", JsonSerializer.Serialize(update));
             }
+            ModalWindow.Show(text, $"Обновления", Directory.GetCurrentDirectory() + @"\updates\update.png", ModalWindowButtons.OK);
         }
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {

@@ -18,7 +18,7 @@ namespace BSUIRScheduleDESK.Models
         private Schedule? _schedule;
         public Schedule? Schedule
         {
-            get => _schedule!;
+            get => _schedule;
             set
             {
                 _schedule = value;
@@ -85,7 +85,9 @@ namespace BSUIRScheduleDESK.Models
                 if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") == ConnectionStatus.Connected)
                 {
                     string? url = Schedule.GetUrl();
-                    var schedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.Server);
+                    var schedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.ServerWP);
+                    if(schedule == null) return false;
+                    if (Schedule.GetUrl() != schedule.GetUrl()) return false;
                     if(!Schedule.Compare(schedule))
                     {
                         ModalWindowResult result = ModalWindow.Show($"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", "Расписание БГУИР", "", ModalWindowButtons.YesNo);

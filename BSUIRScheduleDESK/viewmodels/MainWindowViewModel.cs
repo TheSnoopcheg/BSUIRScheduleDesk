@@ -242,7 +242,7 @@ namespace BSUIRScheduleDESK.ViewModels
             await OnScheduleLoaded();
         }
 
-        private async void LoadRecentSchedule()
+        private async Task LoadRecentSchedule()
         {
             await LoadScheduleAsync("recent", LoadingType.Local);
         }
@@ -272,7 +272,6 @@ namespace BSUIRScheduleDESK.ViewModels
                 Schedule!.favorited = true;
                 _model.Schedule!.favorited = true;
                 OnPropertyChanged(nameof(Schedule));
-                await _model.SaveRecentScheduleAsync(Schedule);
                 await _noteViewModel.SetNotes(name, url);
                 if (await _model.UpdateScheduleAsync())
                     Schedule = _model.Schedule;
@@ -302,7 +301,7 @@ namespace BSUIRScheduleDESK.ViewModels
 
             _noteViewModel.NotesChanged += () => OnPropertyChanged(nameof(NotesExistenceVisibility));
 
-            LoadRecentSchedule();
+            var _ = LoadRecentSchedule();
         }
 
     }

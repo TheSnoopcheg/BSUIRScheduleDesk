@@ -41,8 +41,6 @@ namespace BSUIRScheduleDESK.Controls
         public SchedulePresenter() : base() 
         {
             _dates = GetCurrentWeekDates();
-            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-                ChangeWeek(1);
         }
 
         public override void OnApplyTemplate()
@@ -86,6 +84,9 @@ namespace BSUIRScheduleDESK.Controls
             SetUpNormalGrid();
             SetUp();
             SetUpDatesMaximized();
+
+            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
+                ChangeWeek(1);
         }
 
         #region LessonsProperty
@@ -292,6 +293,7 @@ namespace BSUIRScheduleDESK.Controls
             SetUpDatesMaximized();
             SetSchedulesTimes();
             SetMaximizedSchedulePlates();
+            DeleteFreeRows();
             _normalView.SetValue(VisibilityProperty, Visibility.Collapsed);
             _maximizedView.SetValue(VisibilityProperty, Visibility.Visible);
             _scheduleView.SetValue(VisibilityProperty, Visibility.Visible);
@@ -380,6 +382,12 @@ namespace BSUIRScheduleDESK.Controls
                     if(time > maxTime) maxTime = time;
                 }
             }
+            if (minTime == TimeOnly.MaxValue && maxTime == TimeOnly.MinValue)
+            {
+                _minRow = -1;
+                _maxRow = -1;
+                return;
+            }
             _minRow = StartLessonDict[GetNearestTime(minTime)];
             _maxRow = StartLessonDict[GetNearestTime(maxTime)];
         }
@@ -394,6 +402,7 @@ namespace BSUIRScheduleDESK.Controls
         private void SetSchedulesTimes()
         {
             if (_maximizedView == null) return;
+            if(_minRow < 0 || _maxRow < 0) return;
             for(int i = _minRow; i <= _maxRow; i++)
             {
                 ScheduleTime time = new ScheduleTime();
@@ -545,6 +554,29 @@ namespace BSUIRScheduleDESK.Controls
 
         #endregion
 
+        private void DeleteFreeRows()
+        {
+            bool flag = false;
+            for (int i = _minRow; i <= _maxRow; i++)
+            {
+                for(int j = 1; j < GRID_COLS; j++)
+                {
+                    if (GetElementInGridPosition(_maximizedView, j, i, typeof(StackPanel)) is StackPanel panel && panel.Children.Count > 0)
+                    {
+                        flag = true;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                    flag = false;
+                    continue;
+                }
+                if (GetElementInGridPosition(_maximizedView, 0, i, typeof(ScheduleTime)) is ScheduleTime time) 
+                    _maximizedView.Children.Remove(time);
+            }
+        }
+
         private UIElement? GetElementInGridPosition(Grid grid, int column, int row, Type? type = null)
         {
             if(type == null)
@@ -691,7 +723,7 @@ namespace BSUIRScheduleDESK.Controls
         {
             if(_calendar == null || _calendarPopup == null) return;
             if (_calendar.SelectedDate is not DateTime date) return;
-            int weeks = GetWeekDiff(date, DateTime.Today);
+            int weeks = GetWeekDiff(date, _dates[0]);
             ChangeWeek(-weeks);
             _calendarPopup.IsOpen = false;
         }

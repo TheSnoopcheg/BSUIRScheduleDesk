@@ -39,7 +39,7 @@ namespace BSUIRScheduleDESK.Services
                     schedule = await ServerLoad(url, LoadingType.Local);
                 }
             }
-            if (schedule != null && loadingType != LoadingType.ServerWP)
+            if (schedule != null && loadingType != LoadingType.ServerWP && url != RECENTPATH)
             {
                 await SaveRecentScheduleAsync(schedule);
             }

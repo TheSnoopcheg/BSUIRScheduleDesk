@@ -25,7 +25,10 @@ namespace BSUIRScheduleDESK.Services
                 T? obj = await JsonSerializer.DeserializeAsync<T>(content);
                 return obj!;
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return default;
         }
     }
