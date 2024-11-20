@@ -96,6 +96,7 @@ namespace BSUIRScheduleDESK.Models
                             schedule.favorited = Schedule.favorited;
                             Schedule = schedule;
                             await _scheduleService.SaveScheduleAsync(Schedule, url);
+                            await SaveRecentScheduleAsync(Schedule);
                             return true;
                         }
                     }

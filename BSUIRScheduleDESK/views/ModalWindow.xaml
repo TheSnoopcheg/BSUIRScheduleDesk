@@ -58,8 +58,7 @@
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35"/>
-                    <RowDefinition MaxHeight="100" Height="auto"/>
-                    <RowDefinition MinHeight="0" MaxHeight="250" Height="auto"/>
+                    <RowDefinition MaxHeight="350" Height="auto"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="TitleBlock"
@@ -84,25 +83,35 @@
                           Height="12.5"
                           Fill="{DynamicResource ModalWinodw.Text.Foreground.Static}"/>
                 </Button>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Grid.Row="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition MaxHeight="100" Height="Auto"/>
+                            <RowDefinition MinHeight="0" MaxHeight="250" Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Image x:Name="ImageBlock"
+                               Stretch="UniformToFill"
+                               HorizontalAlignment="Center"
+                               Margin="5,0,5,0"
+                               Grid.Row="0"/>
 
-                <Image x:Name="ImageBlock"
-                       Stretch="UniformToFill"
-                       HorizontalAlignment="Center"
-                       Margin="5,0,5,0"
-                       Grid.Row="1"/>
-
-                <TextBlock x:Name="ContentBlock"
-                           Foreground="{DynamicResource ModalWinodw.Text.Foreground.Static}"
-                           Margin="5"
-                           HorizontalAlignment="Left"
-                           TextWrapping="Wrap"
-                           FontSize="14"
-                           Grid.Row="2"/>
+                        <TextBlock x:Name="ContentBlock"
+                                   Foreground="{DynamicResource ModalWinodw.Text.Foreground.Static}"
+                                   Margin="5"
+                                   HorizontalAlignment="Left"
+                                   TextWrapping="Wrap"
+                                   FontSize="14"
+                                   Grid.Row="1"/>
+                    </Grid>
+                </ScrollViewer>
+                
                 <StackPanel x:Name="ButtonsPanel"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"
-                            Grid.Row="3"/>
+                            Grid.Row="2"/>
 
             </Grid>
         </Border>

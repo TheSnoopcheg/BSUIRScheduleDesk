@@ -102,6 +102,6 @@ namespace BSUIRScheduleDESK.Views
             }
         }
 
-        public Version Version { get; set; } = new Version(1,0,5,1);
+        public Version Version { get; set; } = new Version(1,0,5,2);
     }
 }

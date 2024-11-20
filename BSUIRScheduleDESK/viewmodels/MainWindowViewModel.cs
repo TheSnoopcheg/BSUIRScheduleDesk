@@ -69,9 +69,20 @@ namespace BSUIRScheduleDESK.ViewModels
                         if (scheduleSearchWindow.ShowDialog() == true)
                         {
                             SearchResponse? response = _scheduleSearchViewModel.SearchResponse;
-                            if (response == null) return;
-
-                            await LoadScheduleAsync(response.GetUrl(), LoadingType.Server);
+                            string? url = string.Empty;
+                            if (response == null)
+                            {
+                                string input = _scheduleSearchViewModel.Input;
+                                if(input.Length == 6 && int.TryParse(input, out int res))
+                                {
+                                    url = input;
+                                }
+                            }
+                            else
+                            {
+                                url = response.GetUrl();
+                            }
+                            await LoadScheduleAsync(url, LoadingType.Server);
                         }
                     }));
             }
@@ -182,12 +193,24 @@ namespace BSUIRScheduleDESK.ViewModels
                         if (scheduleSearchWindow.ShowDialog() == true)
                         {
                             SearchResponse? response = _scheduleSearchViewModel.SearchResponse;
-                            if (response == null) return;
+                            string? url = string.Empty;
+                            if (response == null)
+                            {
+                                string input = _scheduleSearchViewModel.Input;
+                                if (input.Length == 6 && int.TryParse(input, out int res))
+                                {
+                                    url = input;
+                                }
+                            }
+                            else
+                            {
+                                url = response.GetUrl();
+                            }
 
-                            await LoadScheduleAsync(response.GetUrl(), LoadingType.ServerWP);
+                            await LoadScheduleAsync(url, LoadingType.ServerWP);
 
                             if (Schedule == null) return;
-                            if (Schedule.GetUrl() != response.GetUrl()) return;
+                            if (Schedule.GetUrl() != url) return;
 
                             _model.Schedule!.favorited = true;
                             Schedule.favorited = true;

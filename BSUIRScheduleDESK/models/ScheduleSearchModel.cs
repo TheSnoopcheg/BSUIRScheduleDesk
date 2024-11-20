@@ -42,6 +42,8 @@ namespace BSUIRScheduleDESK.Models
             {
                 Responses = await _networkService.GetAsync<ObservableCollection<SearchResponse>>($"https://iis.bsuir.by/api/v1/employees/fio?employee-fio={_input}");
             }
+            if (Responses.Count > 0)
+                SearchResponse = Responses[0];
         }
 
         public ScheduleSearchModel(INetworkService networkService)

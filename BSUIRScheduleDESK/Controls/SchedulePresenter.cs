@@ -483,6 +483,8 @@ namespace BSUIRScheduleDESK.Controls
                 foreach(var item in flist)
                 {
                     if (string.IsNullOrEmpty(item.startLessonTime)) continue;
+                    if ((item.lessonTypeAbbrev == "Экзамен" || item.lessonTypeAbbrev == "Консультация") && _showExams.IsChecked == false)
+                        continue;
                     if (item.announcement)
                         if(DateTime.TryParse(item.startLessonDate, out DateTime date))
                             if (!_dates.Contains(date))
@@ -525,6 +527,8 @@ namespace BSUIRScheduleDESK.Controls
                 foreach (var item in flist)
                 {
                     if (string.IsNullOrEmpty(item.startLessonTime)) continue;
+                    if ((item.lessonTypeAbbrev == "Экзамен" || item.lessonTypeAbbrev == "Консультация") && _showExams.IsChecked == false)
+                        continue;
                     if (item.announcement)
                         if (DateTime.TryParse(item.startLessonDate, out DateTime date))
                             if (!_dates.Contains(date))
