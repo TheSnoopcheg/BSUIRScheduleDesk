@@ -113,6 +113,7 @@ namespace BSUIRScheduleDESK.Controls
         private void SetUpPlate()
         {
             if (Schedule == null) return;
+
             if (Schedule.announcement)
             {
                 _subjectInfo.Visibility = Visibility.Collapsed;
@@ -160,12 +161,15 @@ namespace BSUIRScheduleDESK.Controls
                 if(Schedule.numSubgroup != 0)
                     _subGroupsLabel.Text = Schedule.numSubgroup.ToString() + " п.";
             }
+
             if(Schedule.auditories != null)
                 _auditoriesLabel.Text = string.Join("\n", Schedule.auditories);
+
             if (Schedule.employees == null)
                 _employeeGroups.DataContext = Schedule.studentGroups;
             else
                 _employeeGroups.DataContext = Schedule.employees;
+
             if (_scheduleTime != null)
                 if (TimeOnly.TryParse(Schedule.startLessonTime, out TimeOnly time))
                     _scheduleTime.StartTime = time;

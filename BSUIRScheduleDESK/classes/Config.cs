@@ -175,6 +175,19 @@ namespace BSUIRScheduleDESK.Classes
             }
         }
 
+        private bool showExpiredLessons = true;
+
+        public bool ShowExpiredLessons
+        {
+            get => showExpiredLessons;
+            set
+            {
+                if (value == showExpiredLessons) return;
+                showExpiredLessons = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void Save()
         {
             service.Save(this);

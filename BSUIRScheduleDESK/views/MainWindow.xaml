@@ -449,8 +449,11 @@
                                                              SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
                                                              CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
+                                                             ShowExpiredLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowExpiredLessons}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
-                                                             Command="{Binding LoadScheduleFromPlate}"/>
+                                                             Command="{Binding LoadScheduleFromPlate}"
+                                                             StartExamDate="{Binding Schedule.startExamDate}"
+                                                             EndExamDate="{Binding Schedule.endExamDate}"/>
 
                             </Grid>
 
@@ -502,8 +505,11 @@
                                                              SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
                                                              CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
+                                                             ShowExpiredLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowExpiredLessons}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
-                                                             Command="{Binding LoadScheduleFromPlate}"/>
+                                                             Command="{Binding LoadScheduleFromPlate}"
+                                                             StartExamDate="{Binding Schedule.startExamDate}"
+                                                             EndExamDate="{Binding Schedule.endExamDate}"/>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>
