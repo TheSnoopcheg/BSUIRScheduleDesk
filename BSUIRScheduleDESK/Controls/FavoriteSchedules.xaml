@@ -43,24 +43,22 @@
                                                  Fill="{DynamicResource FavoriteBar.Button.Background.Static}"
                                                  HorizontalAlignment="Center"
                                                  VerticalAlignment="Center"
-                                                 x:Name="some">
-
-                                        </Ellipse>
+                                                 x:Name="some"/>
 
                                         <Button x:Name="deleteFavBtn" 
-                                              Height="15"
-                                              Width="15"
-                                              HorizontalAlignment="Right"
-                                              VerticalAlignment="Top"
-                                              Margin="6"
-                                              Opacity="0"
-                                              Background="{DynamicResource FavoriteBar.Button.Delete.Background.Static}"
-                                              Padding="0"
-                                              HorizontalContentAlignment="Center"
-                                              VerticalContentAlignment="Center"
-                                              Command="{Binding ElementName=favSchedules, Path=DeleteCommand}"
-                                              CommandParameter="{Binding}"
-                                              Style="{DynamicResource ButtonStyle1}">
+                                                Height="15"
+                                                Width="15"
+                                                HorizontalAlignment="Right"
+                                                VerticalAlignment="Top"
+                                                Margin="6"
+                                                Opacity="0"
+                                                Background="{DynamicResource FavoriteBar.Button.Delete.Background.Static}"
+                                                Padding="0"
+                                                HorizontalContentAlignment="Center"
+                                                VerticalContentAlignment="Center"
+                                                Command="{Binding ElementName=favSchedules, Path=DeleteCommand}"
+                                                CommandParameter="{Binding}"
+                                                Style="{DynamicResource ButtonStyle1}">
                                             <Button.RenderTransform>
                                                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="7.5" CenterY="7.5"/>
                                             </Button.RenderTransform>

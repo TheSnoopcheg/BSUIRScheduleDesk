@@ -11,8 +11,8 @@ namespace BSUIRScheduleDESK.Converters
             if (value == null) return null;
             if(value is string str)
             {
-                if(DateTime.TryParse(str, out DateTime dt))
-                    return dt.ToString("d") + dt.ToString(", ddd");
+                if (DateTime.TryParse(str, out DateTime dt))
+                    return dt.ToString("d", CultureInfo.CurrentUICulture) + dt.ToString(", ddd", CultureInfo.CurrentUICulture);
                 else
                     return string.Empty;
             }
@@ -20,33 +20,33 @@ namespace BSUIRScheduleDESK.Converters
             {
                 string? param = parameter as string;
                 DateTime dateTime = (DateTime)value;
-                string day = dateTime.ToString("dddd");
+                string day = dateTime.ToString("dddd", CultureInfo.CurrentUICulture);
                 day = day.Replace(day[0], Char.ToUpper(day[0]));
                 string result = string.Empty;
                 if(param != null)
                 {
                     if(param == "linear")
                     {
-                        result = day + dateTime.ToString(" dd.MM.yyyy");
+                        result = day + dateTime.ToString(" dd.MM.yyyy", CultureInfo.CurrentUICulture);
                     }
                     if (param == "monthyear")
                     {
-                        string month = dateTime.ToString("MMMM yyyy");
+                        string month = dateTime.ToString("MMMM yyyy", CultureInfo.CurrentUICulture);
                         month = month.Replace(month[0], char.ToUpper(month[0]));
                         return month;
                     }
                 }
                 else
                 {
-                    result = day + "\n" + dateTime.ToString("dd.MM");
+                    result = day + "\n" + dateTime.ToString("dd.MM", CultureInfo.CurrentUICulture);
                 }
                 if (dateTime == DateTime.Today)
                 {
-                    result += " (сегодня)";
+                    result += $" ({Langs.Language.Today})";
                 }
                 else if (dateTime == DateTime.Today.AddDays(1))
                 {
-                    result += " (завтра)";
+                    result += $" ({Langs.Language.Tomorrow})";
                 }
                 return result;
             }

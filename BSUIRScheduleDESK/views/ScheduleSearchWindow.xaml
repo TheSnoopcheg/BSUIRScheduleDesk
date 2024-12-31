@@ -5,12 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BSUIRScheduleDESK.Views"
         xmlns:controls="clr-namespace:BSUIRScheduleDESK.Controls"
+        xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
         mc:Ignorable="d"
         AllowsTransparency="True" Width="300" Height="75"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        Title="Поиск - BSUIR Schedule"
+        Title="{Binding Source={x:Static lang:Language.Search}, StringFormat={}{0} - BSUIR Schedule}"
         MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown"
         ShowInTaskbar="False">
@@ -39,8 +40,18 @@
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Добавить" Width="80" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle2}" Click="Button_Click" IsDefault="True" />
-                <Button Grid.Column="1" Width="80" Content="Отмена" VerticalAlignment="Center"  IsCancel="True" Style="{DynamicResource ButtonStyle2}"/>
+                <Button Content="{x:Static lang:Language.Add}" 
+                        Width="80" 
+                        VerticalAlignment="Center" 
+                        Style="{DynamicResource ButtonStyle2}" 
+                        Click="Button_Click" 
+                        IsDefault="True" />
+                <Button Grid.Column="1" 
+                        Width="80" 
+                        Content="{x:Static lang:Language.Cancel}" 
+                        VerticalAlignment="Center"  
+                        IsCancel="True" 
+                        Style="{DynamicResource ButtonStyle2}"/>
             </Grid>
         </Grid>
     </Border>

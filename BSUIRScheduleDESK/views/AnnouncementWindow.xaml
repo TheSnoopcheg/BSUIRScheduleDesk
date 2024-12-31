@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:BSUIRScheduleDESK.Views"
         xmlns:converters="clr-namespace:BSUIRScheduleDESK.Converters"
         xmlns:controls="clr-namespace:BSUIRScheduleDESK.Controls"
+        xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
         mc:Ignorable="d"
         Height="450" Width="800"
         AllowsTransparency="True"
@@ -19,10 +20,24 @@
         x:Name="annWindow">
     <Window.Style>
         <Style TargetType="{x:Type Window}">
-            <Setter Property="Title" Value="{Binding Title, StringFormat={}Объявления {0} - BSUIR Schedule}"/>
+            <Setter Property="Title">
+                <Setter.Value>
+                    <MultiBinding StringFormat="{}{0} {1} - BSUIR Schedule">
+                        <Binding Source="{x:Static lang:Language.Announcements}"/>
+                        <Binding Path="Title"/>
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsEmployeeAnnouncement}" Value="False">
-                    <Setter Property="Title" Value="{Binding Title, StringFormat={}Объявления группы {0} - BSUIR Schedule}"/>
+                    <Setter Property="Title">
+                        <Setter.Value>
+                            <MultiBinding StringFormat="{}{0} {1} - BSUIR Schedule">
+                                <Binding Source="{x:Static lang:Language.GroupAnnouncements}"/>
+                                <Binding Path="Title"/>
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -94,13 +109,27 @@
                        FontWeight="DemiBold">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Text" Value="Объявления"/>
+                        <Setter Property="Text" Value="{x:Static lang:Language.Announcements}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsEmployeeAnnouncement}" Value="True">
-                                <Setter Property="Text" Value="{Binding Title, StringFormat=Объявления {0}}"/>
+                                <Setter Property="Text">
+                                    <Setter.Value>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Source="{x:Static lang:Language.Announcements}"/>
+                                            <Binding Path="Title"/>
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsEmployeeAnnouncement}" Value="False">
-                                <Setter Property="Text" Value="{Binding Path=Title, StringFormat=Объявления группы {0}}"/>
+                                <Setter Property="Text">
+                                    <Setter.Value>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Source="{x:Static lang:Language.GroupAnnouncements}"/>
+                                            <Binding Path="Title"/>
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -145,7 +174,7 @@
                                 <ColumnDefinition Width="*"/>
                                 <ColumnDefinition Width="200"/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Дата"
+                            <TextBlock Text="{x:Static lang:Language.Date}"
                                        Foreground="{DynamicResource Border.TitleText.Static}"
                                        Grid.Column="0"
                                        VerticalAlignment="Center"
@@ -156,7 +185,7 @@
                                        Grid.Column="0"
                                        HorizontalAlignment="Right"
                                        Background="{DynamicResource Border.Title.Separator.Static}"/>
-                            <TextBlock Text="Аудитория"
+                            <TextBlock Text="{x:Static lang:Language.Auditorium}"
                                        Foreground="{DynamicResource Border.TitleText.Static}"
                                        Grid.Column="1"
                                        VerticalAlignment="Center"
@@ -167,7 +196,7 @@
                                        Grid.Column="1"
                                        HorizontalAlignment="Right"
                                        Background="{DynamicResource Border.Title.Separator.Static}"/>
-                            <TextBlock Text="Объявление"
+                            <TextBlock Text="{x:Static lang:Language.Announcement}"
                                        Foreground="{DynamicResource Border.TitleText.Static}"
                                        Grid.Column="2"
                                        VerticalAlignment="Center"
@@ -186,10 +215,10 @@
                                        FontWeight="DemiBold">
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
-                                        <Setter Property="Text" Value="Преподаватель"/>
+                                        <Setter Property="Text" Value="{x:Static lang:Language.Teacher}"/>
                                         <Style.Triggers>
                                             <DataTrigger Binding="{Binding IsEmployeeAnnouncement}" Value="True">
-                                                <Setter Property="Text" Value="Группы"/>
+                                                <Setter Property="Text" Value="{x:Static lang:Language.Groups}"/>
                                             </DataTrigger>
                                         </Style.Triggers>
                                     </Style>
@@ -213,7 +242,7 @@
                               Height="125"
                               Width="125"
                               Data="{StaticResource documentsIcon}"/>
-                        <TextBlock Text="Объявлений нет"
+                        <TextBlock Text="{x:Static lang:Language.NoAds}"
                                    Foreground="{DynamicResource Border.Empty.Static}"
                                    HorizontalAlignment="Center"
                                    FontWeight="DemiBold"

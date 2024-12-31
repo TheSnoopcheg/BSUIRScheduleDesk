@@ -25,6 +25,7 @@ namespace BSUIRScheduleDESK
         public IServiceProvider ServiceProvider { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
             IsAnotherProcessExist();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{Config.Instance.CurrentTheme}.xaml", UriKind.Relative)};

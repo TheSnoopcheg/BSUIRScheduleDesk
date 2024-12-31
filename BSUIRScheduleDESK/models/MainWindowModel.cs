@@ -10,8 +10,6 @@ namespace BSUIRScheduleDESK.Models
     public class MainWindowModel : IMainWindowModel
     {
         private readonly IScheduleService _scheduleService;
-        private readonly INoteService _noteService;
-        private readonly INetworkService _networkService;
         private readonly IInternetService _internetService;
         private readonly IFavoriteSchedulesService _favoriteSchedulesService;
 
@@ -90,7 +88,7 @@ namespace BSUIRScheduleDESK.Models
                     if (Schedule.GetUrl() != schedule.GetUrl()) return false;
                     if(!Schedule.Compare(schedule))
                     {
-                        ModalWindowResult result = ModalWindow.Show($"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", "Расписание БГУИР", "", ModalWindowButtons.YesNo);
+                        ModalWindowResult result = ModalWindow.Show(string.Format(Langs.Language.ScheduleUpdateQuestionFormat, schedule.GetName()), Langs.Language.AppName, "", ModalWindowButtons.YesNo);
                         if (result == ModalWindowResult.Yes)
                         {
                             schedule.favorited = Schedule.favorited;
@@ -108,15 +106,11 @@ namespace BSUIRScheduleDESK.Models
         {
             FavoriteSchedules = await _favoriteSchedulesService.LoadFavoriteSchedulesAsync();
         }
-        public MainWindowModel(IScheduleService scheduleService, 
-                               INoteService noteService, 
-                               INetworkService networkService, 
+        public MainWindowModel(IScheduleService scheduleService,
                                IInternetService internetService, 
                                IFavoriteSchedulesService favoriteSchedulesService)
         {
             _scheduleService = scheduleService;
-            _noteService = noteService;
-            _networkService = networkService;
             _internetService = internetService;
             _favoriteSchedulesService = favoriteSchedulesService;
 

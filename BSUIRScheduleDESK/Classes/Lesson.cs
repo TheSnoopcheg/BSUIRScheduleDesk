@@ -22,5 +22,9 @@ namespace BSUIRScheduleDESK.Classes
         public bool announcement { get; set; }
         public bool split { get; set; }
         public List<Employee>? employees { get; set; }
+        public override string ToString()
+        {
+            return subject ?? string.Empty;
+        }
     }
 }

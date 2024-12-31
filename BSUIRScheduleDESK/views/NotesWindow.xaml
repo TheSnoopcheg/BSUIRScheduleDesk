@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BSUIRScheduleDESK.Views"
         xmlns:converters="clr-namespace:BSUIRScheduleDESK.Converters"
+        xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
         mc:Ignorable="d"
         Height="450" Width="800"
         WindowStyle="None"
@@ -18,10 +19,24 @@
         ShowInTaskbar="False">
     <Window.Style>
         <Style TargetType="{x:Type Window}">
-            <Setter Property="Title" Value="{Binding Title, StringFormat={}Заметки {0} - BSUIR Schedule}"/>
+            <Setter Property="Title">
+                <Setter.Value>
+                    <MultiBinding StringFormat="{}{0} {1} - BSUIR Schedule">
+                        <Binding Source="{x:Static lang:Language.Notes}"/>
+                        <Binding Path="Title"/>
+                    </MultiBinding>
+                </Setter.Value>
+            </Setter>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsEmployeeNote}" Value="False">
-                    <Setter Property="Title" Value="{Binding Title, StringFormat={}Заметки группы {0} - BSUIR Schedule}"/>
+                    <Setter Property="Title">
+                        <Setter.Value>
+                            <MultiBinding StringFormat="{}{0} {1} - BSUIR Schedule">
+                                <Binding Source="{x:Static lang:Language.GroupNotes}"/>
+                                <Binding Path="Title"/>
+                            </MultiBinding>
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -245,13 +260,27 @@
                        FontWeight="DemiBold">
                 <TextBlock.Style>
                     <Style TargetType="{x:Type TextBlock}">
-                        <Setter Property="Text" Value="Заметки"/>
+                        <Setter Property="Text" Value="{x:Static lang:Language.Notes}"/>
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsEmployeeNote}" Value="True">
-                                <Setter Property="Text" Value="{Binding Title, StringFormat=Заметки {0}}"/>
+                                <Setter Property="Text">
+                                    <Setter.Value>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Source="{x:Static lang:Language.Notes}"/>
+                                            <Binding Path="Title"/>
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsEmployeeNote}" Value="False">
-                                <Setter Property="Text" Value="{Binding Path=Title, StringFormat=Заметки группы {0}}"/>
+                                <Setter Property="Text">
+                                    <Setter.Value>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Source="{x:Static lang:Language.GroupNotes}"/>
+                                            <Binding Path="Title"/>
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -300,7 +329,7 @@
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" 
                                            Foreground="{DynamicResource Border.TitleText.Static}"
-                                           Text="Дата"
+                                           Text="{x:Static lang:Language.Date}"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
                                            FontWeight="DemiBold"/>
@@ -310,7 +339,7 @@
                                            Background="{DynamicResource Border.Title.Separator.Static}"/>
                                 <TextBlock Grid.Column="1"
                                            Foreground="{DynamicResource Border.TitleText.Static}"
-                                           Text="Заметка"
+                                           Text="{x:Static lang:Language.Note}"
                                            VerticalAlignment="Center"
                                            HorizontalAlignment="Center"
                                            FontWeight="DemiBold"/>
@@ -329,7 +358,7 @@
                                   Height="125"
                                   Width="125"
                                   Data="{StaticResource documentsIcon}"/>
-                            <TextBlock Text="Заметок нет"
+                            <TextBlock Text="{x:Static lang:Language.NoNotes}"
                                        Foreground="{DynamicResource Border.Empty.Static}"
                                        HorizontalAlignment="Center"
                                        FontWeight="DemiBold"
@@ -357,7 +386,7 @@
                         <Button Style="{DynamicResource ButtonStyle1}"
                                 Height="30"
                                 Width="135"
-                                Content="Добавить"
+                                Content="{x:Static lang:Language.Add}"
                                 Foreground="{DynamicResource SubWindow.Button.Foreground.Static}"
                                 Background="{DynamicResource SubWindow.Button.Background.Static}"
                                 Command="{Binding Path=AddNote}">
@@ -376,7 +405,7 @@
                                 Height="30"
                                 Width="135"
                                 Margin="0,5,0,0"
-                                Content="Редактировать"
+                                Content="{x:Static lang:Language.Edit}"
                                 Foreground="{DynamicResource SubWindow.Button.Foreground.Static}"
                                 Background="{DynamicResource SubWindow.Button.Background.Static}"
                                 IsEnabled="{Binding ElementName=lstView, Path=SelectedIndex, Converter={StaticResource ButtonEnableConverter}}"
@@ -389,7 +418,7 @@
                                 Height="30"
                                 Width="135"
                                 Margin="0,5,0,0"
-                                Content="Удалить"
+                                Content="{x:Static lang:Language.Delete}"
                                 Foreground="{DynamicResource SubWindow.Button.Foreground.Static}"
                                 Background="{DynamicResource SubWindow.Button.Background.Static}"
                                 IsEnabled="{Binding ElementName=lstView, Path=SelectedIndex, Converter={StaticResource ButtonEnableConverter}}"
@@ -409,14 +438,14 @@
                             <RowDefinition/>
                         </Grid.RowDefinitions>
                         <TextBlock Grid.Row="0" 
-                                   Text="Дата:" 
+                                   Text="{Binding Source={x:Static lang:Language.Date}, StringFormat={}{0}:}" 
                                    Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
                         <DatePicker x:Name="noteDatePicker" 
                                     Grid.Row="1" 
                                     Style="{DynamicResource DatePickerStyle}" 
                                     SelectedDate="{Binding Path=NoteDate}"/>
                         <TextBlock Grid.Row="2" 
-                                   Text="Текст:" 
+                                   Text="{Binding Source={x:Static lang:Language.Text}, StringFormat={}{0}:}" 
                                    Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
                         <TextBox Style="{DynamicResource TextBoxStyle}" 
                                  x:Name="noteText" 

@@ -31,7 +31,7 @@ namespace BSUIRScheduleDESK.Views
             get
             {
                 var b = GetStyledButton();
-                b.Content = "ОК";
+                b.Content = Langs.Language.OK;
                 b.Click += delegate { result = ModalWindowResult.OK; Close(); };
                 return b;
             }
@@ -41,7 +41,7 @@ namespace BSUIRScheduleDESK.Views
             get
             {
                 var b = GetStyledButton();
-                b.Content = "Отмена";
+                b.Content = Langs.Language.Cancel;
                 b.Click += delegate { result = ModalWindowResult.Canceled; Close(); };
                 return b;
             }
@@ -51,7 +51,7 @@ namespace BSUIRScheduleDESK.Views
             get
             {
                 var b = GetStyledButton();
-                b.Content = "Да";
+                b.Content = Langs.Language.Yes;
                 b.Click += delegate { result = ModalWindowResult.Yes; Close(); };
                 return b;
             }
@@ -61,7 +61,7 @@ namespace BSUIRScheduleDESK.Views
             get
             {
                 var b = GetStyledButton();
-                b.Content = "Нет";
+                b.Content = Langs.Language.No;
                 b.Click += delegate { result = ModalWindowResult.No; Close(); };
                 return b;
             }

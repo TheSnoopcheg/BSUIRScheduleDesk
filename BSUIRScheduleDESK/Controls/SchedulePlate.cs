@@ -1,6 +1,7 @@
 ﻿using BSUIRScheduleDESK.Classes;
 using BSUIRScheduleDESK.Services;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -134,7 +135,7 @@ namespace BSUIRScheduleDESK.Controls
 
             if(Schedule.lessonTypeAbbrev == "Экзамен" ||  Schedule.lessonTypeAbbrev == "Консультация")
             {
-                _datesWeeksLabel.Text = "Дата: ";
+                _datesWeeksLabel.Text = $"{Langs.Language.Date}: ";
                 _boldDatesWeeksLabel.Text = Schedule.dateLesson;
                 _noteLabel.Text = Schedule.note;
                 if (Schedule.numSubgroup != 0)
@@ -143,12 +144,12 @@ namespace BSUIRScheduleDESK.Controls
             else if (Schedule.announcement)
             {
                 _announcementText.Text = Schedule.note;
-                _datesWeeksLabel.Text = "Дата: ";
+                _datesWeeksLabel.Text = $"{Langs.Language.Date}: ";
                 _boldDatesWeeksLabel.Text = Schedule.startLessonDate;
             }
             else
             {
-                _datesWeeksLabel.Text = "Недели: ";
+                _datesWeeksLabel.Text = $"{Langs.Language.Weeks}: ";
                 if(Schedule.weekNumber != null)
                     if(Schedule.weekNumber.Count != MAX_WEEK)
                         _boldDatesWeeksLabel.Text = string.Join(", ", Schedule.weekNumber?.Select(i => i.ToString()) ?? Enumerable.Empty<string>());
@@ -159,7 +160,7 @@ namespace BSUIRScheduleDESK.Controls
                 }
                 _noteLabel.Text = Schedule.note;
                 if(Schedule.numSubgroup != 0)
-                    _subGroupsLabel.Text = Schedule.numSubgroup.ToString() + " п.";
+                    _subGroupsLabel.Text = Schedule.numSubgroup.ToString() + $" {Langs.Language.SubgroupShort}.";
             }
 
             if(Schedule.auditories != null)
@@ -177,6 +178,7 @@ namespace BSUIRScheduleDESK.Controls
 
         private void SetUpColor()
         {
+            if (_typeBorder == null) return;
             switch (Schedule.lessonTypeAbbrev)
             {
                 case "ЛК":

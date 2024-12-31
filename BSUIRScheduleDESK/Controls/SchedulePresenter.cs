@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace BSUIRScheduleDESK.Controls
 {
@@ -75,7 +76,7 @@ namespace BSUIRScheduleDESK.Controls
             _openDateButton.Click += OpenDateButton_Click;
             _showExpiredLessons.Click += ShowExpiredLessons_Click;
 
-            _currentWeekLabel.Text = "Неделя: " + CurrentWeek.ToString();
+            _currentWeekLabel.Text = $"{Langs.Language.Week}: " + CurrentWeek.ToString();
             _firstSubGroup.IsChecked = FirstSubGroup;
             _secondSubGroup.IsChecked = SecondSubGroup;
             _showExams.IsChecked = ShowExams;
@@ -172,7 +173,7 @@ namespace BSUIRScheduleDESK.Controls
                 schedulePresenter.ReturnButtonStatusUpdate();
                 if(schedulePresenter._currentWeekLabel != null)
                 {
-                    schedulePresenter._currentWeekLabel.Text = "Неделя: " + schedulePresenter.CurrentWeek.ToString();
+                    schedulePresenter._currentWeekLabel.Text = $"{Langs.Language.Week}: " + schedulePresenter.CurrentWeek.ToString();
                 }
                 schedulePresenter.SetUp();
             }
@@ -326,9 +327,10 @@ namespace BSUIRScheduleDESK.Controls
 
         #endregion
 
+        #region SetUpMethods
         private void SetUp()
         {
-            if(_scheduleView == null || _maximizedView == null || _normalView == null) return;
+            if (_scheduleView == null || _maximizedView == null || _normalView == null) return;
 
             CleanGrid();
 
@@ -346,9 +348,6 @@ namespace BSUIRScheduleDESK.Controls
             else if (WindowState == WindowState.Normal)
                 SetUpNormal();
         }
-
-        #region SetUpMethods
-        
         private void SetUpNormal()
         {
             SetUpDatesNormal();
@@ -752,19 +751,19 @@ namespace BSUIRScheduleDESK.Controls
         private string GetDateString(DateTime date, bool linear = false)
         {
             DateTime dateTime = (DateTime)date;
-            string day = dateTime.ToString("dddd");
+            string day = dateTime.ToString("dddd", CultureInfo.CurrentUICulture);
             day = day.Replace(day[0], Char.ToUpper(day[0]));
             if(linear)
-                day += " - " + dateTime.ToString("dd.MM");
+                day += " - " + dateTime.ToString("dd.MM", CultureInfo.CurrentUICulture);
             else
-                day += "\n" + dateTime.ToString("dd.MM");
+                day += "\n" + dateTime.ToString("dd.MM", CultureInfo.CurrentUICulture);
             if (dateTime == DateTime.Today)
             {
-                day += " (сегодня)";
+                day += $" ({Langs.Language.Today})";
             }
             else if (dateTime == DateTime.Today.AddDays(1))
             {
-                day += " (завтра)";
+                day += $" ({Langs.Language.Tomorrow})";
             }
             return day;
         }

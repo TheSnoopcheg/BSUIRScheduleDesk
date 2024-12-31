@@ -38,5 +38,9 @@ namespace BSUIRScheduleDESK.Classes
         {
             return employee == null ? studentGroup?.name : employee.urlId;
         }
+        public override string ToString()
+        {
+            return GetName() ?? string.Empty;
+        }
     }
 }

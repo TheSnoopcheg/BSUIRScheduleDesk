@@ -27,7 +27,7 @@ namespace BSUIRScheduleDESK.Converters
                     {
                         if(value is StudentGroup s)
                         {
-                            return $"{s.specialityName} ({s.numberOfStudents} студентов)";
+                            return $"{s.specialityName} ({s.numberOfStudents} {Langs.Language.Students})";
                         }
                         else if(value is Employee e)
                         {

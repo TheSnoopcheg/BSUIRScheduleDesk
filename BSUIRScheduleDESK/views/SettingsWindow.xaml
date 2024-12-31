@@ -6,8 +6,9 @@
         xmlns:local="clr-namespace:BSUIRScheduleDESK.Views"
         xmlns:controls="clr-namespace:BSUIRScheduleDESK.Controls"
         xmlns:classes="clr-namespace:BSUIRScheduleDESK.Classes"
+        xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
         mc:Ignorable="d"
-        Title="Настройки - BSUIR Schedule" 
+        Title="{Binding Source={x:Static lang:Language.Settings}, StringFormat={}{0} - BSUIR Schedule}" 
         Height="250" Width="400"
         WindowStyle="None"
         AllowsTransparency="True"
@@ -129,7 +130,7 @@
                 <RowDefinition Height="50"/>
                 <RowDefinition/>
             </Grid.RowDefinitions>
-            <TextBlock Text="Настройки"
+            <TextBlock Text="{x:Static lang:Language.Settings}"
                        Foreground="{DynamicResource SubWindow.TitleText.Static}"
                        FontSize="16"
                        Margin="10"
@@ -160,7 +161,7 @@
                             Margin="10"
                             Grid.Column="0">
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Тема"
+                        <TextBlock Text="{x:Static lang:Language.Theme}"
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
                         <ComboBox Style="{DynamicResource ComboBoxStyle}" 
@@ -172,18 +173,18 @@
                                   VerticalAlignment="Center"
                                   SelectionChanged="ComboBox_SelectionChanged"/>
                     </StackPanel>
-                    <TextBlock Text="Цвета"
+                    <TextBlock Text="{x:Static lang:Language.Colors}"
                                FontSize="14"
                                Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
                     <StackPanel Orientation="Vertical"
                                 Margin="5,0,0,0"
                                 HorizontalAlignment="Left">
-                        <controls:ColorPicker Text="Лекция" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LectureColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0], Mode=TwoWay, ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="Практическая работа" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=PracticeColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[1], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="Лабораторная работа" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LabColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[2], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="Экзамен" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ExamColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[3], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="Консультация" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ConsultationColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[4], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="Неизвестно" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=UnknownColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[5], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Lecture}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LectureColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0], Mode=TwoWay, ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Practice}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=PracticeColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[1], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.LaboratoryWork}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LabColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[2], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Exam}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ExamColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[3], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Consultation}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ConsultationColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[4], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Unknown}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=UnknownColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[5], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical"
@@ -191,10 +192,16 @@
                             HorizontalAlignment="Right"
                             VerticalAlignment="Bottom"
                             Margin="5">
-                    <TextBlock Text="{Binding Path=Version, ElementName=sWindow, StringFormat=Версия: {0}}"
-                               Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                    <TextBlock Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                HorizontalAlignment="Right"
-                               FontSize="10"/>
+                               FontSize="10">
+                        <TextBlock.Text>
+                            <MultiBinding StringFormat="{}{0}: {1}">
+                                <Binding Source="{x:Static lang:Language.Version}"/>
+                                <Binding Path="Version"/>
+                            </MultiBinding>
+                        </TextBlock.Text>
+                    </TextBlock>
                     <TextBlock Text="© 2023-2024 Dmitry Lantas" 
                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                HorizontalAlignment="Right"

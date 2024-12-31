@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:BSUIRScheduleDESK.Controls"
+             xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
              mc:Ignorable="d"
              x:Name="root"
              PreviewKeyDown="Control_KeyDown">
@@ -13,7 +14,7 @@
                 <VisualBrush x:Key="CueBannerBrush" AlignmentX="Left" AlignmentY="Center" Stretch="None">
                     <VisualBrush.Visual>
                         <Border Background="{DynamicResource TextBox.Static.Background}" Width="280">
-                            <Label Content="Введите номер группы" Foreground="{DynamicResource SearchBox.TextBox.Static.Hint.Foreground}" FontWeight="Normal" />
+                            <Label Content="{x:Static lang:Language.GroupNumberInput}" Foreground="{DynamicResource SearchBox.TextBox.Static.Hint.Foreground}" FontWeight="Normal" />
                         </Border>
                     </VisualBrush.Visual>
                 </VisualBrush>

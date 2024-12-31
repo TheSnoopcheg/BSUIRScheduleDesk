@@ -9,6 +9,7 @@
         xmlns:converters="clr-namespace:BSUIRScheduleDESK.Converters"
         xmlns:templates="clr-namespace:BSUIRScheduleDESK.Controls"
         xmlns:classes="clr-namespace:BSUIRScheduleDESK.Classes"
+        xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Height="450" Width="800"
@@ -21,7 +22,6 @@
         <converters:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
         <converters:TabItemVisibilityConverter x:Key="TabItemVisibilityConverter"/>
         <converters:ButtonVisibilityConverter x:Key="ButtonVisibilityConverter"/>
-
     </Window.Resources>
     <Window.Style>
         <Style TargetType="{x:Type Window}">
@@ -58,7 +58,7 @@
               Background="{DynamicResource Window.Title.Static}"
               Height="35"
               MouseDown="Title_MouseDown">
-            <TextBlock Text="Расписание БГУИР"
+            <TextBlock Text="{x:Static lang:Language.MainWindowTitle}"
                        Foreground="{DynamicResource Window.TitleText.Static}"
                        VerticalAlignment="Center"
                        HorizontalAlignment="Center"
@@ -107,8 +107,8 @@
 
             <!--left side bar-->
             <Grid Grid.Column="0"
-                      Width="60"
-                      Background="{DynamicResource FavoriteBar.Background.Static}">
+                  Width="60"
+                  Background="{DynamicResource FavoriteBar.Background.Static}">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="60"/>
                     <RowDefinition/>
@@ -139,8 +139,8 @@
                     <!--favorites schedules-->
                     <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
                         <templates:FavoriteSchedules Schedules="{Binding Path=FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
-                                                  LoadCommand="{Binding Path=LoadFavoriteSchedule}"
-                                                  DeleteCommand="{Binding Path=DeleteFavoriteSchedule}"/>
+                                                     LoadCommand="{Binding Path=LoadFavoriteSchedule}"
+                                                     DeleteCommand="{Binding Path=DeleteFavoriteSchedule}"/>
                         <!--add favorite schedule button-->
                         <Button Style="{DynamicResource AddButtonStyle}"
                                 Command="{Binding AddFavoriteScheduleWP}"/>
@@ -271,16 +271,28 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Path=Schedule.startDate, StringFormat=Начало занятий: {0}}"
-                                           VerticalAlignment="Center"
+                                <TextBlock VerticalAlignment="Center"
                                            Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                            FontWeight="DemiBold"
-                                           Grid.Row="0"/>
-                                <TextBlock Text="{Binding Path=Schedule.endDate, StringFormat=Конец занятий: {0}}"
-                                           VerticalAlignment="Center"
+                                           Grid.Row="0">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}: {1}" >
+                                            <Binding Source="{x:Static lang:Language.StartLessonDate}"/>
+                                            <Binding Path="Schedule.startDate"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock VerticalAlignment="Center"
                                            Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                            FontWeight="DemiBold"
-                                           Grid.Row="1"/>
+                                           Grid.Row="1">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}: {1}">
+                                            <Binding Source="{x:Static lang:Language.EndLessonDate}"/>
+                                            <Binding Path="Schedule.endDate"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                                 <Grid.Style>
                                     <Style TargetType="{x:Type Grid}">
                                         <Style.Triggers>
@@ -297,16 +309,28 @@
                                     <RowDefinition/>
                                     <RowDefinition/>
                                 </Grid.RowDefinitions>
-                                <TextBlock Text="{Binding Path=Schedule.startExamsDate, StringFormat=Начало сессии: {0}}"
-                                           VerticalAlignment="Center"
+                                <TextBlock VerticalAlignment="Center"
                                            FontWeight="DemiBold"
                                            Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                           Grid.Row="0"/>
-                                <TextBlock Text="{Binding Path=Schedule.endExamsDate, StringFormat=Конец сессии: {0}}"
-                                           VerticalAlignment="Center"
+                                           Grid.Row="0">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}: {1}">
+                                            <Binding Source="{x:Static lang:Language.StartExamsDate}"/>
+                                            <Binding Path="Schedule.startExamsDate"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                                <TextBlock VerticalAlignment="Center"
                                            FontWeight="DemiBold"
                                            Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                           Grid.Row="1"/>
+                                           Grid.Row="1">
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0}: {1}">
+                                            <Binding Source="{x:Static lang:Language.EndExamsDate}"/>
+                                            <Binding Path="Schedule.endExamsDate"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
                                 <Grid.Style>
                                     <Style TargetType="{x:Type Grid}">
                                         <Style.Triggers>
@@ -434,7 +458,7 @@
                                             <Setter Property="Text" Value="{Binding Schedule.currentTerm}"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding Schedule.currentTerm}" Value="{x:Null}">
-                                                    <Setter Property="Text" Value="Занятия"/>
+                                                    <Setter Property="Text" Value="{x:Static lang:Language.Classes}"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -452,8 +476,8 @@
                                                              ShowExpiredLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowExpiredLessons}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
                                                              Command="{Binding LoadScheduleFromPlate}"
-                                                             StartExamDate="{Binding Schedule.startExamDate}"
-                                                             EndExamDate="{Binding Schedule.endExamDate}"/>
+                                                             StartExamDate="{Binding Schedule.startExamsDate}"
+                                                             EndExamDate="{Binding Schedule.endExamsDate}"/>
 
                             </Grid>
 
@@ -463,7 +487,7 @@
                     <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Exams}">
                         <TabItem.Header>
                             <StackPanel>
-                                <TextBlock Text="Сессия" FontSize="14"/>
+                                <TextBlock Text="{x:Static lang:Language.Exams}" FontSize="14"/>
                             </StackPanel>
                         </TabItem.Header>
                         <TabItem.Content>
@@ -508,8 +532,8 @@
                                                              ShowExpiredLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowExpiredLessons}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
                                                              Command="{Binding LoadScheduleFromPlate}"
-                                                             StartExamDate="{Binding Schedule.startExamDate}"
-                                                             EndExamDate="{Binding Schedule.endExamDate}"/>
+                                                             StartExamDate="{Binding Schedule.startExamsDate}"
+                                                             EndExamDate="{Binding Schedule.endExamsDate}"/>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

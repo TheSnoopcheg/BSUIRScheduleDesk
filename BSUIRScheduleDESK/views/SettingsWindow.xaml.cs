@@ -19,6 +19,11 @@ namespace BSUIRScheduleDESK.Views
     {
         public SettingsWindow()
         {
+            themes = new List<string>
+            {
+                Langs.Language.IISTheme,
+                Langs.Language.DarkTheme
+            };
             InitializeComponent();
             this.Owner = App.Current.MainWindow;
             SelectedIndexes = JsonSerializer.Deserialize<ObservableCollection<int>>(Config.Instance.Indexes)!;
@@ -73,11 +78,7 @@ namespace BSUIRScheduleDESK.Views
                 OnPropertyChanged();
             }
         }
-        private List<string> themes = new List<string>()
-        {
-            "ИИС",
-            "Тёмная"
-        };
+        private List<string> themes;
         public List<string> Themes { get => themes; }
         private void ColorPicker_ColorChanged()
         {
