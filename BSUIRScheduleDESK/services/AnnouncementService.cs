@@ -11,9 +11,9 @@ namespace BSUIRScheduleDESK.Services
         {
             _networkService = networkService;
         }
-        public async Task<List<Announcement>> LoadAnnouncementsAsync(string? url)
+        public async Task<List<Announcement>?> LoadAnnouncementsAsync(string? url)
         {
-            List<Announcement> announcements;
+            List<Announcement>? announcements;
             if (int.TryParse(url, out var id))
             {
                 announcements = await _networkService.GetAsync<List<Announcement>>($"https://iis.bsuir.by/api/v1/announcements/student-groups?name={url}");

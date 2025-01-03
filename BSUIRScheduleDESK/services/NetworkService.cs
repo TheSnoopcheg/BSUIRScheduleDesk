@@ -17,7 +17,7 @@ namespace BSUIRScheduleDESK.Services
             httpHandler.CheckCertificateRevocationList = true;
             httpClient = new HttpClient(httpHandler);
         }
-        public async Task<T> GetAsync<T>(string? url)
+        public async Task<T?> GetAsync<T>(string? url)
         {
             try
             {

@@ -9,8 +9,7 @@ namespace BSUIRScheduleDESK.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
-            string? name = value as string;
+            if (value is not string name) return string.Empty;
             if (int.TryParse(name, out int numVal))
             {
                 return name;

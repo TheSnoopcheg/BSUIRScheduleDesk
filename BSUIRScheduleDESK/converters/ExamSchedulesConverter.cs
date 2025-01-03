@@ -11,8 +11,7 @@ namespace BSUIRScheduleDESK.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
-            List<Lesson>? schedules = value as List<Lesson>;
+            if (value == null || value is not List<Lesson> schedules) return null;
             schedules = schedules!.OrderBy(s => DateTime.Parse(s.dateLesson!)).ThenBy(s => s.startLessonTime).ToList();
             return schedules!.GroupBy(x => x.dateLesson).GroupBy(x => DateTime.Parse(x.Key!), new MonthComparer());
         }

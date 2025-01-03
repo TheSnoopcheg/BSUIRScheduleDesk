@@ -11,8 +11,7 @@ namespace BSUIRScheduleDESK.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
-            string? sparam = parameter as string;
+            if (value == null || parameter is not string sparam) return null;
             switch (sparam)
             {
                 case "Employee":

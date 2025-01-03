@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Windows;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BSUIRScheduleDESK
 {
@@ -25,12 +26,13 @@ namespace BSUIRScheduleDESK
         public IServiceProvider ServiceProvider { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
-            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo("en");
             IsAnotherProcessExist();
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{Config.Instance.CurrentTheme}.xaml", UriKind.Relative)};
 
             ConfigureServices();
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Config.Instance.CurrentLanguage);
 
             _mainWindowViewModel = ServiceProvider.GetService<IMainWindowViewModel>()!;
             _scheduleService = ServiceProvider.GetService<IScheduleService>()!;
@@ -53,10 +55,14 @@ namespace BSUIRScheduleDESK
 
             Config.Instance.LastStartup = DateTime.Today;
             Config.Instance.Save();
+            
             this.MainWindow = new MainWindow();
             this.MainWindow.DataContext = _mainWindowViewModel;
+            
             MainWindow.Show();
+            
             ShowUpdateInfo();
+            
             base.OnStartup(e);
         }
 
@@ -97,7 +103,7 @@ namespace BSUIRScheduleDESK
             Process[] processes = Process.GetProcesses().Where(u => u.ProcessName == processName).ToArray();
             if(processes.Length > 1)
             {
-                ModalWindow.Show("Данная программа уже запущена.", "Расписание БГУИР", "", ModalWindowButtons.OK);
+                ModalWindow.Show(Langs.Language.ProgramRunning + ".", Langs.Language.AppName, "", ModalWindowButtons.OK);
                 this.Shutdown();
             }
         }
@@ -110,16 +116,16 @@ namespace BSUIRScheduleDESK
             string text = string.Empty;
             foreach(var update in updates)
             {
-                text += $"Обновление от {update.UpdateDate}:\n{update.Content}\n\n";
+                text += $"{Langs.Language.UpdateBy} {update.UpdateDate}:\n{update.Content}\n\n";
                 update.IsShowed = true;
                 File.WriteAllText($"{path}{update.UpdateDate}.json", JsonSerializer.Serialize(update));
             }
-            ModalWindow.Show(text, $"Обновления", Directory.GetCurrentDirectory() + @"\updates\update.png", ModalWindowButtons.OK);
+            ModalWindow.Show(text, Langs.Language.Updates, Directory.GetCurrentDirectory() + @"\updates\update.png", ModalWindowButtons.OK);
         }
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             File.WriteAllText($"{Directory.GetCurrentDirectory()}\\crash.log", $"[{DateTime.Now}] [{sender}] \n{e.ExceptionObject}");
-            ModalWindow.Show("Упс.. Отправьте, пожалуйста, файл crash.log в телеграм @snoopcheg\nДля запуска попробуйте удалить recent.json в папке data", "Critical error", null, ModalWindowButtons.OK);
+            ModalWindow.Show(Langs.Language.CriticalErrorMessage, Langs.Language.CriticalError, string.Empty, ModalWindowButtons.OK);
         }
     }
 }

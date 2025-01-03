@@ -468,8 +468,7 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <Grid>
-                                <templates:SchedulePresenter Lessons="{Binding Schedule.lessons}"
-                                                             FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
+                                <templates:SchedulePresenter FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
                                                              SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
                                                              CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
@@ -477,7 +476,8 @@
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
                                                              Command="{Binding LoadScheduleFromPlate}"
                                                              StartExamDate="{Binding Schedule.startExamsDate}"
-                                                             EndExamDate="{Binding Schedule.endExamsDate}"/>
+                                                             EndExamDate="{Binding Schedule.endExamsDate}"
+                                                             Lessons="{Binding Schedule.lessons}"/>
 
                             </Grid>
 
@@ -524,8 +524,7 @@
                         </TabItem.Header>
                         <TabItem.Content>
                             <Grid>
-                                <templates:SchedulePresenter Lessons="{Binding Schedule.previousLessons}"
-                                                             FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
+                                <templates:SchedulePresenter FirstSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=FirstSubGroup}"
                                                              SecondSubGroup="{Binding Source={x:Static classes:Config.Instance},Path=SecondSubGroup}"
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
                                                              CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
@@ -533,7 +532,8 @@
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
                                                              Command="{Binding LoadScheduleFromPlate}"
                                                              StartExamDate="{Binding Schedule.startExamsDate}"
-                                                             EndExamDate="{Binding Schedule.endExamsDate}"/>
+                                                             EndExamDate="{Binding Schedule.endExamsDate}"
+                                                             Lessons="{Binding Schedule.previousLessons}"/>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

@@ -7,7 +7,7 @@ using System.Linq;
 using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Globalization;
-using System.Diagnostics;
+using System.Windows.Markup;
 
 namespace BSUIRScheduleDESK.Controls
 {
@@ -19,6 +19,9 @@ namespace BSUIRScheduleDESK.Controls
         private const int GRID_ROWS_NORMAL = 12;
         private const int GRID_COLS = 7;
         private int _weekDiff = 0;
+
+        private DateTime _startExamDate = DateTime.MinValue;
+        private DateTime _endExamDate = DateTime.MaxValue;
 
         private List<DateTime> _dates = new List<DateTime>();
 
@@ -82,6 +85,11 @@ namespace BSUIRScheduleDESK.Controls
             _showExams.IsChecked = ShowExams;
             _showExpiredLessons.IsChecked = ShowExpiredLessons;
 
+            if(_calendar != null)
+            {
+                _calendar.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.IetfLanguageTag);
+            }
+
             SetUpMaximizedGrid();
             SetUpNormalGrid();
             SetUp();
@@ -95,19 +103,20 @@ namespace BSUIRScheduleDESK.Controls
 
         public static readonly DependencyProperty StartExamDateProperty = DependencyProperty.Register(
             "StartExamDate",
-            typeof(DateTime),
+            typeof(string),
             typeof(SchedulePresenter),
-            new FrameworkPropertyMetadata(DateTime.MinValue, new PropertyChangedCallback(OnStartExamDateChanged)));
+            new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnStartExamDateChanged)));
 
         private static void OnStartExamDateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not SchedulePresenter schedulePresenter) return;
-            schedulePresenter.SetUp();
+            if (e.NewValue is not string newDate) return;
+            DateTime.TryParse(newDate, out schedulePresenter._startExamDate);
         }
 
-        public DateTime StartExamDate
+        public string StartExamDate
         {
-            get { return (DateTime)GetValue(StartExamDateProperty); }
+            get { return (string)GetValue(StartExamDateProperty); }
             set { SetValue(StartExamDateProperty, value); }
         }
 
@@ -117,19 +126,20 @@ namespace BSUIRScheduleDESK.Controls
 
         public static readonly DependencyProperty EndExamDateProperty = DependencyProperty.Register(
             "EndExamDate",
-            typeof(DateTime),
+            typeof(string),
             typeof(SchedulePresenter),
-            new FrameworkPropertyMetadata(DateTime.MinValue, new PropertyChangedCallback(OnEndExamDateChanged)));
+            new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnEndExamDateChanged)));
 
         private static void OnEndExamDateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             if (d is not SchedulePresenter schedulePresenter) return;
-            schedulePresenter.SetUp();
+            if (e.NewValue is not string newDate) return;
+            DateTime.TryParse(newDate, out schedulePresenter._endExamDate);
         }
 
-        public DateTime EndExamDate
+        public string EndExamDate
         {
-            get { return (DateTime)GetValue(EndExamDateProperty); }
+            get { return (string)GetValue(EndExamDateProperty); }
             set { SetValue(EndExamDateProperty, value); }
         }
 
@@ -370,6 +380,7 @@ namespace BSUIRScheduleDESK.Controls
 
         #endregion
 
+        #region CleanMethods
         private void CleanGrid()
         {
             StackPanel? panel;
@@ -379,7 +390,11 @@ namespace BSUIRScheduleDESK.Controls
                 if (element is Border) continue;
                 if (element is TextBlock) continue;
                 panel = element as StackPanel;
-                if(panel != null) panel.Children.Clear();
+                if(panel != null)
+                {
+                    CleanPanel(panel);
+                    panel.Children.Clear();
+                }
                 else
                 {
                     _maximizedView.Children.Remove(element);
@@ -391,9 +406,24 @@ namespace BSUIRScheduleDESK.Controls
                 if (_normalView.Children[i] is not UIElement element) continue;
                 if(element is Border) continue;
                 panel = element as StackPanel;
-                if(panel != null) panel.Children.Clear();
+                if(panel != null)
+                {
+                    CleanPanel(panel);
+                    panel.Children.Clear();
+                }
             }
         }
+
+        private void CleanPanel(StackPanel panel)
+        {
+            for(int i = 0; i < panel.Children.Count; i++)
+            {
+                if (panel.Children[i] is not SchedulePlate plate) return;
+                plate.Clean();
+            }
+        }
+
+        #endregion
 
         #region SetupDatesMethods
 
@@ -402,7 +432,8 @@ namespace BSUIRScheduleDESK.Controls
             if(_scheduleView == null) return;
             for(int i = 1; i < GRID_COLS; i++)
             {
-                if (GetElementInGridPosition(_scheduleView ,i, 0, typeof(TextBlock)) is not TextBlock textBlock) continue;
+                var textBlock = GetElementInGridPositionByType<TextBlock>(_scheduleView, i, 0);
+                if (textBlock == null) continue;
                 textBlock.Text = GetDateString(_dates[i - 1]);
             }
             if (_dates.Contains(DateTime.Today))
@@ -420,9 +451,183 @@ namespace BSUIRScheduleDESK.Controls
             if (_normalView == null) return;
             for(int i = 0; i < GRID_ROWS_NORMAL; i += 2)
             {
-                if(GetElementInGridPosition(_normalView, 0, i, typeof(TextBlock)) is not TextBlock textBlock) continue;
+                var textBlock = GetElementInGridPositionByType<TextBlock>(_normalView, 0, i);
+                if (textBlock == null) continue;
                 textBlock.Text = GetDateString(_dates[i / 2], true);
             }
+        }
+
+        #endregion
+
+        #region SetupGridMethods
+
+        private void SetUpMaximizedGrid()
+        {
+            for (int i = 1; i < GRID_COLS; i++)
+            {
+                TextBlock textBlock = new TextBlock()
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    TextAlignment = TextAlignment.Center,
+                    FontWeight = FontWeights.DemiBold
+                };
+                textBlock.SetValue(Grid.ColumnProperty, i);
+                textBlock.SetValue(Grid.RowProperty, 0);
+                _scheduleView.Children.Add(textBlock);
+            }
+            for (int i = 0; i < GRID_ROWS; i++)
+            {
+                for (int j = 1; j < GRID_COLS; j++)
+                {
+                    StackPanel panel = new StackPanel();
+                    panel.SetValue(StackPanel.OrientationProperty, Orientation.Vertical);
+                    panel.SetValue(Grid.RowProperty, i);
+                    panel.SetValue(Grid.ColumnProperty, j);
+                    _maximizedView.Children.Add(panel);
+                }
+            }
+        }
+        private void SetUpNormalGrid()
+        {
+            for (int i = 0; i < GRID_ROWS_NORMAL; i += 2)
+            {
+                TextBlock textBlock = new TextBlock()
+                {
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    TextAlignment = TextAlignment.Center,
+                    FontWeight = FontWeights.DemiBold
+                };
+                textBlock.SetValue(Grid.RowProperty, i);
+                _normalView.Children.Add(textBlock);
+            }
+            for (int i = 1; i < GRID_ROWS_NORMAL; i += 2)
+            {
+                StackPanel panel = new StackPanel();
+                panel.SetValue(StackPanel.OrientationProperty, Orientation.Vertical);
+                panel.SetValue(Grid.RowProperty, i);
+                _normalView.Children.Add(panel);
+            }
+        }
+
+        #endregion
+
+        #region SetSchedulePlatesMethods
+
+        private void SetMaximizedSchedulePlates()
+        {
+            int col = 0;
+            int row = 0;
+            bool isExpiredToShow = false;
+            foreach (var prop in Lessons.GetType().GetProperties())
+            {
+                col++;
+                if (prop.GetValue(Lessons) is not List<Lesson> list || list.Count == 0) continue;
+                var flist = list
+                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
+                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
+                foreach (var item in flist)
+                {
+                    isExpiredToShow = false;
+                    if (string.IsNullOrEmpty(item.startLessonTime)) continue;
+                    if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
+                    {
+                        if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
+                            continue;
+                    }
+                    if (item.announcement)
+                        if (DateTime.TryParse(item.startLessonDate, out DateTime date))
+                            if (!_dates.Contains(date))
+                                continue;
+                    if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[col - 1])
+                        || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[col - 1])))
+                    {
+                        if (_showExpiredLessons.IsChecked == false)
+                            continue;
+                        else
+                            isExpiredToShow = true;
+                    }
+                    if (!TimeOnly.TryParse(item.startLessonTime, out TimeOnly time)) continue;
+                    row = StartLessonDict[GetNearestTime(time)];
+                    if (GetElementInGridPosition(_maximizedView, col, row) is not StackPanel panel) continue;
+                    SchedulePlate plate = new SchedulePlate();
+                    plate.SetValue(Grid.RowProperty, row);
+                    plate.SetValue(Grid.ColumnProperty, col);
+                    plate.SetValue(SchedulePlate.ScheduleProperty, item);
+                    plate.SetValue(SchedulePlate.CommandProperty, Command);
+                    plate.SetValue(SchedulePlate.StateProperty, PlateState.Maximized);
+                    plate.SetValue(OpacityProperty, isExpiredToShow ? 0.75 : 1);
+
+                    panel.Children.Add(plate);
+                }
+            }
+        }
+
+        private void SetNormalSchedulePlates()
+        {
+            bool isExpiredToShow = false;
+            var properties = Lessons.GetType().GetProperties();
+            for (int i = 0; i < properties.Length; i++)
+            {
+                if (GetElementInGridPosition(_normalView, 0, i * 2 + 1) is not StackPanel panel) continue;
+                if (properties[i].GetValue(Lessons) is not List<Lesson> list || list.Count == 0)
+                {
+                    AddNoLessonTextBlock(panel);
+                    continue;
+                }
+                var flist = list
+                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
+                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup))
+                    .OrderBy(i => TimeOnly.TryParse(i.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
+                foreach (var item in flist)
+                {
+                    isExpiredToShow = false;
+                    if (string.IsNullOrEmpty(item.startLessonTime)) continue;
+                    if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
+                    {
+                        if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
+                            continue;
+                    }
+                    if (item.announcement)
+                        if (DateTime.TryParse(item.startLessonDate, out DateTime date))
+                            if (!_dates.Contains(date))
+                                continue;
+                    if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[i])
+                        || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[i])))
+                    {
+                        if (_showExpiredLessons.IsChecked == false)
+                            continue;
+                        else
+                            isExpiredToShow = true;
+                    }
+                    SchedulePlate plate = new SchedulePlate();
+                    plate.SetValue(SchedulePlate.ScheduleProperty, item);
+                    plate.SetValue(SchedulePlate.CommandProperty, Command);
+                    plate.SetValue(SchedulePlate.StateProperty, PlateState.Normal);
+                    plate.SetValue(OpacityProperty, isExpiredToShow ? 0.75 : 1);
+
+                    panel.Children.Add(plate);
+                }
+                if (panel.Children.Count == 0)
+                {
+                    AddNoLessonTextBlock(panel);
+                    continue;
+                }
+            }
+        }
+
+        private void AddNoLessonTextBlock(StackPanel panel)
+        {
+            TextBlock text = new TextBlock()
+            {
+                VerticalAlignment = VerticalAlignment.Bottom,
+                HorizontalAlignment = HorizontalAlignment.Center,
+                Padding = new Thickness(3),
+                Height = 25,
+                Text = "Нет занятий"
+            };
+            panel.Children.Add(text);
         }
 
         #endregion
@@ -482,179 +687,6 @@ namespace BSUIRScheduleDESK.Controls
             }
         }
 
-        #region SetupGridMethods
-
-        private void SetUpMaximizedGrid()
-        {
-            for(int i = 1; i < GRID_COLS; i++)
-            {
-                TextBlock textBlock = new TextBlock()
-                {
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    TextAlignment = TextAlignment.Center,
-                    FontWeight = FontWeights.DemiBold
-                };
-                textBlock.SetValue(Grid.ColumnProperty, i);
-                textBlock.SetValue(Grid.RowProperty, 0);
-                _scheduleView.Children.Add(textBlock);
-            }
-            for(int i = 0; i < GRID_ROWS; i++)
-            {
-                for(int j = 1; j < GRID_COLS; j++)
-                {
-                    StackPanel panel = new StackPanel();
-                    panel.SetValue(StackPanel.OrientationProperty, Orientation.Vertical);
-                    panel.SetValue(Grid.RowProperty, i);
-                    panel.SetValue(Grid.ColumnProperty, j);
-                    _maximizedView.Children.Add(panel);
-                }
-            }
-        }
-        private void SetUpNormalGrid()
-        {
-            for(int i = 0; i < GRID_ROWS_NORMAL; i += 2)
-            {
-                TextBlock textBlock = new TextBlock()
-                {
-                    VerticalAlignment = VerticalAlignment.Center,
-                    HorizontalAlignment = HorizontalAlignment.Center,
-                    TextAlignment = TextAlignment.Center,
-                    FontWeight = FontWeights.DemiBold
-                };
-                textBlock.SetValue(Grid.RowProperty, i);
-                _normalView.Children.Add(textBlock);
-            }
-            for(int i = 1; i < GRID_ROWS_NORMAL; i += 2)
-            {
-                StackPanel panel = new StackPanel();
-                panel.SetValue(StackPanel.OrientationProperty, Orientation.Vertical);
-                panel.SetValue(Grid.RowProperty, i);
-                _normalView.Children.Add(panel);
-            }
-        }
-
-        #endregion
-
-        #region SetSchedulePlatesMethods
-
-        private void SetMaximizedSchedulePlates()
-        {
-            int col = 0;
-            int row = 0;
-            bool isExpiredToShow = false;
-            foreach(var prop in Lessons.GetType().GetProperties())
-            {
-                col++;
-                if (prop.GetValue(Lessons) is not List<Lesson> list || list.Count == 0) continue;
-                var flist = list
-                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
-                foreach(var item in flist)
-                {
-                    isExpiredToShow = false;
-                    if (string.IsNullOrEmpty(item.startLessonTime)) continue;
-                    if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > StartExamDate || lessonDate < EndExamDate))
-                    {
-                        if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
-                            continue;
-                    }
-                    if (item.announcement)
-                        if(DateTime.TryParse(item.startLessonDate, out DateTime date))
-                            if (!_dates.Contains(date))
-                                continue;
-                    if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[col - 1]) 
-                        || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[col - 1])))
-                    {
-                        if (_showExpiredLessons.IsChecked == false)
-                            continue;
-                        else
-                            isExpiredToShow = true;
-                    }
-                    if (!TimeOnly.TryParse(item.startLessonTime, out TimeOnly time)) continue;
-                    row = StartLessonDict[GetNearestTime(time)];
-                    if (GetElementInGridPosition(_maximizedView, col, row) is not StackPanel panel) continue;
-                    SchedulePlate plate = new SchedulePlate();
-                    plate.SetValue(Grid.RowProperty, row);
-                    plate.SetValue(Grid.ColumnProperty, col);
-                    plate.SetValue(SchedulePlate.ScheduleProperty, item);
-                    plate.SetValue(SchedulePlate.CommandProperty, Command);
-                    plate.SetValue(SchedulePlate.StateProperty, PlateState.Maximized);
-                    plate.SetValue(OpacityProperty, isExpiredToShow ? 0.75 : 1);
-
-                    panel.Children.Add(plate);
-                }
-            }
-        }
-
-        private void SetNormalSchedulePlates()
-        {
-            bool isExpiredToShow = false;
-            var properties = Lessons.GetType().GetProperties();
-            for(int i = 0; i < properties.Length; i++)
-            {
-                if (GetElementInGridPosition(_normalView, 0, i * 2 + 1) is not StackPanel panel) continue;
-                if (properties[i].GetValue(Lessons) is not List<Lesson> list || list.Count == 0)
-                {
-                    AddNoLessonTextBlock(panel);
-                    continue;
-                }
-                var flist = list
-                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup))
-                    .OrderBy(i => TimeOnly.TryParse(i.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
-                foreach (var item in flist)
-                {
-                    isExpiredToShow = false;
-                    if (string.IsNullOrEmpty(item.startLessonTime)) continue;
-                    if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > StartExamDate || lessonDate < EndExamDate))
-                    {
-                        if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
-                            continue;
-                    }
-                    if (item.announcement)
-                        if (DateTime.TryParse(item.startLessonDate, out DateTime date))
-                            if (!_dates.Contains(date))
-                                continue;
-                    if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[i])
-                        || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[i])))
-                    {
-                        if (_showExpiredLessons.IsChecked == false)
-                            continue;
-                        else
-                            isExpiredToShow = true;
-                    }
-                    SchedulePlate plate = new SchedulePlate();
-                    plate.SetValue(SchedulePlate.ScheduleProperty, item);
-                    plate.SetValue(SchedulePlate.CommandProperty, Command);
-                    plate.SetValue(SchedulePlate.StateProperty, PlateState.Normal);
-                    plate.SetValue(OpacityProperty, isExpiredToShow ? 0.75 : 1);
-
-                    panel.Children.Add(plate);
-                }
-                if (panel.Children.Count == 0)
-                {
-                    AddNoLessonTextBlock(panel);
-                    continue;
-                }
-            }
-        }
-
-        private void AddNoLessonTextBlock(StackPanel panel)
-        {
-            TextBlock text = new TextBlock()
-            {
-                VerticalAlignment = VerticalAlignment.Bottom,
-                HorizontalAlignment = HorizontalAlignment.Center,
-                Padding = new Thickness(3),
-                Height = 25,
-                Text = "Нет занятий"
-            };
-            panel.Children.Add(text);
-        }
-
-        #endregion
-
         private void DeleteFreeRows()
         {
             bool flag = false;
@@ -662,7 +694,8 @@ namespace BSUIRScheduleDESK.Controls
             {
                 for(int j = 1; j < GRID_COLS; j++)
                 {
-                    if (GetElementInGridPosition(_maximizedView, j, i, typeof(StackPanel)) is StackPanel panel && panel.Children.Count > 0)
+                    var panel = GetElementInGridPositionByType<StackPanel>(_maximizedView, j, i);
+                    if (panel != null && panel.Children.Count > 0)
                     {
                         flag = true;
                         break;
@@ -673,20 +706,23 @@ namespace BSUIRScheduleDESK.Controls
                     flag = false;
                     continue;
                 }
-                if (GetElementInGridPosition(_maximizedView, 0, i, typeof(ScheduleTime)) is ScheduleTime time) 
+                var time = GetElementInGridPositionByType<ScheduleTime>(_maximizedView, 0, i);
+                if (time != null) 
                     _maximizedView.Children.Remove(time);
             }
         }
-
-        private UIElement? GetElementInGridPosition(Grid grid, int column, int row, Type? type = null)
+        private UIElement? GetElementInGridPosition(Grid grid, int column, int row)
         {
-            if(type == null)
-                return grid.Children
-                              .Cast<UIElement>()
-                              .FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == column);
             return grid.Children
                               .Cast<UIElement>()
-                              .FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == column && e.GetType() == type);
+                              .FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == column);
+        }
+
+        private T? GetElementInGridPositionByType<T>(Grid grid, int column, int row) where T : UIElement
+        {
+            return grid.Children
+                .OfType<T>()
+                .FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == column);
         }
 
         private void ChangeWeek(int offset)
@@ -748,9 +784,8 @@ namespace BSUIRScheduleDESK.Controls
             }
         }
 
-        private string GetDateString(DateTime date, bool linear = false)
+        private string GetDateString(DateTime dateTime, bool linear = false)
         {
-            DateTime dateTime = (DateTime)date;
             string day = dateTime.ToString("dddd", CultureInfo.CurrentUICulture);
             day = day.Replace(day[0], Char.ToUpper(day[0]));
             if(linear)

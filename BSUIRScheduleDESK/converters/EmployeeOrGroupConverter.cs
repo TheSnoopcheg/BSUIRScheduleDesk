@@ -12,8 +12,7 @@ namespace BSUIRScheduleDESK.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
-            string? sparam = parameter as string;
+            if (value == null || parameter is not string sparam) return null;
             switch (sparam)
             {
                 case "Type":
@@ -49,11 +48,12 @@ namespace BSUIRScheduleDESK.Converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null || values.Length == 0) return null;
-            string? sparam = parameter as string;
+            if (values == null 
+                || values.Length < 2
+                || parameter is not string sparam
+                || values[0] is not Announcement announcement
+                || values[1] is not bool isEmplAnn) return null;
             if (sparam != "Type") return null;
-            if (values[0] is not Announcement announcement) return null;
-            if (values[1] is not bool isEmplAnn) return null;
             if (isEmplAnn)
                 return announcement.studentGroups?.OrderBy(s => s.name)!;
             else

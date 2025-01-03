@@ -188,11 +188,14 @@
                             <RowDefinition MinHeight="20" Height="Auto"/>
                         </Grid.RowDefinitions>
                         <StackPanel Orientation="Horizontal">
-                            <Image Source="/assets/icons8-note-30.png"
-                                   Height="17.5"
-                                   VerticalAlignment="Center"
-                                   Margin="10,0,0,0"/>
-                            <TextBlock Text="{x:Static lang:Language.Announcement}"
+                            <Path Data="{StaticResource noteIcon}"
+                                  Height="13"
+                                  Width="13"
+                                  VerticalAlignment="Center"
+                                  Stretch="Uniform"
+                                  Margin="10,0,0,0"
+                                  Fill="{DynamicResource Schedule.Text.Foreground.Static}"/>
+                            <TextBlock Text="{x:Static lang:Language.AnnouncementCaps}"
                                        FontWeight="Bold"
                                        Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                        VerticalAlignment="Center"

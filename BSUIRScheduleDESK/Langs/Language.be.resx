@@ -118,191 +118,191 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="Announcement" xml:space="preserve">
-    <value>Announcement</value>
+    <value>Аб'яўленне</value>
   </data>
   <data name="AnnouncementCaps" xml:space="preserve">
-    <value>ANNOUNCEMENT</value>
+    <value>АБ'ЯЎЛЕННЕ</value>
   </data>
   <data name="Announcements" xml:space="preserve">
-    <value>Announcements</value>
+    <value>Аб'яўленні</value>
   </data>
   <data name="Auditorium" xml:space="preserve">
-    <value>Auditorium</value>
+    <value>Аўдыторыя</value>
   </data>
   <data name="Classes" xml:space="preserve">
-    <value>Classes</value>
+    <value>Заняткі</value>
   </data>
   <data name="Date" xml:space="preserve">
-    <value>Date</value>
+    <value>Дата</value>
   </data>
   <data name="EndExamsDate" xml:space="preserve">
-    <value>End of exams</value>
+    <value>Канец сесіі</value>
   </data>
   <data name="EndLessonDate" xml:space="preserve">
-    <value>End of classes</value>
+    <value>Канец заняткаў</value>
   </data>
   <data name="Exams" xml:space="preserve">
-    <value>Exams</value>
+    <value>Сесія</value>
   </data>
   <data name="GroupNotes" xml:space="preserve">
-    <value>Group notes</value>
+    <value>Заметкі групы</value>
   </data>
   <data name="GroupAnnouncements" xml:space="preserve">
-    <value>Group announcements</value>
+    <value>Аб'яўленні групы</value>
   </data>
   <data name="Groups" xml:space="preserve">
-    <value>Groups</value>
+    <value>Групы</value>
   </data>
   <data name="MainWindowTitle" xml:space="preserve">
-    <value>BSUIR Schedule</value>
+    <value>Расклад БДУІР</value>
   </data>
   <data name="NoAds" xml:space="preserve">
-    <value>No announcements</value>
+    <value>Аб'яў няма</value>
   </data>
   <data name="Notes" xml:space="preserve">
-    <value>Notes</value>
+    <value>Заметкі</value>
   </data>
   <data name="StartExamsDate" xml:space="preserve">
-    <value>&#x8;Start of exams</value>
+    <value>Пачатак сесіі</value>
   </data>
   <data name="StartLessonDate" xml:space="preserve">
-    <value>Start of classes</value>
+    <value>Пачатак заняткаў</value>
   </data>
   <data name="Teacher" xml:space="preserve">
-    <value>Teacher</value>
+    <value>Выкладчык</value>
   </data>
   <data name="Note" xml:space="preserve">
-    <value>Note</value>
+    <value>Заметка</value>
   </data>
   <data name="NoNotes" xml:space="preserve">
-    <value>No notes</value>
+    <value>Заметак няма</value>
   </data>
   <data name="Add" xml:space="preserve">
-    <value>Add</value>
+    <value>Дабавіць</value>
   </data>
   <data name="Edit" xml:space="preserve">
-    <value>Edit</value>
+    <value>Рэдагаваць</value>
   </data>
   <data name="Delete" xml:space="preserve">
-    <value>Delete</value>
+    <value>Выдаліць</value>
   </data>
   <data name="Text" xml:space="preserve">
-    <value>Text</value>
+    <value>Тэкст</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Адмена</value>
   </data>
   <data name="Search" xml:space="preserve">
-    <value>Search</value>
+    <value>Пошук</value>
   </data>
   <data name="Settings" xml:space="preserve">
-    <value>Settings</value>
+    <value>Наладкі</value>
   </data>
   <data name="Theme" xml:space="preserve">
-    <value>Theme</value>
+    <value>Тэма</value>
   </data>
   <data name="Colors" xml:space="preserve">
-    <value>Colors</value>
+    <value>Колеры</value>
   </data>
   <data name="Lecture" xml:space="preserve">
-    <value>Lecture</value>
+    <value>Лекцыя</value>
   </data>
   <data name="Practice" xml:space="preserve">
-    <value>Practice</value>
+    <value>Практычная праца</value>
   </data>
   <data name="LaboratoryWork" xml:space="preserve">
-    <value>Laboratory work</value>
+    <value>Лабараторная праца</value>
   </data>
   <data name="Consultation" xml:space="preserve">
-    <value>Consultation</value>
+    <value>Кансультацыя</value>
   </data>
   <data name="Unknown" xml:space="preserve">
-    <value>Unknown</value>
+    <value>Невядома</value>
   </data>
   <data name="Version" xml:space="preserve">
-    <value>Version</value>
+    <value>Версія</value>
   </data>
   <data name="IISTheme" xml:space="preserve">
-    <value>IIS</value>
+    <value>ІІС</value>
   </data>
   <data name="DarkTheme" xml:space="preserve">
-    <value>Dark</value>
+    <value>Цёмная</value>
   </data>
   <data name="OK" xml:space="preserve">
-    <value>OK</value>
+    <value>ОК</value>
   </data>
   <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
+    <value>Так</value>
   </data>
   <data name="No" xml:space="preserve">
-    <value>No</value>
+    <value>Не</value>
   </data>
   <data name="AppName" xml:space="preserve">
-    <value>BSUIR Schedule</value>
+    <value>Расклад БДУІР</value>
   </data>
   <data name="ScheduleUpdateQuestionFormat" xml:space="preserve">
-    <value>The schedule [{0}] has been updated. Download?</value>
+    <value>Расклад [{0}] быў абноўлены. Загрузіць?</value>
   </data>
   <data name="Students" xml:space="preserve">
-    <value>Students</value>
+    <value>Студэнтаў</value>
   </data>
   <data name="Today" xml:space="preserve">
-    <value>Today</value>
+    <value>сёння</value>
   </data>
   <data name="Tomorrow" xml:space="preserve">
-    <value>Tomorrow</value>
+    <value>заўтра</value>
   </data>
   <data name="GroupNumberInput" xml:space="preserve">
-    <value>Enter the group number or the teacher's last name</value>
+    <value>Увядзіце нумар групы/прозвішча выкладчыка</value>
   </data>
   <data name="Weeks" xml:space="preserve">
-    <value>Weeks</value>
+    <value>Тыдні</value>
   </data>
   <data name="SubgroupShort" xml:space="preserve">
-    <value>subg</value>
+    <value>п</value>
   </data>
   <data name="Time" xml:space="preserve">
-    <value>Time</value>
+    <value>Час</value>
   </data>
   <data name="ShowPastClasses" xml:space="preserve">
-    <value>Show past classes</value>
+    <value>Паказваць мінулыя</value>
   </data>
   <data name="Subgroups" xml:space="preserve">
-    <value>Subgroups</value>
+    <value>Падгруппы</value>
   </data>
   <data name="ShowExams" xml:space="preserve">
-    <value>Show exams</value>
+    <value>Паказваць экзамены</value>
   </data>
   <data name="Week" xml:space="preserve">
-    <value>Week</value>
+    <value>Тыдзень</value>
   </data>
   <data name="EmptyScheduleMessage" xml:space="preserve">
-    <value>There is nothing here. To load the schedule, click "🔍︎".</value>
+    <value>Тут нічога німа. Каб загрузіць расклад, націсніце "🔍︎".</value>
   </data>
   <data name="GoToButtonText" xml:space="preserve">
-    <value>Go to</value>
+    <value>Перайсці</value>
   </data>
   <data name="ProgramRunning" xml:space="preserve">
-    <value>This program is already running</value>
+    <value>Гэта праграма ўжо запушчана</value>
   </data>
   <data name="Updates" xml:space="preserve">
-    <value>Updates</value>
+    <value>Абнаўленні</value>
   </data>
   <data name="UpdateBy" xml:space="preserve">
-    <value>Update from</value>
+    <value>Абнаўленні ад</value>
   </data>
   <data name="CriticalError" xml:space="preserve">
-    <value>Critical error</value>
+    <value>Крытычная памылка</value>
   </data>
   <data name="CriticalErrorMessage" xml:space="preserve">
-    <value>Oops... Please send the crash.log file to telegram @snoopcheg
-To run, try deleting recent.json in the data folder</value>
+    <value>Упс.. Адпраўце, калі ласка, файл crash.log у тэлеграм @snoopcheg
+Для запуску паспрабуўце выдаліць recent.json з папкі data</value>
   </data>
   <data name="Exam" xml:space="preserve">
-    <value>Exam</value>
+    <value>Экзамен</value>
   </data>
   <data name="LanguageName" xml:space="preserve">
-    <value>Language</value>
+    <value>Мова</value>
   </data>
   <data name="English" xml:space="preserve">
     <value>English</value>

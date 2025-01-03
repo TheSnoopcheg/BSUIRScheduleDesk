@@ -115,6 +115,15 @@ namespace BSUIRScheduleDESK.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Беларуская.
+        /// </summary>
+        public static string Belarusian {
+            get {
+                return ResourceManager.GetString("Belarusian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Отмена.
         /// </summary>
         public static string Cancel {
@@ -147,6 +156,25 @@ namespace BSUIRScheduleDESK.Langs {
         public static string Consultation {
             get {
                 return ResourceManager.GetString("Consultation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Критическая ошибка.
+        /// </summary>
+        public static string CriticalError {
+            get {
+                return ResourceManager.GetString("CriticalError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Упс.. Отправьте, пожалуйста, файл crash.log в телеграм @snoopcheg
+        ///Для запуска попробуйте удалить recent.json в папке data.
+        /// </summary>
+        public static string CriticalErrorMessage {
+            get {
+                return ResourceManager.GetString("CriticalErrorMessage", resourceCulture);
             }
         }
         
@@ -210,6 +238,15 @@ namespace BSUIRScheduleDESK.Langs {
         public static string EndLessonDate {
             get {
                 return ResourceManager.GetString("EndLessonDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to English.
+        /// </summary>
+        public static string English {
+            get {
+                return ResourceManager.GetString("English", resourceCulture);
             }
         }
         
@@ -295,6 +332,15 @@ namespace BSUIRScheduleDESK.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Язык.
+        /// </summary>
+        public static string LanguageName {
+            get {
+                return ResourceManager.GetString("LanguageName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Лекция.
         /// </summary>
         public static string Lecture {
@@ -372,6 +418,24 @@ namespace BSUIRScheduleDESK.Langs {
         public static string Practice {
             get {
                 return ResourceManager.GetString("Practice", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Данная программа уже запущена.
+        /// </summary>
+        public static string ProgramRunning {
+            get {
+                return ResourceManager.GetString("ProgramRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Русский.
+        /// </summary>
+        public static string Russian {
+            get {
+                return ResourceManager.GetString("Russian", resourceCulture);
             }
         }
         
@@ -525,6 +589,24 @@ namespace BSUIRScheduleDESK.Langs {
         public static string Unknown {
             get {
                 return ResourceManager.GetString("Unknown", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обновление от.
+        /// </summary>
+        public static string UpdateBy {
+            get {
+                return ResourceManager.GetString("UpdateBy", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Обновления.
+        /// </summary>
+        public static string Updates {
+            get {
+                return ResourceManager.GetString("Updates", resourceCulture);
             }
         }
         

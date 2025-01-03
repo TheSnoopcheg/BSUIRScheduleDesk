@@ -10,11 +10,9 @@ namespace BSUIRScheduleDESK.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return Visibility.Collapsed;
-            if( parameter == null ) return Visibility.Collapsed;
+            if (value == null || parameter is not string param) return Visibility.Collapsed;
             if(value is Schedule v)
             {
-                string? param = parameter as string;
                 if(param == "Exams")
                 {
                     if (v.exams == null || v.exams.Count == 0) return Visibility.Collapsed;

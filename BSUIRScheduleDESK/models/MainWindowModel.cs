@@ -4,6 +4,7 @@ using BSUIRScheduleDESK.Services;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Diagnostics;
 
 namespace BSUIRScheduleDESK.Models
 {
@@ -22,7 +23,7 @@ namespace BSUIRScheduleDESK.Models
                 _schedule = value;
             }
         }
-        private ObservableCollection<FavoriteSchedule> _favoriteSchedules;
+        private ObservableCollection<FavoriteSchedule> _favoriteSchedules = new ObservableCollection<FavoriteSchedule>();
         public ObservableCollection<FavoriteSchedule> FavoriteSchedules
         {
             get => _favoriteSchedules;
@@ -38,15 +39,13 @@ namespace BSUIRScheduleDESK.Models
         public async Task<bool> LoadScheduleAsync(string? url, LoadingType loadingType)
         {
             Schedule schedule = await _scheduleService.LoadScheduleAsync(url, loadingType);
-            if(schedule != null)
-            {
-                if (loadingType != LoadingType.ServerWP)
-                    Schedule = schedule;
-                else                                            // shitcoding
-                    await AddFavoriteScheduleAsync(schedule);
-                return true;
-            }
-            return false;
+            if (schedule == null) return false;
+
+            if (loadingType != LoadingType.ServerWP)
+                Schedule = schedule;
+            else                                            // shitcoding
+                await AddFavoriteScheduleAsync(schedule);
+            return true;
         }
 
         public async Task AddFavoriteScheduleAsync(Schedule schedule)
@@ -78,28 +77,26 @@ namespace BSUIRScheduleDESK.Models
 
         public async Task<bool> UpdateScheduleAsync()
         {
-            if (Schedule != null)
+            if (Schedule == null) return false;
+            if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") != ConnectionStatus.Connected) return false;
+
+            string? url = Schedule.GetUrl();
+            var schedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.ServerWP);
+            if (schedule == null) return false;
+            if (Schedule.GetUrl() != schedule.GetUrl()) return false;
+            if (!Schedule.Compare(schedule))
             {
-                if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") == ConnectionStatus.Connected)
+                ModalWindowResult result = ModalWindow.Show(string.Format(Langs.Language.ScheduleUpdateQuestionFormat, schedule.GetName()), Langs.Language.AppName, "", ModalWindowButtons.YesNo);
+                if (result == ModalWindowResult.Yes)
                 {
-                    string? url = Schedule.GetUrl();
-                    var schedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.ServerWP);
-                    if(schedule == null) return false;
-                    if (Schedule.GetUrl() != schedule.GetUrl()) return false;
-                    if(!Schedule.Compare(schedule))
-                    {
-                        ModalWindowResult result = ModalWindow.Show(string.Format(Langs.Language.ScheduleUpdateQuestionFormat, schedule.GetName()), Langs.Language.AppName, "", ModalWindowButtons.YesNo);
-                        if (result == ModalWindowResult.Yes)
-                        {
-                            schedule.favorited = Schedule.favorited;
-                            Schedule = schedule;
-                            await _scheduleService.SaveScheduleAsync(Schedule, url);
-                            await SaveRecentScheduleAsync(Schedule);
-                            return true;
-                        }
-                    }
+                    schedule.favorited = Schedule.favorited;
+                    Schedule = schedule;
+                    await _scheduleService.SaveScheduleAsync(Schedule, url);
+                    await SaveRecentScheduleAsync(Schedule);
+                    return true;
                 }
             }
+
             return false;
         }
         private async Task LoadFavoriteSchedules()

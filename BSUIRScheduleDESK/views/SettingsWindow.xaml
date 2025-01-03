@@ -9,7 +9,7 @@
         xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
         mc:Ignorable="d"
         Title="{Binding Source={x:Static lang:Language.Settings}, StringFormat={}{0} - BSUIR Schedule}" 
-        Height="250" Width="400"
+        Height="265" Width="400"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -158,21 +158,32 @@
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical"
-                            Margin="10"
+                            Margin="10,0,10,10"
                             Grid.Column="0">
-                    <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <TextBlock Text="{x:Static lang:Language.LanguageName}"
+                                   VerticalAlignment="Center"
+                                   Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
+                        <ComboBox Style="{StaticResource ComboBoxStyle}"
+                                  ItemsSource="{Binding Languages, Mode=OneTime, ElementName=sWindow}"
+                                  SelectedIndex="{Binding LanguageIndex, ElementName=sWindow}"
+                                  Width="100"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center"
+                                  SelectionChanged="LanguageComboBox_SelectionChanged"/>
+                    </Grid>
+                    <Grid Margin="0,5,0,0">
                         <TextBlock Text="{x:Static lang:Language.Theme}"
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
-                        <ComboBox Style="{DynamicResource ComboBoxStyle}" 
+                        <ComboBox Style="{StaticResource ComboBoxStyle}" 
                                   ItemsSource="{Binding Themes, Mode=OneTime, ElementName=sWindow}" 
                                   SelectedIndex="{Binding ThemeIndex, ElementName=sWindow}"
                                   Width="75"
-                                  Margin="5,0,0,0"
-                                  HorizontalAlignment="Left"
+                                  HorizontalAlignment="Right"
                                   VerticalAlignment="Center"
-                                  SelectionChanged="ComboBox_SelectionChanged"/>
-                    </StackPanel>
+                                  SelectionChanged="ThemeComboBox_SelectionChanged"/>
+                    </Grid>
                     <TextBlock Text="{x:Static lang:Language.Colors}"
                                FontSize="14"
                                Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
@@ -198,11 +209,11 @@
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0}: {1}">
                                 <Binding Source="{x:Static lang:Language.Version}"/>
-                                <Binding Path="Version"/>
+                                <Binding Path="Version" ElementName="sWindow"/>
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                    <TextBlock Text="© 2023-2024 Dmitry Lantas" 
+                    <TextBlock Text="© 2023-2025 Dmitry Lantas" 
                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                HorizontalAlignment="Right"
                                FontSize="10"/>

@@ -1,5 +1,7 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 
 namespace BSUIRScheduleDESK.Views
 {
@@ -12,6 +14,7 @@ namespace BSUIRScheduleDESK.Views
         {
             InitializeComponent();
             this.Owner = App.Current.MainWindow;
+            noteDatePicker.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.IetfLanguageTag);
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)

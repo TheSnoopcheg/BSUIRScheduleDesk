@@ -29,16 +29,7 @@ namespace BSUIRScheduleDESK.ViewModels
                 OnPropertyChanged();
             }
         }
-        private Schedule? _groupSchedule;
-        public Schedule? Schedule
-        {
-            get { return _groupSchedule!; }
-            set
-            {
-                _groupSchedule = value;
-                OnPropertyChanged();
-            }
-        }
+        public Schedule? Schedule => _model.Schedule;
 
         public ObservableCollection<FavoriteSchedule> FavoriteSchedules => _model.FavoriteSchedules;
         
@@ -111,13 +102,19 @@ namespace BSUIRScheduleDESK.ViewModels
                 return openAnnouncements ??
                     (openAnnouncements = new RelayCommand(obj =>
                     {
-                        if (Schedule != null)
+                        if (Schedule == null) return;
+
+                        AnnouncementWindow announcementWindow = new AnnouncementWindow();
+                        announcementWindow.DataContext = _announcementViewModel;
+                        EventHandler windowCloseHandler = null;
+                        windowCloseHandler = async (s, e) =>
                         {
-                            AnnouncementWindow announcementWindow = new AnnouncementWindow();
-                            announcementWindow.DataContext = _announcementViewModel;
-                            _announcementViewModel.OnRequestClose += async (s, e) => { announcementWindow.Close(); await LoadScheduleAsync(_announcementViewModel.CommandUrl, LoadingType.Server); };
-                            announcementWindow.ShowDialog();
-                        }
+                            announcementWindow.Close();
+                            await LoadScheduleAsync(_announcementViewModel.CommandUrl, LoadingType.Server);
+                            _announcementViewModel.OnRequestClose -= windowCloseHandler;
+                        };
+                        _announcementViewModel.OnRequestClose += windowCloseHandler;
+                        announcementWindow.ShowDialog();
                     }));
             }
         }
@@ -144,12 +141,11 @@ namespace BSUIRScheduleDESK.ViewModels
                 return openNotesWindow ??
                     (openNotesWindow = new RelayCommand(obj =>
                     {
-                        if(Schedule != null)
-                        {
-                            NotesWindow notesWindow = new NotesWindow();
-                            notesWindow.DataContext = _noteViewModel;
-                            notesWindow.ShowDialog();
-                        }
+                        if (Schedule == null) return;
+
+                        NotesWindow notesWindow = new NotesWindow();
+                        notesWindow.DataContext = _noteViewModel;
+                        notesWindow.ShowDialog();
                     }));
             }
         }
@@ -162,18 +158,17 @@ namespace BSUIRScheduleDESK.ViewModels
                 return addFavoriteSchedule ??
                     (addFavoriteSchedule = new RelayCommand(async obj =>
                     {
-                        if (Schedule != null)
-                        {
-                            if (Schedule.favorited)
-                                await _model.DeleteFavoriteScheduleAsync(Schedule);
-                            else
-                                await _model.AddFavoriteScheduleAsync(Schedule);
+                        if (Schedule == null) return;
 
-                            Schedule.favorited = !Schedule.favorited;
-                            OnPropertyChanged(nameof(Schedule));
-                            await _model.SaveRecentScheduleAsync(Schedule);
-                            await _noteViewModel.SetNotes(Schedule.GetName(), Schedule.GetUrl());
-                        }
+                        if (Schedule.favorited)
+                            await _model.DeleteFavoriteScheduleAsync(Schedule);
+                        else
+                            await _model.AddFavoriteScheduleAsync(Schedule);
+
+                        Schedule.favorited = !Schedule.favorited;
+                        OnPropertyChanged(nameof(Schedule));
+                        await _model.SaveRecentScheduleAsync(Schedule);
+                        await _noteViewModel.SetNotes(Schedule.GetName(), Schedule.GetUrl());
                     }));
             }
         }
@@ -212,7 +207,6 @@ namespace BSUIRScheduleDESK.ViewModels
                             if (Schedule == null) return;
                             if (Schedule.GetUrl() != url) return;
 
-                            _model.Schedule!.favorited = true;
                             Schedule.favorited = true;
                             await _model.SaveRecentScheduleAsync(Schedule);
                             OnPropertyChanged(nameof(Schedule));
@@ -261,8 +255,7 @@ namespace BSUIRScheduleDESK.ViewModels
         private async Task LoadScheduleAsync(string? url, LoadingType loadingType)
         {
             if (await _model.LoadScheduleAsync(url, loadingType))
-                Schedule = _model.Schedule;
-            await OnScheduleLoaded();
+                await OnScheduleLoaded();
         }
 
         private async Task LoadRecentSchedule()
@@ -274,8 +267,7 @@ namespace BSUIRScheduleDESK.ViewModels
             if (Schedule == null) return;
             if (Schedule.GetUrl() == schedule.UrlId)
             {
-                _model.Schedule!.favorited = false;
-                Schedule!.favorited = false;
+                Schedule.favorited = false;
                 OnPropertyChanged(nameof(Schedule));
                 await _model.SaveRecentScheduleAsync(Schedule);
             }
@@ -284,28 +276,30 @@ namespace BSUIRScheduleDESK.ViewModels
         private async Task OnScheduleLoaded()
         {
             if (Schedule == null) return;
+            OnPropertyChanged(nameof(Schedule));
             string? url = Schedule.GetUrl();
             string? name = Schedule.GetName();
 
-            if (DateTime.TryParse(Schedule!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule!.endExamsDate, out DateTime endExamsDate))
+            if (DateTime.TryParse(Schedule.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule.endExamsDate, out DateTime endExamsDate))
             {
                 if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
                     SelectedTab = 1;
                 else
                     SelectedTab = 0;
             }
-            if (await _announcementViewModel.SetAnnouncements(name, url))
-                OnPropertyChanged(nameof(AnnouncementsExistenceVisibility));
 
             if (_model.IsScheduleFavorited(url!))
             {
-                Schedule!.favorited = true;
-                _model.Schedule!.favorited = true;
+                Schedule.favorited = true;
                 OnPropertyChanged(nameof(Schedule));
-                await _noteViewModel.SetNotes(name, url);
+                if (await _noteViewModel.SetNotes(name, url))
+                    OnPropertyChanged(nameof(NotesExistenceVisibility));
                 if (await _model.UpdateScheduleAsync())
-                    Schedule = _model.Schedule;
+                    OnPropertyChanged(nameof(Schedule));
             }
+
+            if (await _announcementViewModel.SetAnnouncements(name, url))
+                OnPropertyChanged(nameof(AnnouncementsExistenceVisibility));
         }
 
         #endregion

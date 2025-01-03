@@ -9,8 +9,8 @@ namespace BSUIRScheduleDESK.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return Visibility.Collapsed;
-            if((bool)value == true) return Visibility.Visible;
+            if (value is not bool status) return Visibility.Collapsed;
+            if(status == true) return Visibility.Visible;
             return Visibility.Collapsed;
         }
 

@@ -16,6 +16,7 @@ namespace BSUIRScheduleDESK.Models
             get { return _responses; }
             set
             {
+                if (value == null) return;
                 _responses = value;
                 ResponsesChanged.Invoke();
             }

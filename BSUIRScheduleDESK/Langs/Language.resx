@@ -213,9 +213,6 @@
   <data name="LaboratoryWork" xml:space="preserve">
     <value>Лабораторная работа</value>
   </data>
-  <data name="Exam" xml:space="preserve">
-    <value>Экзамен</value>
-  </data>
   <data name="Consultation" xml:space="preserve">
     <value>Консультация</value>
   </data>
@@ -284,5 +281,36 @@
   </data>
   <data name="GoToButtonText" xml:space="preserve">
     <value>Перейти</value>
+  </data>
+  <data name="ProgramRunning" xml:space="preserve">
+    <value>Данная программа уже запущена</value>
+  </data>
+  <data name="Updates" xml:space="preserve">
+    <value>Обновления</value>
+  </data>
+  <data name="UpdateBy" xml:space="preserve">
+    <value>Обновление от</value>
+  </data>
+  <data name="CriticalError" xml:space="preserve">
+    <value>Критическая ошибка</value>
+  </data>
+  <data name="CriticalErrorMessage" xml:space="preserve">
+    <value>Упс.. Отправьте, пожалуйста, файл crash.log в телеграм @snoopcheg
+Для запуска попробуйте удалить recent.json в папке data</value>
+  </data>
+  <data name="Exam" xml:space="preserve">
+    <value>Экзамен</value>
+  </data>
+  <data name="LanguageName" xml:space="preserve">
+    <value>Язык</value>
+  </data>
+  <data name="English" xml:space="preserve">
+    <value>English</value>
+  </data>
+  <data name="Russian" xml:space="preserve">
+    <value>Русский</value>
+  </data>
+  <data name="Belarusian" xml:space="preserve">
+    <value>Беларуская</value>
   </data>
 </root>

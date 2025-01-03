@@ -1,7 +1,6 @@
 ﻿using BSUIRScheduleDESK.Classes;
 using BSUIRScheduleDESK.Services;
 using System;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -23,7 +22,6 @@ namespace BSUIRScheduleDESK.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(SchedulePlate), new FrameworkPropertyMetadata(typeof(SchedulePlate)));
         }
         public SchedulePlate() : base() { EventService.ColorsUpdated += EventService_ColorsUpdated; }
-
 
         #region ScheduleProperty
 
@@ -204,6 +202,10 @@ namespace BSUIRScheduleDESK.Controls
         private void EventService_ColorsUpdated()
         {
             SetUpColor();
+        }
+        public void Clean()
+        {
+            EventService.ColorsUpdated -= EventService_ColorsUpdated;
         }
 
         private const string PART_TypeBorder = "PART_TypeBorder";

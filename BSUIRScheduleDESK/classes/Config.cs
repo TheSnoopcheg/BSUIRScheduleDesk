@@ -188,6 +188,19 @@ namespace BSUIRScheduleDESK.Classes
             }
         }
 
+        private string currentLanguage = "ru";
+
+        public string CurrentLanguage
+        {
+            get => currentLanguage;
+            set
+            {
+                if(value == currentLanguage) return;
+                currentLanguage = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void Save()
         {
             service.Save(this);

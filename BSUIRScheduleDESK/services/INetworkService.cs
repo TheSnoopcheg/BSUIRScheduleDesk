@@ -4,6 +4,6 @@ namespace BSUIRScheduleDESK.Services
 {
     public interface INetworkService
     {
-        Task<T> GetAsync<T>(string? url);
+        Task<T?> GetAsync<T>(string? url);
     }
 }

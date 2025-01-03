@@ -6,6 +6,6 @@ namespace BSUIRScheduleDESK.Services
 {
     public interface IAnnouncementService
     {
-        Task<List<Announcement>> LoadAnnouncementsAsync(string? url);
+        Task<List<Announcement>?> LoadAnnouncementsAsync(string? url);
     }
 }

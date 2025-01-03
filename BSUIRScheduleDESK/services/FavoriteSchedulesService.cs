@@ -12,6 +12,7 @@ namespace BSUIRScheduleDESK.Services
         public async Task<ObservableCollection<FavoriteSchedule>> LoadFavoriteSchedulesAsync()
         {
             ObservableCollection<FavoriteSchedule>? list = new ObservableCollection<FavoriteSchedule>();
+            if (Config.Instance.FavoriteSchedules == null) return list;
             var stream = new MemoryStream(Encoding.Default.GetBytes(Config.Instance.FavoriteSchedules));
             if (stream.Length > 0)
             {
