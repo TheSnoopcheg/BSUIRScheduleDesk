@@ -268,7 +268,7 @@
     <value>Паказваць мінулыя</value>
   </data>
   <data name="Subgroups" xml:space="preserve">
-    <value>Падгруппы</value>
+    <value>Падгрупы</value>
   </data>
   <data name="ShowExams" xml:space="preserve">
     <value>Паказваць экзамены</value>
@@ -312,5 +312,11 @@
   </data>
   <data name="Belarusian" xml:space="preserve">
     <value>Беларуская</value>
+  </data>
+  <data name="GroupScheduleHistory" xml:space="preserve">
+    <value>Гісторыя змен раскладу групы</value>
+  </data>
+  <data name="ScheduleHistory" xml:space="preserve">
+    <value>Гісторыя змен раскладу</value>
   </data>
 </root>

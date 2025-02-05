@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Diagnostics;
+using System.Text.Json;
+using System.Runtime.InteropServices;
 
 namespace BSUIRScheduleDESK.Models
 {
@@ -75,29 +77,32 @@ namespace BSUIRScheduleDESK.Models
             return FavoriteSchedules.Any(s => s.UrlId == url);
         }
 
-        public async Task<bool> UpdateScheduleAsync()
+        public async Task<HistoryNote?> UpdateScheduleAsync()
         {
-            if (Schedule == null) return false;
-            if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") != ConnectionStatus.Connected) return false;
+            if (Schedule == null) return null;
+            if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") != ConnectionStatus.Connected) return null;
 
             string? url = Schedule.GetUrl();
-            var schedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.ServerWP);
-            if (schedule == null) return false;
-            if (Schedule.GetUrl() != schedule.GetUrl()) return false;
-            if (!Schedule.Compare(schedule))
+            var newSchedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.ServerWP);
+            if (newSchedule == null) return null;
+            if (Schedule.GetUrl() != newSchedule.GetUrl()) return null;
+            if (!Schedule.Compare(newSchedule))
             {
-                ModalWindowResult result = ModalWindow.Show(string.Format(Langs.Language.ScheduleUpdateQuestionFormat, schedule.GetName()), Langs.Language.AppName, "", ModalWindowButtons.YesNo);
+                ModalWindowResult result = ModalWindow.Show(string.Format(Langs.Language.ScheduleUpdateQuestionFormat, newSchedule.GetName()), Langs.Language.AppName, "", ModalWindowButtons.YesNo);
                 if (result == ModalWindowResult.Yes)
                 {
-                    schedule.favorited = Schedule.favorited;
-                    Schedule = schedule;
+                    Difference difference = new Difference();
+                    difference.Differences = ObjectComparer.GetDifferences(Schedule, newSchedule, out string? name, out string? namer);
+                    HistoryNote note = new HistoryNote() { UpdateDate = System.DateTime.Today, Difference = difference };
+                    newSchedule.favorited = Schedule.favorited;
+                    Schedule = newSchedule;
                     await _scheduleService.SaveScheduleAsync(Schedule, url);
                     await SaveRecentScheduleAsync(Schedule);
-                    return true;
+                    return note;
                 }
             }
 
-            return false;
+            return null;
         }
         private async Task LoadFavoriteSchedules()
         {

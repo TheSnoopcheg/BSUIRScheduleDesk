@@ -787,7 +787,7 @@ namespace BSUIRScheduleDESK.Controls
         private string GetDateString(DateTime dateTime, bool linear = false)
         {
             string day = dateTime.ToString("dddd", CultureInfo.CurrentUICulture);
-            day = day.Replace(day[0], Char.ToUpper(day[0]));
+            day = Char.ToUpper(day[0]) + day.Substring(1);
             if(linear)
                 day += " - " + dateTime.ToString("dd.MM", CultureInfo.CurrentUICulture);
             else

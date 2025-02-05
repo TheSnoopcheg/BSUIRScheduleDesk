@@ -24,7 +24,14 @@ namespace BSUIRScheduleDESK.Classes
         public List<Employee>? employees { get; set; }
         public override string ToString()
         {
-            return subject ?? string.Empty;
+            return $"{subject} ({startLessonTime}{((weekNumber == null || weekNumber.Count < 1) ? string.Empty : "; weeks: " + string.Join(',', weekNumber))}{((employees == null || employees.Count < 1) ? string.Empty : "; " + employees[0])})";
+        }
+        public override bool Equals(object? obj)
+        {
+            if (obj is not Lesson lesson) return false;
+            return this.subject == lesson.subject 
+                && this.startLessonTime == lesson.startLessonTime
+                && this.numSubgroup == lesson.numSubgroup;
         }
     }
 }

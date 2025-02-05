@@ -165,6 +165,9 @@
     <Color x:Key="SchedulePresenter.TodayBorder.Background" R="255" G="255" B="255" A="15"/>
     <Color x:Key="ScheduleTime.Text.Foreground" R="245" G="245" B="245" A="255"/>
 
+    <Color x:Key="OldValue.Background" R="45" G="0" B="0" A="255"/>
+    <Color x:Key="NewValue.Background" R="38" G="94" B="77" A="255"/>
+
     <SolidColorBrush x:Key="Window.Background.Static" Color="{StaticResource Window.Background}"/>
     <SolidColorBrush x:Key="Window.Title.Static" Color="{StaticResource Window.Title}"/>
     <SolidColorBrush x:Key="Window.Title.Icon.Static" Color="{StaticResource Window.Title.Icon}"/>
@@ -329,4 +332,7 @@
 
     <SolidColorBrush x:Key="SchedulePresenter.TodayBorder.Background.Static" Color="{StaticResource SchedulePresenter.TodayBorder.Background}"/>
     <SolidColorBrush x:Key="ScheduleTime.Text.Foreground.Static" Color="{StaticResource ScheduleTime.Text.Foreground}"/>
+
+    <SolidColorBrush x:Key="OldValue.Background.Static" Color="{StaticResource OldValue.Background}"/>
+    <SolidColorBrush x:Key="NewValue.Background.Static" Color="{StaticResource NewValue.Background}"/>
 </ResourceDictionary>

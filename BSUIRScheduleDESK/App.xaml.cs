@@ -26,7 +26,11 @@ namespace BSUIRScheduleDESK
         public IServiceProvider ServiceProvider { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
+#if DEBUG
+
+#else
             IsAnotherProcessExist();
+#endif
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
             App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{Config.Instance.CurrentTheme}.xaml", UriKind.Relative)};
 
@@ -75,11 +79,13 @@ namespace BSUIRScheduleDESK
             services.AddSingleton<IScheduleSearchModel, ScheduleSearchModel>();
             services.AddSingleton<IAnnouncementModel, AnnouncementModel>();
             services.AddSingleton<INoteModel, NoteModel>();
+            services.AddSingleton<IScheduleHistoryModel, ScheduleHistoryModel>();
 
             services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
             services.AddSingleton<IScheduleSearchViewModel, ScheduleSearchViewModel>();
             services.AddSingleton<INoteViewModel, NoteViewModel>();
             services.AddSingleton<IAnnouncementViewModel, AnnouncementViewModel>();
+            services.AddSingleton<IScheduleHistoryViewModel, ScheduleHistoryViewModel>();
 
             services.AddSingleton<IDateService, DateService>();
             services.AddSingleton<INetworkService, NetworkService>();
@@ -89,6 +95,7 @@ namespace BSUIRScheduleDESK
             services.AddTransient<IFavoriteSchedulesService, FavoriteSchedulesService>();
             services.AddTransient<IAnnouncementService, AnnouncementService>();
             services.AddTransient<IScheduleService, ScheduleService>();
+            services.AddTransient<IScheduleHistoryService, ScheduleHistoryService>();
             ServiceProvider = services.BuildServiceProvider();
         }
 

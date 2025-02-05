@@ -1,0 +1,111 @@
+﻿<Window x:Class="BSUIRScheduleDESK.Views.ScheduleHistoryWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:BSUIRScheduleDESK.Views"
+        xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
+        xmlns:controls="clr-namespace:BSUIRScheduleDESK.Controls"
+        mc:Ignorable="d"
+        Height="450" Width="800"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize"
+        MouseDown="Window_MouseDown"
+        KeyDown="Window_KeyDown"
+        ShowInTaskbar="False">
+    <Window.Resources>
+
+        <DataTemplate x:Key="historyNoteTemplate">
+            <Expander Style="{StaticResource ExpanderStyle}">
+                <Expander.Header>
+                    <TextBlock Text="{Binding UpdateDate, StringFormat={}dd.MM.yyyy}"
+                               Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
+                </Expander.Header>
+                <controls:DifferencesPresenter Differences="{Binding Difference}"
+                                               Focusable="False"/>
+            </Expander>
+        </DataTemplate>
+        
+    </Window.Resources>
+
+    <Border CornerRadius="10"
+            BorderThickness="1"
+            BorderBrush="{DynamicResource Window.BorderBrush.Static}"
+            Background="{DynamicResource Window.Background.Static}">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="50"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <TextBlock VerticalAlignment="Center"
+                       Foreground="{DynamicResource SubWindow.TitleText.Static}"
+                       Margin="10"
+                       FontSize="16"
+                       FontWeight="DemiBold"
+                       Grid.Row="0">
+                <TextBlock.Style>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="Text" Value="{x:Static lang:Language.ScheduleHistory}"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsEmployeeHistory}" Value="True">
+                                <Setter Property="Text">
+                                    <Setter.Value>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Source="{x:Static lang:Language.ScheduleHistory}"/>
+                                            <Binding Path="Title"/>
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsEmployeeHistory}" Value="False">
+                                <Setter Property="Text">
+                                    <Setter.Value>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Source="{x:Static lang:Language.GroupScheduleHistory}"/>
+                                            <Binding Path="Title"/>
+                                        </MultiBinding>
+                                    </Setter.Value>
+                                </Setter>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+
+            <Button x:Name="btnClose"
+                    Style="{StaticResource ButtonStyle1}"
+                    Height="30"
+                    Width="30"
+                    Click="btnClose_Click"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Center"
+                    Margin="10">
+                <Path Fill="{DynamicResource Icon.Stroke.Static}"
+                      Stretch="Fill"
+                      Height="15"
+                      Width="15"
+                      Data="{StaticResource closeIcon}"/>
+                <Button.RenderTransform>
+                    <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                </Button.RenderTransform>
+            </Button>
+
+            <ScrollViewer Grid.Row="1"
+                          Margin="10"
+                          VerticalScrollBarVisibility="Auto">
+                <ItemsControl ItemTemplate="{StaticResource historyNoteTemplate}"
+                              ItemsSource="{Binding HistoryNotes}"
+                              Focusable="False">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Vertical"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+        </Grid>
+    </Border>
+</Window>

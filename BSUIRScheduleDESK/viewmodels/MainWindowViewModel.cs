@@ -7,6 +7,8 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Diagnostics;
+using System.Text.Json;
 
 namespace BSUIRScheduleDESK.ViewModels
 {
@@ -16,6 +18,7 @@ namespace BSUIRScheduleDESK.ViewModels
         private readonly IScheduleSearchViewModel _scheduleSearchViewModel;
         private readonly IAnnouncementViewModel _announcementViewModel;
         private readonly INoteViewModel _noteViewModel;
+        private readonly IScheduleHistoryViewModel _historyViewModel;
 
         #region Properties
 
@@ -33,6 +36,10 @@ namespace BSUIRScheduleDESK.ViewModels
 
         public ObservableCollection<FavoriteSchedule> FavoriteSchedules => _model.FavoriteSchedules;
         
+        public Visibility NotesVisibility
+        {
+            get => (Schedule == null || !Schedule.favorited) ? Visibility.Collapsed : Visibility.Visible;
+        }
         public Visibility NotesExistenceVisibility
         {
             get => _noteViewModel.IsNotesEmpty ? Visibility.Collapsed : Visibility.Visible;
@@ -40,6 +47,10 @@ namespace BSUIRScheduleDESK.ViewModels
         public Visibility AnnouncementsExistenceVisibility
         {
             get => _announcementViewModel.IsAnnouncementsEmpty ? Visibility.Collapsed : Visibility.Visible;
+        }
+        public Visibility HistoryVisibility
+        {
+            get => (Schedule == null || !Schedule.favorited || _historyViewModel.IsHistoryEmpty) ? Visibility.Collapsed : Visibility.Visible;
         }
 
         #endregion
@@ -248,6 +259,23 @@ namespace BSUIRScheduleDESK.ViewModels
             }
         }
 
+        private ICommand? openScheduleHistoryWindow;
+        public ICommand OpenScheduleHistoryWindow
+        {
+            get
+            {
+                return openScheduleHistoryWindow ??
+                    (openScheduleHistoryWindow = new RelayCommand(obj =>
+                    {
+                        if (Schedule == null) return;
+
+                        ScheduleHistoryWindow scheduleHistoryWindow = new ScheduleHistoryWindow();
+                        scheduleHistoryWindow.DataContext = _historyViewModel;
+                        scheduleHistoryWindow.ShowDialog();
+                    }));
+            }
+        }
+
         #endregion
 
         #region Methods
@@ -294,8 +322,15 @@ namespace BSUIRScheduleDESK.ViewModels
                 OnPropertyChanged(nameof(Schedule));
                 if (await _noteViewModel.SetNotes(name, url))
                     OnPropertyChanged(nameof(NotesExistenceVisibility));
-                if (await _model.UpdateScheduleAsync())
+                if (await _historyViewModel.SetScheduleHistory(name, url))
+                    OnPropertyChanged(nameof(HistoryVisibility));
+                var historyNote = await _model.UpdateScheduleAsync();
+                if (historyNote != null)
+                {
+                    _historyViewModel.AddHistoryNote(historyNote);
                     OnPropertyChanged(nameof(Schedule));
+                    OnPropertyChanged(nameof(HistoryVisibility));
+                }
             }
 
             if (await _announcementViewModel.SetAnnouncements(name, url))
@@ -307,13 +342,15 @@ namespace BSUIRScheduleDESK.ViewModels
         public MainWindowViewModel(IMainWindowModel mainWindowModel,
                                    IScheduleSearchViewModel scheduleSearchViewModel,
                                    IAnnouncementViewModel announcementViewModel,
-                                   INoteViewModel noteViewModel)
+                                   INoteViewModel noteViewModel,
+                                   IScheduleHistoryViewModel historyViewModel)
         {
-            
+
             _model = mainWindowModel;
             _scheduleSearchViewModel = scheduleSearchViewModel;
             _announcementViewModel = announcementViewModel;
             _noteViewModel = noteViewModel;
+            _historyViewModel = historyViewModel;
 
             _noteViewModel.NotesChanged += () => OnPropertyChanged(nameof(NotesExistenceVisibility));
 

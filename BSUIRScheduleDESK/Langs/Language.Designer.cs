@@ -314,6 +314,15 @@ namespace BSUIRScheduleDESK.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to История изменений расписания группы.
+        /// </summary>
+        public static string GroupScheduleHistory {
+            get {
+                return ResourceManager.GetString("GroupScheduleHistory", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ИИС.
         /// </summary>
         public static string IISTheme {
@@ -436,6 +445,15 @@ namespace BSUIRScheduleDESK.Langs {
         public static string Russian {
             get {
                 return ResourceManager.GetString("Russian", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to История изменений расписания.
+        /// </summary>
+        public static string ScheduleHistory {
+            get {
+                return ResourceManager.GetString("ScheduleHistory", resourceCulture);
             }
         }
         

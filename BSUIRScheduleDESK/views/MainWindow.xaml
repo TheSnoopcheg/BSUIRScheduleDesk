@@ -347,6 +347,24 @@
                                     Margin="0,0,5,0"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right">
+                            <!--open history window button-->
+                            <Button Style="{StaticResource ButtonStyle1}"
+                                    Width="30"
+                                    Height="30"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Right"
+                                    Visibility="{Binding HistoryVisibility}"
+                                    Command="{Binding OpenScheduleHistoryWindow}">
+                                <Button.RenderTransform>
+                                    <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
+                                </Button.RenderTransform>
+                                <Path Fill="{DynamicResource Icon.Stroke.Static}" 
+                                      Stretch="Fill"
+                                      Height="17.5"
+                                      Width="17.5"
+                                      Data="{StaticResource historyIcon}"/>
+                            </Button>
+                            
                             <!--open notes window button-->
                             <Grid>
                                 <Button Style="{StaticResource ButtonStyle1}"

@@ -313,4 +313,10 @@
   <data name="Belarusian" xml:space="preserve">
     <value>Беларуская</value>
   </data>
+  <data name="GroupScheduleHistory" xml:space="preserve">
+    <value>История изменений расписания группы</value>
+  </data>
+  <data name="ScheduleHistory" xml:space="preserve">
+    <value>История изменений расписания</value>
+  </data>
 </root>

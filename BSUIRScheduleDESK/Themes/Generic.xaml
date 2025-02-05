@@ -1291,4 +1291,34 @@
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type templates:DifferencesPresenter}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type templates:DifferencesPresenter}">
+                    <Grid Background="{DynamicResource Border.Background.Static}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition/>
+                            <ColumnDefinition Width="5"/>
+                            <ColumnDefinition/>
+                        </Grid.ColumnDefinitions>
+                        <Grid Grid.Column="0">
+                            <StackPanel Orientation="Vertical"
+                                        x:Name="PART_LeftSide">
+
+                            </StackPanel>
+                        </Grid>
+                        <Border Grid.Column="1"
+                                Background="{DynamicResource Exams.Expander.Header.Background.Static}"/>
+                        <Grid Grid.Column="2">
+                            <StackPanel Orientation="Vertical" 
+                                        x:Name="PART_RightSide">
+
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

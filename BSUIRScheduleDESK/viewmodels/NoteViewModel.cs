@@ -27,7 +27,7 @@ namespace BSUIRScheduleDESK.ViewModels
             return await _model.LoadNotesAsync(url);
         }
 
-        public bool IsNotesEmpty { get => Notes.Count == 0 ? true : false; }
+        public bool IsNotesEmpty { get => Notes.Count == 0; }
 
         #region Commands
 
@@ -92,6 +92,7 @@ namespace BSUIRScheduleDESK.ViewModels
         }
 
         #endregion
+
         private string? _noteText;
         public string? NoteText
         {

@@ -153,7 +153,7 @@ namespace BSUIRScheduleDESK.Views
             return b;
         }
 
-        private void Border_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape)
             {

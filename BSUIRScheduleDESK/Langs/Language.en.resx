@@ -313,4 +313,10 @@ To run, try deleting recent.json in the data folder</value>
   <data name="Belarusian" xml:space="preserve">
     <value>Беларуская</value>
   </data>
+  <data name="GroupScheduleHistory" xml:space="preserve">
+    <value>History of changes in the schedule of group</value>
+  </data>
+  <data name="ScheduleHistory" xml:space="preserve">
+    <value>History of changes is the schedule of </value>
+  </data>
 </root>

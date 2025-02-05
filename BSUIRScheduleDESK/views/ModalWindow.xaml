@@ -13,6 +13,7 @@
         Background="Transparent"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown"
         x:Name="root">
     <Window.Resources>
         <DropShadowEffect x:Key="windowShadow" BlurRadius="5" Opacity="0.7" ShadowDepth="0"/>
@@ -53,7 +54,6 @@
         <Border Background="{DynamicResource ModalWinodw.Background.Static}"
                 CornerRadius="5" 
                 Margin="3"
-                KeyDown="Border_KeyDown"
                 MouseDown="Border_MouseDown">
             <Grid>
                 <Grid.RowDefinitions>
@@ -69,7 +69,7 @@
                            FontSize="16"
                            FontWeight="DemiBold"
                            Grid.Row="0"/>
-                <Button Style="{DynamicResource ButtonStyle}"
+                <Button Style="{DynamicResource ButtonStyle1}"
                         Width="25"
                         Height="25"
                         HorizontalAlignment="Right"

@@ -1,124 +1,73 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace BSUIRScheduleDESK.Classes
 {
     public static class ObjectComparer
     {
-        public static Difference? GetDifferences(object left, object right)
+        public static List<Difference> GetDifferences(object? left, object? right, out string? leftName, out string? rightName)
         {
-            Type type = left.GetType();
+            List<Difference> differences = new List<Difference>();
 
-            Difference difference = new Difference() { PropertyName = left.ToString(), PropertyType = type };
+            leftName = null;
+            rightName = null;
 
-            foreach (var prop in type.GetProperties())
+            if(left == null || right == null) return differences;
+
+            Type type = left == null ? right!.GetType() : left.GetType();
+
+            leftName = (left == null || left.ToString() == type.FullName) ? null : left.ToString();
+            rightName = (right == null || right.ToString() == type.FullName) ? null : right.ToString();
+
+
+            foreach (var prop in type.GetProperties().Where(p => !p.GetIndexParameters().Any()))
             {
                 var leftVal = prop.GetValue(left);
                 var rightVal = prop.GetValue(right);
+
+                object[] attributes = prop.GetCustomAttributes(false);
+                if (attributes.Any(a => a is JsonIgnoreAttribute)) continue;
 
                 if (Equals(leftVal, rightVal))
                 {
                     continue;
                 }
-                else if ((leftVal == null && rightVal != null) || (rightVal == null && leftVal != null))
+                else if (leftVal == null && rightVal != null)
                 {
-                    difference.Differences.Add(new Difference
+                    differences.Add(new Difference
                     {
                         PropertyName = prop.Name,
-                        PropertyType = prop.PropertyType,
-                        OldValue = leftVal,
-                        NewValue = rightVal
+                        OldValue = null,
+                        NewValue = rightVal.ToString()
+                    });
+                }
+                else if (rightVal == null && leftVal != null)
+                {
+                    differences.Add(new Difference
+                    {
+                        PropertyName = prop.Name,
+                        OldValue = leftVal.ToString(),
+                        NewValue = null
                     });
                 }
                 else
                 {
                     if (prop.PropertyType.IsGenericType)
                     {
-                        Difference genericDiff = new Difference() { PropertyName = prop.Name, PropertyType = prop.PropertyType };
+                        Difference genericDiff = new Difference() { PropertyName = prop.Name };
                         Type elementType = prop.PropertyType.GetGenericArguments()[0];
-                        var leftListVal = leftVal as IList;
-                        var rightListVal = rightVal as IList;
-                        if (leftListVal == null || rightListVal == null) return difference;
-                        int maxSize = leftListVal.Count > rightListVal.Count ? leftListVal.Count : rightListVal.Count;
-                        int minSize = leftListVal.Count > rightListVal.Count ? rightListVal.Count : leftListVal.Count;
-                        int isLeftIsMin = leftListVal.Count == rightListVal.Count ? 0 : leftListVal.Count < rightListVal.Count ? 1 : -1;
-                        int i = 0;
-                        if (elementType == typeof(string))
-                        {
-                            for (; i < minSize; i++)
-                            {
-                                if (string.Equals(leftListVal[i], rightListVal[i])) continue;
-                                genericDiff.Differences.Add(new Difference
-                                {
-                                    PropertyName = prop.Name,
-                                    PropertyType = prop.PropertyType,
-                                    OldValue = leftListVal[i],
-                                    NewValue = rightListVal[i]
-                                });
-                            }
-                        }
-                        else if (elementType == typeof(int))
-                        {
-                            for (; i < minSize; i++)
-                            {
-                                if ((int?)leftListVal[i] == (int?)rightListVal[i]) continue;
-                                genericDiff.Differences.Add(new Difference
-                                {
-                                    PropertyName = prop.Name,
-                                    PropertyType = prop.PropertyType,
-                                    OldValue = leftListVal[i],
-                                    NewValue = rightListVal[i]
-                                });
-                            }
-                        }
-                        else
-                        {
-                            for (; i < minSize; i++)
-                            {
-                                Difference tempDiff = GetDifferences(leftListVal[i], rightListVal[i]);
-                                if (tempDiff.Differences.Count == 0) continue;
-                                genericDiff.Differences.Add(tempDiff);
-                            }
-                        }
-                        if (isLeftIsMin == 1)
-                        {
-                            for (; i < maxSize; i++)
-                            {
-                                genericDiff.Differences.Add(new Difference
-                                {
-                                    PropertyName = prop.Name,
-                                    PropertyType = prop.PropertyType,
-                                    OldValue = null,
-                                    NewValue = rightListVal[i]
-                                });
-                            }
-                        }
-                        else if (isLeftIsMin == -1)
-                        {
-                            for (; i < maxSize; i++)
-                            {
-                                genericDiff.Differences.Add(new Difference
-                                {
-                                    PropertyName = prop.Name,
-                                    PropertyType = prop.PropertyType,
-                                    OldValue = leftListVal[i],
-                                    NewValue = null
-                                });
-                            }
-                        }
-                        if (genericDiff.Differences.Count != 0)
-                        {
-                            difference.Differences.Add(genericDiff);
-                        }
+                        genericDiff.Differences = GetGenericDifferences(leftVal, rightVal, elementType);
+                        if (genericDiff.Differences != null && genericDiff.Differences.Count != 0)
+                            differences.Add(genericDiff);
                     }
                     else if (prop.PropertyType == typeof(string))
                     {
                         if (string.Equals(leftVal, rightVal)) continue;
-                        difference.Differences.Add(new Difference
+                        differences.Add(new Difference
                         {
                             PropertyName = prop.Name,
-                            PropertyType = prop.PropertyType,
                             OldValue = leftVal,
                             NewValue = rightVal
                         });
@@ -126,10 +75,9 @@ namespace BSUIRScheduleDESK.Classes
                     else if (prop.PropertyType == typeof(int))
                     {
                         if ((int)leftVal == (int)rightVal) continue;
-                        difference.Differences.Add(new Difference
+                        differences.Add(new Difference
                         {
                             PropertyName = prop.Name,
-                            PropertyType = prop.PropertyType,
                             OldValue = leftVal,
                             NewValue = rightVal
                         });
@@ -137,33 +85,76 @@ namespace BSUIRScheduleDESK.Classes
                     else if (prop.PropertyType == typeof(bool))
                     {
                         if ((bool)leftVal == (bool)rightVal) continue;
-                        difference.Differences.Add(new Difference
+                        differences.Add(new Difference
                         {
                             PropertyName = prop.Name,
-                            PropertyType = prop.PropertyType,
                             OldValue = leftVal,
                             NewValue = rightVal
                         });
                     }
                     else if (prop.PropertyType.IsClass)
                     {
-                        Difference tempDiff = GetDifferences(leftVal, rightVal);
-                        if (tempDiff.Differences.Count == 0) continue;
-                        difference.Differences.Add(tempDiff);
+                        Difference tempDiff = new Difference() { PropertyName = prop.Name };
+                        tempDiff.Differences = GetDifferences(leftVal, rightVal, out string? tempLeftName, out string? tempRightName);
+                        if (tempDiff.Differences == null || tempDiff.Differences.Count == 0) continue;
+                        tempDiff.OldValue = tempLeftName;
+                        tempDiff.NewValue = tempRightName;
+                        differences.Add(tempDiff);
                     }
                 }
-
             }
+            return differences;
+        }
+        private static List<Difference> GetGenericDifferences(object? left, object? right, Type type)
+        {
+            List<Difference>? differences = new List<Difference>();
 
-            return difference;
+            differences = type.Name switch
+            {
+                nameof(String) => GetGenericDifferences<string>(left, right),
+                nameof(Int32) => GetGenericDifferences<int>(left, right),
+                nameof(Lesson) => GetGenericDifferences<Lesson>(left, right),
+                nameof(Employee) => GetGenericDifferences<Employee>(left, right),
+                nameof(StudentGroup) => GetGenericDifferences<StudentGroup>(left, right),
+                _ => differences
+            };
+            return differences;
         }
 
+        private static List<Difference> GetGenericDifferences<T>(object? left, object? right)
+        {
+            List<Difference>? differences = new List<Difference>();
+            if (left is not IList<T> leftList || right is not IList<T> rightList) return differences;
+            string? leftName, rightName;
+            int index = -1;
+            HashSet<int> indexes = new HashSet<int>();
+            for(int i = 0; i < leftList.Count; i++)
+            {
+                index = rightList.IndexOf(leftList[i]);
+                if(index < 0)
+                {
+                    differences.Add(new Difference { NewValue = null, OldValue = leftList[i]!.ToString() });
+                    continue;
+                }
+                var tempDiffs = GetDifferences(leftList[i], rightList[index], out leftName, out rightName);
+                if (tempDiffs != null && tempDiffs.Count > 0)
+                    differences.Add(new Difference { NewValue = rightName, OldValue = leftName, Differences = tempDiffs });
+                indexes.Add(index);
+            }
+
+            for(int i = 0; i < rightList.Count; i++)
+            {
+                if (indexes.Contains(i)) continue;
+                differences.Add(new Difference { OldValue = null, NewValue = rightList[i]!.ToString() });
+            }
+
+            return differences;
+        }
     }
 
     public record class Difference
     {
         public string? PropertyName { get; set; }
-        public Type PropertyType { get; set; }
         public object? OldValue { get; set; }
         public object? NewValue { get; set; }
         public List<Difference> Differences { get; set; } = new List<Difference>();

@@ -298,7 +298,11 @@
                       HorizontalContentAlignment="Center" 
                       IsExpanded="{Binding Key, Converter={StaticResource IsMonthExpandedConverter}, Mode=OneWay}">
                 <Expander.Header>
-                    <TextBlock Text="{Binding Key, Converter={StaticResource DateConverter}, ConverterParameter=monthyear}" Foreground="{DynamicResource Exams.Expander.Header.Foreground.Static}" FontSize="15" FontWeight="DemiBold" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding Key, Converter={StaticResource DateConverter}, ConverterParameter=monthyear}" 
+                               Foreground="{DynamicResource Exams.Expander.Header.Foreground.Static}" 
+                               FontSize="15" 
+                               FontWeight="DemiBold" 
+                               VerticalAlignment="Center"/>
                 </Expander.Header>
                 <ItemsControl ItemTemplate="{StaticResource examTemplate}"
                               ItemsSource="{Binding}"

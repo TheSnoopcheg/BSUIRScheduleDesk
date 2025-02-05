@@ -15,6 +15,6 @@ namespace BSUIRScheduleDESK.Models
         Task DeleteFavoriteScheduleAsync(FavoriteSchedule schedule);
         Task DeleteFavoriteScheduleAsync(Schedule schedule);
         bool IsScheduleFavorited(string url);
-        Task<bool> UpdateScheduleAsync();
+        Task<HistoryNote?> UpdateScheduleAsync();
     }
 }
