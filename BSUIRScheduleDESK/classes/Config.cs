@@ -201,6 +201,18 @@ namespace BSUIRScheduleDESK.Classes
             }
         }
 
+        private bool showAllLessons = false;
+        public bool ShowAllLessons
+        {
+            get => showAllLessons;
+            set
+            {
+                if(value == showAllLessons) return;
+                showAllLessons = value;
+                OnPropertyChanged();
+            }
+        }
+
         public void Save()
         {
             service.Save(this);

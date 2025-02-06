@@ -1,4 +1,4 @@
-﻿<!--© 2023 - 2024 Dmitry Lantas (TheSnoopcheg)-->
+﻿<!--© 2023 - 2025 Dmitry Lantas (TheSnoopcheg)-->
 
 <Window x:Class="BSUIRScheduleDESK.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -491,6 +491,7 @@
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
                                                              CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
                                                              ShowExpiredLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowExpiredLessons}"
+                                                             ShowAllLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowAllLessons}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
                                                              Command="{Binding LoadScheduleFromPlate}"
                                                              StartExamDate="{Binding Schedule.startExamsDate}"
@@ -547,6 +548,7 @@
                                                              ShowExams="{Binding Source={x:Static classes:Config.Instance},Path=ShowExams}"
                                                              CurrentWeek="{Binding Source={x:Static classes:Config.Instance},Path=CurrentWeek}"
                                                              ShowExpiredLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowExpiredLessons}"
+                                                             ShowAllLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowAllLessons}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
                                                              Command="{Binding LoadScheduleFromPlate}"
                                                              StartExamDate="{Binding Schedule.startExamsDate}"

@@ -319,4 +319,10 @@ To run, try deleting recent.json in the data folder</value>
   <data name="ScheduleHistory" xml:space="preserve">
     <value>History of changes is the schedule of </value>
   </data>
+  <data name="ShowAllinOne" xml:space="preserve">
+    <value>Show all</value>
+  </data>
+  <data name="NoLessons" xml:space="preserve">
+    <value>No lessons</value>
+  </data>
 </root>

@@ -788,11 +788,13 @@
                                               Style="{StaticResource SchedulePresenterCheckBoxStyle}"
                                               x:Name="PART_SecondSubGroup"/>
                                     <TextBlock Text="{Binding Source={x:Static lang:Language.ShowExams}, StringFormat='{}{0}: '}"
-                                               Visibility="Visible"
                                                Margin="5,0,0,0"/>
                                     <CheckBox Style="{StaticResource SchedulePresenterCheckBoxStyle}"
-                                              Visibility="Visible"
                                               x:Name="PART_ShowExams"/>
+                                    <TextBlock Text="{Binding Source={x:Static lang:Language.ShowAllinOne}, StringFormat='{}{0}: '}"
+                                               Margin="5,0,0,0"/>
+                                    <CheckBox Style="{StaticResource SchedulePresenterCheckBoxStyle}"
+                                              x:Name="PART_ShowAll"/>
                                 </StackPanel>
                                 <TextBlock Grid.Row="1"
                                            HorizontalAlignment="Center"

@@ -7,8 +7,6 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Diagnostics;
-using System.Text.Json;
 
 namespace BSUIRScheduleDESK.ViewModels
 {

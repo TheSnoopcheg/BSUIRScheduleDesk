@@ -31,7 +31,8 @@ namespace BSUIRScheduleDESK.Classes
             if (obj is not Lesson lesson) return false;
             return this.subject == lesson.subject 
                 && this.startLessonTime == lesson.startLessonTime
-                && this.numSubgroup == lesson.numSubgroup;
+                && this.numSubgroup == lesson.numSubgroup
+                && this.lessonTypeAbbrev == lesson.lessonTypeAbbrev;
         }
     }
 }

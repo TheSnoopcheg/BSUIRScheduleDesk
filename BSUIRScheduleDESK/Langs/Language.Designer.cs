@@ -386,6 +386,15 @@ namespace BSUIRScheduleDESK.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Нет занятий.
+        /// </summary>
+        public static string NoLessons {
+            get {
+                return ResourceManager.GetString("NoLessons", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Заметок нет.
         /// </summary>
         public static string NoNotes {
@@ -481,6 +490,15 @@ namespace BSUIRScheduleDESK.Langs {
         public static string Settings {
             get {
                 return ResourceManager.GetString("Settings", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Показывать всё.
+        /// </summary>
+        public static string ShowAllinOne {
+            get {
+                return ResourceManager.GetString("ShowAllinOne", resourceCulture);
             }
         }
         

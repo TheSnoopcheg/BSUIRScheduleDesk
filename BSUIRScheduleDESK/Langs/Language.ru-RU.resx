@@ -319,4 +319,10 @@
   <data name="ScheduleHistory" xml:space="preserve">
     <value>История изменений расписания</value>
   </data>
+  <data name="ShowAllinOne" xml:space="preserve">
+    <value>Показывать всё</value>
+  </data>
+  <data name="NoLessons" xml:space="preserve">
+    <value>Нет занятий</value>
+  </data>
 </root>

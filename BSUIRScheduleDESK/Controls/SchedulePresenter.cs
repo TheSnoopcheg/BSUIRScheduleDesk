@@ -67,6 +67,7 @@ namespace BSUIRScheduleDESK.Controls
             _todayBorder = (Border)GetTemplateChild(PART_TodayBorder);
             _emptyMessage = (TextBlock)GetTemplateChild(PART_EmptyMessage);
             _showExpiredLessons = (CheckBox)GetTemplateChild(PART_ShowExpired);
+            _showAllLessons = (CheckBox)GetTemplateChild(PART_ShowAll);
 
             _previousButton.Click += PreviousButton_Click;
             _nextButton.Click += NextButton_Click;
@@ -78,12 +79,14 @@ namespace BSUIRScheduleDESK.Controls
             _calendar.GotMouseCapture += Calendar_GotMouseCapture;
             _openDateButton.Click += OpenDateButton_Click;
             _showExpiredLessons.Click += ShowExpiredLessons_Click;
+            _showAllLessons.Click += ShowAllLessons_Click;
 
             _currentWeekLabel.Text = $"{Langs.Language.Week}: " + CurrentWeek.ToString();
             _firstSubGroup.IsChecked = FirstSubGroup;
             _secondSubGroup.IsChecked = SecondSubGroup;
             _showExams.IsChecked = ShowExams;
             _showExpiredLessons.IsChecked = ShowExpiredLessons;
+            _showAllLessons.IsChecked = ShowAllLessons;
 
             if(_calendar != null)
             {
@@ -98,6 +101,7 @@ namespace BSUIRScheduleDESK.Controls
             if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
                 ChangeWeek(1);
         }
+
 
         #region StartExamDate
 
@@ -337,6 +341,31 @@ namespace BSUIRScheduleDESK.Controls
 
         #endregion
 
+        #region ShowAllLessons
+
+        public static readonly DependencyProperty ShowAllLessonsProperty = DependencyProperty.Register(
+            "ShowAllLessons",
+            typeof(bool),
+            typeof(SchedulePresenter),
+            new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnShowAllLessonsChanged)));
+
+        private static void OnShowAllLessonsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            if (d is not SchedulePresenter schedulePresenter) return;
+            if (e.NewValue != null)
+            {
+                schedulePresenter.SetUp();
+            }
+        }
+
+        public bool ShowAllLessons
+        {
+            get { return (bool)GetValue(ShowAllLessonsProperty); }
+            set { SetValue(ShowAllLessonsProperty, value); }
+        }
+
+        #endregion
+
         #region SetUpMethods
         private void SetUp()
         {
@@ -357,6 +386,7 @@ namespace BSUIRScheduleDESK.Controls
                 SetUpMaximized();
             else if (WindowState == WindowState.Normal)
                 SetUpNormal();
+            SetUpControls();
         }
         private void SetUpNormal()
         {
@@ -376,7 +406,35 @@ namespace BSUIRScheduleDESK.Controls
             _normalView.SetValue(VisibilityProperty, Visibility.Collapsed);
             _maximizedView.SetValue(VisibilityProperty, Visibility.Visible);
             _scheduleView.SetValue(VisibilityProperty, Visibility.Visible);
-}
+        }
+
+        private void SetUpControls()
+        {
+            if (ShowAllLessons)
+            {
+                _previousButton.Visibility = Visibility.Collapsed;
+                _nextButton.Visibility = Visibility.Collapsed;
+                _currentWeekLabel.Visibility = Visibility.Collapsed;
+                _calendarButton.Visibility = Visibility.Collapsed;
+
+                _firstSubGroup.IsEnabled = false;
+                _secondSubGroup.IsEnabled = false;
+                _showExpiredLessons.IsEnabled = false;
+                _showExams.IsEnabled = false;
+            }
+            else
+            {
+                _previousButton.Visibility = Visibility.Visible;
+                _nextButton.Visibility = Visibility.Visible;
+                _currentWeekLabel.Visibility = Visibility.Visible;
+                _calendarButton.Visibility = Visibility.Visible;
+
+                _firstSubGroup.IsEnabled = true;
+                _secondSubGroup.IsEnabled = true;
+                _showExpiredLessons.IsEnabled = true;
+                _showExams.IsEnabled = true;
+            }
+        }
 
         #endregion
 
@@ -523,32 +581,37 @@ namespace BSUIRScheduleDESK.Controls
             foreach (var prop in Lessons.GetType().GetProperties())
             {
                 col++;
-                if (prop.GetValue(Lessons) is not List<Lesson> list || list.Count == 0) continue;
-                var flist = list
-                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
-                foreach (var item in flist)
+                if (prop.GetValue(Lessons) is not IEnumerable<Lesson> list || list.Count() == 0) continue;
+                if (!ShowAllLessons)
+                {
+                    list = list
+                        .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
+                        .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
+                }
+                foreach (var item in list)
                 {
                     isExpiredToShow = false;
-                    if (string.IsNullOrEmpty(item.startLessonTime)) continue;
-                    if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
-                    {
-                        if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
-                            continue;
-                    }
-                    if (item.announcement)
-                        if (DateTime.TryParse(item.startLessonDate, out DateTime date))
-                            if (!_dates.Contains(date))
-                                continue;
-                    if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[col - 1])
-                        || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[col - 1])))
-                    {
-                        if (_showExpiredLessons.IsChecked == false)
-                            continue;
-                        else
-                            isExpiredToShow = true;
-                    }
                     if (!TimeOnly.TryParse(item.startLessonTime, out TimeOnly time)) continue;
+                    if (!ShowAllLessons)
+                    {
+                        if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
+                        {
+                            if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
+                                continue;
+                        }
+                        if (item.announcement)
+                            if (DateTime.TryParse(item.startLessonDate, out DateTime date))
+                                if (!_dates.Contains(date))
+                                    continue;
+                        if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[col - 1])
+                            || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[col - 1])))
+                        {
+                            if (_showExpiredLessons.IsChecked == false)
+                                continue;
+                            else
+                                isExpiredToShow = true;
+                        }
+                    }
                     row = StartLessonDict[GetNearestTime(time)];
                     if (GetElementInGridPosition(_maximizedView, col, row) is not StackPanel panel) continue;
                     SchedulePlate plate = new SchedulePlate();
@@ -571,35 +634,41 @@ namespace BSUIRScheduleDESK.Controls
             for (int i = 0; i < properties.Length; i++)
             {
                 if (GetElementInGridPosition(_normalView, 0, i * 2 + 1) is not StackPanel panel) continue;
-                if (properties[i].GetValue(Lessons) is not List<Lesson> list || list.Count == 0)
+                if (properties[i].GetValue(Lessons) is not IEnumerable<Lesson> list || list.Count() == 0)
                 {
                     AddNoLessonTextBlock(panel);
                     continue;
                 }
-                var flist = list
-                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup))
-                    .OrderBy(i => TimeOnly.TryParse(i.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
-                foreach (var item in flist)
+                if (!ShowAllLessons)
+                {
+                    list = list
+                        .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
+                        .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup))
+                        .OrderBy(i => TimeOnly.TryParse(i.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
+                }
+                foreach (var item in list)
                 {
                     isExpiredToShow = false;
                     if (string.IsNullOrEmpty(item.startLessonTime)) continue;
-                    if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
+                    if (!ShowAllLessons)
                     {
-                        if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
-                            continue;
-                    }
-                    if (item.announcement)
-                        if (DateTime.TryParse(item.startLessonDate, out DateTime date))
-                            if (!_dates.Contains(date))
+                        if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
+                        {
+                            if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
                                 continue;
-                    if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[i])
-                        || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[i])))
-                    {
-                        if (_showExpiredLessons.IsChecked == false)
-                            continue;
-                        else
-                            isExpiredToShow = true;
+                        }
+                        if (item.announcement)
+                            if (DateTime.TryParse(item.startLessonDate, out DateTime date))
+                                if (!_dates.Contains(date))
+                                    continue;
+                        if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[i])
+                            || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[i])))
+                        {
+                            if (_showExpiredLessons.IsChecked == false)
+                                continue;
+                            else
+                                isExpiredToShow = true;
+                        }
                     }
                     SchedulePlate plate = new SchedulePlate();
                     plate.SetValue(SchedulePlate.ScheduleProperty, item);
@@ -625,7 +694,7 @@ namespace BSUIRScheduleDESK.Controls
                 HorizontalAlignment = HorizontalAlignment.Center,
                 Padding = new Thickness(3),
                 Height = 25,
-                Text = "Нет занятий"
+                Text = Langs.Language.NoLessons
             };
             panel.Children.Add(text);
         }
@@ -640,11 +709,14 @@ namespace BSUIRScheduleDESK.Controls
 
             foreach(var prop in Lessons.GetType().GetProperties())
             {
-                if (prop.GetValue(Lessons) is not List<Lesson> list || list.Count == 0) continue;
-                var lList = list
-                    .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                    .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup)).ToList();
-                foreach(var lesson in lList)
+                if (prop.GetValue(Lessons) is not IEnumerable<Lesson> list || list.Count() == 0) continue;
+                if (!ShowAllLessons)
+                {
+                    list = list
+                        .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
+                        .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
+                }
+                foreach (var lesson in list)
                 {
                     if (lesson.announcement)
                         if(DateTime.TryParse(lesson.startLessonDate, out DateTime date))
@@ -788,6 +860,7 @@ namespace BSUIRScheduleDESK.Controls
         {
             string day = dateTime.ToString("dddd", CultureInfo.CurrentUICulture);
             day = Char.ToUpper(day[0]) + day.Substring(1);
+            if (ShowAllLessons) return day;
             if(linear)
                 day += " - " + dateTime.ToString("dd.MM", CultureInfo.CurrentUICulture);
             else
@@ -827,6 +900,11 @@ namespace BSUIRScheduleDESK.Controls
         {
             if (sender is not CheckBox cb) return;
             ShowExpiredLessons = (bool)cb.IsChecked!;
+        }
+        private void ShowAllLessons_Click(object sender, RoutedEventArgs e)
+        {
+            if (sender is not CheckBox cb) return;
+            ShowAllLessons = (bool)cb.IsChecked!;
         }
 
         private void ReturnButton_Click(object sender, RoutedEventArgs e)
@@ -889,6 +967,7 @@ namespace BSUIRScheduleDESK.Controls
         private const string PART_TodayBorder = "PART_TodayBorder";
         private const string PART_EmptyMessage = "PART_EmptyMessage";
         private const string PART_ShowExpired = "PART_ShowExpired";
+        private const string PART_ShowAll = "PART_ShowAll";
 
         private Grid _scheduleView;
         private Grid _maximizedView;
@@ -907,5 +986,6 @@ namespace BSUIRScheduleDESK.Controls
         private Border _todayBorder;
         private TextBlock _emptyMessage;
         private CheckBox _showExpiredLessons;
+        private CheckBox _showAllLessons;
     }
 }

@@ -11,7 +11,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Windows;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BSUIRScheduleDESK
 {
