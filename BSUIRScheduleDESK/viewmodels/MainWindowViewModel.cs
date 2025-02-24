@@ -306,7 +306,8 @@ namespace BSUIRScheduleDESK.ViewModels
             string? url = Schedule.GetUrl();
             string? name = Schedule.GetName();
 
-            if (DateTime.TryParse(Schedule.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule.endExamsDate, out DateTime endExamsDate))
+            if (DateTime.TryParse(Schedule.startExamsDate, out DateTime startExamsDate) 
+                && DateTime.TryParse(Schedule.endExamsDate, out DateTime endExamsDate))
             {
                 if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
                     SelectedTab = 1;
@@ -330,7 +331,6 @@ namespace BSUIRScheduleDESK.ViewModels
                     OnPropertyChanged(nameof(HistoryVisibility));
                 }
             }
-
             if (await _announcementViewModel.SetAnnouncements(name, url))
                 OnPropertyChanged(nameof(AnnouncementsExistenceVisibility));
         }

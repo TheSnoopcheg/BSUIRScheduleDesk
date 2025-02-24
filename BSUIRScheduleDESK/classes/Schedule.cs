@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace BSUIRScheduleDESK.Classes
 {
@@ -14,6 +16,10 @@ namespace BSUIRScheduleDESK.Classes
         public Lessons? lessons { get; set; }
         [JsonPropertyName("previousSchedules")]
         public Lessons? previousLessons { get; set; }
+        [JsonIgnore]
+        public List<DailyLesson> dailyLessons { get; set; } = new List<DailyLesson>();
+        [JsonIgnore]
+        public List<DailyLesson> previousDailyLessons { get; set; } = new List<DailyLesson>();
         public string? currentTerm { get; set; }
         public string? previousTerm { get; set; }
         public List<Lesson>? exams { get; set; }
@@ -42,5 +48,47 @@ namespace BSUIRScheduleDESK.Classes
         {
             return GetName() ?? string.Empty;
         }
+        public async Task CreateDailyLessonConllections() => await Task.Run(() =>
+        {
+            if(lessons != null && !lessons.IsEmpty)
+            {
+                int counter = 0;
+                foreach(var prop in lessons.GetType().GetProperties())
+                {
+                    if(prop.GetValue(lessons) is not IEnumerable<Lesson> list || list.Count() == 0)
+                    {
+                        counter++;
+                        continue;
+                    }
+
+                    foreach(var item in list)
+                    {
+                        dailyLessons.Add(new DailyLesson { Day = (Day)counter, Lesson = item });
+                    }
+                    counter++;
+                }
+                //lessons = null;
+            }
+
+            if(previousLessons != null && !previousLessons.IsEmpty)
+            {
+                int counter = 0;
+                foreach(var prop in previousLessons.GetType().GetProperties())
+                {
+                    if(prop.GetValue(previousLessons) is not IEnumerable<Lesson> list || list.Count() == 0)
+                    {
+                        counter++;
+                        continue;
+                    }
+
+                    foreach(var item in list)
+                    {
+                        previousDailyLessons.Add(new DailyLesson { Day = (Day)counter, Lesson = item });
+                    }
+                    counter++;
+                }
+                //previousLessons = null;
+            }
+        });
     }
 }

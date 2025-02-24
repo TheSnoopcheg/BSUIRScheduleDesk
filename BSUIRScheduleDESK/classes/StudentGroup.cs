@@ -25,8 +25,7 @@ namespace BSUIRScheduleDESK.Classes
         public override bool Equals(object? obj)
         {
             if (obj is not StudentGroup group) return false;
-            return this.specialityCode == group.specialityCode
-                && this.specialityName == group.specialityName
+            return this.specialityName == group.specialityName
                 && this.name == group.name;
         }
     }

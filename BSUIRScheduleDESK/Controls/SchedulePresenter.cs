@@ -8,6 +8,7 @@ using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Globalization;
 using System.Windows.Markup;
+using System.Diagnostics;
 
 namespace BSUIRScheduleDESK.Controls
 {
@@ -25,6 +26,7 @@ namespace BSUIRScheduleDESK.Controls
 
         private List<DateTime> _dates = new List<DateTime>();
 
+
         private Dictionary<TimeOnly, int> StartLessonDict = new Dictionary<TimeOnly, int>()
         {
             { TimeOnly.Parse("9:00"), 0},
@@ -32,7 +34,7 @@ namespace BSUIRScheduleDESK.Controls
             { TimeOnly.Parse("12:25"), 2},
             { TimeOnly.Parse("14:00"), 3},
             { TimeOnly.Parse("15:50"), 4},
-            { TimeOnly.Parse("17:25"), 5}, 
+            { TimeOnly.Parse("17:25"), 5},
             { TimeOnly.Parse("19:00"), 6},
             { TimeOnly.Parse("20:40"), 7}
         };
@@ -62,6 +64,7 @@ namespace BSUIRScheduleDESK.Controls
             _showExams = (CheckBox)GetTemplateChild(PART_ShowExams);
             _currentWeekLabel = (TextBlock)GetTemplateChild(PART_CurrentWeekLabel);
             _calendarPopup = (Popup)GetTemplateChild(PART_CalendarPopup);
+            _plateInfoPopup = (Popup)GetTemplateChild(PART_PlateInfoPopup);
             _calendar = (System.Windows.Controls.Calendar)GetTemplateChild(PART_Calendar);
             _openDateButton = (Button)GetTemplateChild(PART_OpenDateButton);
             _todayBorder = (Border)GetTemplateChild(PART_TodayBorder);
@@ -369,8 +372,7 @@ namespace BSUIRScheduleDESK.Controls
         #region SetUpMethods
         private void SetUp()
         {
-            if (_scheduleView == null || _maximizedView == null || _normalView == null) return;
-
+            if (_scheduleView == null || _maximizedView == null || _normalView == null) return; 
             CleanGrid();
 
             if (Lessons == null || Lessons.IsEmpty)
@@ -382,11 +384,11 @@ namespace BSUIRScheduleDESK.Controls
             }
             _emptyMessage.SetValue(VisibilityProperty, Visibility.Collapsed);
 
+            SetUpControls();
             if (WindowState == WindowState.Maximized)
                 SetUpMaximized();
             else if (WindowState == WindowState.Normal)
                 SetUpNormal();
-            SetUpControls();
         }
         private void SetUpNormal()
         {
@@ -416,6 +418,7 @@ namespace BSUIRScheduleDESK.Controls
                 _nextButton.Visibility = Visibility.Collapsed;
                 _currentWeekLabel.Visibility = Visibility.Collapsed;
                 _calendarButton.Visibility = Visibility.Collapsed;
+                _returnButton.Visibility = Visibility.Collapsed;
 
                 _firstSubGroup.IsEnabled = false;
                 _secondSubGroup.IsEnabled = false;
@@ -428,6 +431,7 @@ namespace BSUIRScheduleDESK.Controls
                 _nextButton.Visibility = Visibility.Visible;
                 _currentWeekLabel.Visibility = Visibility.Visible;
                 _calendarButton.Visibility = Visibility.Visible;
+                ReturnButtonStatusUpdate();
 
                 _firstSubGroup.IsEnabled = true;
                 _secondSubGroup.IsEnabled = true;
@@ -497,6 +501,11 @@ namespace BSUIRScheduleDESK.Controls
             if (_dates.Contains(DateTime.Today))
             {
                 _todayBorder.SetValue(Grid.ColumnProperty, _dates.IndexOf(DateTime.Today) + 1);
+                _todayBorder.SetValue(VisibilityProperty, Visibility.Visible);
+            }
+            else if (ShowAllLessons)
+            {
+                _todayBorder.SetValue(Grid.ColumnProperty, (int)DateTime.Now.DayOfWeek);
                 _todayBorder.SetValue(VisibilityProperty, Visibility.Visible);
             }
             else
@@ -615,6 +624,7 @@ namespace BSUIRScheduleDESK.Controls
                     row = StartLessonDict[GetNearestTime(time)];
                     if (GetElementInGridPosition(_maximizedView, col, row) is not StackPanel panel) continue;
                     SchedulePlate plate = new SchedulePlate();
+                    plate.Owner = this;
                     plate.SetValue(Grid.RowProperty, row);
                     plate.SetValue(Grid.ColumnProperty, col);
                     plate.SetValue(SchedulePlate.ScheduleProperty, item);
@@ -671,6 +681,7 @@ namespace BSUIRScheduleDESK.Controls
                         }
                     }
                     SchedulePlate plate = new SchedulePlate();
+                    plate.Owner = this;
                     plate.SetValue(SchedulePlate.ScheduleProperty, item);
                     plate.SetValue(SchedulePlate.CommandProperty, Command);
                     plate.SetValue(SchedulePlate.StateProperty, PlateState.Normal);
@@ -797,6 +808,12 @@ namespace BSUIRScheduleDESK.Controls
                 .FirstOrDefault(e => Grid.GetRow(e) == row && Grid.GetColumn(e) == column);
         }
 
+        public void OnRightButtonClicked(MouseButtonEventArgs e)
+        {
+            if (e.Source is not SchedulePlate plate) return;
+            _plateInfoPopup.DataContext = plate.Schedule;
+            _plateInfoPopup.IsOpen = true;
+        }
         private void ChangeWeek(int offset)
         {
             _weekDiff += offset;
@@ -968,6 +985,7 @@ namespace BSUIRScheduleDESK.Controls
         private const string PART_EmptyMessage = "PART_EmptyMessage";
         private const string PART_ShowExpired = "PART_ShowExpired";
         private const string PART_ShowAll = "PART_ShowAll";
+        private const string PART_PlateInfoPopup = "PART_PlateInfoPopup";
 
         private Grid _scheduleView;
         private Grid _maximizedView;
@@ -987,5 +1005,6 @@ namespace BSUIRScheduleDESK.Controls
         private TextBlock _emptyMessage;
         private CheckBox _showExpiredLessons;
         private CheckBox _showAllLessons;
+        private Popup _plateInfoPopup;
     }
 }

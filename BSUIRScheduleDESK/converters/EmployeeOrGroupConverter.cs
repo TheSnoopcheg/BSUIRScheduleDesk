@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows.Data;
 
 
@@ -30,7 +31,20 @@ namespace BSUIRScheduleDESK.Converters
                         }
                         else if(value is Employee e)
                         {
-                            return e.GetFullName();
+                            StringBuilder sb = new StringBuilder();
+                            sb.Append(e.GetFullName());
+                            bool dRes = string.IsNullOrEmpty(e.degreeAbbrev);
+                            bool rRes = string.IsNullOrEmpty(e.rank);
+                            if (!dRes || !rRes)
+                            {
+                                sb.Append("\n(");
+                                sb.Append(e.degreeAbbrev);
+                                if (!dRes && !rRes)
+                                    sb.Append(", ");
+                                sb.Append(e.rank);
+                                sb.Append(")");
+                            }
+                            return sb.ToString();
                         }
                         return null;
                     }

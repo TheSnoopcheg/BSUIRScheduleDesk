@@ -15,6 +15,7 @@
   <ItemGroup>
     <None Remove="Assets\icons8-santa-hat-48.png" />
     <None Remove="Assets\snow.png" />
+    <None Remove="Assets\unknown-person-placeholder.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +30,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Resource Include="Assets\unknown-person-placeholder.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Themes\ColourDictionaries\IISTheme.xaml" />
   </ItemGroup>
 
@@ -42,8 +46,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Assets\icons8-santa-hat-48.png" />
-    <Resource Include="Assets\snow.png" />
     <Resource Include="Themes\ColourDictionaries\DarkTheme.xaml" />
   </ItemGroup>
 

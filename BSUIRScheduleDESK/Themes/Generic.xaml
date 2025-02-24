@@ -730,6 +730,25 @@
         </Setter>
     </Style>
 
+
+    <DataTemplate x:Key="PlateInfoPopupTemplate">
+        <Border Background="{DynamicResource Window.Background.Static}"
+                MinWidth="100"
+                Height="50"
+                CornerRadius="5">
+            <StackPanel Margin="5">
+                <TextBlock>
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0} - {1}">
+                            <Binding Path="startLessonDate"/> <!--period of lessons-->
+                            <Binding Path="endLessonDate"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+            </StackPanel>
+        </Border>
+    </DataTemplate>
+
     <Style TargetType="{x:Type templates:SchedulePresenter}">
         <Setter Property="Focusable" Value="False"/>
         <Setter Property="Template">
@@ -1004,6 +1023,16 @@
                                     </Button.Style>
                                 </Button>
                             </StackPanel>
+                        </Popup>
+                        <Popup Placement="MousePoint"
+                               AllowsTransparency="True"
+                               StaysOpen="False"
+                               x:Name="PART_PlateInfoPopup">
+                            <StackPanel>
+                                <ContentPresenter ContentTemplate="{StaticResource PlateInfoPopupTemplate}" 
+                                                  Content="{Binding ElementName=PART_PlateInfoPopup, Path=DataContext, UpdateSourceTrigger=PropertyChanged}"/>
+                            </StackPanel>
+
                         </Popup>
                     </Grid>
                 </ControlTemplate>

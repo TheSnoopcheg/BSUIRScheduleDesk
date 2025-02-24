@@ -40,6 +40,7 @@ namespace BSUIRScheduleDESK.Models
             Schedule schedule = await _scheduleService.LoadScheduleAsync(url, loadingType);
             if (schedule == null) return false;
 
+            await schedule.CreateDailyLessonConllections();
             if (loadingType != LoadingType.ServerWP)
                 Schedule = schedule;
             else                                            // shitcoding
@@ -83,6 +84,9 @@ namespace BSUIRScheduleDESK.Models
             var newSchedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.ServerWP);
             if (newSchedule == null) return null;
             if (Schedule.GetUrl() != newSchedule.GetUrl()) return null;
+
+            await newSchedule.CreateDailyLessonConllections();
+
             if (!Schedule.Compare(newSchedule))
             {
                 ModalWindowResult result = ModalWindow.Show(string.Format(Langs.Language.ScheduleUpdateQuestionFormat, newSchedule.GetName()), Langs.Language.AppName, "", ModalWindowButtons.YesNo);

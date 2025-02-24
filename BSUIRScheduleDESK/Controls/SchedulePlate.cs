@@ -23,6 +23,8 @@ namespace BSUIRScheduleDESK.Controls
         }
         public SchedulePlate() : base() { EventService.ColorsUpdated += EventService_ColorsUpdated; }
 
+        public SchedulePresenter Owner { get; set; }
+
         #region ScheduleProperty
 
         public static readonly DependencyProperty ScheduleProperty = DependencyProperty.Register(
@@ -107,6 +109,18 @@ namespace BSUIRScheduleDESK.Controls
 
             SetUpColor();
             SetUpPlate();
+        }
+
+        protected override void OnMouseUp(MouseButtonEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            //if (e == null) return;
+
+            //if(e.ChangedButton == MouseButton.Right)
+            //{
+            //    Owner.OnRightButtonClicked(e);
+            //}
         }
 
         private void SetUpPlate()

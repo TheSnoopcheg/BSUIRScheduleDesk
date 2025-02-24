@@ -26,7 +26,8 @@
                             <Image Grid.Row="0" 
                                    Height="100"
                                    Stretch="UniformToFill"
-                                   Width="100">
+                                   Width="100"
+                                   ImageFailed="Image_ImageFailed">
                                 <Image.Clip>
                                     <EllipseGeometry RadiusX="45" RadiusY="45" Center="50, 50"/>
                                 </Image.Clip>
@@ -42,14 +43,20 @@
                                     </Style>
                                 </Image.Style>
                             </Image>
-                            <TextBlock Grid.Row="1" Foreground="{DynamicResource TextBlock.Foreground.Static}" Text="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Text}" TextWrapping="Wrap" TextAlignment="Center"/>
+                            <TextBlock Foreground="{DynamicResource TextBlock.Foreground.Static}" 
+                                       Text="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Text}" 
+                                       TextWrapping="Wrap" 
+                                       TextAlignment="Center"
+                                       Grid.Row="1"/>
+                            
                         </Grid>
                     </ToolTip>
                 </Button.ToolTip>
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
                         <Setter Property="Margin" Value="0, 2.5,5,2.5"/>
-                        <Setter Property="Height" Value="20"/>
+                        <Setter Property="MinHeight" Value="20"/>
+                        <Setter Property="MaxHeight" Value="40"/>
                         <Setter Property="HorizontalAlignment" Value="Left"/>
                         <Setter Property="Width" Value="Auto"/>
                         <Setter Property="BorderBrush" Value="{DynamicResource EmployeeGroups.Button.Static.BorderBrush}"/>
@@ -82,13 +89,15 @@
                                                    Margin="5,0,5,0"
                                                    Foreground="{DynamicResource EmployeeGroups.Button.Static.Foreground}"
                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                   TextWrapping="Wrap"/>
                                         <TextBlock Text="{Binding}" 
                                                    x:Name="contentMouseOver"
                                                    Margin="5,0,5,0"
                                                    Foreground="{DynamicResource EmployeeGroups.Button.MouseOver.Foreground}"
                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                   TextWrapping="Wrap"
                                                    Opacity="0"/>
                                     </Grid>
                                     <ControlTemplate.Triggers>
