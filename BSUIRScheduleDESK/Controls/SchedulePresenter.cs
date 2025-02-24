@@ -8,7 +8,6 @@ using System.Windows.Input;
 using System.Windows.Controls.Primitives;
 using System.Globalization;
 using System.Windows.Markup;
-using System.Diagnostics;
 
 namespace BSUIRScheduleDESK.Controls
 {
@@ -25,7 +24,6 @@ namespace BSUIRScheduleDESK.Controls
         private DateTime _endExamDate = DateTime.MaxValue;
 
         private List<DateTime> _dates = new List<DateTime>();
-
 
         private Dictionary<TimeOnly, int> StartLessonDict = new Dictionary<TimeOnly, int>()
         {
@@ -156,7 +154,7 @@ namespace BSUIRScheduleDESK.Controls
 
         public static readonly DependencyProperty LessonsProperty = DependencyProperty.Register(
             "Lessons",
-            typeof(Lessons),
+            typeof(IEnumerable<DailyLesson>),
             typeof(SchedulePresenter),
             new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnLessonsChanged)));
 
@@ -166,9 +164,9 @@ namespace BSUIRScheduleDESK.Controls
             schedulePresenter.SetUp();
         }
 
-        public Lessons Lessons
+        public IEnumerable<DailyLesson> Lessons
         {
-            get { return (Lessons)GetValue(LessonsProperty); }
+            get { return (IEnumerable<DailyLesson>)GetValue(LessonsProperty); }
             set { SetValue(LessonsProperty, value); }
         }
 
@@ -375,7 +373,7 @@ namespace BSUIRScheduleDESK.Controls
             if (_scheduleView == null || _maximizedView == null || _normalView == null) return; 
             CleanGrid();
 
-            if (Lessons == null || Lessons.IsEmpty)
+            if (Lessons == null || Lessons.Count() == 0)
             {
                 _scheduleView.SetValue(VisibilityProperty, Visibility.Collapsed);
                 _normalView.SetValue(VisibilityProperty, Visibility.Collapsed);
@@ -584,116 +582,103 @@ namespace BSUIRScheduleDESK.Controls
 
         private void SetMaximizedSchedulePlates()
         {
-            int col = 0;
             int row = 0;
+            int col = 0;
             bool isExpiredToShow = false;
-            foreach (var prop in Lessons.GetType().GetProperties())
+            TimeOnly time;
+            foreach (var item in Lessons)
             {
-                col++;
-                if (prop.GetValue(Lessons) is not IEnumerable<Lesson> list || list.Count() == 0) continue;
-                if (!ShowAllLessons)
+                if (IsLessonToShow(item.Lesson!, (int)item.Day, out isExpiredToShow))
                 {
-                    list = list
-                        .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                        .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
+                    col = (int)item.Day + 1;
+                    time = TimeOnly.Parse(item.Lesson!.startLessonTime!);
                 }
-                foreach (var item in list)
+                else
                 {
-                    isExpiredToShow = false;
-                    if (!TimeOnly.TryParse(item.startLessonTime, out TimeOnly time)) continue;
-                    if (!ShowAllLessons)
-                    {
-                        if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
-                        {
-                            if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
-                                continue;
-                        }
-                        if (item.announcement)
-                            if (DateTime.TryParse(item.startLessonDate, out DateTime date))
-                                if (!_dates.Contains(date))
-                                    continue;
-                        if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[col - 1])
-                            || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[col - 1])))
-                        {
-                            if (_showExpiredLessons.IsChecked == false)
-                                continue;
-                            else
-                                isExpiredToShow = true;
-                        }
-                    }
-                    row = StartLessonDict[GetNearestTime(time)];
-                    if (GetElementInGridPosition(_maximizedView, col, row) is not StackPanel panel) continue;
-                    SchedulePlate plate = new SchedulePlate();
-                    plate.Owner = this;
-                    plate.SetValue(Grid.RowProperty, row);
-                    plate.SetValue(Grid.ColumnProperty, col);
-                    plate.SetValue(SchedulePlate.ScheduleProperty, item);
-                    plate.SetValue(SchedulePlate.CommandProperty, Command);
-                    plate.SetValue(SchedulePlate.StateProperty, PlateState.Maximized);
-                    plate.SetValue(OpacityProperty, isExpiredToShow ? 0.75 : 1);
+                    continue;
+                }
 
-                    panel.Children.Add(plate);
+                row = StartLessonDict[GetNearestTime(time)];
+                
+                if (GetElementInGridPosition(_maximizedView, col, row) is not StackPanel panel) continue;
+                
+                AddPlateToPanel(panel, item.Lesson!, PlateState.Maximized, isExpiredToShow);
+            }
+        }
+
+        private bool IsLessonToShow(Lesson lesson, int day, out bool isExpiredToShow)
+        {
+            isExpiredToShow = false;
+            if (!TimeOnly.TryParse(lesson.startLessonTime, out TimeOnly time)) return false;
+            if (ShowAllLessons) return true;
+            if (lesson.weekNumber == null) return false;
+            if (!lesson.weekNumber.Contains(CurrentWeek) && !(DateTime.TryParse(lesson.startLessonDate, out DateTime date) && _dates.Contains(date))) return false;
+            if(lesson.numSubgroup != 0)
+            {
+                if (lesson.numSubgroup == 1 && !FirstSubGroup)
+                    return false;
+                if (lesson.numSubgroup == 2 && !SecondSubGroup)
+                    return false;
+            }
+            if (ShowExams)
+            {
+                if (DateTime.TryParse(lesson.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
+                {
+                    if (!_dates.Contains(lessonDate))
+                        return false;
                 }
             }
+            if ((DateTime.TryParse(lesson.startLessonDate, out DateTime startDate) && startDate > _dates[day])
+                        || (DateTime.TryParse(lesson.endLessonDate, out DateTime endDate) && endDate < _dates[day]))
+            {
+                if (!ShowExpiredLessons)
+                    return false;
+                else
+                    isExpiredToShow = true;
+            }
+            return true;
         }
 
         private void SetNormalSchedulePlates()
         {
             bool isExpiredToShow = false;
-            var properties = Lessons.GetType().GetProperties();
-            for (int i = 0; i < properties.Length; i++)
+            int day = 0;
+            foreach(var item in Lessons)
+            {
+                day = (int)item.Day;
+                
+                if (GetElementInGridPosition(_normalView, 0, day * 2 + 1) is not StackPanel panel) continue;
+
+                if (!IsLessonToShow(item.Lesson!, (int)item.Day, out isExpiredToShow))
+                {
+                    continue;
+                }
+
+                AddPlateToPanel(panel, item.Lesson!, PlateState.Normal, isExpiredToShow);
+            }
+            FullFreeDays();
+        }
+
+        private void AddPlateToPanel(StackPanel panel, Lesson lesson, PlateState state, bool isExpired)
+        {
+            SchedulePlate plate = new SchedulePlate();
+            plate.Owner = this;
+            plate.SetValue(SchedulePlate.ScheduleProperty, lesson);
+            plate.SetValue(SchedulePlate.CommandProperty, Command);
+            plate.SetValue(SchedulePlate.StateProperty, state);
+            plate.SetValue(OpacityProperty, isExpired ? 0.75 : 1);
+
+            panel.Children.Add(plate);
+        }
+        
+        private void FullFreeDays()
+        {
+            for(int i = 0; i <= (int)Day.Saturday; i++)
             {
                 if (GetElementInGridPosition(_normalView, 0, i * 2 + 1) is not StackPanel panel) continue;
-                if (properties[i].GetValue(Lessons) is not IEnumerable<Lesson> list || list.Count() == 0)
-                {
-                    AddNoLessonTextBlock(panel);
-                    continue;
-                }
-                if (!ShowAllLessons)
-                {
-                    list = list
-                        .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                        .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup))
-                        .OrderBy(i => TimeOnly.TryParse(i.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
-                }
-                foreach (var item in list)
-                {
-                    isExpiredToShow = false;
-                    if (string.IsNullOrEmpty(item.startLessonTime)) continue;
-                    if (!ShowAllLessons)
-                    {
-                        if (DateTime.TryParse(item.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
-                        {
-                            if (_showExams.IsChecked == false || !_dates.Contains(lessonDate))
-                                continue;
-                        }
-                        if (item.announcement)
-                            if (DateTime.TryParse(item.startLessonDate, out DateTime date))
-                                if (!_dates.Contains(date))
-                                    continue;
-                        if ((DateTime.TryParse(item.startLessonDate, out DateTime startDate) && startDate > _dates[i])
-                            || ((DateTime.TryParse(item.endLessonDate, out DateTime endDate) && endDate < _dates[i])))
-                        {
-                            if (_showExpiredLessons.IsChecked == false)
-                                continue;
-                            else
-                                isExpiredToShow = true;
-                        }
-                    }
-                    SchedulePlate plate = new SchedulePlate();
-                    plate.Owner = this;
-                    plate.SetValue(SchedulePlate.ScheduleProperty, item);
-                    plate.SetValue(SchedulePlate.CommandProperty, Command);
-                    plate.SetValue(SchedulePlate.StateProperty, PlateState.Normal);
-                    plate.SetValue(OpacityProperty, isExpiredToShow ? 0.75 : 1);
 
-                    panel.Children.Add(plate);
-                }
                 if (panel.Children.Count == 0)
-                {
                     AddNoLessonTextBlock(panel);
-                    continue;
-                }
             }
         }
 
@@ -716,35 +701,25 @@ namespace BSUIRScheduleDESK.Controls
         {
             TimeOnly minTime = TimeOnly.MaxValue;
             TimeOnly maxTime = TimeOnly.MinValue;
-            TimeOnly sTime = TimeOnly.Parse("9:00");
+            var list = Lessons
+                .Where(i => (i.Lesson!.weekNumber != null && i.Lesson!.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.Lesson!.startLessonDate, out DateTime date) && _dates.Contains(date)))
+                .Where(i => i.Lesson!.numSubgroup == 0 || (i.Lesson!.numSubgroup == 1 && FirstSubGroup) || (i.Lesson!.numSubgroup == 2 && SecondSubGroup))
+                .Where(i => TimeOnly.TryParse(i.Lesson!.startLessonTime, out TimeOnly time))
+                .OrderBy(i => TimeOnly.TryParse(i.Lesson!.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
 
-            foreach(var prop in Lessons.GetType().GetProperties())
+            if(list.Count() > 0)
             {
-                if (prop.GetValue(Lessons) is not IEnumerable<Lesson> list || list.Count() == 0) continue;
-                if (!ShowAllLessons)
-                {
-                    list = list
-                        .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                        .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup));
-                }
-                foreach (var lesson in list)
-                {
-                    if (lesson.announcement)
-                        if(DateTime.TryParse(lesson.startLessonDate, out DateTime date))
-                            if (!_dates.Contains(date))
-                                continue;
-                    if (!TimeOnly.TryParse(lesson.startLessonTime, out TimeOnly time)) continue;
-                    if (time < sTime) minTime = sTime;
-                    else if(time < minTime) minTime = time;
-                    if(time > maxTime) maxTime = time;
-                }
+                minTime = TimeOnly.Parse(list.First().Lesson!.startLessonTime!);
+                maxTime = TimeOnly.Parse(list.Last().Lesson!.startLessonTime!);
             }
+
             if (minTime == TimeOnly.MaxValue && maxTime == TimeOnly.MinValue)
             {
                 _minRow = -1;
                 _maxRow = -1;
                 return;
             }
+
             _minRow = StartLessonDict[GetNearestTime(minTime)];
             _maxRow = StartLessonDict[GetNearestTime(maxTime)];
         }

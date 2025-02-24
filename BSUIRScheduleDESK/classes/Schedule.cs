@@ -16,9 +16,7 @@ namespace BSUIRScheduleDESK.Classes
         public Lessons? lessons { get; set; }
         [JsonPropertyName("previousSchedules")]
         public Lessons? previousLessons { get; set; }
-        [JsonIgnore]
         public List<DailyLesson> dailyLessons { get; set; } = new List<DailyLesson>();
-        [JsonIgnore]
         public List<DailyLesson> previousDailyLessons { get; set; } = new List<DailyLesson>();
         public string? currentTerm { get; set; }
         public string? previousTerm { get; set; }
@@ -67,7 +65,7 @@ namespace BSUIRScheduleDESK.Classes
                     }
                     counter++;
                 }
-                //lessons = null;
+                lessons = null;
             }
 
             if(previousLessons != null && !previousLessons.IsEmpty)
@@ -87,7 +85,7 @@ namespace BSUIRScheduleDESK.Classes
                     }
                     counter++;
                 }
-                //previousLessons = null;
+                previousLessons = null;
             }
         });
     }

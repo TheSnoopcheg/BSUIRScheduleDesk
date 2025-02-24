@@ -496,7 +496,7 @@
                                                              Command="{Binding LoadScheduleFromPlate}"
                                                              StartExamDate="{Binding Schedule.startExamsDate}"
                                                              EndExamDate="{Binding Schedule.endExamsDate}"
-                                                             Lessons="{Binding Schedule.lessons}"/>
+                                                             Lessons="{Binding Schedule.dailyLessons}"/>
 
                             </Grid>
 

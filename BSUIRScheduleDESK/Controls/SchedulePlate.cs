@@ -117,7 +117,7 @@ namespace BSUIRScheduleDESK.Controls
 
             //if (e == null) return;
 
-            //if(e.ChangedButton == MouseButton.Right)
+            //if (e.ChangedButton == MouseButton.Right)
             //{
             //    Owner.OnRightButtonClicked(e);
             //}
