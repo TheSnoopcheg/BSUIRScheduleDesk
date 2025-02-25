@@ -328,9 +328,9 @@ namespace BSUIRScheduleDESK.ViewModels
                 {
                     _historyViewModel.AddHistoryNote(historyNote);
                     OnPropertyChanged(nameof(Schedule));
-                    OnPropertyChanged(nameof(HistoryVisibility));
                 }
             }
+            OnPropertyChanged(nameof(HistoryVisibility));
             if (await _announcementViewModel.SetAnnouncements(name, url))
                 OnPropertyChanged(nameof(AnnouncementsExistenceVisibility));
         }

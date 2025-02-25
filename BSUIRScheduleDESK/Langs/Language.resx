@@ -325,4 +325,10 @@
   <data name="NoLessons" xml:space="preserve">
     <value>Нет занятий</value>
   </data>
+  <data name="PeriodOfLessons" xml:space="preserve">
+    <value>Период занятий</value>
+  </data>
+  <data name="NumOfLessonsSinceStart" xml:space="preserve">
+    <value>Номер занятия с начала семестра</value>
+  </data>
 </root>

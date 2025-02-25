@@ -422,11 +422,29 @@ namespace BSUIRScheduleDESK.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Номер занятия с начала семестра.
+        /// </summary>
+        public static string NumOfLessonsSinceStart {
+            get {
+                return ResourceManager.GetString("NumOfLessonsSinceStart", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ОК.
         /// </summary>
         public static string OK {
             get {
                 return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Период занятий.
+        /// </summary>
+        public static string PeriodOfLessons {
+            get {
+                return ResourceManager.GetString("PeriodOfLessons", resourceCulture);
             }
         }
         

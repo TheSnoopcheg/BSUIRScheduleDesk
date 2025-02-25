@@ -21,7 +21,6 @@ namespace BSUIRScheduleDESK
     {
         private IMainWindowViewModel _mainWindowViewModel;
         private IScheduleService _scheduleService;
-        private IDateService _dateService;
         public IServiceProvider ServiceProvider { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
@@ -39,7 +38,6 @@ namespace BSUIRScheduleDESK
 
             _mainWindowViewModel = ServiceProvider.GetService<IMainWindowViewModel>()!;
             _scheduleService = ServiceProvider.GetService<IScheduleService>()!;
-            _dateService = ServiceProvider.GetService<IDateService>()!;
 
             string? dataPath = Directory.GetCurrentDirectory() + @"\data";
             if (!Directory.Exists(dataPath))
@@ -52,7 +50,7 @@ namespace BSUIRScheduleDESK
                 var up = _scheduleService.UpdateCurrentWeekAsync();
             }
 
-            int wd = _dateService.GetWeekDiff(Config.Instance.LastStartup, DateTime.Today);
+            int wd = DateService.GetWeekDiff(Config.Instance.LastStartup, DateTime.Today);
             Config.Instance.CurrentWeek = (Config.Instance.CurrentWeek + wd + 3) % 4 + 1;
             Config.Instance.Save();
 
@@ -86,7 +84,6 @@ namespace BSUIRScheduleDESK
             services.AddSingleton<IAnnouncementViewModel, AnnouncementViewModel>();
             services.AddSingleton<IScheduleHistoryViewModel, ScheduleHistoryViewModel>();
 
-            services.AddSingleton<IDateService, DateService>();
             services.AddSingleton<INetworkService, NetworkService>();
             services.AddSingleton<IInternetService, InternetService>();
 

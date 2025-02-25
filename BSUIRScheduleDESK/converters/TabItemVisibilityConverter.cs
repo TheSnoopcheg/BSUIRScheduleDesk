@@ -19,11 +19,11 @@ namespace BSUIRScheduleDESK.Converters
                 }
                 else if(param == "Schedule")
                 {
-                    if(v.lessons == null) return Visibility.Collapsed;
+                    if(v.dailyLessons == null || v.dailyLessons.Count == 0) return Visibility.Collapsed;
                 }
-                else if(param == "PreviusSchedule")
+                else if(param == "PreviousSchedule")
                 {
-                    if(v.previousLessons == null || v.previousTerm == v.currentTerm) return Visibility.Collapsed;
+                    if(v.previousDailyLessons == null || v.previousDailyLessons.Count == 0 || v.previousTerm == v.currentTerm) return Visibility.Collapsed;
                 }
             }
             return Visibility.Visible;

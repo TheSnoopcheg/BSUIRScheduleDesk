@@ -115,12 +115,12 @@ namespace BSUIRScheduleDESK.Controls
         {
             base.OnMouseUp(e);
 
-            //if (e == null) return;
+            if (e == null) return;
 
-            //if (e.ChangedButton == MouseButton.Right)
-            //{
-            //    Owner.OnRightButtonClicked(e);
-            //}
+            if (e.ChangedButton == MouseButton.Right)
+            {
+                Owner.OnRightButtonClicked(e);
+            }
         }
 
         private void SetUpPlate()

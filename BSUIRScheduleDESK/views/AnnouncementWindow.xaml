@@ -80,9 +80,9 @@
                            VerticalAlignment="Center"
                            TextWrapping="Wrap"/>
                 <controls:EmployeeGroups Grid.Column="3"
-                                         VerticalAlignment="Center"
-                                         HorizontalAlignment="Center"
-                                         Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.LoadScheduleCommand}">
+                          VerticalAlignment="Center"
+                          HorizontalAlignment="Center"
+                          Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.LoadScheduleCommand}">
                     <controls:EmployeeGroups.DataContext>
                         <MultiBinding Converter="{StaticResource EmployeeOrGroupConverter}" ConverterParameter="Type">
                             <Binding RelativeSource="{RelativeSource AncestorType=Grid}" Path="DataContext"/>
@@ -227,11 +227,11 @@
                         </Grid>
                     </Border>
                     <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False">
-                        <ItemsControl ItemsSource="{Binding Announcements, UpdateSourceTrigger=PropertyChanged}"
+                        <ItemsControl ItemsSource="{Binding Announcements}"
                                       ItemTemplate="{StaticResource AnnouncementTemplate}" Focusable="False">
                             <ItemsControl.ItemsPanel>
                                 <ItemsPanelTemplate>
-                                    <StackPanel Orientation="Vertical"/>
+                                    <VirtualizingStackPanel Orientation="Vertical"/>
                                 </ItemsPanelTemplate>
                             </ItemsControl.ItemsPanel>
                         </ItemsControl>

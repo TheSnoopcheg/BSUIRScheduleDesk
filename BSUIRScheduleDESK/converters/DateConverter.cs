@@ -21,7 +21,7 @@ namespace BSUIRScheduleDESK.Converters
                 string? param = parameter as string;
                 DateTime dateTime = (DateTime)value;
                 string day = dateTime.ToString("dddd", CultureInfo.CurrentUICulture);
-                day = day.Replace(day[0], Char.ToUpper(day[0]));
+                day = Char.ToUpper(day[0]) + day.Substring(1);
                 string result = string.Empty;
                 if(param != null)
                 {
@@ -32,7 +32,7 @@ namespace BSUIRScheduleDESK.Converters
                     if (param == "monthyear")
                     {
                         string month = dateTime.ToString("MMMM yyyy", CultureInfo.CurrentUICulture);
-                        month = month.Replace(month[0], char.ToUpper(month[0]));
+                        month = char.ToUpper(month[0]) + month.Substring(1);
                         return month;
                     }
                 }

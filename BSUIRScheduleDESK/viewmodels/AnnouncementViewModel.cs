@@ -41,7 +41,7 @@ namespace BSUIRScheduleDESK.ViewModels
             }
         }
         public event EventHandler OnRequestClose;
-        public ObservableCollection<Announcement> Announcements =>_model.Announcements;
+        public ObservableCollection<Announcement> Announcements => _model.Announcements;
         public bool IsEmployeeAnnouncement { get; private set; }
         public string Title { get; private set; } = string.Empty;
         public string CommandUrl { get; private set; } = string.Empty;

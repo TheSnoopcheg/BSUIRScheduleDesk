@@ -1,4 +1,5 @@
 ﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Services;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,11 +14,12 @@ namespace BSUIRScheduleDESK.Controls
 {
     public class SchedulePresenter : Control
     {
-        private int _minRow = -1;
-        private int _maxRow = -1;
         private const int GRID_ROWS = 9;
         private const int GRID_ROWS_NORMAL = 12;
         private const int GRID_COLS = 7;
+
+        private int _minRow = -1;
+        private int _maxRow = -1;
         private int _weekDiff = 0;
 
         private DateTime _startExamDate = DateTime.MinValue;
@@ -611,8 +613,11 @@ namespace BSUIRScheduleDESK.Controls
             isExpiredToShow = false;
             if (!TimeOnly.TryParse(lesson.startLessonTime, out TimeOnly time)) return false;
             if (ShowAllLessons) return true;
-            if (lesson.weekNumber == null) return false;
-            if (!lesson.weekNumber.Contains(CurrentWeek) && !(DateTime.TryParse(lesson.startLessonDate, out DateTime date) && _dates.Contains(date))) return false;
+            if(lesson.weekNumber == null && lesson.announcement)
+            {
+                if (!(DateTime.TryParse(lesson.startLessonDate, out DateTime date) && _dates.Contains(date))) return false;
+            }
+            if (lesson.weekNumber != null && !lesson.weekNumber.Contains(CurrentWeek)) return false;
             if(lesson.numSubgroup != 0)
             {
                 if (lesson.numSubgroup == 1 && !FirstSubGroup)
@@ -786,7 +791,13 @@ namespace BSUIRScheduleDESK.Controls
         public void OnRightButtonClicked(MouseButtonEventArgs e)
         {
             if (e.Source is not SchedulePlate plate) return;
-            _plateInfoPopup.DataContext = plate.Schedule;
+            if (plate.Schedule.announcement) return;
+            AdditionalLessonInfo info = new AdditionalLessonInfo();
+            info.StartLessonDate = plate.Schedule.startLessonDate;
+            info.EndLessonDate = plate.Schedule.endLessonDate;
+            DateTime classDate = _dates[(int)Lessons.FirstOrDefault(d => d.Lesson == plate.Schedule)!.Day];
+            info.NumOfAppearances = LessonsHelper.CheckLessonsCount(Lessons, plate.Schedule, classDate, CurrentWeek);
+            _plateInfoPopup.DataContext = info;
             _plateInfoPopup.IsOpen = true;
         }
         private void ChangeWeek(int offset)

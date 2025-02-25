@@ -732,16 +732,27 @@
 
 
     <DataTemplate x:Key="PlateInfoPopupTemplate">
-        <Border Background="{DynamicResource Window.Background.Static}"
+        <Border Background="{DynamicResource ToolTip.Static.Background}"
+                BorderBrush="{DynamicResource ToolTip.Static.BorderBrush}"
+                BorderThickness="1"
                 MinWidth="100"
                 Height="50"
                 CornerRadius="5">
             <StackPanel Margin="5">
-                <TextBlock>
+                <TextBlock Foreground="{DynamicResource ToolTip.Static.Foreground}">
                     <TextBlock.Text>
-                        <MultiBinding StringFormat="{}{0} - {1}">
-                            <Binding Path="startLessonDate"/> <!--period of lessons-->
-                            <Binding Path="endLessonDate"/>
+                        <MultiBinding StringFormat="{}{0}: {1} - {2}">
+                            <Binding Source="{x:Static lang:Language.PeriodOfLessons}"/>
+                            <Binding Path="StartLessonDate"/>
+                            <Binding Path="EndLessonDate"/>
+                        </MultiBinding>
+                    </TextBlock.Text>
+                </TextBlock>
+                <TextBlock Foreground="{DynamicResource ToolTip.Static.Foreground}">
+                    <TextBlock.Text>
+                        <MultiBinding StringFormat="{}{0}: {1}">
+                            <Binding Source="{x:Static lang:Language.NumOfLessonsSinceStart}"/>
+                            <Binding Path="NumOfAppearances"/>
                         </MultiBinding>
                     </TextBlock.Text>
                 </TextBlock>
@@ -915,7 +926,7 @@
                                         <Border Grid.Row="10" Background="{DynamicResource Border.Title.Background.Static}"/>
                                     </Grid>
                                     <ScrollViewer.OpacityMask>
-                                        <VisualBrush Visual="{Binding Source={x:Reference Mask}}"/>
+                                        <VisualBrush Visual="{Binding ElementName=Mask}"/>
                                     </ScrollViewer.OpacityMask>
                                 </ScrollViewer>
                                 <Grid x:Name="PART_ScheduleView"
@@ -969,7 +980,7 @@
                                             </Grid.RowDefinitions>
                                         </Grid>
                                         <ScrollViewer.OpacityMask>
-                                            <VisualBrush Visual="{Binding Source={x:Reference Mask}}"/>
+                                            <VisualBrush Visual="{Binding ElementName=Mask}"/>
                                         </ScrollViewer.OpacityMask>
                                     </ScrollViewer>
                                 </Grid>
@@ -1002,7 +1013,14 @@
                                             <Setter Property="Template">
                                                 <Setter.Value>
                                                     <ControlTemplate TargetType="{x:Type Button}">
-                                                        <Border x:Name="border" Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" SnapsToDevicePixels="True" CornerRadius="0,0,7.5,7.5" BorderThickness="1">
+                                                        <Border x:Name="border" 
+                                                                Background="{TemplateBinding Background}" 
+                                                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                                                Height="{TemplateBinding Height}" 
+                                                                Width="{TemplateBinding Width}" 
+                                                                SnapsToDevicePixels="True" 
+                                                                CornerRadius="0,0,7.5,7.5" 
+                                                                BorderThickness="1">
                                                             <TextBlock Text="{x:Static lang:Language.GoToButtonText}" 
                                                                        Margin="5,0,5,0"
                                                                        Foreground="{TemplateBinding Foreground}"
@@ -1134,7 +1152,7 @@
                                 x:Name="PART_TimePanel">
                         <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    VerticalAlignment="Center"
-                                   Text="{Binding Source={x:Static lang:Language.Time}, StringFormat={}{0}: }"/>
+                                   Text="{Binding Source={x:Static lang:Language.Time}, StringFormat='{}{0}: '}"/>
                         <TextBlock Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                    VerticalAlignment="Center"
                                    TextWrapping="Wrap"

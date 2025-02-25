@@ -462,12 +462,14 @@
 
 
                 <!--schedule-->
-                <TabControl Style="{DynamicResource TabControlStyle}" Grid.Row="1" Margin="5,0,5,0"
+                <TabControl Style="{DynamicResource TabControlStyle}" 
+                            Grid.Row="1" 
+                            Margin="5,0,5,0"
                             Padding="0,5,0,0"
                             Background="{DynamicResource TabControl.Background.Static}"
                             SelectedIndex="{Binding SelectedTab}">
                     <!--current term schedule tab-->
-                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.lessons, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Schedules}">
+                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.dailyLessons, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Schedules}">
                         <TabItem.Header>
                             <StackPanel>
                                 <TextBlock FontSize="14">
@@ -535,7 +537,7 @@
                         </TabItem.Content>
                     </TabItem>
                     <!--previous term schedule tab-->
-                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=PreviusSchedule}">
+                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=PreviousSchedule}">
                         <TabItem.Header>
                             <StackPanel>
                                 <TextBlock Text="{Binding Schedule.previousTerm}" FontSize="14"/>
@@ -553,7 +555,7 @@
                                                              Command="{Binding LoadScheduleFromPlate}"
                                                              StartExamDate="{Binding Schedule.startExamsDate}"
                                                              EndExamDate="{Binding Schedule.endExamsDate}"
-                                                             Lessons="{Binding Schedule.previousLessons}"/>
+                                                             Lessons="{Binding Schedule.previousDailyLessons}"/>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>
