@@ -16,8 +16,8 @@ namespace BSUIRScheduleDESK.Classes
         public Lessons? lessons { get; set; }
         [JsonPropertyName("previousSchedules")]
         public Lessons? previousLessons { get; set; }
-        public List<DailyLesson> dailyLessons { get; set; } = new List<DailyLesson>();
-        public List<DailyLesson> previousDailyLessons { get; set; } = new List<DailyLesson>();
+        public List<Lesson> dailyLessons { get; set; } = new List<Lesson>();
+        public List<Lesson> previousDailyLessons { get; set; } = new List<Lesson>();
         public string? currentTerm { get; set; }
         public string? previousTerm { get; set; }
         public List<Lesson>? exams { get; set; }
@@ -46,7 +46,7 @@ namespace BSUIRScheduleDESK.Classes
         {
             return GetName() ?? string.Empty;
         }
-        public async Task CreateDailyLessonConllections() => await Task.Run(() =>
+        public async Task CreateDailyLessonConllections() => await Task.Run((System.Action)(() =>
         {
             if(lessons != null && !lessons.IsEmpty)
             {
@@ -62,7 +62,8 @@ namespace BSUIRScheduleDESK.Classes
                     foreach(var item in list)
                     {
                         if (item == null) continue;
-                        dailyLessons.Add(new DailyLesson { Day = (Day)counter, Lesson = item });
+                        item.DayOfWeek = (Day)counter;
+                        dailyLessons.Add(item);
                     }
                     counter++;
                 }
@@ -83,12 +84,13 @@ namespace BSUIRScheduleDESK.Classes
                     foreach(var item in list)
                     {
                         if (item == null) continue;
-                        previousDailyLessons.Add(new DailyLesson { Day = (Day)counter, Lesson = item });
+                        item.DayOfWeek = (Day)counter;
+                        previousDailyLessons.Add(item);
                     }
                     counter++;
                 }
                 previousLessons = null;
             }
-        });
+        }));
     }
 }

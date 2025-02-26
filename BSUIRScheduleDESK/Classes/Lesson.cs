@@ -4,6 +4,7 @@ namespace BSUIRScheduleDESK.Classes
 {
     public class Lesson
     {
+        public Day DayOfWeek { get; set; }
         public List<int>? weekNumber { get; set; }
         public List<StudentGroup>? studentGroups { get; set; }
         public int numSubgroup { get; set; }
@@ -24,15 +25,16 @@ namespace BSUIRScheduleDESK.Classes
         public List<Employee>? employees { get; set; }
         public override string ToString()
         {
-            return $"{subject} ({startLessonTime}{((weekNumber == null || weekNumber.Count < 1) ? string.Empty : "; weeks: " + string.Join(',', weekNumber))}{((employees == null || employees.Count < 1) ? string.Empty : "; " + employees[0])})";
+            return $"{DayOfWeek.ToString()}: {subject} ({startLessonTime}{((weekNumber == null || weekNumber.Count < 1) ? string.Empty : "; weeks: " + string.Join(',', weekNumber))}{((employees == null || employees.Count < 1) ? string.Empty : "; " + employees[0])})";
         }
         public override bool Equals(object? obj)
         {
             if (obj is not Lesson lesson) return false;
-            return this.subject == lesson.subject 
+            return this.subject == lesson.subject
                 && this.startLessonTime == lesson.startLessonTime
                 && this.numSubgroup == lesson.numSubgroup
-                && this.lessonTypeAbbrev == lesson.lessonTypeAbbrev;
+                && this.lessonTypeAbbrev == lesson.lessonTypeAbbrev
+                && this.DayOfWeek == lesson.DayOfWeek;
         }
     }
 }

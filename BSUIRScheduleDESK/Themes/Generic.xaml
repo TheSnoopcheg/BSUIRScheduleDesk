@@ -1345,26 +1345,19 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type templates:DifferencesPresenter}">
-                    <Grid Background="{DynamicResource Border.Background.Static}">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition/>
-                            <ColumnDefinition Width="5"/>
-                            <ColumnDefinition/>
-                        </Grid.ColumnDefinitions>
-                        <Grid Grid.Column="0">
+                    <Grid>
+                        <Border CornerRadius="0,0,5,5"
+                                Background="Black"
+                                x:Name="Mask1"/>
+                        <Border Background="{DynamicResource Border.Background.Static}"
+                                CornerRadius="0,0,5,5">
                             <StackPanel Orientation="Vertical"
-                                        x:Name="PART_LeftSide">
-
+                                        x:Name="PART_LogField">
                             </StackPanel>
-                        </Grid>
-                        <Border Grid.Column="1"
-                                Background="{DynamicResource Exams.Expander.Header.Background.Static}"/>
-                        <Grid Grid.Column="2">
-                            <StackPanel Orientation="Vertical" 
-                                        x:Name="PART_RightSide">
-
-                            </StackPanel>
-                        </Grid>
+                            <Border.OpacityMask>
+                                <VisualBrush Visual="{Binding ElementName=Mask1}"/>
+                            </Border.OpacityMask>
+                        </Border>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

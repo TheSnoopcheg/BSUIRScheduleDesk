@@ -29,7 +29,7 @@ namespace BSUIRScheduleDESK.Controls
             if (d is not DifferencesPresenter p) return;
             if(e.NewValue != null)
             {
-                p.SetUpDifferences();
+                p.SetUpDifferences(p.Differences);
             }
         }
 
@@ -45,14 +45,13 @@ namespace BSUIRScheduleDESK.Controls
         {
             base.OnApplyTemplate();
 
-            _leftSidePanel = (StackPanel)GetTemplateChild(PART_LeftSide);
-            _rightSidePanel = (StackPanel)GetTemplateChild(PART_RightSide);
+            _logFieldPanel = (StackPanel)GetTemplateChild(PART_LogField);
             OldValueBackgroundBrush = (SolidColorBrush)TryFindResource(RESOURCE_OldValueBackgroundBrush);
             NewValueBackgroundBrush = (SolidColorBrush)TryFindResource(RESOURCE_NewValueBackgroundBrush);
             ForegroundBrush = (SolidColorBrush)TryFindResource(RESOURCE_TextForegroundBrush);
 
             if (Differences != null)
-                SetUpDifferences();
+                SetUpDifferences(Differences);
         }
         private string[] CreateStrings(Difference difference)
         {
@@ -77,7 +76,7 @@ namespace BSUIRScheduleDESK.Controls
 
             result.Text = text;
             result.HorizontalAlignment = HorizontalAlignment.Stretch;
-            result.Margin = new Thickness(marginC * LEFT_MARGIN, 0,0,0);
+            result.Margin = new Thickness(marginC * LEFT_MARGIN, 1,0,1);
             result.Foreground = type == 0 ? ForegroundBrush : Brushes.White;
             result.FontSize = FONT_SIZE;
             result.TextWrapping = TextWrapping.Wrap;
@@ -92,7 +91,7 @@ namespace BSUIRScheduleDESK.Controls
 
             result.Text = text;
             result.HorizontalAlignment = HorizontalAlignment.Stretch;
-            result.Margin = new Thickness(marginC * LEFT_MARGIN, 0, 0, 0);
+            result.Margin = new Thickness(marginC * LEFT_MARGIN, 1, 0, 1);
             result.Foreground = type == 0 ? ForegroundBrush : Brushes.White;
             result.FontSize = FONT_SIZE;
             result.TextWrapping = TextWrapping.Wrap;
@@ -100,32 +99,9 @@ namespace BSUIRScheduleDESK.Controls
 
             return result;
         }
-        private void SetUpDifferences(int marginC = 1)
-        {
-            if (_leftSidePanel == null || _rightSidePanel == null) return;
-            foreach (Difference diff in Differences.Differences)
-            {
-                string[] rowTexts = CreateStrings(diff);
-                int lineType = GetLineType(diff.NewValue, diff.OldValue);
-                if(string.IsNullOrEmpty(diff.PropertyName) && diff.OldValue == null)
-                {
-                    _rightSidePanel.Children.Add(CreateTextBlockNew(rowTexts[1], marginC, lineType));
-                }
-                else if (string.IsNullOrEmpty(diff.PropertyName) && diff.NewValue == null) 
-                {
-                    _leftSidePanel.Children.Add(CreateTextBlockOld(rowTexts[0], marginC, lineType));
-                }
-                else
-                {
-                    _leftSidePanel.Children.Add(CreateTextBlockOld(rowTexts[0], marginC, lineType));
-                    _rightSidePanel.Children.Add(CreateTextBlockNew(rowTexts[1], marginC, lineType));
-                }
-                if (diff.Differences.Count == 0) continue;
-                SetUpDifferences(diff, marginC);
-            }
-        }
         private void SetUpDifferences(Difference difference, int marginC = 1)
         {
+            if (_logFieldPanel == null) return;
             marginC++;
             foreach (Difference diff in difference.Differences)
             {
@@ -133,21 +109,26 @@ namespace BSUIRScheduleDESK.Controls
                 int lineType = GetLineType(diff.NewValue, diff.OldValue);
                 if (string.IsNullOrEmpty(diff.PropertyName) && diff.OldValue == null)
                 {
-                    _rightSidePanel.Children.Add(CreateTextBlockNew(rowTexts[1], marginC, lineType));
+                    _logFieldPanel.Children.Add(CreateTextBlockNew(rowTexts[1], marginC, lineType));
                 }
                 else if (string.IsNullOrEmpty(diff.PropertyName) && diff.NewValue == null)
                 {
-                    _leftSidePanel.Children.Add(CreateTextBlockOld(rowTexts[0], marginC, lineType));
+                    _logFieldPanel.Children.Add(CreateTextBlockOld(rowTexts[0], marginC, lineType));
+                }
+                else if (rowTexts[0] == rowTexts[1])
+                {
+                    _logFieldPanel.Children.Add(CreateTextBlockOld(rowTexts[0], marginC, lineType));
                 }
                 else
                 {
-                    _leftSidePanel.Children.Add(CreateTextBlockOld(rowTexts[0], marginC, lineType));
-                    _rightSidePanel.Children.Add(CreateTextBlockNew(rowTexts[1], marginC, lineType));
+                    _logFieldPanel.Children.Add(CreateTextBlockOld(rowTexts[0], marginC, lineType));
+                    _logFieldPanel.Children.Add(CreateTextBlockNew(rowTexts[1], marginC, lineType));
                 }
                 if (diff.Differences.Count == 0) continue;
                 SetUpDifferences(diff, marginC);
             }
         }
+
 
         private int GetLineType(object? left, object? right)
         {
@@ -156,14 +137,12 @@ namespace BSUIRScheduleDESK.Controls
             return left.ToString() == right.ToString() ? 0 : 1;
         }
 
-        private const string PART_LeftSide = "PART_LeftSide";
-        private const string PART_RightSide = "PART_RightSide";
+        private const string PART_LogField = "PART_LogField";
         private const string RESOURCE_OldValueBackgroundBrush = "OldValue.Background.Static";
         private const string RESOURCE_NewValueBackgroundBrush = "NewValue.Background.Static";
         private const string RESOURCE_TextForegroundBrush = "TextBlock.Foreground.Static";
 
-        private StackPanel _leftSidePanel;
-        private StackPanel _rightSidePanel;
+        private StackPanel _logFieldPanel;
         private SolidColorBrush OldValueBackgroundBrush;
         private SolidColorBrush NewValueBackgroundBrush;
         private SolidColorBrush ForegroundBrush;

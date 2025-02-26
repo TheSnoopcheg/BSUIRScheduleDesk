@@ -30,7 +30,7 @@ namespace BSUIRScheduleDESK.Classes
                 object[] attributes = prop.GetCustomAttributes(false);
                 if (attributes.Any(a => a is JsonIgnoreAttribute)) continue;
 
-                if (Equals(leftVal, rightVal))
+                if (leftVal == rightVal)
                 {
                     continue;
                 }
@@ -113,7 +113,7 @@ namespace BSUIRScheduleDESK.Classes
             {
                 nameof(String) => GetGenericDifferences<string>(left, right),
                 nameof(Int32) => GetGenericDifferences<int>(left, right),
-                nameof(DailyLesson) => GetGenericDifferences<DailyLesson>(left, right),
+                nameof(Lesson) => GetGenericDifferences<Lesson>(left, right),
                 nameof(Employee) => GetGenericDifferences<Employee>(left, right),
                 nameof(StudentGroup) => GetGenericDifferences<StudentGroup>(left, right),
                 _ => differences

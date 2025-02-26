@@ -156,7 +156,7 @@ namespace BSUIRScheduleDESK.Controls
 
         public static readonly DependencyProperty LessonsProperty = DependencyProperty.Register(
             "Lessons",
-            typeof(IEnumerable<DailyLesson>),
+            typeof(IEnumerable<Lesson>),
             typeof(SchedulePresenter),
             new FrameworkPropertyMetadata(null, new PropertyChangedCallback(OnLessonsChanged)));
 
@@ -166,9 +166,9 @@ namespace BSUIRScheduleDESK.Controls
             schedulePresenter.SetUp();
         }
 
-        public IEnumerable<DailyLesson> Lessons
+        public IEnumerable<Lesson> Lessons
         {
-            get { return (IEnumerable<DailyLesson>)GetValue(LessonsProperty); }
+            get { return (IEnumerable<Lesson>)GetValue(LessonsProperty); }
             set { SetValue(LessonsProperty, value); }
         }
 
@@ -590,10 +590,10 @@ namespace BSUIRScheduleDESK.Controls
             TimeOnly time;
             foreach (var item in Lessons)
             {
-                if (IsLessonToShow(item.Lesson!, (int)item.Day, out isExpiredToShow))
+                if (IsLessonToShow(item, out isExpiredToShow))
                 {
-                    col = (int)item.Day + 1;
-                    time = TimeOnly.Parse(item.Lesson!.startLessonTime!);
+                    col = (int)item.DayOfWeek + 1;
+                    time = TimeOnly.Parse(item.startLessonTime!);
                 }
                 else
                 {
@@ -604,11 +604,11 @@ namespace BSUIRScheduleDESK.Controls
                 
                 if (GetElementInGridPosition(_maximizedView, col, row) is not StackPanel panel) continue;
                 
-                AddPlateToPanel(panel, item.Lesson!, PlateState.Maximized, isExpiredToShow);
+                AddPlateToPanel(panel, item, PlateState.Maximized, isExpiredToShow);
             }
         }
 
-        private bool IsLessonToShow(Lesson lesson, int day, out bool isExpiredToShow)
+        private bool IsLessonToShow(Lesson lesson, out bool isExpiredToShow)
         {
             isExpiredToShow = false;
             if (!TimeOnly.TryParse(lesson.startLessonTime, out TimeOnly time)) return false;
@@ -633,8 +633,8 @@ namespace BSUIRScheduleDESK.Controls
                         return false;
                 }
             }
-            if ((DateTime.TryParse(lesson.startLessonDate, out DateTime startDate) && startDate > _dates[day])
-                        || (DateTime.TryParse(lesson.endLessonDate, out DateTime endDate) && endDate < _dates[day]))
+            if ((DateTime.TryParse(lesson.startLessonDate, out DateTime startDate) && startDate > _dates[(int)lesson.DayOfWeek])
+                        || (DateTime.TryParse(lesson.endLessonDate, out DateTime endDate) && endDate < _dates[(int)lesson.DayOfWeek]))
             {
                 if (!ShowExpiredLessons)
                     return false;
@@ -650,16 +650,16 @@ namespace BSUIRScheduleDESK.Controls
             int day = 0;
             foreach(var item in Lessons)
             {
-                day = (int)item.Day;
+                day = (int)item.DayOfWeek;
                 
                 if (GetElementInGridPosition(_normalView, 0, day * 2 + 1) is not StackPanel panel) continue;
 
-                if (!IsLessonToShow(item.Lesson!, (int)item.Day, out isExpiredToShow))
+                if (!IsLessonToShow(item, out isExpiredToShow))
                 {
                     continue;
                 }
 
-                AddPlateToPanel(panel, item.Lesson!, PlateState.Normal, isExpiredToShow);
+                AddPlateToPanel(panel, item, PlateState.Normal, isExpiredToShow);
             }
             FullFreeDays();
         }
@@ -707,15 +707,15 @@ namespace BSUIRScheduleDESK.Controls
             TimeOnly minTime = TimeOnly.MaxValue;
             TimeOnly maxTime = TimeOnly.MinValue;
             var list = Lessons
-                .Where(i => (i.Lesson!.weekNumber != null && i.Lesson!.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.Lesson!.startLessonDate, out DateTime date) && _dates.Contains(date)))
-                .Where(i => i.Lesson!.numSubgroup == 0 || (i.Lesson!.numSubgroup == 1 && FirstSubGroup) || (i.Lesson!.numSubgroup == 2 && SecondSubGroup))
-                .Where(i => TimeOnly.TryParse(i.Lesson!.startLessonTime, out TimeOnly time))
-                .OrderBy(i => TimeOnly.TryParse(i.Lesson!.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
+                .Where(i => (i.weekNumber != null && i.weekNumber.Contains(CurrentWeek)) || (DateTime.TryParse(i.startLessonDate, out DateTime date) && _dates.Contains(date)))
+                .Where(i => i.numSubgroup == 0 || (i.numSubgroup == 1 && FirstSubGroup) || (i.numSubgroup == 2 && SecondSubGroup))
+                .Where(i => TimeOnly.TryParse(i.startLessonTime, out TimeOnly time))
+                .OrderBy(i => TimeOnly.TryParse(i.startLessonTime, out TimeOnly time) ? time : TimeOnly.MaxValue);
 
             if(list.Count() > 0)
             {
-                minTime = TimeOnly.Parse(list.First().Lesson!.startLessonTime!);
-                maxTime = TimeOnly.Parse(list.Last().Lesson!.startLessonTime!);
+                minTime = TimeOnly.Parse(list.First().startLessonTime!);
+                maxTime = TimeOnly.Parse(list.Last().startLessonTime!);
             }
 
             if (minTime == TimeOnly.MaxValue && maxTime == TimeOnly.MinValue)
@@ -795,7 +795,7 @@ namespace BSUIRScheduleDESK.Controls
             AdditionalLessonInfo info = new AdditionalLessonInfo();
             info.StartLessonDate = plate.Schedule.startLessonDate;
             info.EndLessonDate = plate.Schedule.endLessonDate;
-            DateTime classDate = _dates[(int)Lessons.FirstOrDefault(d => d.Lesson == plate.Schedule)!.Day];
+            DateTime classDate = _dates[(int)plate.Schedule.DayOfWeek];
             info.NumOfAppearances = LessonsHelper.CheckLessonsCount(Lessons, plate.Schedule, classDate, CurrentWeek);
             _plateInfoPopup.DataContext = info;
             _plateInfoPopup.IsOpen = true;
