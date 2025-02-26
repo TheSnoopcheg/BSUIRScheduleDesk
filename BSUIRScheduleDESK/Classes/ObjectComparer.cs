@@ -113,7 +113,7 @@ namespace BSUIRScheduleDESK.Classes
             {
                 nameof(String) => GetGenericDifferences<string>(left, right),
                 nameof(Int32) => GetGenericDifferences<int>(left, right),
-                nameof(Lesson) => GetGenericDifferences<Lesson>(left, right),
+                nameof(DailyLesson) => GetGenericDifferences<DailyLesson>(left, right),
                 nameof(Employee) => GetGenericDifferences<Employee>(left, right),
                 nameof(StudentGroup) => GetGenericDifferences<StudentGroup>(left, right),
                 _ => differences

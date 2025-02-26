@@ -75,7 +75,7 @@ namespace BSUIRScheduleDESK.Classes
                 OnPropertyChanged();
             }
         }
-        private string lectureColor = "Green";
+        private string lectureColor = "#FF1E7145";
         public string LectureColor
         {
             get => lectureColor;
@@ -86,7 +86,7 @@ namespace BSUIRScheduleDESK.Classes
                 OnPropertyChanged();
             }
         }
-        private string practiceColor = "Orange";
+        private string practiceColor = "#FFFFC40D";
         public string PracticeColor
         {
             get => practiceColor;
@@ -97,7 +97,7 @@ namespace BSUIRScheduleDESK.Classes
                 OnPropertyChanged();
             }
         }
-        private string labColor = "Red";
+        private string labColor = "#FFB91D47";
         public string LabColor
         {
             get => labColor;
@@ -108,7 +108,7 @@ namespace BSUIRScheduleDESK.Classes
                 OnPropertyChanged();
             }
         }
-        private string examColor = "#FFf0768b";
+        private string examColor = "#FF00ABA9";
         public string ExamColor
         {
             get => examColor;
@@ -119,7 +119,7 @@ namespace BSUIRScheduleDESK.Classes
                 OnPropertyChanged();
             }
         }
-        private string consultationColor = "#FF00bfff";
+        private string consultationColor = "#FF2B5797";
         public string ConsultationColor
         {
             get => consultationColor;
@@ -130,7 +130,7 @@ namespace BSUIRScheduleDESK.Classes
                 OnPropertyChanged();
             }
         }
-        private string unknownColor = "Gray";
+        private string unknownColor = "FF1D1D1D";
         public string UnknownColor
         {
             get => unknownColor;
@@ -163,7 +163,7 @@ namespace BSUIRScheduleDESK.Classes
                 OnPropertyChanged();
             }
         }
-        private string indexes = "[4,2,0,1,5,9]";
+        private string indexes = "[14,4,0,8,5,9]";
         public string Indexes
         {
             get => indexes;

@@ -8,9 +8,12 @@
              xmlns:theme="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
     <UserControl.Resources>
         <DataTemplate x:Key="ColorTemplate">
-            <Grid>
-                <Border Background="{Binding}" Height="20" Width="20" CornerRadius="5"/>
-            </Grid>
+            <Border Background="{Binding}" 
+                    Height="20" 
+                    Width="20" 
+                    CornerRadius="5"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"/>
         </DataTemplate>
 
         <Style x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
@@ -21,8 +24,11 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
-                        <Border x:Name="templateRoot" Background="Transparent" BorderBrush="Black" BorderThickness="0" SnapsToDevicePixels="true">
-                        </Border>
+                        <Border x:Name="templateRoot" 
+                                Background="Transparent" 
+                                BorderBrush="Black" 
+                                BorderThickness="0" 
+                                SnapsToDevicePixels="true"/>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
@@ -80,7 +86,7 @@
             <Setter Property="ItemContainerStyle" Value="{DynamicResource comboBoxItemStyle}"/>
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Hidden"/>
-            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Hidden"/>
+            <Setter Property="ScrollViewer.VerticalScrollBarVisibility" Value="Auto"/>
             <Setter Property="Padding" Value="6,3,5,3"/>
             <Setter Property="ScrollViewer.CanContentScroll" Value="true"/>
             <Setter Property="ScrollViewer.PanningMode" Value="Both"/>
@@ -99,14 +105,20 @@
                    Foreground="{DynamicResource TextBlock.Foreground.Static}"
                    Grid.Column="0"
                    VerticalAlignment="Center"/>
-        <ComboBox Style="{DynamicResource ComboBoxStyle}" Grid.Column="1"
+        <ComboBox Style="{DynamicResource ComboBoxStyle}"
+                  Grid.Column="1"
                   ItemsSource="{DynamicResource ColorArray}"
                   ItemTemplate="{DynamicResource ColorTemplate}"
                   SelectedItem="{Binding Color, ElementName=colorPickerRoot}"
-                  SelectedIndex="{Binding SelectedColorIndex, ElementName=colorPickerRoot, Mode=TwoWay}"
+                  SelectedIndex="{Binding SelectedColorIndex, ElementName=colorPickerRoot}"
                   Width="20"
                   SelectionChanged="ComboBox_SelectionChanged"
                   Focusable="False">
+            <ComboBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid Columns="5"/>
+                </ItemsPanelTemplate>
+            </ComboBox.ItemsPanel>
         </ComboBox>
     </Grid>
 </UserControl>

@@ -190,7 +190,7 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="5,0,0,0"
                                 HorizontalAlignment="Left">
-                        <controls:ColorPicker Text="{x:Static lang:Language.Lecture}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LectureColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0], Mode=TwoWay, ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Lecture}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LectureColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
                         <controls:ColorPicker Text="{x:Static lang:Language.Practice}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=PracticeColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[1], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
                         <controls:ColorPicker Text="{x:Static lang:Language.LaboratoryWork}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LabColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[2], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
                         <controls:ColorPicker Text="{x:Static lang:Language.Exam}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ExamColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[3], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>

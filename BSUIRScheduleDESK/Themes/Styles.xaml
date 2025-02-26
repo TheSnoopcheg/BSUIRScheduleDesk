@@ -2,17 +2,23 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <x:Array Type="{x:Type SolidColorBrush}"
             x:Key="ColorArray">
-        <SolidColorBrush Color="Red"/>
-        <SolidColorBrush Color="#f0768b"/>
-        <SolidColorBrush Color="Orange"/>
-        <SolidColorBrush Color="Yellow"/>
-        <SolidColorBrush Color="Green"/>
-        <SolidColorBrush Color="#00bfff"/>
-        <SolidColorBrush Color="#3333ff"/>
-        <SolidColorBrush Color="#4b0082"/>
-        <SolidColorBrush Color="#800080"/>
-        <SolidColorBrush Color="Gray"/>
-        <SolidColorBrush Color="#964B00"/>
+        <SolidColorBrush Color="#b91d47"/>
+        <SolidColorBrush Color="#ee1111"/>
+        <SolidColorBrush Color="#da532c"/>
+        <SolidColorBrush Color="#e3a21a"/>
+        <SolidColorBrush Color="#ffc40d"/>
+        <SolidColorBrush Color="#2b5797"/>
+        <SolidColorBrush Color="#2d89ef"/>
+        <SolidColorBrush Color="#eff4ff"/>
+        <SolidColorBrush Color="#00aba9"/>
+        <SolidColorBrush Color="#1d1d1d"/>
+        <SolidColorBrush Color="#603cba"/>
+        <SolidColorBrush Color="#7e3878"/>
+        <SolidColorBrush Color="#9700a7"/>
+        <SolidColorBrush Color="#ff0097"/>
+        <SolidColorBrush Color="#1e7145"/>
+        <SolidColorBrush Color="#00a300"/>
+        <SolidColorBrush Color="#99b433"/>
     </x:Array>
 
     <Style x:Key="ButtonStyle" TargetType="{x:Type Button}">

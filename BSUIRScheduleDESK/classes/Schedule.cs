@@ -61,6 +61,7 @@ namespace BSUIRScheduleDESK.Classes
 
                     foreach(var item in list)
                     {
+                        if (item == null) continue;
                         dailyLessons.Add(new DailyLesson { Day = (Day)counter, Lesson = item });
                     }
                     counter++;
@@ -81,6 +82,7 @@ namespace BSUIRScheduleDESK.Classes
 
                     foreach(var item in list)
                     {
+                        if (item == null) continue;
                         previousDailyLessons.Add(new DailyLesson { Day = (Day)counter, Lesson = item });
                     }
                     counter++;
