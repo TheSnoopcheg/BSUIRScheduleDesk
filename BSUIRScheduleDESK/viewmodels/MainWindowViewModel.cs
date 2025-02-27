@@ -7,6 +7,7 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Diagnostics;
 
 namespace BSUIRScheduleDESK.ViewModels
 {
@@ -176,6 +177,7 @@ namespace BSUIRScheduleDESK.ViewModels
 
                         Schedule.favorited = !Schedule.favorited;
                         OnPropertyChanged(nameof(Schedule));
+                        OnPropertyChanged(nameof(HistoryVisibility));
                         await _model.SaveRecentScheduleAsync(Schedule);
                         await _noteViewModel.SetNotes(Schedule.GetName(), Schedule.GetUrl());
                     }));
@@ -236,6 +238,22 @@ namespace BSUIRScheduleDESK.ViewModels
                         {
                             await LoadScheduleAsync(v.UrlId, LoadingType.Local);
                         }
+                    }));
+            }
+        }
+
+        private ICommand? loadFavoriteScheduleByKey;
+        public ICommand LoadFavoriteScheduleByKey
+        {
+            get
+            {
+                return loadFavoriteScheduleByKey ??
+                    (loadFavoriteScheduleByKey = new RelayCommand(async obj =>
+                    {
+                        if (!int.TryParse(obj.ToString(), out int num)) return;
+                        if (num > FavoriteSchedules.Count) return;
+
+                        await LoadScheduleAsync(FavoriteSchedules[num - 1].UrlId, LoadingType.Local);
                     }));
             }
         }

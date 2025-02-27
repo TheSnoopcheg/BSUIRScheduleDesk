@@ -18,6 +18,19 @@
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
         WindowStyle="None">
+    <Window.InputBindings>
+        <KeyBinding Modifiers="Ctrl" Key="L" Command="{Binding SearchSchedule}"/>
+        <KeyBinding Modifiers="Ctrl" Key="D1" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="1"/>
+        <KeyBinding Modifiers="Ctrl" Key="D2" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="2"/>
+        <KeyBinding Modifiers="Ctrl" Key="D3" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="3"/>
+        <KeyBinding Modifiers="Ctrl" Key="D4" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="4"/>
+        <KeyBinding Modifiers="Ctrl" Key="D5" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="5"/>
+        <KeyBinding Modifiers="Ctrl" Key="D6" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="6"/>
+        <KeyBinding Modifiers="Ctrl" Key="D7" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="7"/>
+        <KeyBinding Modifiers="Ctrl" Key="D8" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="8"/>
+        <KeyBinding Modifiers="Ctrl" Key="D9" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="9"/>
+        <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding AddFavoriteSchedule}"/>
+    </Window.InputBindings>
     <Window.Resources>
         <converters:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
         <converters:TabItemVisibilityConverter x:Key="TabItemVisibilityConverter"/>

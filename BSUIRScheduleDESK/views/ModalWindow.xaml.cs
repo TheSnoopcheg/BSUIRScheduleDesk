@@ -25,6 +25,7 @@ namespace BSUIRScheduleDESK.Views
     public partial class ModalWindow : Window
     {
         private static ModalWindowResult result = ModalWindowResult.OK;
+        private ModalWindowButtons buttonsState;
 
         private Button OK
         {
@@ -70,7 +71,8 @@ namespace BSUIRScheduleDESK.Views
         private ModalWindow(string wContent = "", string wTitle = "", string wImageUrl = "", ModalWindowButtons wButtons=ModalWindowButtons.OK)
         {
             InitializeComponent();
-            
+
+            buttonsState = wButtons;
             MakeUpWindow(wContent, wTitle, wImageUrl, wButtons);
 
             if(this != App.Current.MainWindow)
@@ -157,7 +159,20 @@ namespace BSUIRScheduleDESK.Views
         {
             if(e.Key == Key.Escape)
             {
-                result = ModalWindowResult.Canceled;
+                if (buttonsState == ModalWindowButtons.YesNo)
+                    result = ModalWindowResult.No;
+                else
+                    result = ModalWindowResult.Canceled;
+                Close();
+            }
+            else if(e.Key == Key.Enter)
+            {
+                if (buttonsState == ModalWindowButtons.OK || buttonsState == ModalWindowButtons.OKCancel)
+                    result = ModalWindowResult.OK;
+                else if (buttonsState == ModalWindowButtons.YesNo || buttonsState == ModalWindowButtons.YesNoCancel)
+                    result = ModalWindowResult.Yes;
+                else
+                    result = ModalWindowResult.Canceled;
                 Close();
             }
         }
