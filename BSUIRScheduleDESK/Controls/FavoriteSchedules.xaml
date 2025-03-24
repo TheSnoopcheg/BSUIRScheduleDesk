@@ -8,7 +8,6 @@
              mc:Ignorable="d"
              x:Name="favSchedules">
     <UserControl.Resources>
-        <converters:EmployeeNameConverter x:Key="EmployeeNameConverter"/>
         <DataTemplate x:Key="favButTemplate">
             <RadioButton GroupName="scheduleButton">
                 <RadioButton.Style>
@@ -72,7 +71,7 @@
                                         </Button>
 
                                         <!--schedule name-->
-                                        <TextBlock Text="{Binding Name, Converter={StaticResource EmployeeNameConverter}}"
+                                        <TextBlock Text="{Binding Name, Converter={x:Static converters:EmployeeNameConverter.Instance}}"
                                                    HorizontalAlignment="Center"
                                                    VerticalAlignment="Center"
                                                    Foreground="{DynamicResource FavoriteBar.Button.Foreground.Static}"
@@ -132,11 +131,7 @@
         </DataTemplate>
     </UserControl.Resources>
     <ItemsControl ItemsSource="{Binding ElementName=favSchedules, Path=Schedules}"
-                  ItemTemplate="{StaticResource favButTemplate}" Focusable="False">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Orientation="Vertical"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-    </ItemsControl>
+                  ItemTemplate="{StaticResource favButTemplate}" 
+                  Style="{StaticResource VerticalVirtualizedItemsControl}"
+                  Focusable="False"/>
 </UserControl>

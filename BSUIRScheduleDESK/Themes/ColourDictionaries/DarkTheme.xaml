@@ -152,6 +152,7 @@
 
     <Color x:Key="Notes.HasItemsEllipse.Background" R="245" G="245" B="245" A="255"/>
 
+    <Color x:Key="ScrollBar.Background" R="151" G="151" B="151" A="100"/>
     <Color x:Key="ScrollBar.Thumb.Background" R="151" G="151" B="151" A="255"/>
     <Color x:Key="ScrollBar.Thumb.Background.MouseOver" R="211" G="211" B="211" A="255"/>
 
@@ -320,6 +321,7 @@
 
     <SolidColorBrush x:Key="Notes.HasItemsEllipse.Background.Static" Color="{StaticResource Notes.HasItemsEllipse.Background}"/>
 
+    <SolidColorBrush x:Key="ScrollBar.Static.Background" Color="{StaticResource ScrollBar.Background}"/>
     <SolidColorBrush x:Key="ScrollBar.Thumb.Static.Background" Color="{StaticResource ScrollBar.Thumb.Background}"/>
     <SolidColorBrush x:Key="ScrollBar.Thumb.MouseOver.Background" Color="{StaticResource ScrollBar.Thumb.Background.MouseOver}"/>
     

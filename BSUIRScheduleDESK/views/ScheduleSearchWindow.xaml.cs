@@ -27,17 +27,20 @@ namespace BSUIRScheduleDESK.Views
             if(e.Key == Key.Escape)
             {
                 this.DialogResult = false;
+                this.Close();
             }
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+            this.Close();
         }
 
         private void searchBox_ItemSelected()
         {
             this.DialogResult = true;
+            this.Close();
         }
 
         private void searchBox_TextChanged()

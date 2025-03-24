@@ -8,16 +8,13 @@
              x:Name="root"
              mc:Ignorable="d">
     <UserControl.Resources>
-        <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
-        <converters:CenterTransformConverter x:Key="CenterTransformConverter"/>
-        <converters:ToolTipVisibilityConverter x:Key="ToolTipVisibilityConverter"/>
         <DataTemplate x:Key="EmployeeGroupsTemplate">
             <Button Command="{Binding Command, ElementName=root}" CommandParameter="{Binding urlId}">
                 <Button.ToolTip>
                     <ToolTip Style="{StaticResource ToolTipStyle}" 
                              Placement="Top" 
                              MaxWidth="200"
-                             Visibility="{Binding ., Converter={StaticResource ToolTipVisibilityConverter}}">
+                             Visibility="{Binding ., Converter={x:Static converters:ToolTipVisibilityConverter.Instance}}">
                         <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition/>
@@ -35,7 +32,7 @@
                                     <Style TargetType="{x:Type Image}">
                                         <Setter Property="Visibility" Value="Collapsed"/>
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=IsEmployee}" Value="True">
+                                            <DataTrigger Binding="{Binding Converter={x:Static converters:EmployeeOrGroupConverter.Instance}, ConverterParameter=IsEmployee}" Value="True">
                                                 <Setter Property="Source" Value="{Binding photoLink}"/>
                                                 <Setter Property="Visibility" Value="Visible"/>
                                             </DataTrigger>
@@ -44,7 +41,7 @@
                                 </Image.Style>
                             </Image>
                             <TextBlock Foreground="{DynamicResource TextBlock.Foreground.Static}" 
-                                       Text="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Text}" 
+                                       Text="{Binding Converter={x:Static converters:EmployeeOrGroupConverter.Instance}, ConverterParameter=Text}" 
                                        TextWrapping="Wrap" 
                                        TextAlignment="Center"
                                        Grid.Row="1"/>
@@ -81,7 +78,10 @@
                                                    RadiusX="7.5"
                                                    RadiusY="7.5">
                                             <Rectangle.RenderTransform>
-                                                <ScaleTransform ScaleX="0" ScaleY="0" CenterY="10" CenterX="{Binding ElementName=borderStatic, Path=ActualWidth, Converter={StaticResource CenterTransformConverter}}"/>
+                                                <ScaleTransform ScaleX="0" 
+                                                                ScaleY="0" 
+                                                                CenterY="{Binding ElementName=borderStatic, Path=ActualHeight, Converter={StaticResource CenterTransformConverter}}" 
+                                                                CenterX="{Binding ElementName=borderStatic, Path=ActualWidth, Converter={StaticResource CenterTransformConverter}}"/>
                                             </Rectangle.RenderTransform>
                                         </Rectangle>
                                         <TextBlock Text="{Binding}" 

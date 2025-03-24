@@ -10,11 +10,6 @@
              mc:Ignorable="d" >
 
     <UserControl.Resources>
-        <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
-        <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
-        <converters:IsMonthExpandedConverter x:Key="IsMonthExpandedConverter"/>
-        <converters:DateConverter x:Key="DateConverter"/>
-
         <DataTemplate x:Key="examPlateTemplate">
             <Border CornerRadius="10"
                     Background="{DynamicResource Schedule.Background.Static}"
@@ -111,7 +106,7 @@
                                     Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                             <local:EmployeeGroups.Style>
                                 <Style TargetType="{x:Type local:EmployeeGroups}">
-                                    <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
+                                    <Setter Property="DataContext" Value="{Binding Converter={x:Static converters:EmployeeOrGroupConverter.Instance}, ConverterParameter=Type}"/>
                                 </Style>
                             </local:EmployeeGroups.Style>
                         </local:EmployeeGroups>
@@ -131,7 +126,7 @@
                             </TextBlock.Style>
                         </TextBlock>
                     </Grid>
-                    <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
+                    <TextBlock Text="{Binding auditories, Converter={x:Static converters:StringsCollectionConverter.Instance}, ConverterParameter=Auditories}"
                                Grid.Column="2"
                                Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                VerticalAlignment="Top"
@@ -234,12 +229,12 @@
                                 Command="{Binding LoadScheduleCommand, RelativeSource={RelativeSource AncestorType=UserControl}}">
                             <local:EmployeeGroups.Style>
                                 <Style TargetType="{x:Type local:EmployeeGroups}">
-                                    <Setter Property="DataContext" Value="{Binding Converter={StaticResource EmployeeOrGroupConverter}, ConverterParameter=Type}"/>
+                                    <Setter Property="DataContext" Value="{Binding Converter={x:Static converters:EmployeeOrGroupConverter.Instance}, ConverterParameter=Type}"/>
                                 </Style>
                             </local:EmployeeGroups.Style>
                         </local:EmployeeGroups>
                     </Grid>
-                    <TextBlock Text="{Binding auditories, Converter={StaticResource StringsCollectionConverter}, ConverterParameter=Auditories}"
+                    <TextBlock Text="{Binding auditories, Converter={x:Static converters:StringsCollectionConverter.Instance}, ConverterParameter=Auditories}"
                                Grid.Column="2"
                                Foreground="{DynamicResource Schedule.Text.Foreground.Static}"
                                VerticalAlignment="Top"
@@ -273,7 +268,7 @@
                         BorderThickness="1" 
                         VerticalAlignment="Top" 
                         HorizontalAlignment="Center">
-                    <TextBlock Text="{Binding Key, Converter={StaticResource DateConverter}}"
+                    <TextBlock Text="{Binding Key, Converter={x:Static converters:DateConverter.Instance}}"
                                VerticalAlignment="Center"
                                Foreground="{DynamicResource Exams.Date.Border.Foreground.Static}"
                                HorizontalAlignment="Center"
@@ -296,9 +291,9 @@
                       Style="{DynamicResource ExpanderStyle}" 
                       Focusable="False" 
                       HorizontalContentAlignment="Center" 
-                      IsExpanded="{Binding Key, Converter={StaticResource IsMonthExpandedConverter}, Mode=OneWay}">
+                      IsExpanded="{Binding Key, Converter={x:Static converters:IsMonthExpandedConverter.Instance}, Mode=OneWay}">
                 <Expander.Header>
-                    <TextBlock Text="{Binding Key, Converter={StaticResource DateConverter}, ConverterParameter=monthyear}" 
+                    <TextBlock Text="{Binding Key, Converter={x:Static converters:DateConverter.Instance}, ConverterParameter=monthyear}" 
                                Foreground="{DynamicResource Exams.Expander.Header.Foreground.Static}" 
                                FontSize="15" 
                                FontWeight="DemiBold" 
@@ -319,11 +314,6 @@
     </UserControl.Resources>
     <ItemsControl ItemsSource="{Binding}"
                   Focusable="False"
-                  ItemTemplate="{StaticResource monthTemplate}">
-        <ItemsControl.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel Orientation="Vertical"/>
-            </ItemsPanelTemplate>
-        </ItemsControl.ItemsPanel>
-    </ItemsControl>
+                  Style="{StaticResource VerticalVirtualizedItemsControl}"
+                  ItemTemplate="{StaticResource monthTemplate}"/>
 </UserControl>

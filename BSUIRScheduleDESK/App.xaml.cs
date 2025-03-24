@@ -52,7 +52,6 @@ namespace BSUIRScheduleDESK
 
             int wd = DateService.GetWeekDiff(Config.Instance.LastStartup, DateTime.Today);
             Config.Instance.CurrentWeek = (Config.Instance.CurrentWeek + wd + 3) % 4 + 1;
-            Config.Instance.Save();
 
             Config.Instance.LastStartup = DateTime.Today;
             Config.Instance.Save();
@@ -94,7 +93,6 @@ namespace BSUIRScheduleDESK
             services.AddTransient<IScheduleHistoryService, ScheduleHistoryService>();
             ServiceProvider = services.BuildServiceProvider();
         }
-
         protected override void OnExit(ExitEventArgs e)
         {
             Config.Instance.Save();

@@ -42,7 +42,6 @@
         </Style>
     </Window.Style>
     <Window.Resources>
-        <converters:ButtonEnableConverter x:Key="ButtonEnableConverter"/>
         <DataTemplate x:Key="noteTemplate">
             <Grid Margin="0,5,0,5">
                 <Grid.ColumnDefinitions>
@@ -169,7 +168,11 @@
             <Setter Property="SelectedDateFormat" Value="Short"/>
             <Setter Property="Background" Value="Transparent"/>
             <Setter Property="Padding" Value="0"/>
-            <Setter Property="CalendarStyle" Value="{DynamicResource CalendarStyle}"/>
+            <Setter Property="CalendarStyle">
+                <Setter.Value>
+                    <Style TargetType="{x:Type Calendar}" BasedOn="{StaticResource {x:Type Calendar}}"/>
+                </Setter.Value>
+            </Setter>
             <Setter Property="BorderBrush" Value="{DynamicResource DatePicker.BorderBrush.Static}"/>
             <Setter Property="BorderThickness" Value="0"/>
             <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
@@ -394,7 +397,7 @@
                                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="67.5" CenterY="15"/>
                             </Button.RenderTransform>
                             <Button.IsEnabled>
-                                <MultiBinding Converter="{StaticResource ButtonEnableConverter}">
+                                <MultiBinding Converter="{x:Static converters:ButtonEnableConverter.Instance}">
                                     <Binding ElementName="noteDatePicker" Path="SelectedDate"/>
                                     <Binding ElementName="noteText" Path="Text"/>
                                     <Binding Path="IsEditing"/>
@@ -408,7 +411,7 @@
                                 Content="{x:Static lang:Language.Edit}"
                                 Foreground="{DynamicResource SubWindow.Button.Foreground.Static}"
                                 Background="{DynamicResource SubWindow.Button.Background.Static}"
-                                IsEnabled="{Binding ElementName=lstView, Path=SelectedIndex, Converter={StaticResource ButtonEnableConverter}}"
+                                IsEnabled="{Binding ElementName=lstView, Path=SelectedIndex, Converter={x:Static converters:ButtonEnableConverter.Instance}}"
                                 Command="{Binding Path=EditNote}">
                             <Button.RenderTransform>
                                 <ScaleTransform ScaleX="1" ScaleY="1" CenterX="67.5" CenterY="15"/>
@@ -421,7 +424,7 @@
                                 Content="{x:Static lang:Language.Delete}"
                                 Foreground="{DynamicResource SubWindow.Button.Foreground.Static}"
                                 Background="{DynamicResource SubWindow.Button.Background.Static}"
-                                IsEnabled="{Binding ElementName=lstView, Path=SelectedIndex, Converter={StaticResource ButtonEnableConverter}}"
+                                IsEnabled="{Binding ElementName=lstView, Path=SelectedIndex, Converter={x:Static converters:ButtonEnableConverter.Instance}}"
                                 Command="{Binding Path=DeleteNote}"
                                 CommandParameter="{Binding ElementName=lstView, Path=SelectedItem}">
                             <Button.RenderTransform>

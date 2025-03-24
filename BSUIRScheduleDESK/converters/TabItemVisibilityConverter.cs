@@ -8,6 +8,7 @@ namespace BSUIRScheduleDESK.Converters
 {
     public class TabItemVisibilityConverter : IValueConverter
     {
+        public static readonly TabItemVisibilityConverter Instance = new TabItemVisibilityConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || parameter is not string param) return Visibility.Collapsed;

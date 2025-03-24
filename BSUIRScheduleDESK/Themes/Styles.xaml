@@ -763,7 +763,7 @@
         </ControlTemplate.Triggers>
     </ControlTemplate>
 
-    <Style x:Key="CalendarStyle" TargetType="{x:Type Calendar}">
+    <Style x:Key="{x:Type Calendar}" TargetType="{x:Type Calendar}">
         <Setter Property="Foreground" Value="{DynamicResource Calendar.DayTitle.Static.Foreground}"/>
         <Setter Property="Background" Value="{DynamicResource Calendar.Background.Static}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource Calendar.BorderBrush.Static}"/>
@@ -901,6 +901,10 @@
             <Grid.RowDefinitions>
                 <RowDefinition Height="0.00001*" />
             </Grid.RowDefinitions>
+            <Border Grid.RowSpan="3"
+                    CornerRadius="2"
+                    Margin="1,0,1,0"
+                    Background="{DynamicResource ScrollBar.Static.Background}" />
             <Track x:Name="PART_Track"
                    Grid.Row="0"
                    IsDirectionReversed="true">
@@ -1043,5 +1047,61 @@
                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="VerticalItemsControl" TargetType="{x:Type ItemsControl}">
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ScrollViewer Padding="{TemplateBinding Padding}"
+                                      Focusable="False">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
+    <Style x:Key="VerticalVirtualizedItemsControl" TargetType="{x:Type ItemsControl}">
+        <Setter Property="VirtualizingPanel.ScrollUnit" Value="Pixel"/>
+        <Setter Property="VirtualizingPanel.IsContainerVirtualizable" Value="True"/>
+        <Setter Property="VirtualizingPanel.IsVirtualizing" Value="True"/>
+        <Setter Property="VirtualizingPanel.VirtualizationMode" Value="Recycling"/>
+        <Setter Property="ItemsPanel">
+            <Setter.Value>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Vertical"/>
+                </ItemsPanelTemplate>
+            </Setter.Value>
+        </Setter>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ItemsControl}">
+                    <Border BorderThickness="{TemplateBinding BorderThickness}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                        <ScrollViewer CanContentScroll="True"
+                                      Padding="{TemplateBinding Padding}"
+                                      Focusable="False">
+                            <ItemsPresenter/>
+                        </ScrollViewer>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
 </ResourceDictionary>

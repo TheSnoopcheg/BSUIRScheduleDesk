@@ -10,6 +10,7 @@
         xmlns:templates="clr-namespace:BSUIRScheduleDESK.Controls"
         xmlns:classes="clr-namespace:BSUIRScheduleDESK.Classes"
         xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
+        xmlns:vm="clr-namespace:BSUIRScheduleDESK.ViewModels"
         mc:Ignorable="d"
         x:Name="mainWindow"
         Height="450" Width="800"
@@ -17,7 +18,8 @@
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
         WindowState="Maximized"
-        WindowStyle="None">
+        WindowStyle="None"
+        d:DataContext="{d:DesignInstance Type={x:Type vm:MainWindowViewModel}, IsDesignTimeCreatable=False}">
     <Window.InputBindings>
         <KeyBinding Modifiers="Ctrl" Key="L" Command="{Binding SearchSchedule}"/>
         <KeyBinding Modifiers="Ctrl" Key="D1" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="1"/>
@@ -31,11 +33,6 @@
         <KeyBinding Modifiers="Ctrl" Key="D9" Command="{Binding LoadFavoriteScheduleByKey}" CommandParameter="9"/>
         <KeyBinding Modifiers="Ctrl" Key="D" Command="{Binding AddFavoriteSchedule}"/>
     </Window.InputBindings>
-    <Window.Resources>
-        <converters:ExamSchedulesConverter x:Key="ExamScheduleConverter"/>
-        <converters:TabItemVisibilityConverter x:Key="TabItemVisibilityConverter"/>
-        <converters:ButtonVisibilityConverter x:Key="ButtonVisibilityConverter"/>
-    </Window.Resources>
     <Window.Style>
         <Style TargetType="{x:Type Window}">
             <Style.Triggers>
@@ -148,17 +145,23 @@
 
                 <Separator Grid.Row="0" VerticalAlignment="Bottom" Margin="0"/>
 
-                <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False">
-                    <!--favorites schedules-->
-                    <StackPanel Orientation="Vertical" Grid.Row="1" HorizontalAlignment="Center">
-                        <templates:FavoriteSchedules Schedules="{Binding Path=FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
-                                                     LoadCommand="{Binding Path=LoadFavoriteSchedule}"
-                                                     DeleteCommand="{Binding Path=DeleteFavoriteSchedule}"/>
-                        <!--add favorite schedule button-->
-                        <Button Style="{DynamicResource AddButtonStyle}"
-                                Command="{Binding AddFavoriteScheduleWP}"/>
-                    </StackPanel>
-                </ScrollViewer>
+                <!--favorites schedules-->
+                <Grid Grid.Row="1" 
+                      HorizontalAlignment="Stretch">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+                    <!--add favorite schedule button-->
+                    <Button Style="{DynamicResource AddButtonStyle}"
+                            Command="{Binding AddFavoriteScheduleWP}"
+                            Grid.Row="0"/>
+                    <templates:FavoriteSchedules Schedules="{Binding Path=FavoriteSchedules, UpdateSourceTrigger=PropertyChanged}"
+                                                 LoadCommand="{Binding Path=LoadFavoriteSchedule}"
+                                                 DeleteCommand="{Binding Path=DeleteFavoriteSchedule}"
+                                                 Grid.Row="1"/>
+                    
+                </Grid>
 
                 <Separator Grid.Row="1" VerticalAlignment="Bottom" Margin="0"/>
 
@@ -366,7 +369,7 @@
                                     Height="30"
                                     VerticalAlignment="Center"
                                     HorizontalAlignment="Right"
-                                    Visibility="{Binding HistoryVisibility}"
+                                    Visibility="{Binding IsHistoryVisible, Converter={StaticResource BoolToVisConverter}}"
                                     Command="{Binding OpenScheduleHistoryWindow}">
                                 <Button.RenderTransform>
                                     <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
@@ -385,7 +388,7 @@
                                         Height="30"
                                         VerticalAlignment="Center"
                                         HorizontalAlignment="Right"
-                                        Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource ButtonVisibilityConverter}}"
+                                        Visibility="{Binding Path=Schedule.favorited, Converter={StaticResource BoolToVisConverter}}"
                                         Command="{Binding Path=OpenNotesWindow}">
                                     <Button.RenderTransform>
                                         <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
@@ -399,7 +402,7 @@
                                 <Ellipse Fill="{DynamicResource Notes.HasItemsEllipse.Background.Static}"
                                          Height="10"
                                          Width="10"
-                                         Visibility="{Binding NotesExistenceVisibility}"
+                                         Visibility="{Binding IsNotesExist, Converter={StaticResource BoolToVisConverter}}"
                                          HorizontalAlignment="Right"
                                          VerticalAlignment="Top"
                                          IsHitTestVisible="False"
@@ -453,7 +456,7 @@
                                 </Button>
                                 <Grid VerticalAlignment="Top"
                                       HorizontalAlignment="Right"
-                                      Visibility="{Binding AnnouncementsExistenceVisibility}"
+                                      Visibility="{Binding IsAnnouncementsExist, Converter={StaticResource BoolToVisConverter}}"
                                       Margin="0,2,2,0">
                                     <Ellipse Fill="{DynamicResource WarningSign.Background.Static}"
                                              Height="12"
@@ -482,7 +485,8 @@
                             Background="{DynamicResource TabControl.Background.Static}"
                             SelectedIndex="{Binding SelectedTab}">
                     <!--current term schedule tab-->
-                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule.dailyLessons, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Schedules}">
+                    <TabItem Style="{DynamicResource TabItemStyle}" 
+                             Visibility="{Binding Schedule.dailyLessons, Converter={x:Static converters:TabItemVisibilityConverter.Instance}, ConverterParameter=Schedules}">
                         <TabItem.Header>
                             <StackPanel>
                                 <TextBlock FontSize="14">
@@ -518,7 +522,8 @@
                         </TabItem.Content>
                     </TabItem>
                     <!--exam schedule tab-->
-                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=Exams}">
+                    <TabItem Style="{DynamicResource TabItemStyle}" 
+                             Visibility="{Binding Schedule, Converter={x:Static converters:TabItemVisibilityConverter.Instance}, ConverterParameter=Exams}">
                         <TabItem.Header>
                             <StackPanel>
                                 <TextBlock Text="{x:Static lang:Language.Exams}" FontSize="14"/>
@@ -528,12 +533,10 @@
                             <Grid>
                                 <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10" Effect="{DynamicResource myShadow}"/>
                                 <Border Background="{DynamicResource Border.Background.Static}" CornerRadius="20" Margin="10">
-                                    <ScrollViewer VerticalScrollBarVisibility="Auto">
-                                        <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={StaticResource ExamScheduleConverter}}"
-                                                                       LoadScheduleCommand="{Binding DataContext.LoadScheduleFromPlate, ElementName=mainWindow, Mode=OneWay}"
-                                                                       Margin="0,10,0,10"
-                                                                       HorizontalAlignment="Stretch"/>
-                                    </ScrollViewer>
+                                    <templates:ExamSessionSchedule DataContext="{Binding Schedule.exams, Converter={x:Static converters:ExamSchedulesConverter.Instance}}"
+                                                                   LoadScheduleCommand="{Binding DataContext.LoadScheduleFromPlate, ElementName=mainWindow, Mode=OneWay}"
+                                                                   Margin="0,10,0,10"
+                                                                   HorizontalAlignment="Stretch"/>
                                     <Border.OpacityMask>
                                         <VisualBrush>
                                             <VisualBrush.Visual>
@@ -550,7 +553,8 @@
                         </TabItem.Content>
                     </TabItem>
                     <!--previous term schedule tab-->
-                    <TabItem Style="{DynamicResource TabItemStyle}" Visibility="{Binding Schedule, Converter={StaticResource TabItemVisibilityConverter}, ConverterParameter=PreviousSchedule}">
+                    <TabItem Style="{DynamicResource TabItemStyle}" 
+                             Visibility="{Binding Schedule, Converter={x:Static converters:TabItemVisibilityConverter.Instance}, ConverterParameter=PreviousSchedule}">
                         <TabItem.Header>
                             <StackPanel>
                                 <TextBlock Text="{Binding Schedule.previousTerm}" FontSize="14"/>

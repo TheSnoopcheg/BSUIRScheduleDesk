@@ -331,4 +331,7 @@ To run, try deleting recent.json in the data folder</value>
   <data name="NumOfLessonsSinceStart" xml:space="preserve">
     <value>Lesson number from the beginning of the semester</value>
   </data>
+  <data name="CurrentWeek" xml:space="preserve">
+    <value>Current week</value>
+  </data>
 </root>

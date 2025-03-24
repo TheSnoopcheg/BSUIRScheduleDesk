@@ -67,6 +67,7 @@ namespace BSUIRScheduleDESK.Views
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+            this.Close();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -74,6 +75,7 @@ namespace BSUIRScheduleDESK.Views
             if (e.Key == Key.Escape)
             {
                 this.DialogResult = true;
+                this.Close();
             }
         }
         private ObservableCollection<int> selectedIndexes;
@@ -143,7 +145,7 @@ namespace BSUIRScheduleDESK.Views
             }
         }
 
-        public Version Version { get; set; } = new Version(1,0,5,2);
+        public Version Version { get; set; } = new Version(1,0,5,3);
 
     }
 }

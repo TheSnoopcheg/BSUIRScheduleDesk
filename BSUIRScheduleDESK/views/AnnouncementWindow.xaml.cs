@@ -25,6 +25,7 @@ namespace BSUIRScheduleDESK.Views
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+            this.Close();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -32,6 +33,7 @@ namespace BSUIRScheduleDESK.Views
             if(e.Key == Key.Escape)
             {
                 this.DialogResult = true;
+                this.Close();
             }
         }
     }

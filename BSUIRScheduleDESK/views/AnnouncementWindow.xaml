@@ -43,8 +43,6 @@
         </Style>
     </Window.Style>
     <Window.Resources>
-        <converters:StringsCollectionConverter x:Key="StringsCollectionConverter"/>
-        <converters:EmployeeOrGroupConverter x:Key="EmployeeOrGroupConverter"/>
         <DataTemplate x:Key="AnnouncementTemplate">
             <Grid Margin="0, 10, 0, 10"
                   MaxHeight="100">
@@ -80,11 +78,11 @@
                            VerticalAlignment="Center"
                            TextWrapping="Wrap"/>
                 <controls:EmployeeGroups Grid.Column="3"
-                          VerticalAlignment="Center"
-                          HorizontalAlignment="Center"
-                          Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.LoadScheduleCommand}">
+                                         VerticalAlignment="Center"
+                                         HorizontalAlignment="Center"
+                                         Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.LoadScheduleCommand}">
                     <controls:EmployeeGroups.DataContext>
-                        <MultiBinding Converter="{StaticResource EmployeeOrGroupConverter}" ConverterParameter="Type">
+                        <MultiBinding Converter="{x:Static converters:EmployeeOrGroupConverter.Instance}" ConverterParameter="Type">
                             <Binding RelativeSource="{RelativeSource AncestorType=Grid}" Path="DataContext"/>
                             <Binding RelativeSource="{RelativeSource AncestorType=Window}" Path="DataContext.IsEmployeeAnnouncement"/>
                         </MultiBinding>
@@ -153,6 +151,11 @@
                 </Button.RenderTransform>
             </Button>
             <!--announcements presentation area-->
+            <Border Grid.Row="1"
+                    CornerRadius="0,0,10,10"
+                    Background="Black"
+                    Margin="10,20"
+                    x:Name="maskBorder"/>
             <Border Grid.Row="1" 
                     CornerRadius="10"
                     Background="{DynamicResource Border.Background.Static}"
@@ -226,16 +229,15 @@
                             </TextBlock>
                         </Grid>
                     </Border>
-                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto" Focusable="False">
-                        <ItemsControl ItemsSource="{Binding Announcements}"
-                                      ItemTemplate="{StaticResource AnnouncementTemplate}" Focusable="False">
-                            <ItemsControl.ItemsPanel>
-                                <ItemsPanelTemplate>
-                                    <VirtualizingStackPanel Orientation="Vertical"/>
-                                </ItemsPanelTemplate>
-                            </ItemsControl.ItemsPanel>
-                        </ItemsControl>
-                    </ScrollViewer>
+                    <ItemsControl ItemsSource="{Binding Announcements}"
+                                  ItemTemplate="{StaticResource AnnouncementTemplate}"
+                                  Style="{StaticResource VerticalVirtualizedItemsControl}"
+                                  Grid.Row="1"
+                                  Focusable="False">
+                        <ItemsControl.OpacityMask>
+                            <VisualBrush Visual="{Binding ElementName=maskBorder}"/>
+                        </ItemsControl.OpacityMask>
+                    </ItemsControl>
                     <StackPanel Orientation="Vertical" Grid.Row="1" VerticalAlignment="Center">
                         <Path Fill="{DynamicResource Icon.Stroke.Static}"
                               Stretch="Fill"

@@ -7,6 +7,7 @@ namespace BSUIRScheduleDESK.Converters
 {
     public class EmployeeNameConverter : IValueConverter
     {
+        public static readonly EmployeeNameConverter Instance = new EmployeeNameConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not string name) return string.Empty;

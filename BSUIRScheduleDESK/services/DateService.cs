@@ -27,7 +27,6 @@ namespace BSUIRScheduleDESK.Services
                 weeks++;
 
             return weeks;
-
         }
         public static List<DateTime> GetDatesOfWeekByDate(DateTime date)
         {

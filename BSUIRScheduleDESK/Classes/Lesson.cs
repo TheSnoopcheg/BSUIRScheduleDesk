@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace BSUIRScheduleDESK.Classes
 {
@@ -34,7 +35,10 @@ namespace BSUIRScheduleDESK.Classes
                 && this.startLessonTime == lesson.startLessonTime
                 && this.numSubgroup == lesson.numSubgroup
                 && this.lessonTypeAbbrev == lesson.lessonTypeAbbrev
-                && this.DayOfWeek == lesson.DayOfWeek;
+                && this.DayOfWeek == lesson.DayOfWeek
+                && Enumerable.SequenceEqual(this.employees!, lesson.employees!)
+                && Enumerable.SequenceEqual(this.studentGroups!, lesson.studentGroups!)
+                && Enumerable.SequenceEqual(this.weekNumber!, lesson.weekNumber!);
         }
     }
 }

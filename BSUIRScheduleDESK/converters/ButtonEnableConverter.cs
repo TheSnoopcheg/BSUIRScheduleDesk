@@ -6,6 +6,7 @@ namespace BSUIRScheduleDESK.Converters
 {
     internal class ButtonEnableConverter : IValueConverter, IMultiValueConverter
     {
+        public static readonly ButtonEnableConverter Instance = new ButtonEnableConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not int selectedIndex) return false;

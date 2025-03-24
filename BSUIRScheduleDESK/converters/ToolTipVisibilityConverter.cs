@@ -8,6 +8,7 @@ namespace BSUIRScheduleDESK.Converters
 {
     public class ToolTipVisibilityConverter : IValueConverter
     {
+        public static readonly ToolTipVisibilityConverter Instance = new ToolTipVisibilityConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var empl = value as Employee;

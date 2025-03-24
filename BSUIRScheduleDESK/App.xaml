@@ -1,7 +1,8 @@
 ﻿<Application x:Class="BSUIRScheduleDESK.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:local="clr-namespace:BSUIRScheduleDESK">
+             xmlns:local="clr-namespace:BSUIRScheduleDESK"
+             xmlns:converters="clr-namespace:BSUIRScheduleDESK.Converters">
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -9,6 +10,8 @@
                 <ResourceDictionary Source="/Themes/Icons.xaml"/>
                 <ResourceDictionary Source="/Themes/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+            <converters:CenterTransformConverter x:Key="CenterTransformConverter"/>
+            <BooleanToVisibilityConverter x:Key="BoolToVisConverter"/>
         </ResourceDictionary>
     </Application.Resources>
 </Application>

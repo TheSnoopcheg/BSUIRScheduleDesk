@@ -21,6 +21,7 @@ namespace BSUIRScheduleDESK.Controls
         private int _minRow = -1;
         private int _maxRow = -1;
         private int _weekDiff = 0;
+        private int _currentWeek = -1;
 
         private DateTime _startExamDate = DateTime.MinValue;
         private DateTime _endExamDate = DateTime.MaxValue;
@@ -95,6 +96,8 @@ namespace BSUIRScheduleDESK.Controls
             {
                 _calendar.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.IetfLanguageTag);
             }
+
+            _currentWeek = CurrentWeek;
 
             SetUpMaximizedGrid();
             SetUpNormalGrid();
@@ -190,7 +193,7 @@ namespace BSUIRScheduleDESK.Controls
                 schedulePresenter.ReturnButtonStatusUpdate();
                 if(schedulePresenter._currentWeekLabel != null)
                 {
-                    schedulePresenter._currentWeekLabel.Text = $"{Langs.Language.Week}: " + schedulePresenter.CurrentWeek.ToString();
+                    schedulePresenter._currentWeekLabel.Text = $"{Langs.Language.Week}: {schedulePresenter.CurrentWeek}";
                 }
                 schedulePresenter.SetUp();
             }
@@ -416,9 +419,10 @@ namespace BSUIRScheduleDESK.Controls
             {
                 _previousButton.Visibility = Visibility.Collapsed;
                 _nextButton.Visibility = Visibility.Collapsed;
-                _currentWeekLabel.Visibility = Visibility.Collapsed;
                 _calendarButton.Visibility = Visibility.Collapsed;
                 _returnButton.Visibility = Visibility.Collapsed;
+
+                _currentWeekLabel.Text = $"{Langs.Language.CurrentWeek}: {_currentWeek}";
 
                 _firstSubGroup.IsEnabled = false;
                 _secondSubGroup.IsEnabled = false;
@@ -429,9 +433,10 @@ namespace BSUIRScheduleDESK.Controls
             {
                 _previousButton.Visibility = Visibility.Visible;
                 _nextButton.Visibility = Visibility.Visible;
-                _currentWeekLabel.Visibility = Visibility.Visible;
                 _calendarButton.Visibility = Visibility.Visible;
                 ReturnButtonStatusUpdate();
+
+                _currentWeekLabel.Text = $"{Langs.Language.Week}: {CurrentWeek}";
 
                 _firstSubGroup.IsEnabled = true;
                 _secondSubGroup.IsEnabled = true;
@@ -625,12 +630,18 @@ namespace BSUIRScheduleDESK.Controls
                 if (lesson.numSubgroup == 2 && !SecondSubGroup)
                     return false;
             }
-            if (ShowExams)
+            if (DateTime.TryParse(lesson.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
             {
-                if (DateTime.TryParse(lesson.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
+                if (ShowExams)
                 {
-                    if (!_dates.Contains(lessonDate))
+                    if (_dates.Contains(lessonDate))
+                        return true;
+                    else
                         return false;
+                }
+                else
+                {
+                    return false;
                 }
             }
             if ((DateTime.TryParse(lesson.startLessonDate, out DateTime startDate) && startDate > _dates[(int)lesson.DayOfWeek])

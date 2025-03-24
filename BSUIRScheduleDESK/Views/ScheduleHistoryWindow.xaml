@@ -93,19 +93,12 @@
                 </Button.RenderTransform>
             </Button>
 
-            <ScrollViewer Grid.Row="1"
-                          Margin="10"
-                          VerticalScrollBarVisibility="Auto">
-                <ItemsControl ItemTemplate="{StaticResource historyNoteTemplate}"
-                              ItemsSource="{Binding HistoryNotes}"
-                              Focusable="False">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Orientation="Vertical"/>
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                </ItemsControl>
-            </ScrollViewer>
+            <ItemsControl ItemTemplate="{StaticResource historyNoteTemplate}"
+                          ItemsSource="{Binding HistoryNotes}"
+                          Style="{StaticResource VerticalItemsControl}"
+                          Focusable="False"
+                          Grid.Row="1"
+                          Margin="10"/>
         </Grid>
     </Border>
 </Window>

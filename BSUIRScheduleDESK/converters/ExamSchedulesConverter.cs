@@ -9,6 +9,7 @@ namespace BSUIRScheduleDESK.Converters
 {
     public class ExamSchedulesConverter : IValueConverter
     {
+        public static readonly ExamSchedulesConverter Instance = new ExamSchedulesConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null || value is not List<Lesson> schedules) return null;

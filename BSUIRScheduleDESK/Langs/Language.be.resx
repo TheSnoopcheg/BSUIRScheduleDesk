@@ -331,4 +331,7 @@
   <data name="NumOfLessonsSinceStart" xml:space="preserve">
     <value>Нумар занятку з пачатку семестра</value>
   </data>
+  <data name="CurrentWeek" xml:space="preserve">
+    <value>Бягучы тыдзень</value>
+  </data>
 </root>
