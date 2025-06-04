@@ -36,9 +36,9 @@ namespace BSUIRScheduleDESK.Classes
                 && this.numSubgroup == lesson.numSubgroup
                 && this.lessonTypeAbbrev == lesson.lessonTypeAbbrev
                 && this.DayOfWeek == lesson.DayOfWeek
-                && Enumerable.SequenceEqual(this.employees!, lesson.employees!)
-                && Enumerable.SequenceEqual(this.studentGroups!, lesson.studentGroups!)
-                && Enumerable.SequenceEqual(this.weekNumber!, lesson.weekNumber!);
+                && ((this.employees == null && lesson.employees == null) || Enumerable.SequenceEqual(this.employees!, lesson.employees!))
+                && ((this.studentGroups == null && lesson.studentGroups == null) || Enumerable.SequenceEqual(this.studentGroups!, lesson.studentGroups!))
+                && ((this.weekNumber == null && lesson.weekNumber == null) || Enumerable.SequenceEqual(this.weekNumber!, lesson.weekNumber!));
         }
     }
 }
