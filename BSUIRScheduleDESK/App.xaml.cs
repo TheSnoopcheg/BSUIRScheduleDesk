@@ -1,14 +1,16 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
-using BSUIRScheduleDESK.viewmodels;
-using BSUIRScheduleDESK.views;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Models;
+using BSUIRScheduleDESK.Services;
+using BSUIRScheduleDESK.ViewModels;
+using BSUIRScheduleDESK.Views;
+using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 using System.Windows;
-using set = BSUIRScheduleDESK.Properties.Settings;
+using System.Collections.Generic;
 
 namespace BSUIRScheduleDESK
 {
@@ -17,42 +19,83 @@ namespace BSUIRScheduleDESK
     /// </summary>
     public partial class App : Application
     {
+        private IMainWindowViewModel _mainWindowViewModel;
+        private IScheduleService _scheduleService;
+        public IServiceProvider ServiceProvider { get; private set; }
         protected override void OnStartup(StartupEventArgs e)
         {
+#if DEBUG
+
+#else
             IsAnotherProcessExist();
+#endif
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
-            App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{set.Default.currentTheme}.xaml", UriKind.Relative)};
-            if (set.Default.currentweek == 0 || set.Default.laststartup == DateTime.MinValue)
+            App.Current.Resources.MergedDictionaries[0] = new ResourceDictionary() { Source = new Uri($"Themes/ColourDictionaries/{Config.Instance.CurrentTheme}.xaml", UriKind.Relative)};
+
+            ConfigureServices();
+
+            System.Threading.Thread.CurrentThread.CurrentUICulture = new System.Globalization.CultureInfo(Config.Instance.CurrentLanguage);
+
+            _mainWindowViewModel = ServiceProvider.GetService<IMainWindowViewModel>()!;
+            _scheduleService = ServiceProvider.GetService<IScheduleService>()!;
+
+            string? dataPath = Directory.GetCurrentDirectory() + @"\data";
+            if (!Directory.Exists(dataPath))
             {
-                var up = ScheduleService.UpdateCurrentWeekAsync();
+                Directory.CreateDirectory(dataPath);
             }
-            int wd = DateService.GetWeekDiff(set.Default.laststartup, DateTime.Today);
-            if (wd != 0)
+
+            if(Config.Instance.CurrentWeek == 0 || Config.Instance.LastStartup == DateTime.MinValue)
             {
-                set.Default.currentweek += wd % 4;
-                if(set.Default.currentweek >= 5)
-                {
-                    set.Default.currentweek -= 4;
-                    set.Default.Save();
-                }
+                var up = _scheduleService.UpdateCurrentWeekAsync();
             }
-            MainWindowViewModel mwvm = new MainWindowViewModel();
-            set.Default.laststartup = DateTime.Today;
-            set.Default.Save();
+
+            int wd = DateService.GetWeekDiff(Config.Instance.LastStartup, DateTime.Today);
+            Config.Instance.CurrentWeek = (Config.Instance.CurrentWeek + wd + 3) % 4 + 1;
+
+            Config.Instance.LastStartup = DateTime.Today;
+            Config.Instance.Save();
+            
             this.MainWindow = new MainWindow();
-            this.MainWindow.DataContext = mwvm;
+            this.MainWindow.DataContext = _mainWindowViewModel;
+            
             MainWindow.Show();
-            base.OnStartup(e);
+            
             ShowUpdateInfo();
-            string? path = Directory.GetCurrentDirectory() + @"\data";
-            if (!Directory.Exists(path))
-            {
-                Directory.CreateDirectory(path);
-            }
+            
+            base.OnStartup(e);
+        }
+
+        private void ConfigureServices()
+        {
+            var services = new ServiceCollection();
+            services.AddSingleton<App>();
+
+            services.AddSingleton<IMainWindowModel, MainWindowModel>();
+            services.AddSingleton<IScheduleSearchModel, ScheduleSearchModel>();
+            services.AddSingleton<IAnnouncementModel, AnnouncementModel>();
+            services.AddSingleton<INoteModel, NoteModel>();
+            services.AddSingleton<IScheduleHistoryModel, ScheduleHistoryModel>();
+
+            services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
+            services.AddSingleton<IScheduleSearchViewModel, ScheduleSearchViewModel>();
+            services.AddSingleton<INoteViewModel, NoteViewModel>();
+            services.AddSingleton<IAnnouncementViewModel, AnnouncementViewModel>();
+            services.AddSingleton<IScheduleHistoryViewModel, ScheduleHistoryViewModel>();
+
+            services.AddSingleton<INetworkService, NetworkService>();
+            services.AddSingleton<IInternetService, InternetService>();
+
+            services.AddTransient<INoteService, NoteService>();
+            services.AddTransient<IFavoriteSchedulesService, FavoriteSchedulesService>();
+            services.AddTransient<IAnnouncementService, AnnouncementService>();
+            services.AddTransient<IScheduleService, ScheduleService>();
+            services.AddTransient<IScheduleHistoryService, ScheduleHistoryService>();
+            ServiceProvider = services.BuildServiceProvider();
         }
         protected override void OnExit(ExitEventArgs e)
         {
-            set.Default.Save();
+            Config.Instance.Save();
             base.OnExit(e);
         }
         private void IsAnotherProcessExist()
@@ -61,33 +104,29 @@ namespace BSUIRScheduleDESK
             Process[] processes = Process.GetProcesses().Where(u => u.ProcessName == processName).ToArray();
             if(processes.Length > 1)
             {
-                ModalWindow.Show("Данная программа уже запущена.", "Расписание БГУИР", "", ModalWindowButtons.OK);
+                ModalWindow.Show(Langs.Language.ProgramRunning + ".", Langs.Language.AppName, "", ModalWindowButtons.OK);
                 this.Shutdown();
             }
         }
         private void ShowUpdateInfo()
         {
-            string? path = Directory.GetCurrentDirectory() + @"\updates\update.json";
-            if (File.Exists(path))
+            string? path = Directory.GetCurrentDirectory() + @"\updates\";
+            if (!Directory.Exists(path)) return;
+            List<UpdateInfo> updates = Directory.GetFiles(path).Select(f => JsonSerializer.Deserialize<UpdateInfo>(File.ReadAllText(f))).Where(u => u.IsShowed == false).ToList();
+            if (updates.Count == 0) return;
+            string text = string.Empty;
+            foreach(var update in updates)
             {
-                string? updateInfoJson = File.ReadAllText(path);
-                UpdateInfo updateInfo = JsonSerializer.Deserialize<UpdateInfo>(updateInfoJson)!;
-                if (updateInfo != null)
-                {
-                    if (!updateInfo.IsShowed)
-                    {
-                        ModalWindow.Show(updateInfo.Content!, $"Обновление от {updateInfo.UpdateDate}", Directory.GetCurrentDirectory() + @"\updates\update.png", ModalWindowButtons.OK);
-                        updateInfo.IsShowed = true;
-                        updateInfoJson = JsonSerializer.Serialize(updateInfo);
-                        File.WriteAllText(path, updateInfoJson);
-                    }
-                }
+                text += $"{Langs.Language.UpdateBy} {update.UpdateDate}:\n{update.Content}\n\n";
+                update.IsShowed = true;
+                File.WriteAllText($"{path}{update.UpdateDate}.json", JsonSerializer.Serialize(update));
             }
+            ModalWindow.Show(text, Langs.Language.Updates, Directory.GetCurrentDirectory() + @"\updates\update.png", ModalWindowButtons.OK);
         }
         private void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
         {
             File.WriteAllText($"{Directory.GetCurrentDirectory()}\\crash.log", $"[{DateTime.Now}] [{sender}] \n{e.ExceptionObject}");
-            MessageBox.Show("Упс.. Отправьте, пожалуйста, файл crash.log в телеграм @snoopcheg\nДля запуска попробуйте удалить recent.json в папке data", "Critical error", MessageBoxButton.OK, MessageBoxImage.Error);
+            ModalWindow.Show(Langs.Language.CriticalErrorMessage, Langs.Language.CriticalError, string.Empty, ModalWindowButtons.OK);
         }
     }
 }

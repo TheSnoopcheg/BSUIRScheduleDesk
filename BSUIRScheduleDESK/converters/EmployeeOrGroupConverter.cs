@@ -1,24 +1,25 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
+using System.Text;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.converters
+
+namespace BSUIRScheduleDESK.Converters
 {
     public class EmployeeOrGroupConverter : IValueConverter, IMultiValueConverter
     {
+        public static readonly EmployeeOrGroupConverter Instance = new EmployeeOrGroupConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
-            string? sparam = parameter as string;
+            if (value == null || parameter is not string sparam) return null;
             switch (sparam)
             {
                 case "Type":
                     {
-                        Schedule? schedule = value as Schedule;
+                        Lesson? schedule = value as Lesson;
                         if (schedule?.employees == null)
                             return schedule?.studentGroups!.OrderBy(s => s.name)!;
                         return schedule?.employees!;
@@ -27,11 +28,24 @@ namespace BSUIRScheduleDESK.converters
                     {
                         if(value is StudentGroup s)
                         {
-                            return $"{s.specialityName} ({s.numberOfStudents} студентов)";
+                            return $"{s.specialityName} ({s.numberOfStudents} {Langs.Language.Students})";
                         }
                         else if(value is Employee e)
                         {
-                            return e.GetFullName();
+                            StringBuilder sb = new StringBuilder();
+                            sb.Append(e.GetFullName());
+                            bool dRes = string.IsNullOrEmpty(e.degreeAbbrev);
+                            bool rRes = string.IsNullOrEmpty(e.rank);
+                            if (!dRes || !rRes)
+                            {
+                                sb.Append("\n(");
+                                sb.Append(e.degreeAbbrev);
+                                if (!dRes && !rRes)
+                                    sb.Append(", ");
+                                sb.Append(e.rank);
+                                sb.Append(")");
+                            }
+                            return sb.ToString();
                         }
                         return null;
                     }
@@ -49,11 +63,12 @@ namespace BSUIRScheduleDESK.converters
 
         public object Convert(object[] values, Type targetType, object parameter, CultureInfo culture)
         {
-            if (values == null || values.Length == 0) return null;
-            string? sparam = parameter as string;
+            if (values == null 
+                || values.Length < 2
+                || parameter is not string sparam
+                || values[0] is not Announcement announcement
+                || values[1] is not bool isEmplAnn) return null;
             if (sparam != "Type") return null;
-            if (values[0] is not Announcement announcement) return null;
-            if (values[1] is not bool isEmplAnn) return null;
             if (isEmplAnn)
                 return announcement.studentGroups?.OrderBy(s => s.name)!;
             else

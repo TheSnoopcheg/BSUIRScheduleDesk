@@ -1,98 +1,123 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.services;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Views;
+using BSUIRScheduleDESK.Services;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
-using System;
-using BSUIRScheduleDESK.views;
-using System.Diagnostics;
+using System.Linq;
 
-namespace BSUIRScheduleDESK.models
+namespace BSUIRScheduleDESK.Models
 {
-    public class MainWindowModel
+    public class MainWindowModel : IMainWindowModel
     {
-        public ObservableCollection<DateTime>? Dates { get; set; }
-        public ObservableCollection<Announcement>? Announcements { get; set; }
-        public ObservableCollection<Note>? Notes { get; set; }
-        private GroupSchedule? _schedule;
-        public GroupSchedule? Schedule
+        private readonly IScheduleService _scheduleService;
+        private readonly IInternetService _internetService;
+        private readonly IFavoriteSchedulesService _favoriteSchedulesService;
+
+        private Schedule? _schedule;
+        public Schedule? Schedule
         {
-            get => _schedule!;
+            get => _schedule;
             set
             {
                 _schedule = value;
             }
         }
-        public async Task SaveRecentSchedule(GroupSchedule schedule)
+        private ObservableCollection<FavoriteSchedule> _favoriteSchedules = new ObservableCollection<FavoriteSchedule>();
+        public ObservableCollection<FavoriteSchedule> FavoriteSchedules
         {
-            await ScheduleService.SaveRecentSchedule(schedule);
-        }
-        public async Task<bool> LoadSchedule(string? url, LoadingType loadingType)
-        {
-            GroupSchedule schedule = await ScheduleService.LoadSchedule(url, loadingType);
-            if(schedule != null)
+            get => _favoriteSchedules;
+            set
             {
+                _favoriteSchedules = value;
+            }
+        }
+        public async Task SaveRecentScheduleAsync(Schedule schedule)
+        {
+            await _scheduleService.SaveRecentScheduleAsync(schedule);
+        }
+        public async Task<bool> LoadScheduleAsync(string? url, LoadingType loadingType)
+        {
+            Schedule schedule = await _scheduleService.LoadScheduleAsync(url, loadingType);
+            if (schedule == null) return false;
+
+            await schedule.CreateDailyLessonConllections();
+            if (loadingType != LoadingType.ServerWP)
                 Schedule = schedule;
-                return true;
-            }
-            return false;
+            else                                            // shitcoding
+                await AddFavoriteScheduleAsync(schedule);
+            return true;
         }
-        public async Task<bool> LoadNotes(string? url)
+
+        public async Task AddFavoriteScheduleAsync(Schedule schedule)
         {
-            ObservableCollection<Note> notes;
-            notes = await NoteService.LoadNotes(url);
-            if(notes != null)
-            {
-                Notes = notes;
-                return true;
-            }
-            return false;
+            if (FavoriteSchedules.Any(s => s.UrlId == schedule.GetUrl())) return;
+            var favSchedule = new FavoriteSchedule { Name = schedule.GetName(), UrlId=schedule.GetUrl() };
+            FavoriteSchedules.Add(favSchedule);
+            await _scheduleService.SaveScheduleAsync(schedule, favSchedule.UrlId);
+            await _favoriteSchedulesService.SaveFavoriteSchedulesAsync(FavoriteSchedules);
         }
-        public async Task<bool> LoadAnnouncements(string? url)
+        public async Task DeleteFavoriteScheduleAsync(FavoriteSchedule schedule)
         {
-            ObservableCollection<Announcement> announcements;
-            if (int.TryParse(url, out var id))
-            {
-                announcements = await NetworkService.GetAsync<ObservableCollection<Announcement>>($"https://iis.bsuir.by/api/v1/announcements/student-groups?name={url}");
-            }
-            else
-            {
-                announcements = await NetworkService.GetAsync<ObservableCollection<Announcement>>($"https://iis.bsuir.by/api/v1/announcements/employees?url-id={url}");
-            }
-            if(announcements != null)
-            {
-                Announcements = announcements;
-                return true;
-            }
-            return false;
-            
+            var scheduleToDelete = FavoriteSchedules.FirstOrDefault(s => s.UrlId == schedule.UrlId);
+            if (scheduleToDelete == null) return;
+            FavoriteSchedules.Remove(scheduleToDelete);
+            _scheduleService.DeleteSchedule(schedule.UrlId);
+            await _favoriteSchedulesService.SaveFavoriteSchedulesAsync(FavoriteSchedules);
         }
-        public async Task<bool> CheckScheduleUpdate()
+        public async Task DeleteFavoriteScheduleAsync(Schedule schedule)
         {
-            if (Schedule != null)
+            var favSchedule = new FavoriteSchedule { Name = schedule.GetName(), UrlId = schedule.GetUrl() };
+            await DeleteFavoriteScheduleAsync(favSchedule);
+        }
+
+        public bool IsScheduleFavorited(string url)
+        {
+            return FavoriteSchedules.Any(s => s.UrlId == url);
+        }
+
+        public async Task<HistoryNote?> UpdateScheduleAsync()
+        {
+            if (Schedule == null) return null;
+            if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") != ConnectionStatus.Connected) return null;
+
+            string? url = Schedule.GetUrl();
+            var newSchedule = await _scheduleService.LoadScheduleAsync(url, LoadingType.ServerWP);
+            if (newSchedule == null) return null;
+            if (Schedule.GetUrl() != newSchedule.GetUrl()) return null;
+
+            await newSchedule.CreateDailyLessonConllections();
+
+            if (!Schedule.Compare(newSchedule))
             {
-                if (await Internet.CheckServerAccess($"https://iis.bsuir.by/api/v1/schedule/current-week") == Internet.ConnectionStatus.Connected)
+                ModalWindowResult result = ModalWindow.Show(string.Format(Langs.Language.ScheduleUpdateQuestionFormat, newSchedule.GetName()), Langs.Language.AppName, "", ModalWindowButtons.YesNo);
+                if (result == ModalWindowResult.Yes)
                 {
-                    string? url = Schedule.GetUrl();
-                    Debug.WriteLine(url);
-                    var schedule = await ScheduleService.LoadSchedule(url, LoadingType.Server);
-                    if(!Schedule.Compare(schedule))
-                    {
-                        ModalWindowResult result = ModalWindow.Show($"Расписание [{Schedule.GetName()}] было обновлено. Загрузить?", "Расписание БГУИР", "", ModalWindowButtons.YesNo);
-                        if (result == ModalWindowResult.Yes)
-                        {
-                            schedule.favorited = Schedule.favorited;
-                            Schedule = schedule;
-                            await ScheduleService.SaveSchedule(Schedule, url);
-                            return true;
-                        }
-                    }
+                    Difference difference = new Difference();
+                    difference.Differences = ObjectComparer.GetDifferences(Schedule, newSchedule, out string? name, out string? namer);
+                    HistoryNote note = new HistoryNote() { UpdateDate = System.DateTime.Today, Difference = difference };
+                    newSchedule.favorited = Schedule.favorited;
+                    Schedule = newSchedule;
+                    await _scheduleService.SaveScheduleAsync(Schedule, url);
+                    await SaveRecentScheduleAsync(Schedule);
+                    return note;
                 }
             }
-            return false;
+
+            return null;
         }
-        public MainWindowModel()
+        private async Task LoadFavoriteSchedules()
         {
-            Dates = new ObservableCollection<DateTime>(DateService.GetCurrentWeekDates());
+            FavoriteSchedules = await _favoriteSchedulesService.LoadFavoriteSchedulesAsync();
+        }
+        public MainWindowModel(IScheduleService scheduleService,
+                               IInternetService internetService, 
+                               IFavoriteSchedulesService favoriteSchedulesService)
+        {
+            _scheduleService = scheduleService;
+            _internetService = internetService;
+            _favoriteSchedulesService = favoriteSchedulesService;
+
+            var _ = LoadFavoriteSchedules();
         }
     }
 }

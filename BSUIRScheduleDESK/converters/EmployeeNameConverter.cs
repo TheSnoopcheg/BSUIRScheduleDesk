@@ -3,14 +3,14 @@ using System.Globalization;
 using System.Text;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.converters
+namespace BSUIRScheduleDESK.Converters
 {
     public class EmployeeNameConverter : IValueConverter
     {
+        public static readonly EmployeeNameConverter Instance = new EmployeeNameConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value == null) return null;
-            string? name = value as string;
+            if (value is not string name) return string.Empty;
             if (int.TryParse(name, out int numVal))
             {
                 return name;

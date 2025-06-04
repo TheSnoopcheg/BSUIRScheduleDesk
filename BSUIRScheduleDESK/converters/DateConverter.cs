@@ -1,53 +1,53 @@
 ﻿using System;
 using System.Globalization;
 using System.Windows.Data;
-#if DEBUG
-using System.Diagnostics;
-#endif
 
-namespace BSUIRScheduleDESK.converters
+namespace BSUIRScheduleDESK.Converters
 {
     public class DateConverter : IValueConverter
     {
+        public static readonly DateConverter Instance = new DateConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value == null) return null;
             if(value is string str)
             {
-                DateTime date = DateTime.Parse(str);
-                return date.ToString("d") + date.ToString(", ddd");
+                if (DateTime.TryParse(str, out DateTime dt))
+                    return dt.ToString("d", CultureInfo.CurrentUICulture) + dt.ToString(", ddd", CultureInfo.CurrentUICulture);
+                else
+                    return string.Empty;
             }
             else
             {
                 string? param = parameter as string;
                 DateTime dateTime = (DateTime)value;
-                string day = dateTime.ToString("dddd");
-                day = day.Replace(day[0], Char.ToUpper(day[0]));
+                string day = dateTime.ToString("dddd", CultureInfo.CurrentUICulture);
+                day = Char.ToUpper(day[0]) + day.Substring(1);
                 string result = string.Empty;
                 if(param != null)
                 {
                     if(param == "linear")
                     {
-                        result = day + dateTime.ToString(" dd.MM.yyyy");
+                        result = day + dateTime.ToString(" dd.MM.yyyy", CultureInfo.CurrentUICulture);
                     }
                     if (param == "monthyear")
                     {
-                        string month = dateTime.ToString("MMMM yyyy");
-                        month = month.Replace(month[0], char.ToUpper(month[0]));
+                        string month = dateTime.ToString("MMMM yyyy", CultureInfo.CurrentUICulture);
+                        month = char.ToUpper(month[0]) + month.Substring(1);
                         return month;
                     }
                 }
                 else
                 {
-                    result = day + "\n" + dateTime.ToString("dd.MM");
+                    result = day + "\n" + dateTime.ToString("dd.MM", CultureInfo.CurrentUICulture);
                 }
                 if (dateTime == DateTime.Today)
                 {
-                    result += " (сегодня)";
+                    result += $" ({Langs.Language.Today})";
                 }
                 else if (dateTime == DateTime.Today.AddDays(1))
                 {
-                    result += " (завтра)";
+                    result += $" ({Langs.Language.Tomorrow})";
                 }
                 return result;
             }

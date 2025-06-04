@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.classes
+namespace BSUIRScheduleDESK.Classes
 {
     public class RelayCommand : ICommand
     {

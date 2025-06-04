@@ -1,4 +1,4 @@
-﻿namespace BSUIRScheduleDESK.classes
+﻿namespace BSUIRScheduleDESK.Classes
 {
     public class Employee
     {
@@ -27,6 +27,13 @@
         public string GetFullName()
         {
             return $"{lastName} {firstName} {middleName}";
+        }
+        public override bool Equals(object? obj)
+        {
+            if(obj is not Employee employee) return false;
+            return this.firstName == employee.firstName
+                && this.lastName == employee.lastName
+                && this.middleName == employee.middleName;
         }
     }
 }

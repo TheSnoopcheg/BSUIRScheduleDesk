@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace BSUIRScheduleDESK.classes
+namespace BSUIRScheduleDESK.Classes
 {
     public class Announcement
     {

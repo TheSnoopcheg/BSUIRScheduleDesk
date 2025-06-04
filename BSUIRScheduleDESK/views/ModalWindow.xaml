@@ -1,9 +1,9 @@
-﻿<Window x:Class="BSUIRScheduleDESK.views.ModalWindow" 
+﻿<Window x:Class="BSUIRScheduleDESK.Views.ModalWindow" 
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
+        xmlns:local="clr-namespace:BSUIRScheduleDESK.Views"
         mc:Ignorable="d"
         Title="ModalWindow"
         SizeToContent="WidthAndHeight"
@@ -13,6 +13,7 @@
         Background="Transparent"
         ShowInTaskbar="False"
         WindowStartupLocation="CenterScreen"
+        KeyDown="Window_KeyDown"
         x:Name="root">
     <Window.Resources>
         <DropShadowEffect x:Key="windowShadow" BlurRadius="5" Opacity="0.7" ShadowDepth="0"/>
@@ -53,13 +54,11 @@
         <Border Background="{DynamicResource ModalWinodw.Background.Static}"
                 CornerRadius="5" 
                 Margin="3"
-                KeyDown="Border_KeyDown"
                 MouseDown="Border_MouseDown">
             <Grid>
                 <Grid.RowDefinitions>
                     <RowDefinition Height="35"/>
-                    <RowDefinition MaxHeight="100" Height="auto"/>
-                    <RowDefinition MinHeight="0" MaxHeight="250" Height="auto"/>
+                    <RowDefinition MaxHeight="350" Height="auto"/>
                     <RowDefinition Height="30"/>
                 </Grid.RowDefinitions>
                 <TextBlock x:Name="TitleBlock"
@@ -70,7 +69,7 @@
                            FontSize="16"
                            FontWeight="DemiBold"
                            Grid.Row="0"/>
-                <Button Style="{DynamicResource ButtonStyle}"
+                <Button Style="{DynamicResource ButtonStyle1}"
                         Width="25"
                         Height="25"
                         HorizontalAlignment="Right"
@@ -84,25 +83,35 @@
                           Height="12.5"
                           Fill="{DynamicResource ModalWinodw.Text.Foreground.Static}"/>
                 </Button>
+                <ScrollViewer VerticalScrollBarVisibility="Auto"
+                              HorizontalScrollBarVisibility="Disabled"
+                              Grid.Row="1">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition MaxHeight="100" Height="Auto"/>
+                            <RowDefinition MinHeight="0" MaxHeight="250" Height="Auto"/>
+                        </Grid.RowDefinitions>
+                        <Image x:Name="ImageBlock"
+                               Stretch="UniformToFill"
+                               HorizontalAlignment="Center"
+                               Margin="5,0,5,0"
+                               Grid.Row="0"/>
 
-                <Image x:Name="ImageBlock"
-                       Stretch="UniformToFill"
-                       HorizontalAlignment="Center"
-                       Margin="5,0,5,0"
-                       Grid.Row="1"/>
-
-                <TextBlock x:Name="ContentBlock"
-                           Foreground="{DynamicResource ModalWinodw.Text.Foreground.Static}"
-                           Margin="5"
-                           HorizontalAlignment="Left"
-                           TextWrapping="Wrap"
-                           FontSize="14"
-                           Grid.Row="2"/>
+                        <TextBlock x:Name="ContentBlock"
+                                   Foreground="{DynamicResource ModalWinodw.Text.Foreground.Static}"
+                                   Margin="5"
+                                   HorizontalAlignment="Left"
+                                   TextWrapping="Wrap"
+                                   FontSize="14"
+                                   Grid.Row="1"/>
+                    </Grid>
+                </ScrollViewer>
+                
                 <StackPanel x:Name="ButtonsPanel"
                             Orientation="Horizontal"
                             VerticalAlignment="Center"
                             HorizontalAlignment="Right"
-                            Grid.Row="3"/>
+                            Grid.Row="2"/>
 
             </Grid>
         </Border>

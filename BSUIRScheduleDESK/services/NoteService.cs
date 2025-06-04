@@ -1,16 +1,16 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System.Collections.ObjectModel;
 using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
-    public static class NoteService
+    public class NoteService : INoteService
     {
         private const string PATH = @"\data\";
         private const string SUFFIX = "_notes";
-        public static async Task<ObservableCollection<Note>> LoadNotes(string? path)
+        public async Task<ObservableCollection<Note>> LoadNotesAsync(string? path)
         {
             ObservableCollection<Note>? notes = new ObservableCollection<Note>();
             try
@@ -27,7 +27,7 @@ namespace BSUIRScheduleDESK.services
             }
             return notes!;
         }
-        public static async Task SaveNotes(ObservableCollection<Note> notes, string? path)
+        public async Task SaveNotesAsync(ObservableCollection<Note> notes, string? path)
         {
             using(FileStream createStream = File.Create($"{Directory.GetCurrentDirectory() + PATH + path + SUFFIX}.json"))
             {

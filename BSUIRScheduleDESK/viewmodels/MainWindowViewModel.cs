@@ -1,425 +1,369 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.models;
-using BSUIRScheduleDESK.services;
-using BSUIRScheduleDESK.views;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Models;
+using BSUIRScheduleDESK.Services;
+using BSUIRScheduleDESK.Views;
 using System;
 using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Threading.Tasks;
-using System.Runtime.CompilerServices;
-using System.Threading;
 
+namespace BSUIRScheduleDESK.ViewModels;
 
-#if DEBUG
-using System.Diagnostics;
-#endif
-
-namespace BSUIRScheduleDESK.viewmodels
+public class MainWindowViewModel : Notifier, IMainWindowViewModel
 {
-    public class MainWindowViewModel : Notifier
+    readonly IMainWindowModel _model;
+    private readonly IScheduleSearchViewModel _scheduleSearchViewModel;
+    private readonly IAnnouncementViewModel _announcementViewModel;
+    private readonly INoteViewModel _noteViewModel;
+    private readonly IScheduleHistoryViewModel _historyViewModel;
+
+    #region Properties
+
+    private int selectedTab = 0;
+    public int SelectedTab
     {
-        readonly MainWindowModel _model;
+        get { return selectedTab; }
+        set
+        {
+            selectedTab = value;
+            OnPropertyChanged();
+        }
+    }
+    public Schedule? Schedule => _model.Schedule;
 
-        #region Properties
+    public ObservableCollection<FavoriteSchedule> FavoriteSchedules => _model.FavoriteSchedules;
+    
+    public bool IsNotesExist
+    {
+        get => !_noteViewModel.IsNotesEmpty;
+    }
+    public bool IsAnnouncementsExist
+    {
+        get => !_announcementViewModel.IsAnnouncementsEmpty;
+    }
+    public bool IsHistoryVisible
+    {
+        get => Schedule != null && Schedule.favorited && !_historyViewModel.IsHistoryEmpty;
+    }
 
-        private int selectedTab = 0;
-        public int SelectedTab
-        {
-            get { return selectedTab; }
-            set
-            {
-                selectedTab = value;
-                OnPropertyChanged();
-            }
-        }
+    #endregion
 
-        private bool isCalendarOpen = false;
-        public bool IsCalendarOpen
-        {
-            get { return isCalendarOpen; }
-            set
-            {
-                isCalendarOpen = value;
-                OnPropertyChanged();
-            }
-        }
-        private FavoriteSchedulesViewModel favoriteSchedulesViewModel;
-        public FavoriteSchedulesViewModel FavoriteSchedulesViewModel
-        {
-            get { return favoriteSchedulesViewModel;}
-            set { favoriteSchedulesViewModel = value; }
-        }
-        private ObservableCollection<DateTime>? _dates = new ObservableCollection<DateTime>();
-        public ObservableCollection<DateTime>? Dates
-        {
-            get { return _dates; }
-            set
-            {
-                _dates = value;
-                OnPropertyChanged();
-            }
-        }
-        private GroupSchedule? _groupSchedule;
-        public GroupSchedule? Schedule
-        {
-            get { return _groupSchedule!; }
-            set
-            {
-                _groupSchedule = value;
-                OnPropertyChanged();
-            }
-        }
-        private int _currentWeek;
-        public int CurrentWeek
-        {
-            get { return _currentWeek; }
-            set
-            {
-                if (value >= 5)
-                    value -= 4;
-                else if (value <= 0)
-                    value += 4;
-                _currentWeek = value;
-                Properties.Settings.Default.openedweek = value;
-                OnPropertyChanged();
-            }
-        }
-        private ObservableCollection<Note>? _notes = new ObservableCollection<Note>();
-        public ObservableCollection<Note>? Notes
-        {
-            get { return _notes; }
-            set
-            {
-                _notes = value;
-                OnPropertyChanged();
-            }
-        }
-        private ObservableCollection<Announcement>? _announcements = new ObservableCollection<Announcement>();
-        public ObservableCollection<Announcement>? Announcements
-        {
-            get { return _announcements;}
-            set
-            {
-                _announcements = value;
-                OnPropertyChanged();
-            }
-        }
-        private int weekDiff = 0;
-        public int WeekDiff
-        {
-            get { return weekDiff; }
-            set
-            {
-                weekDiff = value;
-                OnPropertyChanged();
-            }
-        }
+    #region Commands
 
-        #endregion
-
-        #region Commands
-
-        private ICommand? searchSchedule;
-        public ICommand SearchSchedule
+    private ICommand? searchSchedule;
+    public ICommand SearchSchedule
+    {
+        get
         {
-            get
-            {
-                return searchSchedule ??
-                    (searchSchedule = new RelayCommand(async obj =>
+            return searchSchedule ??
+                (searchSchedule = new RelayCommand(async obj =>
+                {
+                    ScheduleSearchWindow scheduleSearchWindow = new ScheduleSearchWindow();
+                    _scheduleSearchViewModel.ClearInput();
+                    scheduleSearchWindow.DataContext = _scheduleSearchViewModel;
+                    if (scheduleSearchWindow.ShowDialog() == true)
                     {
-                        ScheduleSearchWindow scheduleSearchWindow = new ScheduleSearchWindow();
-                        if (scheduleSearchWindow.ShowDialog() == true)
+                        SearchResponse? response = _scheduleSearchViewModel.SearchResponse;
+                        string? url = string.Empty;
+                        if (response == null)
                         {
-                            SearchResponse? response = scheduleSearchWindow.FSearchResponce;
-                            if(response != null)
+                            string input = _scheduleSearchViewModel.Input;
+                            if(input.Length == 6 && int.TryParse(input, out int res))
                             {
-                                await LoadSchedule(response.GetUrl(), LoadingType.Server);
+                                url = input;
                             }
                         }
-                        else { }
-                    }));
-            }
-        }
-        // command to add favorite schedule without presentation
-        private ICommand? addFavoriteScheduleWL;
-        public ICommand AddFavoriteScheduleWL
-        {
-            get
-            {
-                return addFavoriteScheduleWL ??
-                    (addFavoriteScheduleWL = new RelayCommand(async obj =>
-                    {
-                        ScheduleSearchWindow scheduleSearchWindow = new ScheduleSearchWindow();
-                        if (scheduleSearchWindow.ShowDialog() == true)
+                        else
                         {
-                            SearchResponse? response = scheduleSearchWindow.FSearchResponce;
-                            if (response != null)
+                            url = response.GetUrl();
+                        }
+                        await LoadScheduleAsync(url, LoadingType.Server);
+                    }
+                }));
+        }
+    }
+    
+    // command to load schedule from schedule's plate
+    private ICommand? loadScheduleFromPlate;
+    public ICommand LoadScheduleFromPlate
+    {
+        get
+        {
+            return loadScheduleFromPlate ??
+                (loadScheduleFromPlate = new RelayCommand(async obj =>
+                {
+                    if (obj is not string url) return;
+                    await LoadScheduleAsync(url, LoadingType.Server);
+                }));
+        }
+    }
+
+    private ICommand? openAnnouncements;
+    public ICommand OpenAnnouncements
+    {
+        get
+        {
+            return openAnnouncements ??
+                (openAnnouncements = new RelayCommand(obj =>
+                {
+                    if (Schedule == null) return;
+
+                    AnnouncementWindow announcementWindow = new AnnouncementWindow();
+                    announcementWindow.DataContext = _announcementViewModel;
+                    EventHandler windowCloseHandler = null;
+                    windowCloseHandler = async (s, e) =>
+                    {
+                        announcementWindow.Close();
+                        await LoadScheduleAsync(_announcementViewModel.CommandUrl, LoadingType.Server);
+                        _announcementViewModel.OnRequestClose -= windowCloseHandler;
+                    };
+                    _announcementViewModel.OnRequestClose += windowCloseHandler;
+                    announcementWindow.ShowDialog();
+                }));
+        }
+    }
+
+    private ICommand? openSettingsWindow;
+    public ICommand OpenSettingsWindow
+    {
+        get
+        {
+            return openSettingsWindow ??
+                (openSettingsWindow = new RelayCommand(obj =>
+                {
+                    SettingsWindow settingsWindow = new SettingsWindow();
+                    settingsWindow.ShowDialog();
+                }));
+        }
+    }
+
+    private ICommand? openNotesWindow;
+    public ICommand OpenNotesWindow
+    {
+        get
+        {
+            return openNotesWindow ??
+                (openNotesWindow = new RelayCommand(obj =>
+                {
+                    if (Schedule == null) return;
+
+                    NotesWindow notesWindow = new NotesWindow();
+                    notesWindow.DataContext = _noteViewModel;
+                    notesWindow.ShowDialog();
+                }));
+        }
+    }
+
+    private ICommand? addFavoriteSchedule;
+    public ICommand AddFavoriteSchedule
+    {
+        get
+        {
+            return addFavoriteSchedule ??
+                (addFavoriteSchedule = new RelayCommand(async obj =>
+                {
+                    if (Schedule == null) return;
+
+                    if (Schedule.favorited)
+                        await _model.DeleteFavoriteScheduleAsync(Schedule);
+                    else
+                        await _model.AddFavoriteScheduleAsync(Schedule);
+
+                    Schedule.favorited = !Schedule.favorited;
+                    OnPropertyChanged(nameof(Schedule));
+                    OnPropertyChanged(nameof(IsHistoryVisible));
+                    await _model.SaveRecentScheduleAsync(Schedule);
+                    await _noteViewModel.SetNotes(Schedule.GetName(), Schedule.GetUrl());
+                }));
+        }
+    }
+
+    // command to add favorite schedule without presentation
+    private ICommand? addFavoriteScheduleWP;
+    public ICommand AddFavoriteScheduleWP
+    {
+        get
+        {
+            return addFavoriteScheduleWP ??
+                (addFavoriteScheduleWP = new RelayCommand(async obj =>
+                {
+                    ScheduleSearchWindow scheduleSearchWindow = new ScheduleSearchWindow();
+                    _scheduleSearchViewModel.ClearInput();
+                    scheduleSearchWindow.DataContext = _scheduleSearchViewModel;
+                    if (scheduleSearchWindow.ShowDialog() == true)
+                    {
+                        SearchResponse? response = _scheduleSearchViewModel.SearchResponse;
+                        string? url = string.Empty;
+                        if (response == null)
+                        {
+                            string input = _scheduleSearchViewModel.Input;
+                            if (input.Length == 6 && int.TryParse(input, out int res))
                             {
-                                GroupSchedule tSchedule = await ScheduleService.LoadSchedule(response.GetUrl(), LoadingType.ServerWP);
-                                if(Schedule != null)
-                                {
-                                    if (Schedule.Compare(tSchedule))
-                                    {
-                                        _model.Schedule!.favorited = true;
-                                        Schedule.favorited = true;
-                                        await _model.SaveRecentSchedule(Schedule);
-                                        OnPropertyChanged(nameof(Schedule));
-                                    }
-                                }
-                                
-                                EventService.ScheduleFavorited_Invoke(tSchedule, false);
+                                url = input;
                             }
                         }
-                    }));
-            }
-        }
-        private ICommand? openAnnouncements;
-        public ICommand OpenAnnouncements
-        {
-            get
-            {
-                return openAnnouncements ??
-                    (openAnnouncements = new RelayCommand(obj =>
-                    {
-                        if(Schedule != null)
+                        else
                         {
-                            AnnouncementWindow announcementWindow = new AnnouncementWindow();
-                            AnnouncementViewModel announcementVW = new AnnouncementViewModel(Announcements!, Schedule!.GetName());
-                            announcementWindow.DataContext = announcementVW;
-                            announcementVW.OnRequestClose += async (s, e) => { announcementWindow.Close(); await LoadSchedule(announcementVW.Url, LoadingType.Server);  };
-                            announcementWindow.ShowDialog();
+                            url = response.GetUrl();
                         }
-                    }));
-            }
-        }
 
-        private ICommand? addFavoriteSchedule;
-        public ICommand AddFavoriteSchedule
-        {
-            get
-            {
-                return addFavoriteSchedule ??
-                    (addFavoriteSchedule = new RelayCommand(async obj =>
-                    {
-                        if(Schedule != null)
-                        {
-                            Schedule.favorited = !Schedule.favorited;
-                            OnPropertyChanged(nameof(Schedule));
-                            EventService.ScheduleFavorited_Invoke(Schedule, true);
-                            await _model.SaveRecentSchedule(Schedule);
-                            Notes = await NoteService.LoadNotes(Schedule.GetUrl());
-                        }
-                    }));
-            }
-        }
-        private ICommand? backToCurrentWeek;
-        public ICommand BackToCurrentWeek
-        {
-            get
-            {
-                return backToCurrentWeek ??
-                    (backToCurrentWeek = new RelayCommand(obj =>
-                    {
-                        BackCurrentWeek();
-                    }));
-            }
-        }
-        private ICommand? changeWeekNum;
-        public ICommand ChangeWeekNum
-        {
-            get
-            {
-                return changeWeekNum ??
-                    (changeWeekNum = new RelayCommand(obj =>
-                    {
-                        if (int.TryParse(obj.ToString(), out int res))
-                        {
-                            WeekDiff += res;
-                            CurrentWeek += res;
-                            ChangeDates(res);
-                        }
-                    }));
-            }
-        }
-        // command to load schedule from schedule' plate
-        private ICommand? loadScheduleBS;
-        public ICommand LoadScheduleBS
-        {
-            get
-            {
-                return loadScheduleBS ??
-                    (loadScheduleBS = new RelayCommand(async obj =>
-                    {
-                        if (obj is not string url) return;
-                        await LoadSchedule(url, LoadingType.Server);
-                    }));
-            }
-        }
-        private ICommand? openSettingsWindow;
-        public ICommand OpenSettingsWindow
-        {
-            get
-            {
-                return openSettingsWindow ??
-                    (openSettingsWindow = new RelayCommand(obj =>
-                    {
-                        SettingsWindow settingsWindow = new SettingsWindow();
-                        settingsWindow.ShowDialog();
-                    }));
-            }
-        }
-        private ICommand? calendarStatusChange;
-        public ICommand CalendarStatusChange
-        {
-            get
-            {
-                return calendarStatusChange ??
-                    (calendarStatusChange = new RelayCommand(obj =>
-                    {
-                        IsCalendarOpen = !IsCalendarOpen;
-                    }));
-            }
-        }
-        private ICommand? openSelectedWeek;
-        public ICommand OpenSelectedWeek
-        {
-            get
-            {
-                return openSelectedWeek ??
-                    (openSelectedWeek = new RelayCommand(obj =>
-                    {
-                        if (obj is DateTime date)
-                        {
-                            int weeks = -(DateService.GetWeekDiff(date, Dates![0]));
-                            GoToWeekByOff(weeks, true);
-                            IsCalendarOpen = false;
-                        }
-                    }));
-            }
-        }
-        private ICommand? openNotesWindow;
-        public ICommand OpenNotesWindow
-        {
-            get
-            {
-                return openNotesWindow ??
-                    (openNotesWindow = new RelayCommand(obj =>
-                    {
-                        if(Schedule != null)
-                        {
-                            NotesWindow notesWindow = new NotesWindow();
-                            notesWindow.DataContext = new NoteViewModel(Notes!, Schedule!.GetName(), Schedule!.GetUrl());
-                            notesWindow.ShowDialog();
-                        }
-                    }));
-            }
-        }
+                        await LoadScheduleAsync(url, LoadingType.ServerWP);
 
-        #endregion
+                        if (Schedule == null) return;
+                        if (Schedule.GetUrl() != url) return;
 
-        #region Methods
-        private void ChangeDates(int diff)
-        {
-            for (int i = 0; i < 6; i++)
-            {
-                Dates![i] = Dates[i].AddDays(diff * 7);
-            }
+                        Schedule.favorited = true;
+                        await _model.SaveRecentScheduleAsync(Schedule);
+                        OnPropertyChanged(nameof(Schedule));
+                    }
+                }));
         }
-        private void GoToWeekByOff(int offset, bool useEvent)
-        {
-            WeekDiff += offset;
-            ChangeDates(offset);
-            int weekDiff = offset % 4;
-            CurrentWeek += weekDiff;
-        }
-        private void BackCurrentWeek()
-        {
-            GoToWeekByOff(-WeekDiff, true);
-        }        
-        private async Task LoadSchedule(string? url, LoadingType loadingType)
-        {
-            if (await _model.LoadSchedule(url, loadingType))
-                Schedule = _model.Schedule;
-            EventService.ScheduleLoaded_Invoke();
-        }
-        private async void LoadFavoriteSchedule(FavoriteSchedule schedule)
-        {
-            await LoadSchedule(schedule.UrlId, LoadingType.Local);
-        }
+    }
 
-        private async void LoadRecentSchedule()
+    private ICommand? loadFavoriteSchedule;
+    public ICommand LoadFavoriteSchedule
+    {
+        get
         {
-            await LoadSchedule("recent", LoadingType.Local);
+            return loadFavoriteSchedule ??
+                (loadFavoriteSchedule = new RelayCommand(async obj =>
+                {
+                    if (obj is FavoriteSchedule v)
+                    {
+                        await LoadScheduleAsync(v.UrlId, LoadingType.Local);
+                    }
+                }));
         }
-        private async void OnScheduleUnFavorited(FavoriteSchedule schedule)
+    }
+
+    private ICommand? loadFavoriteScheduleByKey;
+    public ICommand LoadFavoriteScheduleByKey
+    {
+        get
         {
-            if (Schedule!.GetUrl() == schedule.UrlId)
-            {
-                _model.Schedule!.favorited = false;
-                Schedule!.favorited = false;
-                OnPropertyChanged(nameof(Schedule));
-                await _model.SaveRecentSchedule(Schedule);
-            }
+            return loadFavoriteScheduleByKey ??
+                (loadFavoriteScheduleByKey = new RelayCommand(async obj =>
+                {
+                    if (!int.TryParse(obj.ToString(), out int num)) return;
+                    if (num > FavoriteSchedules.Count) return;
+
+                    await LoadScheduleAsync(FavoriteSchedules[num - 1].UrlId, LoadingType.Local);
+                }));
         }
-        private void OnCurrentWeekUpdate()
+    }
+
+    private ICommand? deleteFavoriteSchedule;
+    public ICommand DeleteFavoriteSchedule
+    {
+        get
         {
-            CurrentWeek = Properties.Settings.Default.currentweek;
-            EventService.CurrentWeekUpdated -= OnCurrentWeekUpdate;
+            return deleteFavoriteSchedule ??
+                (deleteFavoriteSchedule = new RelayCommand(async obj =>
+                {
+                    if (obj is FavoriteSchedule v)
+                    {
+                        await _model.DeleteFavoriteScheduleAsync(v);
+                        OnScheduleUnFavorited(v);
+                    }
+                }));
         }
+    }
 
-        private async void OnScheduleLoaded()
+    private ICommand? openScheduleHistoryWindow;
+    public ICommand OpenScheduleHistoryWindow
+    {
+        get
         {
-            if (Schedule == null) return;
-            string? url = Schedule.GetUrl();
+            return openScheduleHistoryWindow ??
+                (openScheduleHistoryWindow = new RelayCommand(obj =>
+                {
+                    if (Schedule == null) return;
 
-            if (await _model.LoadAnnouncements(url))
-                Announcements = _model.Announcements;
+                    ScheduleHistoryWindow scheduleHistoryWindow = new ScheduleHistoryWindow();
+                    scheduleHistoryWindow.DataContext = _historyViewModel;
+                    scheduleHistoryWindow.ShowDialog();
+                }));
+        }
+    }
 
-            if (FavoriteSchedulesViewModel.IsScheduleFavorite(url))
-            {
-                Schedule!.favorited = true;
-                _model.Schedule!.favorited = true;
-                OnPropertyChanged(nameof(Schedule));
-                await _model.SaveRecentSchedule(Schedule);
-            }
-            
-            if (DateTime.TryParse(Schedule!.startExamsDate, out DateTime startExamsDate) && DateTime.TryParse(Schedule!.endExamsDate, out DateTime endExamsDate))
-            {
-                if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
-                    SelectedTab = 1;
-                else
-                    SelectedTab = 0;
-            }
+    #endregion
 
-            if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
-                GoToWeekByOff(-WeekDiff + 1, false);
+    #region Methods
+
+    private async Task LoadScheduleAsync(string? url, LoadingType loadingType)
+    {
+        if (await _model.LoadScheduleAsync(url, loadingType))
+            await OnScheduleLoaded();
+    }
+
+    private async Task LoadRecentSchedule()
+    {
+        await LoadScheduleAsync("recent", LoadingType.Local);
+    }
+    private async void OnScheduleUnFavorited(FavoriteSchedule schedule)
+    {
+        if (Schedule == null) return;
+        if (Schedule.GetUrl() == schedule.UrlId)
+        {
+            Schedule.favorited = false;
+            OnPropertyChanged(nameof(Schedule));
+            await _model.SaveRecentScheduleAsync(Schedule);
+        }
+    }
+
+    private async Task OnScheduleLoaded()
+    {
+        if (Schedule == null) return;
+        OnPropertyChanged(nameof(Schedule));
+        string? url = Schedule.GetUrl();
+        string? name = Schedule.GetName();
+
+        if (DateTime.TryParse(Schedule.startExamsDate, out DateTime startExamsDate) 
+            && DateTime.TryParse(Schedule.endExamsDate, out DateTime endExamsDate))
+        {
+            if (startExamsDate <= DateTime.Today && endExamsDate >= DateTime.Today)
+                SelectedTab = 1;
             else
-                GoToWeekByOff(-WeekDiff, false);
-
-            if (Schedule.favorited)
-            {
-                if (await _model.LoadNotes(url))
-                    Notes = _model.Notes;
-                if (await _model.CheckScheduleUpdate())
-                    Schedule = _model.Schedule;
-            }
+                SelectedTab = 0;
         }
 
-        #endregion
-        public MainWindowViewModel()
+        if (_model.IsScheduleFavorited(url!))
         {
-            favoriteSchedulesViewModel = new FavoriteSchedulesViewModel();
-            _model = new MainWindowModel();
-            EventService.FavoriteScheduleSelected += LoadFavoriteSchedule;
-            EventService.ScheduleUnFavorited += OnScheduleUnFavorited;
-            EventService.ScheduleLoaded += OnScheduleLoaded;
-            if(Properties.Settings.Default.currentweek == 0 || Properties.Settings.Default.laststartup == DateTime.MinValue)
+            Schedule.favorited = true;
+            OnPropertyChanged(nameof(Schedule));
+            if (await _noteViewModel.SetNotes(name, url))
+                OnPropertyChanged(nameof(IsNotesExist));
+            if (await _historyViewModel.SetScheduleHistory(name, url))
+                OnPropertyChanged(nameof(IsHistoryVisible));
+            var historyNote = await _model.UpdateScheduleAsync();
+            if (historyNote != null)
             {
-                EventService.CurrentWeekUpdated += OnCurrentWeekUpdate;
+                _historyViewModel.AddHistoryNote(historyNote);
+                OnPropertyChanged(nameof(Schedule));
             }
-            CurrentWeek = Properties.Settings.Default.currentweek;
-            Dates = _model.Dates;
-            LoadRecentSchedule();
         }
+        OnPropertyChanged(nameof(IsHistoryVisible));
+        if (await _announcementViewModel.SetAnnouncements(name, url))
+            OnPropertyChanged(nameof(IsAnnouncementsExist));
+    }
+
+    #endregion
+    
+    public MainWindowViewModel(IMainWindowModel mainWindowModel,
+                               IScheduleSearchViewModel scheduleSearchViewModel,
+                               IAnnouncementViewModel announcementViewModel,
+                               INoteViewModel noteViewModel,
+                               IScheduleHistoryViewModel historyViewModel)
+    {
+
+        _model = mainWindowModel;
+        _scheduleSearchViewModel = scheduleSearchViewModel;
+        _announcementViewModel = announcementViewModel;
+        _noteViewModel = noteViewModel;
+        _historyViewModel = historyViewModel;
+
+        _noteViewModel.NotesChanged += () => OnPropertyChanged(nameof(IsNotesExist));
+
+        var _ = LoadRecentSchedule();
     }
 }

@@ -1,13 +1,14 @@
-﻿using BSUIRScheduleDESK.classes;
+﻿using BSUIRScheduleDESK.Classes;
 using System;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.converters
+namespace BSUIRScheduleDESK.Converters
 {
     public class ToolTipVisibilityConverter : IValueConverter
     {
+        public static readonly ToolTipVisibilityConverter Instance = new ToolTipVisibilityConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             var empl = value as Employee;

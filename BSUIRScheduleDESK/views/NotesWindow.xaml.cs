@@ -1,7 +1,9 @@
-﻿using System.Windows;
+﻿using System.Globalization;
+using System.Windows;
 using System.Windows.Input;
+using System.Windows.Markup;
 
-namespace BSUIRScheduleDESK.views
+namespace BSUIRScheduleDESK.Views
 {
     /// <summary>
     /// Interaction logic for NotesWindow.xaml
@@ -12,6 +14,7 @@ namespace BSUIRScheduleDESK.views
         {
             InitializeComponent();
             this.Owner = App.Current.MainWindow;
+            noteDatePicker.Language = XmlLanguage.GetLanguage(CultureInfo.CurrentUICulture.IetfLanguageTag);
         }
 
         private void Window_MouseDown(object sender, MouseButtonEventArgs e)
@@ -27,11 +30,13 @@ namespace BSUIRScheduleDESK.views
             if (e.Key == Key.Escape)
             {
                 this.DialogResult = true;
+                this.Close();
             }
         }
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+            this.Close();
         }
     }
 }

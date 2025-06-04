@@ -1,16 +1,17 @@
-﻿<Window x:Class="BSUIRScheduleDESK.views.ScheduleSearchWindow"
+﻿<Window x:Class="BSUIRScheduleDESK.Views.ScheduleSearchWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:BSUIRScheduleDESK.views"
-        xmlns:controls="clr-namespace:BSUIRScheduleDESK.templates"
+        xmlns:local="clr-namespace:BSUIRScheduleDESK.Views"
+        xmlns:controls="clr-namespace:BSUIRScheduleDESK.Controls"
+        xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
         mc:Ignorable="d"
         AllowsTransparency="True" Width="300" Height="75"
         Background="Transparent"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
-        Title="Поиск - BSUIR Schedule"
+        Title="{Binding Source={x:Static lang:Language.Search}, StringFormat={}{0} - BSUIR Schedule}"
         MouseDown="Window_MouseDown"
         KeyDown="Window_KeyDown"
         ShowInTaskbar="False">
@@ -26,20 +27,31 @@
             <Grid Grid.Row="0">
                 <controls:SearchBox x:Name="searchBox"
                                     MaxDropDownHeigth="150" 
-                                    ItemsSource="{Binding Results}"
+                                    ItemsSource="{Binding Responses}"
                                     Height="20"
                                     Margin="10,0,10,0"
                                     SText="{Binding Input}"
-                                    SelectedItem="{Binding FSearchResponce}"
-                                    ItemSelected="searchBox_ItemSelected"/>
+                                    SelectedItem="{Binding SearchResponse}"
+                                    ItemSelected="searchBox_ItemSelected"
+                                    TextChanged="searchBox_TextChanged"/>
             </Grid>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
-                <Button Content="Добавить" Width="80" VerticalAlignment="Center" Style="{DynamicResource ButtonStyle2}" Click="Button_Click" IsDefault="True" />
-                <Button Grid.Column="1" Width="80" Content="Отмена" VerticalAlignment="Center"  IsCancel="True" Style="{DynamicResource ButtonStyle2}"/>
+                <Button Content="{x:Static lang:Language.Add}" 
+                        Width="80" 
+                        VerticalAlignment="Center" 
+                        Style="{DynamicResource ButtonStyle2}" 
+                        Click="Button_Click" 
+                        IsDefault="True" />
+                <Button Grid.Column="1" 
+                        Width="80" 
+                        Content="{x:Static lang:Language.Cancel}" 
+                        VerticalAlignment="Center"  
+                        IsCancel="True" 
+                        Style="{DynamicResource ButtonStyle2}"/>
             </Grid>
         </Grid>
     </Border>

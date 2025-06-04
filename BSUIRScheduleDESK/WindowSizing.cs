@@ -27,7 +27,7 @@ namespace BSUIRScheduleDESK
         private static MINMAXINFO AdjustWorkingAreaForAutoHide(IntPtr monitorContainingApplication, MINMAXINFO mmi)
         {
             IntPtr hwnd = FindWindow("Shell_TrayWnd", null);
-            if (hwnd == null) return mmi;
+            if (hwnd == IntPtr.Zero) return mmi;
             IntPtr monitorWithTaskbarOnIt = MonitorFromWindow(hwnd, MONITOR_DEFAULTTONEAREST);
             if (!monitorContainingApplication.Equals(monitorWithTaskbarOnIt)) return mmi;
             APPBARDATA abd = new APPBARDATA();

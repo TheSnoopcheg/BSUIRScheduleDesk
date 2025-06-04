@@ -2,10 +2,11 @@
 using System.Globalization;
 using System.Windows.Data;
 
-namespace BSUIRScheduleDESK.converters
+namespace BSUIRScheduleDESK.Converters
 {
     public class IsMonthExpandedConverter : IValueConverter
     {
+        public static readonly IsMonthExpandedConverter Instance = new IsMonthExpandedConverter();
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             if (value is not DateTime date) return false;

@@ -4,12 +4,20 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.services
+namespace BSUIRScheduleDESK.Services
 {
-    public static class NetworkService
+    public class NetworkService : INetworkService
     {
-        private static HttpClient httpClient = new HttpClient();
-        public static async Task<T> GetAsync<T>(string? url)
+        private readonly HttpClient httpClient;
+        private readonly HttpClientHandler httpHandler;
+
+        public NetworkService()
+        {
+            httpHandler = new HttpClientHandler();
+            httpHandler.CheckCertificateRevocationList = true;
+            httpClient = new HttpClient(httpHandler);
+        }
+        public async Task<T?> GetAsync<T>(string? url)
         {
             try
             {
@@ -17,7 +25,10 @@ namespace BSUIRScheduleDESK.services
                 T? obj = await JsonSerializer.DeserializeAsync<T>(content);
                 return obj!;
             }
-            catch (Exception ex) { }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
             return default;
         }
     }

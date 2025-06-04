@@ -1,11 +1,9 @@
-﻿using System;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
-namespace BSUIRScheduleDESK.views
+namespace BSUIRScheduleDESK.Views
 {
     public enum ModalWindowButtons
     {
@@ -27,13 +25,14 @@ namespace BSUIRScheduleDESK.views
     public partial class ModalWindow : Window
     {
         private static ModalWindowResult result = ModalWindowResult.OK;
+        private ModalWindowButtons buttonsState;
 
         private Button OK
         {
             get
             {
                 var b = GetStyledButton();
-                b.Content = "ОК";
+                b.Content = Langs.Language.OK;
                 b.Click += delegate { result = ModalWindowResult.OK; Close(); };
                 return b;
             }
@@ -43,7 +42,7 @@ namespace BSUIRScheduleDESK.views
             get
             {
                 var b = GetStyledButton();
-                b.Content = "Отмена";
+                b.Content = Langs.Language.Cancel;
                 b.Click += delegate { result = ModalWindowResult.Canceled; Close(); };
                 return b;
             }
@@ -53,7 +52,7 @@ namespace BSUIRScheduleDESK.views
             get
             {
                 var b = GetStyledButton();
-                b.Content = "Да";
+                b.Content = Langs.Language.Yes;
                 b.Click += delegate { result = ModalWindowResult.Yes; Close(); };
                 return b;
             }
@@ -63,7 +62,7 @@ namespace BSUIRScheduleDESK.views
             get
             {
                 var b = GetStyledButton();
-                b.Content = "Нет";
+                b.Content = Langs.Language.No;
                 b.Click += delegate { result = ModalWindowResult.No; Close(); };
                 return b;
             }
@@ -72,7 +71,8 @@ namespace BSUIRScheduleDESK.views
         private ModalWindow(string wContent = "", string wTitle = "", string wImageUrl = "", ModalWindowButtons wButtons=ModalWindowButtons.OK)
         {
             InitializeComponent();
-            
+
+            buttonsState = wButtons;
             MakeUpWindow(wContent, wTitle, wImageUrl, wButtons);
 
             if(this != App.Current.MainWindow)
@@ -155,11 +155,24 @@ namespace BSUIRScheduleDESK.views
             return b;
         }
 
-        private void Border_KeyDown(object sender, KeyEventArgs e)
+        private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             if(e.Key == Key.Escape)
             {
-                result = ModalWindowResult.Canceled;
+                if (buttonsState == ModalWindowButtons.YesNo)
+                    result = ModalWindowResult.No;
+                else
+                    result = ModalWindowResult.Canceled;
+                Close();
+            }
+            else if(e.Key == Key.Enter)
+            {
+                if (buttonsState == ModalWindowButtons.OK || buttonsState == ModalWindowButtons.OKCancel)
+                    result = ModalWindowResult.OK;
+                else if (buttonsState == ModalWindowButtons.YesNo || buttonsState == ModalWindowButtons.YesNoCancel)
+                    result = ModalWindowResult.Yes;
+                else
+                    result = ModalWindowResult.Canceled;
                 Close();
             }
         }

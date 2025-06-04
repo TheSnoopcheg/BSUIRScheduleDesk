@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace BSUIRScheduleDESK.classes
+namespace BSUIRScheduleDESK.Classes
 {
     public class Note
     {

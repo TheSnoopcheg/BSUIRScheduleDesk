@@ -1,7 +1,7 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.views
+namespace BSUIRScheduleDESK.Views
 {
     /// <summary>
     /// Логика взаимодействия для AnnouncementWindow.xaml
@@ -25,6 +25,7 @@ namespace BSUIRScheduleDESK.views
         private void btnClose_Click(object sender, RoutedEventArgs e)
         {
             this.DialogResult = true;
+            this.Close();
         }
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
@@ -32,6 +33,7 @@ namespace BSUIRScheduleDESK.views
             if(e.Key == Key.Escape)
             {
                 this.DialogResult = true;
+                this.Close();
             }
         }
     }

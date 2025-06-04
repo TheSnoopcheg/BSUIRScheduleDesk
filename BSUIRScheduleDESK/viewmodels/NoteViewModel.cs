@@ -1,25 +1,33 @@
-﻿using BSUIRScheduleDESK.classes;
-using BSUIRScheduleDESK.models;
+﻿using BSUIRScheduleDESK.Classes;
+using BSUIRScheduleDESK.Models;
 using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.viewmodels
+namespace BSUIRScheduleDESK.ViewModels
 {
-    public class NoteViewModel : Notifier
+    public class NoteViewModel : Notifier, INoteViewModel
     {
-        readonly NoteModel _model;
-        public NoteViewModel(ObservableCollection<Note> notes, string? title, string? url)
+        public event Action NotesChanged;
+        readonly INoteModel _model;
+        public NoteViewModel(INoteModel noteModel)
         {
-            _model = new NoteModel(notes, url);
+            _model = noteModel;
+            _model.NotesChanged += () => NotesChanged.Invoke();
+        }
+
+        public async Task<bool> SetNotes(string? title, string? url)
+        {
             Title = title!;
             if (int.TryParse(title, out int id))
-            {
                 IsEmployeeNote = false;
-            }
             else
                 IsEmployeeNote = true;
+            return await _model.LoadNotesAsync(url);
         }
+
+        public bool IsNotesEmpty { get => Notes.Count == 0; }
 
         #region Commands
 
@@ -84,6 +92,7 @@ namespace BSUIRScheduleDESK.viewmodels
         }
 
         #endregion
+
         private string? _noteText;
         public string? NoteText
         {
@@ -104,7 +113,7 @@ namespace BSUIRScheduleDESK.viewmodels
                 OnPropertyChanged();
             }
         }
-        public ReadOnlyObservableCollection<Note> Notes => _model.Notes;
+        public ObservableCollection<Note> Notes => _model.Notes;
         private bool _isEditing;
         public bool IsEditing
         {
