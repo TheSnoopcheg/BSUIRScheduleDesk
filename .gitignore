@@ -362,3 +362,7 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 /BSUIRSchedule.rar
+/BSUIRScheduleDESK/Themes/ColourDictionaries/DarkTheme_new.xaml
+/BSUIRScheduleDESK/Themes/ColourDictionaries/IISTheme_new.xaml
+/Setup
+/config.json
