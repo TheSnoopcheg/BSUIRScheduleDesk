@@ -1,40 +1,39 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.Views
+namespace BSUIRScheduleDESK.Views;
+
+/// <summary>
+/// Логика взаимодействия для AnnouncementWindow.xaml
+/// </summary>
+public partial class AnnouncementWindow : Window
 {
-    /// <summary>
-    /// Логика взаимодействия для AnnouncementWindow.xaml
-    /// </summary>
-    public partial class AnnouncementWindow : Window
+    public AnnouncementWindow()
     {
-        public AnnouncementWindow()
-        {
-            InitializeComponent();
-            this.Owner = App.Current.MainWindow;
-        }
+        InitializeComponent();
+        this.Owner = App.Current.MainWindow;
+    }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if(e.ChangedButton == MouseButton.Left)
         {
-            if(e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
+            DragMove();
         }
+    }
 
-        private void btnClose_Click(object sender, RoutedEventArgs e)
+    private void btnClose_Click(object sender, RoutedEventArgs e)
+    {
+        this.DialogResult = true;
+        this.Close();
+    }
+
+    private void Window_KeyDown(object sender, KeyEventArgs e)
+    {
+        if(e.Key == Key.Escape)
         {
             this.DialogResult = true;
             this.Close();
-        }
-
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if(e.Key == Key.Escape)
-            {
-                this.DialogResult = true;
-                this.Close();
-            }
         }
     }
 }

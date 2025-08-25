@@ -1,9 +1,8 @@
 ﻿using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.Services
+namespace BSUIRScheduleDESK.Services;
+
+public interface INetworkService
 {
-    public interface INetworkService
-    {
-        Task<T?> GetAsync<T>(string? url);
-    }
+    Task<T?> GetAsync<T>(string? url);
 }

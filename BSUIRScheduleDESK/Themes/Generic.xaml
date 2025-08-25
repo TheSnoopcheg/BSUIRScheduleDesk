@@ -339,9 +339,10 @@
                                 </ScrollViewer>
                                 <Grid x:Name="PART_ScheduleView"
                                       HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch">
+                                      VerticalAlignment="Stretch"
+                                      Grid.IsSharedSizeScope="True">
                                     <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="45"/>
+                                        <ColumnDefinition Width="auto" SharedSizeGroup="FirstColumn"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
                                         <ColumnDefinition Width="*"/>
@@ -367,7 +368,7 @@
                                                   VerticalScrollBarVisibility="Auto">
                                         <Grid x:Name="PART_MaximizedView">
                                             <Grid.ColumnDefinitions>
-                                                <ColumnDefinition Width="45"/>
+                                                <ColumnDefinition Width="auto" SharedSizeGroup="FirstColumn"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
                                                 <ColumnDefinition Width="*"/>
@@ -616,7 +617,7 @@
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="6"/>
-                    <ColumnDefinition Width="40"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                     <ColumnDefinition Width="Auto"/>

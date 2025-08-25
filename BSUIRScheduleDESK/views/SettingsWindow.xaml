@@ -154,8 +154,8 @@
             </Button>
             <Grid Grid.Row="1">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto"/>
-                    <ColumnDefinition/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Vertical"
                             Margin="10,0,10,10"
@@ -165,24 +165,22 @@
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
                         <ComboBox Style="{StaticResource ComboBoxStyle}"
-                                  ItemsSource="{Binding Languages, Mode=OneTime, ElementName=sWindow}"
-                                  SelectedIndex="{Binding LanguageIndex, ElementName=sWindow}"
+                                  ItemsSource="{Binding Languages, Mode=OneTime}"
+                                  SelectedIndex="{Binding LanguageIndex}"
                                   Width="100"
                                   HorizontalAlignment="Right"
-                                  VerticalAlignment="Center"
-                                  SelectionChanged="LanguageComboBox_SelectionChanged"/>
+                                  VerticalAlignment="Center"/>
                     </Grid>
                     <Grid Margin="0,5,0,0">
                         <TextBlock Text="{x:Static lang:Language.Theme}"
                                    VerticalAlignment="Center"
                                    Foreground="{DynamicResource TextBlock.Foreground.Static}"/>
                         <ComboBox Style="{StaticResource ComboBoxStyle}" 
-                                  ItemsSource="{Binding Themes, Mode=OneTime, ElementName=sWindow}" 
-                                  SelectedIndex="{Binding ThemeIndex, ElementName=sWindow}"
+                                  ItemsSource="{Binding Themes, Mode=OneTime}" 
+                                  SelectedIndex="{Binding ThemeIndex}"
                                   Width="75"
                                   HorizontalAlignment="Right"
-                                  VerticalAlignment="Center"
-                                  SelectionChanged="ThemeComboBox_SelectionChanged"/>
+                                  VerticalAlignment="Center"/>
                     </Grid>
                     <TextBlock Text="{x:Static lang:Language.Colors}"
                                FontSize="14"
@@ -190,13 +188,35 @@
                     <StackPanel Orientation="Vertical"
                                 Margin="5,0,0,0"
                                 HorizontalAlignment="Left">
-                        <controls:ColorPicker Text="{x:Static lang:Language.Lecture}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LectureColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="{x:Static lang:Language.Practice}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=PracticeColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[1], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="{x:Static lang:Language.LaboratoryWork}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LabColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[2], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="{x:Static lang:Language.Exam}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ExamColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[3], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="{x:Static lang:Language.Consultation}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ConsultationColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[4], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
-                        <controls:ColorPicker Text="{x:Static lang:Language.Unknown}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=UnknownColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[5], ElementName=sWindow}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Lecture}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LectureColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[0]}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Practice}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=PracticeColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[1]}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.LaboratoryWork}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=LabColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[2]}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Exam}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ExamColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[3]}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Consultation}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=ConsultationColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[4]}" ColorChanged="ColorPicker_ColorChanged"/>
+                        <controls:ColorPicker Text="{x:Static lang:Language.Unknown}" Margin="1" Color="{Binding Source={x:Static classes:Config.Instance}, Path=UnknownColor, Mode=TwoWay}" SelectedColorIndex="{Binding SelectedIndexes[5]}" ColorChanged="ColorPicker_ColorChanged"/>
                     </StackPanel>
+                </StackPanel>
+                <StackPanel Grid.Column="1"
+                            Margin="10,0,10,10"
+                            Orientation="Vertical">
+                    <DockPanel>
+                        <TextBlock Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                                   VerticalAlignment="Center"
+                                   DockPanel.Dock="Left">
+                            <TextBlock.Text>
+                                <MultiBinding StringFormat="{}{0}: {1}">
+                                    <Binding Source="{x:Static lang:Language.CurrentWeek}"/>
+                                    <Binding Source="{x:Static classes:Config.Instance}" Path="CurrentWeek"/>
+                                </MultiBinding>
+                            </TextBlock.Text>
+                        </TextBlock>
+                        <Button Content="{x:Static lang:Language.Update}"
+                                Style="{StaticResource ButtonStyle2}"
+                                HorizontalAlignment="Right"
+                                DockPanel.Dock="Right"
+                                Padding="10,1"
+                                Command="{Binding CurrentWeekUpdate, IsAsync=True}"/>
+                    </DockPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical"
                             Grid.Column="1"
@@ -209,7 +229,7 @@
                         <TextBlock.Text>
                             <MultiBinding StringFormat="{}{0}: {1}">
                                 <Binding Source="{x:Static lang:Language.Version}"/>
-                                <Binding Path="Version" ElementName="sWindow"/>
+                                <Binding Path="Version"/>
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>

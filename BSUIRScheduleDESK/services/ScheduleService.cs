@@ -3,109 +3,117 @@ using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using System;
-using BSUIRScheduleDESK.Converters;
+using System.Threading;
 
-namespace BSUIRScheduleDESK.Services
+namespace BSUIRScheduleDESK.Services;
+
+public class ScheduleService : IScheduleService
 {
-    
-    public class ScheduleService : IScheduleService
+    private const string PATH = @"\data\";
+    private const string RECENTPATH = "recent";
+
+    private readonly INetworkService _networkService;
+    private readonly IInternetService _internetService;
+
+    private readonly SemaphoreSlim _apiCallSemaphore = new SemaphoreSlim(1, 1);
+
+    public ScheduleService(INetworkService networkService, IInternetService internetService)
     {
-        private const string PATH = @"\data\";
-        private const string RECENTPATH = "recent";
+        _networkService = networkService;
+        _internetService = internetService;
+    }
 
-        private readonly INetworkService _networkService;
-        private readonly IInternetService _internetService;
-
-        public ScheduleService(INetworkService networkService, IInternetService internetService)
+    public async Task<Schedule> LoadScheduleAsync(string? url, LoadingType loadingType)
+    {
+        Schedule? schedule = new Schedule();
+        if (loadingType == LoadingType.Server || loadingType == LoadingType.ServerWP)
         {
-            _networkService = networkService;
-            _internetService = internetService;
+            schedule = await ServerLoad(url);
         }
-
-        public async Task<Schedule> LoadScheduleAsync(string? url, LoadingType loadingType)
+        else if (loadingType == LoadingType.Local)
         {
-            Schedule? schedule = new Schedule();
-            if (loadingType == LoadingType.Server || loadingType == LoadingType.ServerWP)
-            {
-                schedule = await ServerLoad(url);
-            }
-            else if (loadingType == LoadingType.Local)
-            {
-                try
-                {
-                    schedule = await LocalLoad(url);
-                }
-                catch
-                {
-                    schedule = await ServerLoad(url, LoadingType.Local);
-                }
-            }
-            if (schedule != null && loadingType != LoadingType.ServerWP && url != RECENTPATH)
-            {
-                await SaveRecentScheduleAsync(schedule);
-            }
-            return schedule!;
-        }
-        private async Task<Schedule> LocalLoad(string? path)
-        {
-            Schedule? schedule = new Schedule();
             try
             {
-                using (FileStream openStream = File.OpenRead($"{Directory.GetCurrentDirectory() + PATH + path}.json"))
-                {
-                    schedule = await JsonSerializer.DeserializeAsync<Schedule>(openStream);
-                    await openStream.DisposeAsync();
-                }
+                schedule = await LocalLoad(url);
             }
             catch
             {
-                throw new Exception();
+                schedule = await ServerLoad(url, LoadingType.Local);
             }
-            return schedule!;
         }
-        private async Task<Schedule> ServerLoad(string? url, LoadingType preLoadingType = LoadingType.Server)
+        if (schedule != null && loadingType != LoadingType.ServerWP && url != RECENTPATH)
         {
-            Schedule? schedule = new Schedule();
-            try
+            await SaveRecentScheduleAsync(schedule);
+        }
+        return schedule!;
+    }
+    private async Task<Schedule> LocalLoad(string? path)
+    {
+        Schedule? schedule = new Schedule();
+        try
+        {
+            using (FileStream openStream = File.OpenRead($"{Directory.GetCurrentDirectory() + PATH + path}.json"))
             {
-                if (int.TryParse(url, out int numVal))
-                {
-                    schedule = await _networkService.GetAsync<Schedule>($"https://iis.bsuir.by/api/v1/schedule?studentGroup={url}");
-                }
-                else
-                {
-                    schedule = await _networkService.GetAsync<Schedule>($"https://iis.bsuir.by/api/v1/employees/schedule/{url}");
-                }
-                if (schedule != null)
-                {
-                    if (preLoadingType == LoadingType.Local)
-                    {
-                        await SaveScheduleAsync(schedule, url);
-                    }
-                }
+                schedule = await JsonSerializer.DeserializeAsync<Schedule>(openStream);
+                await openStream.DisposeAsync();
             }
-            catch { }
-
-            return schedule!;
         }
-
-        public async Task SaveRecentScheduleAsync(Schedule schedule)
+        catch
         {
-            await SaveScheduleAsync(schedule, RECENTPATH);
+            throw new Exception();
         }
-        public async Task SaveScheduleAsync(Schedule schedule, string? path)
+        return schedule!;
+    }
+    private async Task<Schedule> ServerLoad(string? url, LoadingType preLoadingType = LoadingType.Server)
+    {
+        Schedule? schedule = new Schedule();
+        try
         {
-            using (FileStream createStream = File.Create($"{Directory.GetCurrentDirectory() + PATH + path}.json"))
+            if (int.TryParse(url, out int numVal))
             {
-                await JsonSerializer.SerializeAsync<Schedule>(createStream, schedule);
-                await createStream.DisposeAsync();
+                schedule = await _networkService.GetAsync<Schedule>($"https://iis.bsuir.by/api/v1/schedule?studentGroup={url}");
+            }
+            else
+            {
+                schedule = await _networkService.GetAsync<Schedule>($"https://iis.bsuir.by/api/v1/employees/schedule/{url}");
+            }
+            if (schedule != null)
+            {
+                if (preLoadingType == LoadingType.Local)
+                {
+                    await SaveScheduleAsync(schedule, url);
+                }
             }
         }
-        public void DeleteSchedule(string? url)
+        catch { }
+
+        return schedule!;
+    }
+
+    public async Task SaveRecentScheduleAsync(Schedule schedule)
+    {
+        await SaveScheduleAsync(schedule, RECENTPATH);
+    }
+    public async Task SaveScheduleAsync(Schedule schedule, string? path)
+    {
+        using (FileStream createStream = File.Create($"{Directory.GetCurrentDirectory() + PATH + path}.json"))
         {
-            File.Delete($"{Directory.GetCurrentDirectory() + PATH + url}.json");
+            await JsonSerializer.SerializeAsync<Schedule>(createStream, schedule);
+            await createStream.DisposeAsync();
         }
-        public async Task UpdateCurrentWeekAsync()
+    }
+    public void DeleteSchedule(string? url)
+    {
+        File.Delete($"{Directory.GetCurrentDirectory() + PATH + url}.json");
+    }
+    public async Task UpdateCurrentWeekAsync()
+    {
+        if(!await _apiCallSemaphore.WaitAsync(0))
+        {
+            return;
+        }
+
+        try
         {
             if (await _internetService.CheckServerAccessAsync($"https://iis.bsuir.by/api/v1/schedule/current-week") == ConnectionStatus.Connected)
             {
@@ -114,5 +122,10 @@ namespace BSUIRScheduleDESK.Services
                 Config.Instance.Save();
             }
         }
+        finally
+        {
+            _apiCallSemaphore.Release();
+        }
+
     }
 }

@@ -334,4 +334,7 @@ To run, try deleting recent.json in the data folder</value>
   <data name="CurrentWeek" xml:space="preserve">
     <value>Current week</value>
   </data>
+  <data name="Update" xml:space="preserve">
+    <value>Update</value>
+  </data>
 </root>

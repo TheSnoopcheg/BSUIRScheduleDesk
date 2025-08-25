@@ -1,22 +1,21 @@
 ﻿using System;
 
-namespace BSUIRScheduleDESK.Classes
+namespace BSUIRScheduleDESK.Classes;
+
+public class Note
 {
-    public class Note
+    public Note(DateTime? Date, string? Content)
     {
-        public Note(DateTime? Date, string? Content)
+        if(Date == null)
         {
-            if(Date == null)
-            {
-                this.Date = DateTime.MinValue;
-            }
-            else
-            {
-                this.Date = Date;
-            }
-            this.Content = Content;
+            this.Date = DateTime.MinValue;
         }
-        public DateTime? Date { get; set; }
-        public string? Content { get; set; }
+        else
+        {
+            this.Date = Date;
+        }
+        this.Content = Content;
     }
+    public DateTime? Date { get; set; }
+    public string? Content { get; set; }
 }

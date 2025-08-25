@@ -1,12 +1,11 @@
 ﻿using BSUIRScheduleDESK.Classes;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.ViewModels
+namespace BSUIRScheduleDESK.ViewModels;
+
+public interface IScheduleHistoryViewModel
 {
-    public interface IScheduleHistoryViewModel
-    {
-        bool IsHistoryEmpty { get; }
-        void AddHistoryNote (HistoryNote note);
-        Task<bool> SetScheduleHistory(string? title, string? url);
-    }
+    bool IsHistoryEmpty { get; }
+    void AddHistoryNote (HistoryNote note);
+    Task<bool> SetScheduleHistory(string? title, string? url);
 }

@@ -2,32 +2,31 @@
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.Controls
+namespace BSUIRScheduleDESK.Controls;
+
+/// <summary>
+/// Interaction logic for ExamSessionSchedule.xaml
+/// </summary>
+public partial class ExamSessionSchedule : UserControl
 {
-    /// <summary>
-    /// Interaction logic for ExamSessionSchedule.xaml
-    /// </summary>
-    public partial class ExamSessionSchedule : UserControl
+    public ExamSessionSchedule()
     {
-        public ExamSessionSchedule()
-        {
-            InitializeComponent();
-        }
-
-        #region LoadScheduleCommand
-
-        public static readonly DependencyProperty LoadScheduleCommandProperty = DependencyProperty.Register(
-            "LoadScheduleCommand",
-            typeof(ICommand),
-            typeof(ExamSessionSchedule),
-            new FrameworkPropertyMetadata(null));
-
-        public ICommand LoadScheduleCommand
-        {
-            get { return (ICommand)GetValue(LoadScheduleCommandProperty); }
-            set { SetValue(LoadScheduleCommandProperty, value); }
-        }
-
-        #endregion
+        InitializeComponent();
     }
+
+    #region LoadScheduleCommand
+
+    public static readonly DependencyProperty LoadScheduleCommandProperty = DependencyProperty.Register(
+        "LoadScheduleCommand",
+        typeof(ICommand),
+        typeof(ExamSessionSchedule),
+        new FrameworkPropertyMetadata(null));
+
+    public ICommand LoadScheduleCommand
+    {
+        get { return (ICommand)GetValue(LoadScheduleCommandProperty); }
+        set { SetValue(LoadScheduleCommandProperty, value); }
+    }
+
+    #endregion
 }

@@ -1,22 +1,21 @@
 ﻿using System;
 
-namespace BSUIRScheduleDESK.Themes
+namespace BSUIRScheduleDESK.Themes;
+
+public enum ThemeType
 {
-    public enum ThemeType
+    IIS,
+    Dark
+}
+public static class ThemeTypeExtension
+{ 
+    public static string GetName(this ThemeType themeType)
     {
-        IIS,
-        Dark
-    }
-    public static class ThemeTypeExtension
-    { 
-        public static string GetName(this ThemeType themeType)
+        switch (themeType)
         {
-            switch (themeType)
-            {
-                case ThemeType.IIS: return "IISTheme";
-                case ThemeType.Dark: return "DarkTheme";
-                default: throw new ArgumentOutOfRangeException(nameof(themeType), themeType, null);
-            }
+            case ThemeType.IIS: return "IISTheme";
+            case ThemeType.Dark: return "DarkTheme";
+            default: throw new ArgumentOutOfRangeException(nameof(themeType), themeType, null);
         }
     }
 }

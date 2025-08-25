@@ -16,6 +16,7 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
     private readonly IAnnouncementViewModel _announcementViewModel;
     private readonly INoteViewModel _noteViewModel;
     private readonly IScheduleHistoryViewModel _historyViewModel;
+    private readonly ISettingsViewModel _settingsViewModel;
 
     #region Properties
 
@@ -132,6 +133,7 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
                 (openSettingsWindow = new RelayCommand(obj =>
                 {
                     SettingsWindow settingsWindow = new SettingsWindow();
+                    settingsWindow.DataContext = _settingsViewModel;
                     settingsWindow.ShowDialog();
                 }));
         }
@@ -353,7 +355,8 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
                                IScheduleSearchViewModel scheduleSearchViewModel,
                                IAnnouncementViewModel announcementViewModel,
                                INoteViewModel noteViewModel,
-                               IScheduleHistoryViewModel historyViewModel)
+                               IScheduleHistoryViewModel historyViewModel,
+                               ISettingsViewModel settingsViewModel)
     {
 
         _model = mainWindowModel;
@@ -361,6 +364,7 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
         _announcementViewModel = announcementViewModel;
         _noteViewModel = noteViewModel;
         _historyViewModel = historyViewModel;
+        _settingsViewModel = settingsViewModel;
 
         _noteViewModel.NotesChanged += () => OnPropertyChanged(nameof(IsNotesExist));
 

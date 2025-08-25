@@ -1,13 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.ViewModels
+namespace BSUIRScheduleDESK.ViewModels;
+
+public interface IAnnouncementViewModel
 {
-    public interface IAnnouncementViewModel
-    {
-        bool IsAnnouncementsEmpty { get; }
-        string CommandUrl { get; }
-        Task<bool> SetAnnouncements(string? title, string? url);
-        event EventHandler OnRequestClose;
-    }
+    bool IsAnnouncementsEmpty { get; }
+    string CommandUrl { get; }
+    Task<bool> SetAnnouncements(string? title, string? url);
+    event EventHandler OnRequestClose;
 }

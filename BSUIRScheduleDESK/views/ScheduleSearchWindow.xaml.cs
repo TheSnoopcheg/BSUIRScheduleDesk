@@ -1,54 +1,53 @@
 ﻿using System.Windows;
 using System.Windows.Input;
 
-namespace BSUIRScheduleDESK.Views
+namespace BSUIRScheduleDESK.Views;
+
+/// <summary>
+/// Логика взаимодействия для ScheduleSearchWindow.xaml
+/// </summary>
+public partial class ScheduleSearchWindow : Window
 {
-    /// <summary>
-    /// Логика взаимодействия для ScheduleSearchWindow.xaml
-    /// </summary>
-    public partial class ScheduleSearchWindow : Window
+    public ScheduleSearchWindow()
     {
-        public ScheduleSearchWindow()
-        {
-            InitializeComponent();
-            this.Owner = App.Current.MainWindow;
-        }
+        InitializeComponent();
+        this.Owner = App.Current.MainWindow;
+    }
 
-        private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+    private void Window_MouseDown(object sender, MouseButtonEventArgs e)
+    {
+        if(e.ChangedButton == MouseButton.Left)
         {
-            if(e.ChangedButton == MouseButton.Left)
-            {
-                DragMove();
-            }
+            DragMove();
         }
+    }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
+    private void Window_KeyDown(object sender, KeyEventArgs e)
+    {
+        if(e.Key == Key.Escape)
         {
-            if(e.Key == Key.Escape)
-            {
-                this.DialogResult = false;
-                this.Close();
-            }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.DialogResult = true;
+            this.DialogResult = false;
             this.Close();
         }
+    }
 
-        private void searchBox_ItemSelected()
-        {
-            this.DialogResult = true;
-            this.Close();
-        }
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+        this.DialogResult = true;
+        this.Close();
+    }
 
-        private void searchBox_TextChanged()
-        {
-            if (searchBox.SText.Length > 1)
-                searchBox.IsDropDownOpen = true;
-            else
-                searchBox.IsDropDownOpen = false;
-        }
+    private void searchBox_ItemSelected()
+    {
+        this.DialogResult = true;
+        this.Close();
+    }
+
+    private void searchBox_TextChanged()
+    {
+        if (searchBox.SText.Length > 1)
+            searchBox.IsDropDownOpen = true;
+        else
+            searchBox.IsDropDownOpen = false;
     }
 }

@@ -2,12 +2,11 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.Models
+namespace BSUIRScheduleDESK.Models;
+
+public interface IScheduleHistoryModel
 {
-    public interface IScheduleHistoryModel
-    {
-        ObservableCollection<HistoryNote> HistoryNotes { get; }
-        void AddHistoryNote(HistoryNote note);
-        Task<bool> LoadHistory(string? url);
-    }
+    ObservableCollection<HistoryNote> HistoryNotes { get; }
+    void AddHistoryNote(HistoryNote note);
+    Task<bool> LoadHistory(string? url);
 }

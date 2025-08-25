@@ -334,4 +334,7 @@
   <data name="CurrentWeek" xml:space="preserve">
     <value>Текущая неделя</value>
   </data>
+  <data name="Update" xml:space="preserve">
+    <value>Обновить</value>
+  </data>
 </root>

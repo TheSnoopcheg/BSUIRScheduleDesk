@@ -2,11 +2,10 @@
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 
-namespace BSUIRScheduleDESK.Services
+namespace BSUIRScheduleDESK.Services;
+
+public interface IScheduleHistoryService
 {
-    public interface IScheduleHistoryService
-    {
-        Task<ObservableCollection<HistoryNote>?> LoadHistoryAsync(string? path);
-        Task SaveHistoryAsync(ObservableCollection<HistoryNote> history,  string? path);
-    }
+    Task<ObservableCollection<HistoryNote>?> LoadHistoryAsync(string? path);
+    Task SaveHistoryAsync(ObservableCollection<HistoryNote> history,  string? path);
 }

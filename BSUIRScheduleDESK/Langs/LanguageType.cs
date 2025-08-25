@@ -1,25 +1,23 @@
-﻿using BSUIRScheduleDESK.Themes;
-using System;
+﻿using System;
 
-namespace BSUIRScheduleDESK.Langs
+namespace BSUIRScheduleDESK.Langs;
+
+public enum LanguageType
 {
-    public enum LanguageType
+    RUS,
+    BEL,
+    ENG
+}
+public static class LanguageTypeExtension
+{
+    public static string GetIetfLanguageTag(this LanguageType languageType)
     {
-        RUS,
-        BEL,
-        ENG
-    }
-    public static class LanguageTypeExtension
-    {
-        public static string GetIetfLanguageTag(this LanguageType languageType)
+        switch (languageType)
         {
-            switch (languageType)
-            {
-                case LanguageType.RUS: return "ru";
-                case LanguageType.BEL: return "be";
-                case LanguageType.ENG: return "en";
-                default: throw new ArgumentOutOfRangeException(nameof(languageType), languageType, null);
-            }
+            case LanguageType.RUS: return "ru";
+            case LanguageType.BEL: return "be";
+            case LanguageType.ENG: return "en";
+            default: throw new ArgumentOutOfRangeException(nameof(languageType), languageType, null);
         }
     }
 }

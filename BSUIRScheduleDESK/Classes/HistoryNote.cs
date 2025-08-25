@@ -1,10 +1,9 @@
 ﻿using System;
 
-namespace BSUIRScheduleDESK.Classes
+namespace BSUIRScheduleDESK.Classes;
+
+public class HistoryNote
 {
-    public class HistoryNote
-    {
-        public DateTime UpdateDate { get; set; }
-        public Difference? Difference { get; set; }
-    }
+    public DateTime UpdateDate { get; set; }
+    public Difference? Difference { get; set; }
 }

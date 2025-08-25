@@ -2,18 +2,17 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace BSUIRScheduleDESK.Classes
-{
-    public class MonthComparer : IEqualityComparer<DateTime>
-    {
-        public bool Equals(DateTime x, DateTime y)
-        {
-            return x.Year == y.Year && x.Month == y.Month;
-        }
+namespace BSUIRScheduleDESK.Classes;
 
-        public int GetHashCode([DisallowNull] DateTime obj)
-        {
-            return obj.Month ^ obj.Year;
-        }
+public class MonthComparer : IEqualityComparer<DateTime>
+{
+    public bool Equals(DateTime x, DateTime y)
+    {
+        return x.Year == y.Year && x.Month == y.Month;
+    }
+
+    public int GetHashCode([DisallowNull] DateTime obj)
+    {
+        return obj.Month ^ obj.Year;
     }
 }
