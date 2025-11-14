@@ -10,7 +10,7 @@
     <Color x:Key="SubWindow.Button.Foreground" R="245" G="245" B="245" A="255"/>
 
     <Color x:Key="Icon.Stroke" R="245" G="245" B="245" A="255"/>
-    <Color x:Key="Icon.Star.Fill.Favorited" R="255" G="185" B="0" A="255"/>
+    <Color x:Key="Icon.Star.Fill.Favorited" R="135" G="135" B="135" A="255"/>
 
     <Color x:Key="FavoriteBar.Background" R="66" G="66" B="66" A="255"/>
     <Color x:Key="FavoriteBar.Button.Background" R="44" G="44" B="44" A="255"/>

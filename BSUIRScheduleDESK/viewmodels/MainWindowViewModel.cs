@@ -44,10 +44,14 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
     }
     public bool IsHistoryVisible
     {
+#if PRODUCT
+        get => false;
+#else
         get => Schedule != null && Schedule.favorited && !_historyViewModel.IsHistoryEmpty;
+#endif
     }
 
-    #endregion
+#endregion
 
     #region Commands
 
@@ -343,6 +347,9 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
                 _historyViewModel.AddHistoryNote(historyNote);
                 OnPropertyChanged(nameof(Schedule));
             }
+#if PRODUCT
+            OnPropertyChanged(nameof(Schedule));
+#endif
         }
         OnPropertyChanged(nameof(IsHistoryVisible));
         if (await _announcementViewModel.SetAnnouncements(name, url))

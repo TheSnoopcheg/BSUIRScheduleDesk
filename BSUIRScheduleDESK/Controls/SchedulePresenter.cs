@@ -613,47 +613,6 @@ public class SchedulePresenter : Control
         }
     }
 
-    private bool IsLessonToShow(Lesson lesson, out bool isExpiredToShow)
-    {
-        isExpiredToShow = false;
-        if (!TimeOnly.TryParse(lesson.startLessonTime, out TimeOnly time)) return false;
-        if (ShowAllLessons) return true;
-        if(lesson.weekNumber == null && lesson.announcement)
-        {
-            if (!(DateTime.TryParse(lesson.startLessonDate, out DateTime date) && _dates.Contains(date))) return false;
-        }
-        if (lesson.weekNumber != null && !lesson.weekNumber.Contains(CurrentWeek)) return false;
-        if(lesson.numSubgroup != 0)
-        {
-            if (lesson.numSubgroup == 1 && !FirstSubGroup)
-                return false;
-            if (lesson.numSubgroup == 2 && !SecondSubGroup)
-                return false;
-        }
-        if (DateTime.TryParse(lesson.dateLesson, out DateTime lessonDate) && (lessonDate > _startExamDate || lessonDate < _endExamDate))
-        {
-            if (ShowExams)
-            {
-                if (_dates.Contains(lessonDate))
-                    return true;
-                else
-                    return false;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        if ((DateTime.TryParse(lesson.startLessonDate, out DateTime startDate) && startDate > _dates[(int)lesson.DayOfWeek])
-                    || (DateTime.TryParse(lesson.endLessonDate, out DateTime endDate) && endDate < _dates[(int)lesson.DayOfWeek]))
-        {
-            if (!ShowExpiredLessons)
-                return false;
-            else
-                isExpiredToShow = true;
-        }
-        return true;
-    }
 
     private void SetNormalSchedulePlates()
     {
@@ -673,6 +632,92 @@ public class SchedulePresenter : Control
             AddPlateToPanel(panel, item, PlateState.Normal, isExpiredToShow);
         }
         FullFreeDays();
+    }
+    private bool IsLessonToShow(Lesson lesson, out bool isExpiredToShow)
+    {
+        isExpiredToShow = false;
+
+        if (ShowAllLessons)
+            return true;
+
+        if (!TimeOnly.TryParse(lesson.startLessonTime, out _))
+            return false;
+
+        if (lesson.announcement)
+            return ShouldShowAnnouncement(lesson);
+
+        if (IsExam(lesson, out DateTime examDate))
+            return ShouldShowExam(examDate);
+
+        if (!IsForCurrentWeek(lesson))
+            return false;
+
+        if (!IsForSelectedSubgroup(lesson))
+            return false;
+
+        if (IsExpired(lesson))
+        {
+            if (ShowExpiredLessons)
+            {
+                isExpiredToShow = true;
+                return true;
+            }
+            return false; 
+        }
+
+        return true;
+    }
+
+    private bool ShouldShowAnnouncement(Lesson lesson)
+    {
+        //if (!ShowAnnouncements)
+        //    return false;
+
+        if (DateTime.TryParse(lesson.startLessonDate, out DateTime announcementDate) && _dates.Contains(announcementDate))
+            return true;
+
+        if (IsExam(lesson, out DateTime examDate) && ShouldShowExam(examDate))
+            return true;
+
+        return false;
+    }
+
+    private bool IsExam(Lesson lesson, out DateTime lessonDate)
+    {
+        return DateTime.TryParse(lesson.dateLesson, out lessonDate) &&
+               lessonDate > _startExamDate &&
+               lessonDate < _endExamDate;
+    }
+
+    private bool ShouldShowExam(DateTime examDate)
+    {
+        return ShowExams && _dates.Contains(examDate);
+    }
+
+    private bool IsForCurrentWeek(Lesson lesson)
+    {
+        return lesson.weekNumber == null || lesson.weekNumber.Contains(CurrentWeek);
+    }
+
+    private bool IsForSelectedSubgroup(Lesson lesson)
+    {
+        return lesson.numSubgroup switch
+        {
+            1 => FirstSubGroup,  
+            2 => SecondSubGroup, 
+            _ => true,         
+        };
+    }
+
+    private bool IsExpired(Lesson lesson)
+    {
+        if (DateTime.TryParse(lesson.startLessonDate, out DateTime startDate) && startDate > _dates[(int)lesson.DayOfWeek])
+            return true;
+
+        if (DateTime.TryParse(lesson.endLessonDate, out DateTime endDate) && endDate < _dates[(int)lesson.DayOfWeek])
+            return true;
+
+        return false;
     }
 
     private void AddPlateToPanel(StackPanel panel, Lesson lesson, PlateState state, bool isExpired)

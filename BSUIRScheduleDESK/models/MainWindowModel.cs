@@ -74,7 +74,6 @@ public class MainWindowModel : IMainWindowModel
     {
         return FavoriteSchedules.Any(s => s.UrlId == url);
     }
-
     public async Task<HistoryNote?> UpdateScheduleAsync()
     {
         if (Schedule == null) return null;
@@ -92,14 +91,21 @@ public class MainWindowModel : IMainWindowModel
             ModalWindowResult result = ModalWindow.Show(string.Format(Langs.Language.ScheduleUpdateQuestionFormat, newSchedule.GetName()), Langs.Language.AppName, "", ModalWindowButtons.YesNo);
             if (result == ModalWindowResult.Yes)
             {
+#if PRODUCT
+#else
                 Difference difference = new Difference();
-                difference.Differences = ObjectComparer.GetDifferences(Schedule, newSchedule, out string? name, out string? namer);
+                difference.Differences = ObjectComparer.GetDifferences(Schedule, newSchedule);
                 HistoryNote note = new HistoryNote() { UpdateDate = System.DateTime.Today, Difference = difference };
+#endif
                 newSchedule.favorited = Schedule.favorited;
                 Schedule = newSchedule;
                 await _scheduleService.SaveScheduleAsync(Schedule, url);
                 await SaveRecentScheduleAsync(Schedule);
+#if PRODUCT
+                return null;
+#else
                 return note;
+#endif
             }
         }
 

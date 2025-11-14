@@ -130,7 +130,7 @@ public class Config : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    private string unknownColor = "FF1D1D1D";
+    private string unknownColor = "#FF1D1D1D";
     public string UnknownColor
     {
         get => unknownColor;

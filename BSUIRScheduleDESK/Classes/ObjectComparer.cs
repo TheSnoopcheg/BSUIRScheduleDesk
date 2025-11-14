@@ -1,151 +1,121 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text.Json.Serialization;
 
 namespace BSUIRScheduleDESK.Classes;
 
 public static class ObjectComparer
 {
-    public static List<Difference> GetDifferences(object? left, object? right, out string? leftName, out string? rightName)
+    public static List<Difference> GetDifferences(object? left, object? right)
     {
-        List<Difference> differences = new List<Difference>();
+        return GetDifferences(left, right, "root");
+    }
 
-        leftName = null;
-        rightName = null;
+    private static List<Difference> GetDifferences(object? left, object? right, string propertyName)
+    {
+        var differences = new List<Difference>();
 
-        if(left == null || right == null) return differences;
-
-        Type type = left == null ? right!.GetType() : left.GetType();
-
-        leftName = (left == null || left.ToString() == type.FullName) ? null : left.ToString();
-        rightName = (right == null || right.ToString() == type.FullName) ? null : right.ToString();
-
-
-        foreach (var prop in type.GetProperties().Where(p => !p.GetIndexParameters().Any()))
+        if (left == null && right == null)
         {
+            return differences;
+        }
+
+        if (left == null || right == null)
+        {
+            differences.Add(new Difference
+            {
+                PropertyName = propertyName,
+                OldValue = left?.ToString(),
+                NewValue = right?.ToString()
+            });
+            return differences;
+        }
+
+        Type type = left.GetType();
+        if (type != right.GetType())
+        {
+            differences.Add(new Difference
+            {
+                PropertyName = propertyName,
+                OldValue = left.ToString(),
+                NewValue = right.ToString(),
+                Remark = "Object types do not match"
+            });
+            return differences;
+        }
+
+        if (type.IsValueType || type == typeof(string))
+        {
+            if (!Equals(left, right))
+            {
+                differences.Add(new Difference
+                {
+                    PropertyName = propertyName,
+                    OldValue = left.ToString(),
+                    NewValue = right.ToString()
+                });
+            }
+            return differences;
+        }
+
+        if (left is IEnumerable leftEnumerable && right is IEnumerable rightEnumerable)
+        {
+            var collectionDifferences = GetCollectionDifferences(leftEnumerable, rightEnumerable, propertyName);
+            if (collectionDifferences.Any())
+            {
+                differences.AddRange(collectionDifferences);
+            }
+            return differences;
+        }
+
+
+        foreach (var prop in type.GetProperties(BindingFlags.Public | BindingFlags.Instance).Where(p => p.CanRead && !p.GetIndexParameters().Any()))
+        {
+            if (prop.IsDefined(typeof(JsonIgnoreAttribute), false))
+            {
+                continue;
+            }
+
             var leftVal = prop.GetValue(left);
             var rightVal = prop.GetValue(right);
 
-            object[] attributes = prop.GetCustomAttributes(false);
-            if (attributes.Any(a => a is JsonIgnoreAttribute)) continue;
-
-            if (leftVal == rightVal)
-            {
-                continue;
-            }
-            else if (leftVal == null && rightVal != null)
-            {
-                differences.Add(new Difference
-                {
-                    PropertyName = prop.Name,
-                    OldValue = null,
-                    NewValue = rightVal.ToString()
-                });
-            }
-            else if (rightVal == null && leftVal != null)
-            {
-                differences.Add(new Difference
-                {
-                    PropertyName = prop.Name,
-                    OldValue = leftVal.ToString(),
-                    NewValue = null
-                });
-            }
-            else
-            {
-                if (prop.PropertyType.IsGenericType)
-                {
-                    Difference genericDiff = new Difference() { PropertyName = prop.Name };
-                    Type elementType = prop.PropertyType.GetGenericArguments()[0];
-                    genericDiff.Differences = GetGenericDifferences(leftVal, rightVal, elementType);
-                    if (genericDiff.Differences != null && genericDiff.Differences.Count != 0)
-                        differences.Add(genericDiff);
-                }
-                else if (prop.PropertyType == typeof(string))
-                {
-                    if (string.Equals(leftVal, rightVal)) continue;
-                    differences.Add(new Difference
-                    {
-                        PropertyName = prop.Name,
-                        OldValue = leftVal,
-                        NewValue = rightVal
-                    });
-                }
-                else if (prop.PropertyType == typeof(int))
-                {
-                    if ((int)leftVal == (int)rightVal) continue;
-                    differences.Add(new Difference
-                    {
-                        PropertyName = prop.Name,
-                        OldValue = leftVal,
-                        NewValue = rightVal
-                    });
-                }
-                else if (prop.PropertyType == typeof(bool))
-                {
-                    if ((bool)leftVal == (bool)rightVal) continue;
-                    differences.Add(new Difference
-                    {
-                        PropertyName = prop.Name,
-                        OldValue = leftVal,
-                        NewValue = rightVal
-                    });
-                }
-                else if (prop.PropertyType.IsClass)
-                {
-                    Difference tempDiff = new Difference() { PropertyName = prop.Name };
-                    tempDiff.Differences = GetDifferences(leftVal, rightVal, out string? tempLeftName, out string? tempRightName);
-                    if (tempDiff.Differences == null || tempDiff.Differences.Count == 0) continue;
-                    tempDiff.OldValue = tempLeftName;
-                    tempDiff.NewValue = tempRightName;
-                    differences.Add(tempDiff);
-                }
-            }
+            differences.AddRange(GetDifferences(leftVal, rightVal, $"{propertyName}.{prop.Name}"));
         }
-        return differences;
-    }
-    private static List<Difference> GetGenericDifferences(object? left, object? right, Type type)
-    {
-        List<Difference>? differences = new List<Difference>();
 
-        differences = type.Name switch
-        {
-            nameof(String) => GetGenericDifferences<string>(left, right),
-            nameof(Int32) => GetGenericDifferences<int>(left, right),
-            nameof(Lesson) => GetGenericDifferences<Lesson>(left, right),
-            nameof(Employee) => GetGenericDifferences<Employee>(left, right),
-            nameof(StudentGroup) => GetGenericDifferences<StudentGroup>(left, right),
-            _ => differences
-        };
+
         return differences;
     }
 
-    private static List<Difference> GetGenericDifferences<T>(object? left, object? right)
+    private static List<Difference> GetCollectionDifferences(IEnumerable left, IEnumerable right, string propertyName)
     {
-        List<Difference>? differences = new List<Difference>();
-        if (left is not IList<T> leftList || right is not IList<T> rightList) return differences;
-        string? leftName, rightName;
-        int index = -1;
-        HashSet<int> indexes = new HashSet<int>();
-        for(int i = 0; i < leftList.Count; i++)
+        var differences = new List<Difference>();
+        var leftList = left.Cast<object>().ToList();
+        var rightList = right.Cast<object>().ToList();
+
+        var addedItems = rightList.Except(leftList).ToList();
+        var removedItems = leftList.Except(rightList).ToList();
+
+        foreach (var item in addedItems)
         {
-            index = rightList.IndexOf(leftList[i]);
-            if(index < 0)
+            differences.Add(new Difference
             {
-                differences.Add(new Difference { NewValue = null, OldValue = leftList[i]!.ToString() });
-                continue;
-            }
-            var tempDiffs = GetDifferences(leftList[i], rightList[index], out leftName, out rightName);
-            if (tempDiffs != null && tempDiffs.Count > 0)
-                differences.Add(new Difference { NewValue = rightName, OldValue = leftName, Differences = tempDiffs });
-            indexes.Add(index);
+                PropertyName = propertyName,
+                NewValue = item?.ToString(),
+                Remark = "Item added"
+            });
         }
 
-        for(int i = 0; i < rightList.Count; i++)
+        foreach (var item in removedItems)
         {
-            if (indexes.Contains(i)) continue;
-            differences.Add(new Difference { OldValue = null, NewValue = rightList[i]!.ToString() });
+            differences.Add(new Difference
+            {
+                PropertyName = propertyName,
+                OldValue = item?.ToString(),
+                Remark = "Item removed"
+            });
         }
 
         return differences;
@@ -157,5 +127,6 @@ public record class Difference
     public string? PropertyName { get; set; }
     public object? OldValue { get; set; }
     public object? NewValue { get; set; }
+    public string? Remark { get; set; }
     public List<Difference> Differences { get; set; } = new List<Difference>();
 }
