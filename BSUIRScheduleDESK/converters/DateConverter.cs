@@ -13,7 +13,7 @@ public class DateConverter : IValueConverter
         if(value is string str)
         {
             if (DateTime.TryParse(str, out DateTime dt))
-                return dt.ToString("d", CultureInfo.CurrentUICulture) + dt.ToString(", ddd", CultureInfo.CurrentUICulture);
+                return dt.ToString("dd", CultureInfo.CurrentUICulture) + dt.ToString(", ddd", CultureInfo.CurrentUICulture);
             else
                 return string.Empty;
         }

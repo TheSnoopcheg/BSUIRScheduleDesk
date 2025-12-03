@@ -16,8 +16,8 @@ public static class LessonsHelper
                 && l.lessonTypeAbbrev == lesson.lessonTypeAbbrev
                 && l.numSubgroup == lesson.numSubgroup
                 && l.weekNumber != null
-                && Enumerable.SequenceEqual(l.studentGroups!, lesson.studentGroups!)
-                && Enumerable.SequenceEqual(l.employees!, lesson.employees!)
+                && (lesson.studentGroups != null ? Enumerable.SequenceEqual(l.studentGroups!, lesson.studentGroups!) : true)
+                && (lesson.employees != null ? Enumerable.SequenceEqual(l.employees!, lesson.employees!) : true)
                 && DateTime.TryParse(l.startLessonDate, out _)
                 && TimeOnly.TryParse(l.startLessonTime, out _))
             .OrderBy(l => DateTime.Parse(l.startLessonDate!));
