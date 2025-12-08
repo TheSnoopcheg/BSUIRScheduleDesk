@@ -10,7 +10,7 @@ namespace BSUIRScheduleDESK.Models;
 public class AnnouncementModel : IAnnouncementModel
 {
     private readonly IAnnouncementService _announcementService;
-    public ObservableCollection<Announcement> _announcements = new ObservableCollection<Announcement>();
+    private ObservableCollection<Announcement> _announcements = new ObservableCollection<Announcement>();
     public ObservableCollection<Announcement> Announcements
     {
         get { return _announcements; }

@@ -211,6 +211,10 @@
                                        FontSize="14"
                                        FontWeight="DemiBold"
                                        x:Name="nameTextBlock">
+                                <TextBlock.InputBindings>
+                                    <MouseBinding Gesture="LeftClick"
+                                                  Command="{Binding DataContext.OpenEmployeeInfoWindow, ElementName=mainWindow}"/>
+                                </TextBlock.InputBindings>
                                 <TextBlock.Style>
                                     <Style TargetType="{x:Type TextBlock}">
                                         <Style.Triggers>

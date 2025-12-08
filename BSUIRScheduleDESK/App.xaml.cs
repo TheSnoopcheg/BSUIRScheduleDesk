@@ -71,6 +71,7 @@ public partial class App : Application
         services.AddSingleton<IAnnouncementModel, AnnouncementModel>();
         services.AddSingleton<INoteModel, NoteModel>();
         services.AddSingleton<IScheduleHistoryModel, ScheduleHistoryModel>();
+        services.AddSingleton<EmployeeInfoModel>();
 
         services.AddSingleton<IMainWindowViewModel, MainWindowViewModel>();
         services.AddSingleton<IScheduleSearchViewModel, ScheduleSearchViewModel>();
@@ -78,6 +79,7 @@ public partial class App : Application
         services.AddSingleton<IAnnouncementViewModel, AnnouncementViewModel>();
         services.AddSingleton<IScheduleHistoryViewModel, ScheduleHistoryViewModel>();
         services.AddSingleton<ISettingsViewModel, SettingsViewModel>();
+        services.AddSingleton<EmployeeInfoViewModel>();
 
         services.AddSingleton<INetworkService, NetworkService>();
         services.AddSingleton<IInternetService, InternetService>();

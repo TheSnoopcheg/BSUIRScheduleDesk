@@ -17,6 +17,7 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
     private readonly INoteViewModel _noteViewModel;
     private readonly IScheduleHistoryViewModel _historyViewModel;
     private readonly ISettingsViewModel _settingsViewModel;
+    private readonly EmployeeInfoViewModel _employeeInfoViewModel;
 
     #region Properties
 
@@ -292,6 +293,27 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
         }
     }
 
+    private ICommand? openEmployeeInfoWindow;
+    public ICommand OpenEmployeeInfoWindow
+    {
+        get
+        {
+            return openEmployeeInfoWindow ??
+                (openEmployeeInfoWindow = new RelayCommand(async obj =>
+                {
+                    if(Schedule == null) return;
+                    if (Schedule.studentGroup != null) return;
+
+                    if(await _employeeInfoViewModel.TryLoadEmployeeInfo(Schedule.GetUrl()))
+                    {
+                        EmployeeInfoWindow employeeInfoWindow = new EmployeeInfoWindow();
+                        employeeInfoWindow.DataContext = _employeeInfoViewModel;
+                        employeeInfoWindow.ShowDialog();
+                    }
+                }));
+        }
+    }
+
     #endregion
 
     #region Methods
@@ -363,7 +385,8 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
                                IAnnouncementViewModel announcementViewModel,
                                INoteViewModel noteViewModel,
                                IScheduleHistoryViewModel historyViewModel,
-                               ISettingsViewModel settingsViewModel)
+                               ISettingsViewModel settingsViewModel,
+                               EmployeeInfoViewModel employeeInfoViewModel)
     {
 
         _model = mainWindowModel;
@@ -372,6 +395,7 @@ public class MainWindowViewModel : Notifier, IMainWindowViewModel
         _noteViewModel = noteViewModel;
         _historyViewModel = historyViewModel;
         _settingsViewModel = settingsViewModel;
+        _employeeInfoViewModel = employeeInfoViewModel;
 
         _noteViewModel.NotesChanged += () => OnPropertyChanged(nameof(IsNotesExist));
 

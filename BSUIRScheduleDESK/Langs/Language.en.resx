@@ -337,4 +337,34 @@ To run, try deleting recent.json in the data folder</value>
   <data name="Update" xml:space="preserve">
     <value>Update</value>
   </data>
+  <data name="JobPosition" xml:space="preserve">
+    <value>Job position, place of work</value>
+  </data>
+  <data name="Contacts" xml:space="preserve">
+    <value>Contacts</value>
+  </data>
+  <data name="CoursesTaught" xml:space="preserve">
+    <value>Courses taught</value>
+  </data>
+  <data name="AreaOfProfessionalInterest" xml:space="preserve">
+    <value>Area of ​​professional interest/research</value>
+  </data>
+  <data name="Education" xml:space="preserve">
+    <value>Education</value>
+  </data>
+  <data name="WorkExperience" xml:space="preserve">
+    <value>Work experience</value>
+  </data>
+  <data name="Merits" xml:space="preserve">
+    <value>Merits, awards, incentives</value>
+  </data>
+  <data name="Publications" xml:space="preserve">
+    <value>Publications</value>
+  </data>
+  <data name="AdditionalInformation" xml:space="preserve">
+    <value>Additional information</value>
+  </data>
+  <data name="Mail" xml:space="preserve">
+    <value>Mail</value>
+  </data>
 </root>

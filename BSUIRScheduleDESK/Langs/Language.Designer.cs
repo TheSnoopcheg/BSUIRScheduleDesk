@@ -19,7 +19,7 @@ namespace BSUIRScheduleDESK.Langs {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "17.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "18.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     public class Language {
@@ -70,6 +70,15 @@ namespace BSUIRScheduleDESK.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Дополнительная информация.
+        /// </summary>
+        public static string AdditionalInformation {
+            get {
+                return ResourceManager.GetString("AdditionalInformation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Объявление.
         /// </summary>
         public static string Announcement {
@@ -102,6 +111,15 @@ namespace BSUIRScheduleDESK.Langs {
         public static string AppName {
             get {
                 return ResourceManager.GetString("AppName", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Область профессиональных интересов/исследований.
+        /// </summary>
+        public static string AreaOfProfessionalInterest {
+            get {
+                return ResourceManager.GetString("AreaOfProfessionalInterest", resourceCulture);
             }
         }
         
@@ -156,6 +174,24 @@ namespace BSUIRScheduleDESK.Langs {
         public static string Consultation {
             get {
                 return ResourceManager.GetString("Consultation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Контакты.
+        /// </summary>
+        public static string Contacts {
+            get {
+                return ResourceManager.GetString("Contacts", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Читаемые курсы.
+        /// </summary>
+        public static string CoursesTaught {
+            get {
+                return ResourceManager.GetString("CoursesTaught", resourceCulture);
             }
         }
         
@@ -220,6 +256,15 @@ namespace BSUIRScheduleDESK.Langs {
         public static string Edit {
             get {
                 return ResourceManager.GetString("Edit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Образование.
+        /// </summary>
+        public static string Education {
+            get {
+                return ResourceManager.GetString("Education", resourceCulture);
             }
         }
         
@@ -341,6 +386,15 @@ namespace BSUIRScheduleDESK.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Должность, место работы.
+        /// </summary>
+        public static string JobPosition {
+            get {
+                return ResourceManager.GetString("JobPosition", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Лабораторная работа.
         /// </summary>
         public static string LaboratoryWork {
@@ -368,11 +422,29 @@ namespace BSUIRScheduleDESK.Langs {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Почта.
+        /// </summary>
+        public static string Mail {
+            get {
+                return ResourceManager.GetString("Mail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Расписание БГУИР.
         /// </summary>
         public static string MainWindowTitle {
             get {
                 return ResourceManager.GetString("MainWindowTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Заслуги, награды, поощрения.
+        /// </summary>
+        public static string Merits {
+            get {
+                return ResourceManager.GetString("Merits", resourceCulture);
             }
         }
         
@@ -472,6 +544,15 @@ namespace BSUIRScheduleDESK.Langs {
         public static string ProgramRunning {
             get {
                 return ResourceManager.GetString("ProgramRunning", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Публикации.
+        /// </summary>
+        public static string Publications {
+            get {
+                return ResourceManager.GetString("Publications", resourceCulture);
             }
         }
         
@@ -706,6 +787,15 @@ namespace BSUIRScheduleDESK.Langs {
         public static string Weeks {
             get {
                 return ResourceManager.GetString("Weeks", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Трудовая деятельность.
+        /// </summary>
+        public static string WorkExperience {
+            get {
+                return ResourceManager.GetString("WorkExperience", resourceCulture);
             }
         }
         
