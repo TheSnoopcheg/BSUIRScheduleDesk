@@ -42,17 +42,6 @@ public class Config : INotifyPropertyChanged
             OnPropertyChanged();
         }
     }
-    private bool showExams = true;
-    public bool ShowExams
-    {
-        get => showExams;
-        set
-        {
-            if (value == showExams) return;
-            showExams = value;
-            OnPropertyChanged();
-        }
-    }
     private int currentWeek = 0;
     public int CurrentWeek
     {

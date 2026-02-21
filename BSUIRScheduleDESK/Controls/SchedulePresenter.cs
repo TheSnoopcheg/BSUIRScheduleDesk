@@ -62,7 +62,6 @@ public class SchedulePresenter : Control
         _returnButton = (Button)GetTemplateChild(PART_ReturnButton);
         _firstSubGroup = (CheckBox)GetTemplateChild(PART_FirstSubGroup);
         _secondSubGroup = (CheckBox)GetTemplateChild(PART_SecondSubGroup);
-        _showExams = (CheckBox)GetTemplateChild(PART_ShowExams);
         _currentWeekLabel = (TextBlock)GetTemplateChild(PART_CurrentWeekLabel);
         _calendarPopup = (Popup)GetTemplateChild(PART_CalendarPopup);
         _plateInfoPopup = (Popup)GetTemplateChild(PART_PlateInfoPopup);
@@ -79,7 +78,6 @@ public class SchedulePresenter : Control
         _returnButton.Click += ReturnButton_Click;
         _firstSubGroup.Click += FirstSubGroup_Click;
         _secondSubGroup.Click += SecondSubGroup_Click;
-        _showExams.Click += ShowExams_Click;
         _calendar.GotMouseCapture += Calendar_GotMouseCapture;
         _openDateButton.Click += OpenDateButton_Click;
         _showExpiredLessons.Click += ShowExpiredLessons_Click;
@@ -88,7 +86,6 @@ public class SchedulePresenter : Control
         _currentWeekLabel.Text = $"{Langs.Language.Week}: " + CurrentWeek.ToString();
         _firstSubGroup.IsChecked = FirstSubGroup;
         _secondSubGroup.IsChecked = SecondSubGroup;
-        _showExams.IsChecked = ShowExams;
         _showExpiredLessons.IsChecked = ShowExpiredLessons;
         _showAllLessons.IsChecked = ShowAllLessons;
 
@@ -107,53 +104,6 @@ public class SchedulePresenter : Control
         if (DateTime.Today.DayOfWeek == DayOfWeek.Sunday)
             ChangeWeek(1);
     }
-
-
-    #region StartExamDate
-
-    public static readonly DependencyProperty StartExamDateProperty = DependencyProperty.Register(
-        "StartExamDate",
-        typeof(string),
-        typeof(SchedulePresenter),
-        new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnStartExamDateChanged)));
-
-    private static void OnStartExamDateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not SchedulePresenter schedulePresenter) return;
-        if (e.NewValue is not string newDate) return;
-        DateTime.TryParse(newDate, out schedulePresenter._startExamDate);
-    }
-
-    public string StartExamDate
-    {
-        get { return (string)GetValue(StartExamDateProperty); }
-        set { SetValue(StartExamDateProperty, value); }
-    }
-
-    #endregion
-
-    #region EndExamDate
-
-    public static readonly DependencyProperty EndExamDateProperty = DependencyProperty.Register(
-        "EndExamDate",
-        typeof(string),
-        typeof(SchedulePresenter),
-        new FrameworkPropertyMetadata(string.Empty, new PropertyChangedCallback(OnEndExamDateChanged)));
-
-    private static void OnEndExamDateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not SchedulePresenter schedulePresenter) return;
-        if (e.NewValue is not string newDate) return;
-        DateTime.TryParse(newDate, out schedulePresenter._endExamDate);
-    }
-
-    public string EndExamDate
-    {
-        get { return (string)GetValue(EndExamDateProperty); }
-        set { SetValue(EndExamDateProperty, value); }
-    }
-
-    #endregion
 
     #region LessonsProperty
 
@@ -253,31 +203,6 @@ public class SchedulePresenter : Control
     {
         get { return (bool)GetValue(SecondSubGroupProperty); }
         set { SetValue(SecondSubGroupProperty, value); }
-    }
-
-    #endregion
-
-    #region ShowExamsProperty
-
-    public static readonly DependencyProperty ShowExamsProperty = DependencyProperty.Register(
-        "ShowExams",
-        typeof(bool),
-        typeof(SchedulePresenter),
-        new FrameworkPropertyMetadata(true, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault, new PropertyChangedCallback(OnShowExamsChanged)));
-
-    private static void OnShowExamsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is not SchedulePresenter schedulePresenter) return;
-        if (e.NewValue != null)
-        {
-            schedulePresenter.SetUp();
-        }
-    }
-
-    public bool ShowExams
-    {
-        get { return (bool)GetValue(ShowExamsProperty); }
-        set { SetValue(ShowExamsProperty, value); }
     }
 
     #endregion
@@ -427,7 +352,6 @@ public class SchedulePresenter : Control
             _firstSubGroup.IsEnabled = false;
             _secondSubGroup.IsEnabled = false;
             _showExpiredLessons.IsEnabled = false;
-            _showExams.IsEnabled = false;
         }
         else
         {
@@ -441,7 +365,6 @@ public class SchedulePresenter : Control
             _firstSubGroup.IsEnabled = true;
             _secondSubGroup.IsEnabled = true;
             _showExpiredLessons.IsEnabled = true;
-            _showExams.IsEnabled = true;
         }
     }
 
@@ -611,7 +534,7 @@ public class SchedulePresenter : Control
             
             AddPlateToPanel(panel, item, PlateState.Maximized, isExpiredToShow);
         }
-    }
+    } 
 
 
     private void SetNormalSchedulePlates()
@@ -646,9 +569,6 @@ public class SchedulePresenter : Control
         if (lesson.announcement)
             return ShouldShowAnnouncement(lesson);
 
-        if (IsExam(lesson, out DateTime examDate))
-            return ShouldShowExam(examDate);
-
         if (!IsForCurrentWeek(lesson))
             return false;
 
@@ -676,22 +596,8 @@ public class SchedulePresenter : Control
         if (DateTime.TryParse(lesson.startLessonDate, out DateTime announcementDate) && _dates.Contains(announcementDate))
             return true;
 
-        if (IsExam(lesson, out DateTime examDate) && ShouldShowExam(examDate))
-            return true;
 
         return false;
-    }
-
-    private bool IsExam(Lesson lesson, out DateTime lessonDate)
-    {
-        return DateTime.TryParse(lesson.dateLesson, out lessonDate) &&
-               lessonDate > _startExamDate &&
-               lessonDate < _endExamDate;
-    }
-
-    private bool ShouldShowExam(DateTime examDate)
-    {
-        return ShowExams && _dates.Contains(examDate);
     }
 
     private bool IsForCurrentWeek(Lesson lesson)
@@ -947,12 +853,6 @@ public class SchedulePresenter : Control
 
     #region Events
 
-    private void ShowExams_Click(object sender, RoutedEventArgs e)
-    {
-        if (sender is not CheckBox cb) return;
-        ShowExams = (bool)cb.IsChecked!;
-    }
-
     private void SecondSubGroup_Click(object sender, RoutedEventArgs e)
     {
         if (sender is not CheckBox cb) return;
@@ -1028,7 +928,6 @@ public class SchedulePresenter : Control
     private const string PART_ReturnButton = "PART_ReturnButton";
     private const string PART_FirstSubGroup = "PART_FirstSubGroup";
     private const string PART_SecondSubGroup = "PART_SecondSubGroup";
-    private const string PART_ShowExams = "PART_ShowExams";
     private const string PART_CurrentWeekLabel = "PART_CurrentWeekLabel";
     private const string PART_CalendarPopup = "PART_CalendarPopup";
     private const string PART_Calendar = "PART_Calendar";
@@ -1048,7 +947,6 @@ public class SchedulePresenter : Control
     private Button _returnButton;
     private CheckBox _firstSubGroup;
     private CheckBox _secondSubGroup;
-    private CheckBox _showExams;
     private TextBlock _currentWeekLabel;
     private Popup _calendarPopup;
     private System.Windows.Controls.Calendar _calendar;
