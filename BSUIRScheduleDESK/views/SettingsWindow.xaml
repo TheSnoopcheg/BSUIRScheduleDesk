@@ -233,9 +233,11 @@
                             </MultiBinding>
                         </TextBlock.Text>
                     </TextBlock>
-                    <TextBlock Text="© 2023-2025 Dmitry Lantas" 
+                    <TextBlock Text="{Binding Copyright}" 
                                Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                HorizontalAlignment="Right"
+                               TextWrapping="Wrap"
+                               TextAlignment="Right"
                                FontSize="10"/>
                 </StackPanel>
             </Grid>

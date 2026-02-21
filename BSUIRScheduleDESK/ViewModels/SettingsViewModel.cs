@@ -130,5 +130,6 @@ public class SettingsViewModel : Notifier, ISettingsViewModel
         }
     }
 
-    public Version Version { get; } = new Version(1, 0, 5, 4);
+    public Version Version { get; } = new Version(1, 0, 6, 0);
+    public string Copyright { get; } = "© 2023-2026 Dmitry Lantas (TheSnoopcheg)";
 }
