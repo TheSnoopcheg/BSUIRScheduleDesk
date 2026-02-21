@@ -7,6 +7,8 @@
         xmlns:vm="clr-namespace:BSUIRScheduleDESK.ViewModels"
         xmlns:lang="clr-namespace:BSUIRScheduleDESK.Langs"
         xmlns:classes="clr-namespace:BSUIRScheduleDESK.Classes"
+        xmlns:converters="clr-namespace:BSUIRScheduleDESK.Converters"
+        xmlns:html="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
         mc:Ignorable="d"
         Title="EmployeeInfoWindow" Height="450" Width="800"
         WindowStyle="None"
@@ -106,7 +108,8 @@
                     <ScaleTransform ScaleX="1" ScaleY="1" CenterX="15" CenterY="15"/>
                 </Button.RenderTransform>
             </Button>
-            <ScrollViewer Grid.Row="1">
+            <ScrollViewer Grid.Row="1"
+                          Focusable="False">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
@@ -135,7 +138,8 @@
                                    FontWeight="DemiBold"
                                    FontSize="16"/>
                         <ItemsControl ItemsSource="{Binding jobPositions}"
-                                      ItemTemplate="{StaticResource JobPositionTemplate}"/>
+                                      ItemTemplate="{StaticResource JobPositionTemplate}"
+                                      Focusable="False"/>
 
                         <Separator Margin="0,10,0,5"/>
 
@@ -153,7 +157,8 @@
                         </TextBlock>
 
                         <ItemsControl ItemsSource="{Binding ElementName=Root, Path=DataContext.Contacts}"
-                                      ItemTemplate="{StaticResource ContactTemplate}"/>
+                                      ItemTemplate="{StaticResource ContactTemplate}"
+                                      Focusable="False"/>
                     </StackPanel>
                     <StackPanel Grid.Row="1"
                                 Grid.ColumnSpan="2"
@@ -165,7 +170,8 @@
                                        FontWeight="DemiBold"
                                        FontSize="16"/>
                             <ItemsControl ItemsSource="{Binding readingCourses}"
-                                          Foreground="{DynamicResource TextBlock.Foreground.Static}">
+                                          Foreground="{DynamicResource TextBlock.Foreground.Static}"
+                                          Focusable="False">
                                 <ItemsControl.ItemTemplate>
                                     <DataTemplate>
                                         <TextBlock Text="{Binding StringFormat='{}• {0}'}"
@@ -180,9 +186,8 @@
                                        Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                        FontWeight="DemiBold"
                                        FontSize="16"/>
-                            <TextBlock Text="{Binding additionalInformation[0].content}"
-                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                       TextWrapping="Wrap"/>
+                            <html:HtmlPanel Text="{Binding additionalInformation[0].content, Converter={x:Static converters:HtmlTextConverter.Instance}}"
+                                            BaseStylesheet="{DynamicResource HtmlStyle.Static}"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ElementName=Root, Path=DataContext.IsShowAddInfo[1], Converter={StaticResource BoolToVisConverter}}">
                             <Separator Margin="0,10,0,5"/>
@@ -190,9 +195,8 @@
                                        Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                        FontWeight="DemiBold"
                                        FontSize="16"/>
-                            <TextBlock Text="{Binding additionalInformation[1].content}"
-                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                       TextWrapping="Wrap"/>
+                            <html:HtmlPanel Text="{Binding additionalInformation[1].content, Converter={x:Static converters:HtmlTextConverter.Instance}}"
+                                            BaseStylesheet="{DynamicResource HtmlStyle.Static}"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ElementName=Root, Path=DataContext.IsShowAddInfo[2], Converter={StaticResource BoolToVisConverter}}">
                             <Separator Margin="0,10,0,5"/>
@@ -200,9 +204,8 @@
                                        Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                        FontWeight="DemiBold"
                                        FontSize="16"/>
-                            <TextBlock Text="{Binding additionalInformation[2].content}"
-                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                       TextWrapping="Wrap"/>
+                            <html:HtmlPanel Text="{Binding additionalInformation[2].content, Converter={x:Static converters:HtmlTextConverter.Instance}}"
+                                            BaseStylesheet="{DynamicResource HtmlStyle.Static}"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ElementName=Root, Path=DataContext.IsShowAddInfo[3], Converter={StaticResource BoolToVisConverter}}">
                             <Separator Margin="0,10,0,5"/>
@@ -210,9 +213,8 @@
                                        Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                        FontWeight="DemiBold"
                                        FontSize="16"/>
-                            <TextBlock Text="{Binding additionalInformation[3].content}"
-                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                       TextWrapping="Wrap"/>
+                            <html:HtmlPanel Text="{Binding additionalInformation[3].content, Converter={x:Static converters:HtmlTextConverter.Instance}}"
+                                            BaseStylesheet="{DynamicResource HtmlStyle.Static}"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ElementName=Root, Path=DataContext.IsShowAddInfo[4], Converter={StaticResource BoolToVisConverter}}">
                             <Separator Margin="0,10,0,5"/>
@@ -220,9 +222,8 @@
                                        Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                        FontWeight="DemiBold"
                                        FontSize="16"/>
-                            <TextBlock Text="{Binding additionalInformation[4].content}"
-                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                       TextWrapping="Wrap"/>
+                            <html:HtmlPanel Text="{Binding additionalInformation[4].content, Converter={x:Static converters:HtmlTextConverter.Instance}}"
+                                            BaseStylesheet="{DynamicResource HtmlStyle.Static}"/>
                         </StackPanel>
                         <StackPanel Visibility="{Binding ElementName=Root, Path=DataContext.IsShowAddInfo[5], Converter={StaticResource BoolToVisConverter}}">
                             <Separator Margin="0,10,0,5"/>
@@ -230,9 +231,8 @@
                                        Foreground="{DynamicResource TextBlock.Foreground.Static}"
                                        FontWeight="DemiBold"
                                        FontSize="16"/>
-                            <TextBlock Text="{Binding additionalInformation[5].content}"
-                                       Foreground="{DynamicResource TextBlock.Foreground.Static}"
-                                       TextWrapping="Wrap"/>
+                            <html:HtmlPanel Text="{Binding additionalInformation[5].content, Converter={x:Static converters:HtmlTextConverter.Instance}}"
+                                            BaseStylesheet="{DynamicResource HtmlStyle.Static}"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
