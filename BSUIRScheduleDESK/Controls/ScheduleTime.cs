@@ -19,16 +19,19 @@ public class ScheduleTime : Control
 
         _startTime = (TextBlock)GetTemplateChild(PART_StartTimeLabel);
         _endTime = (TextBlock)GetTemplateChild(PART_EndTimeLabel);
-        SetUpLabels();
+        if (_startTime != null && _endTime != null)
+        {
+            SetUpLabels();
+        }
     }
 
     private void SetUpLabels()
     {
-        _startTime.Text = StartTime.ToString();
-        _startTime.FontSize = StartTimeFontSize;
+        _startTime!.Text = StartTime.ToString();
+        _startTime!.FontSize = StartTimeFontSize;
         TimeOnly endTime = StartTime.AddHours(1).AddMinutes(25);
-        _endTime.Text = endTime.ToString();
-        _endTime.FontSize = StartTimeFontSize - 4;
+        _endTime!.Text = endTime.ToString();
+        _endTime!.FontSize = StartTimeFontSize - 4;
     }
 
     #region StartTimeProperty
@@ -64,6 +67,6 @@ public class ScheduleTime : Control
     private const string PART_StartTimeLabel = "PART_StartTimeLabel";
     private const string PART_EndTimeLabel = "PART_EndTimeLabel";
 
-    private TextBlock _startTime;
-    private TextBlock _endTime;
+    private TextBlock? _startTime;
+    private TextBlock? _endTime;
 }

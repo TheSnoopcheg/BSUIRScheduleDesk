@@ -14,7 +14,7 @@ public static class WindowSizing
     public static extern int SHAppBarMessage(int dwMessage, ref APPBARDATA pData);
 
     [DllImport("user32", SetLastError = true)]
-    static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+    static extern IntPtr FindWindow(string lpClassName, string? lpWindowName);
 
     [DllImport("user32")]
     internal static extern bool GetMonitorInfo(IntPtr hMonitor, MONITORINFO lpmi);

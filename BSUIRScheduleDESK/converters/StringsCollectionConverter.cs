@@ -9,15 +9,15 @@ public class StringsCollectionConverter : IValueConverter
 {
     public static readonly StringsCollectionConverter Instance = new StringsCollectionConverter();
     
-    public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+    public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
-        if (value == null || parameter is not string sparam) return null;
+        if (value == null || parameter is not string sparam) return default;
         if(sparam == "Auditories")
         {
             List<string>? values = value as List<string>;
             return string.Join("\n", values!);
         }
-        return null;
+        return default;
     }
 
     public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

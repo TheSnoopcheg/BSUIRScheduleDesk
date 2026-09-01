@@ -14,6 +14,23 @@ public enum PlateState
     Maximized,
     Normal
 }
+
+[TemplatePart(Name = PART_TypeBorder, Type = typeof(Border))]
+[TemplatePart(Name = PART_SubjectInfo, Type = typeof(StackPanel))]
+[TemplatePart(Name = PART_SubjectName, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_ToolTipLabel, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_AbbrevLabel, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_Announcement, Type = typeof(StackPanel))]
+[TemplatePart(Name = PART_AnnouncementText, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_DatesWeeksLabel, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_BoldDatesWeeksLabel, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_EmployeeGroups, Type = typeof(EmployeeGroups))]
+[TemplatePart(Name = PART_NoteLabel, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_AuditoriesLabel, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_SubgroupsLabel, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_ScheduleTime, Type = typeof(ScheduleTime))]
+[TemplatePart(Name = PART_TimeLabel, Type = typeof(TextBlock))]
+[TemplatePart(Name = PART_TimePanel, Type = typeof(StackPanel))]
 public class SchedulePlate : Control
 {
     private const int MAX_WEEK = 4;
@@ -239,20 +256,20 @@ public class SchedulePlate : Control
     private const string PART_TimeLabel = "PART_TimeLabel";
     private const string PART_TimePanel = "PART_TimePanel";
 
-    private Border _typeBorder;
-    private StackPanel _subjectInfo;
-    private TextBlock _subjectName;
-    private TextBlock _toolTipLabel;
-    private TextBlock _abbrevLabel;
-    private StackPanel _announcement;
-    private TextBlock _announcementText;
-    private TextBlock _datesWeeksLabel;
-    private TextBlock _boldDatesWeeksLabel;
-    private EmployeeGroups _employeeGroups;
-    private TextBlock _noteLabel;
-    private TextBlock _auditoriesLabel;
-    private TextBlock _subGroupsLabel;
-    private ScheduleTime _scheduleTime;
-    private TextBlock _timeLabel;
-    private StackPanel _timePanel;
+    private Border? _typeBorder;
+    private StackPanel? _subjectInfo;
+    private TextBlock? _subjectName;
+    private TextBlock? _toolTipLabel;
+    private TextBlock? _abbrevLabel;
+    private StackPanel? _announcement;
+    private TextBlock? _announcementText;
+    private TextBlock? _datesWeeksLabel;
+    private TextBlock? _boldDatesWeeksLabel;
+    private EmployeeGroups? _employeeGroups;
+    private TextBlock? _noteLabel;
+    private TextBlock? _auditoriesLabel;
+    private TextBlock? _subGroupsLabel;
+    private ScheduleTime? _scheduleTime;
+    private TextBlock? _timeLabel;
+    private StackPanel? _timePanel;
 }

@@ -1,4 +1,6 @@
-﻿namespace BSUIRScheduleDESK.Classes;
+﻿using System;
+
+namespace BSUIRScheduleDESK.Classes;
 
 public class Employee
 {
@@ -28,11 +30,17 @@ public class Employee
     {
         return $"{lastName} {firstName} {middleName}";
     }
+
     public override bool Equals(object? obj)
     {
-        if(obj is not Employee employee) return false;
-        return this.firstName == employee.firstName
-            && this.lastName == employee.lastName
-            && this.middleName == employee.middleName;
+        return obj is Employee employee &&
+               firstName == employee.firstName &&
+               lastName == employee.lastName &&
+               middleName == employee.middleName;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(firstName, lastName, middleName);
     }
 }

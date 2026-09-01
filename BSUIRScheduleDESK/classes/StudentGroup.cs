@@ -1,4 +1,6 @@
-﻿namespace BSUIRScheduleDESK.Classes;
+﻿using System;
+
+namespace BSUIRScheduleDESK.Classes;
 
 public class StudentGroup
 {
@@ -16,14 +18,21 @@ public class StudentGroup
     public int specialityDepartmentEducationFormId { get; set; }
     public string? urlId { get => name; }
     public int educationDegree { get; set; }
+
+    public override bool Equals(object? obj)
+    {
+        return obj is StudentGroup group &&
+               specialityName == group.specialityName &&
+               name == group.name;
+    }
+
+    public override int GetHashCode()
+    {
+        return HashCode.Combine(specialityName, name);
+    }
+
     public override string ToString()
     {
         return name!;
-    }
-    public override bool Equals(object? obj)
-    {
-        if (obj is not StudentGroup group) return false;
-        return this.specialityName == group.specialityName
-            && this.name == group.name;
     }
 }

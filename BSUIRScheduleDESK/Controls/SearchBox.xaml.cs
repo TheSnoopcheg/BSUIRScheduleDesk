@@ -83,7 +83,7 @@ public partial class SearchBox : UserControl
     private static void OnTextChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is not SearchBox searchBox) return;
-        searchBox.TextChanged.Invoke();
+        searchBox.TextChanged?.Invoke();
     }
 
     public string SText
@@ -166,7 +166,7 @@ public partial class SearchBox : UserControl
             if (ListFocused)
             {
                 searchTextBox.Focus();
-                ListFocused= false;
+                ListFocused = false;
             }
         }
     }
@@ -175,13 +175,13 @@ public partial class SearchBox : UserControl
     {
         if(e.Key == Key.Enter)
         {
-            ItemSelected.Invoke();
+            ItemSelected?.Invoke();
         }
     }
     private void ListViewItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
     {
         if (sender is not ListViewItem item) return;
-        ItemSelected.Invoke();
+        ItemSelected?.Invoke();
         e.Handled = true;
     }
 
@@ -191,7 +191,7 @@ public partial class SearchBox : UserControl
         SelectedItem = item.DataContext;
     }
 
-    public event Action ItemSelected;
-    public event Action TextChanged;
+    public event Action? ItemSelected;
+    public event Action? TextChanged;
 
 }

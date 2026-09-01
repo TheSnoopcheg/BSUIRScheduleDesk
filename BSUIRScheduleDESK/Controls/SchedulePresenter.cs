@@ -23,9 +23,6 @@ public class SchedulePresenter : Control
     private int _weekDiff = 0;
     private int _currentWeek = -1;
 
-    private DateTime _startExamDate = DateTime.MinValue;
-    private DateTime _endExamDate = DateTime.MaxValue;
-
     private List<DateTime> _dates = new List<DateTime>();
 
     private Dictionary<TimeOnly, int> StartLessonDict = new Dictionary<TimeOnly, int>()
