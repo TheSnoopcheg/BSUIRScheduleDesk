@@ -40,7 +40,7 @@ public class MainWindowModel : IMainWindowModel
         Schedule schedule = await _scheduleService.LoadScheduleAsync(url, loadingType);
         if (schedule == null) return false;
 
-        await schedule.CreateDailyLessonConllections();
+        await schedule.CreateDailyLessonCollectionsAsync();
         if (loadingType != LoadingType.ServerWP)
             Schedule = schedule;
         else                                            // shitcoding
@@ -84,7 +84,7 @@ public class MainWindowModel : IMainWindowModel
         if (newSchedule == null) return null;
         if (Schedule.GetUrl() != newSchedule.GetUrl()) return null;
 
-        await newSchedule.CreateDailyLessonConllections();
+        await newSchedule.CreateDailyLessonCollectionsAsync();
 
         if (!Schedule.Compare(newSchedule))
         {

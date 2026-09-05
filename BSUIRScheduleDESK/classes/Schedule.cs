@@ -46,50 +46,30 @@ public class Schedule
     {
         return GetName() ?? string.Empty;
     }
-    public async Task CreateDailyLessonConllections() => await Task.Run(() =>
+    public void CreateDailyLessonsCollections()
     {
-        if(lessons != null && !lessons.IsEmpty)
+        dailyLessons.Clear();
+        previousDailyLessons.Clear();
+
+        AddLessonsByDay(lessons, dailyLessons);
+        AddLessonsByDay(previousLessons, previousDailyLessons);
+    }
+    private static void AddLessonsByDay(Lessons? source, List<Lesson> destination)
+    {
+        if (source is null)
+            return;
+
+        foreach(var (day, dayLessons) in source.ByDay)
         {
-            int counter = 0;
-            foreach(var prop in lessons.GetType().GetProperties())
+            foreach(var lesson in dayLessons)
             {
-                if(prop.GetValue(lessons) is not IEnumerable<Lesson> list || list.Count() == 0)
-                {
-                    counter++;
+                if (lesson is null) 
                     continue;
-                }
 
-                foreach(var item in list)
-                {
-                    if (item == null) continue;
-                    item.DayOfWeek = (Day)counter;
-                    dailyLessons.Add(item);
-                }
-                counter++;
+                lesson.DayOfWeek = day;
+                destination.Add(lesson);
             }
-            lessons = null;
         }
-
-        if(previousLessons != null && !previousLessons.IsEmpty)
-        {
-            int counter = 0;
-            foreach(var prop in previousLessons.GetType().GetProperties())
-            {
-                if(prop.GetValue(previousLessons) is not IEnumerable<Lesson> list || list.Count() == 0)
-                {
-                    counter++;
-                    continue;
-                }
-
-                foreach(var item in list)
-                {
-                    if (item == null) continue;
-                    item.DayOfWeek = (Day)counter;
-                    previousDailyLessons.Add(item);
-                }
-                counter++;
-            }
-            previousLessons = null;
-        }
-    });
+    }
+    public async Task CreateDailyLessonCollectionsAsync() => await Task.Run(CreateDailyLessonsCollections);
 }

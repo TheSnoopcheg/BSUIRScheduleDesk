@@ -19,9 +19,34 @@ public class Lessons
     public List<Lesson>? Saturday { get; set; }
     [JsonPropertyName("Воскресенье")]
     public List<Lesson>? Sunday { get; set; }
-    public override string ToString()
+    public override string ToString() => "Lessons";
+    public bool IsEmpty =>
+        Monday is not { Count: > 0 } &&
+        Tuesday is not { Count: > 0 } &&
+        Wednesday is not { Count: > 0 } &&
+        Thursday is not { Count: > 0 } &&
+        Friday is not { Count: > 0 } &&
+        Saturday is not { Count: > 0 } &&
+        Sunday is not { Count: > 0 };
+    [JsonIgnore]
+    public IEnumerable<(Day Day, List<Lesson> Lessons)> ByDay
     {
-        return "Lessons";
+        get
+        {
+            if (Monday is { Count: > 0 }) 
+                yield return (Day.Monday, Monday);
+            if (Tuesday is { Count: > 0 }) 
+                yield return (Day.Tuesday, Tuesday);
+            if (Wednesday is { Count: > 0 }) 
+                yield return (Day.Wednesday, Wednesday);
+            if (Thursday is { Count: > 0 }) 
+                yield return (Day.Thursday, Thursday);
+            if (Friday is { Count: > 0 }) 
+                yield return (Day.Friday, Friday);
+            if (Saturday is { Count: > 0 }) 
+                yield return (Day.Saturday, Saturday);
+            if (Sunday is { Count: > 0 }) 
+                yield return (Day.Sunday, Sunday);
+        }
     }
-    public bool IsEmpty { get => Monday == null && Tuesday == null && Wednesday == null && Thursday == null && Friday == null && Saturday == null; }
 }
