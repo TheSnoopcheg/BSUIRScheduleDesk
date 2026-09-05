@@ -38,7 +38,7 @@ public class EmployeeFullInfo
     public string? firstName { get; set; }
     public string? middleName { get; set; }
     public string? lastName { get; set; }
-    public string? photoLink { get; set; }
+    public string? photoLink { get => $@"https://iis.bsuir.by/api/v1/employees/photo/{id}"; }
     public string? degree { get; set; }
     public string? degreeAbbrev { get; set; }
     public string? rank { get; set; }

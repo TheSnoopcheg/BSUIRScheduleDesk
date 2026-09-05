@@ -11,6 +11,16 @@ namespace BSUIRScheduleDESK.Controls;
 /// </summary>
 public partial class EmployeeGroups : UserControl
 {
+    private static readonly BitmapImage PlaceholderImage = CreatePlaceholderImage();
+    private static BitmapImage CreatePlaceholderImage()
+    {
+        var image = new BitmapImage();
+        image.BeginInit();
+        image.UriSource = new Uri("/Assets/unknown-person-placeholder.png", UriKind.Relative);
+        image.EndInit();
+        image.Freeze();
+        return image;
+    }
     public EmployeeGroups()
     {
         InitializeComponent();
@@ -34,6 +44,6 @@ public partial class EmployeeGroups : UserControl
     private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
     {
         if (sender is not Image image) return;
-        image.Source = new BitmapImage(new Uri("/Assets/unknown-person-placeholder.png", UriKind.Relative));
+        image.SetCurrentValue(Image.SourceProperty, PlaceholderImage);
     }
 }

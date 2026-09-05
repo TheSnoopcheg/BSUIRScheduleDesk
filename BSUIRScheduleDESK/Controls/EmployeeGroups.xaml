@@ -8,73 +8,68 @@
              x:Name="root"
              mc:Ignorable="d">
     <UserControl.Resources>
+        <ToolTip Style="{StaticResource ToolTipStyle}" 
+                 Placement="Top" 
+                 MaxWidth="200"
+                 DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Self}}"
+                 Visibility="{Binding ., Converter={x:Static converters:ToolTipVisibilityConverter.Instance}}"
+                 x:Key="EmployeeGroupsToolTip">
+            <StackPanel Orientation="Vertical">
+                <Image Height="100"
+                       Stretch="UniformToFill"
+                       Width="100"
+                       ImageFailed="Image_ImageFailed">
+                    <Image.Clip>
+                        <EllipseGeometry RadiusX="45" RadiusY="45" Center="50, 50"/>
+                    </Image.Clip>
+                    <Image.Style>
+                        <Style TargetType="{x:Type Image}">
+                            <Setter Property="Visibility" Value="Collapsed"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Converter={x:Static converters:EmployeeOrGroupConverter.Instance}, ConverterParameter=IsEmployee}" Value="True">
+                                    <Setter Property="Source" Value="{Binding photoLink}"/>
+                                    <Setter Property="Visibility" Value="Visible"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </Image.Style>
+                </Image>
+                <TextBlock Foreground="{DynamicResource TextBlock.Foreground.Static}" 
+                           Text="{Binding Converter={x:Static converters:EmployeeOrGroupConverter.Instance}, ConverterParameter=Text}" 
+                           TextWrapping="Wrap" 
+                           TextAlignment="Center"/>
+
+            </StackPanel>
+        </ToolTip>
         <DataTemplate x:Key="EmployeeGroupsTemplate">
-            <Button Command="{Binding Command, ElementName=root}" CommandParameter="{Binding urlId}">
-                <Button.ToolTip>
-                    <ToolTip Style="{StaticResource ToolTipStyle}" 
-                             Placement="Top" 
-                             MaxWidth="200"
-                             Visibility="{Binding ., Converter={x:Static converters:ToolTipVisibilityConverter.Instance}}">
-                        <Grid>
-                            <Grid.RowDefinitions>
-                                <RowDefinition/>
-                                <RowDefinition/>
-                            </Grid.RowDefinitions>
-                            <Image Grid.Row="0" 
-                                   Height="100"
-                                   Stretch="UniformToFill"
-                                   Width="100"
-                                   ImageFailed="Image_ImageFailed">
-                                <Image.Clip>
-                                    <EllipseGeometry RadiusX="45" RadiusY="45" Center="50, 50"/>
-                                </Image.Clip>
-                                <Image.Style>
-                                    <Style TargetType="{x:Type Image}">
-                                        <Setter Property="Visibility" Value="Collapsed"/>
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{Binding Converter={x:Static converters:EmployeeOrGroupConverter.Instance}, ConverterParameter=IsEmployee}" Value="True">
-                                                <Setter Property="Source" Value="{Binding photoLink}"/>
-                                                <Setter Property="Visibility" Value="Visible"/>
-                                            </DataTrigger>
-                                        </Style.Triggers>
-                                    </Style>
-                                </Image.Style>
-                            </Image>
-                            <TextBlock Foreground="{DynamicResource TextBlock.Foreground.Static}" 
-                                       Text="{Binding Converter={x:Static converters:EmployeeOrGroupConverter.Instance}, ConverterParameter=Text}" 
-                                       TextWrapping="Wrap" 
-                                       TextAlignment="Center"
-                                       Grid.Row="1"/>
-                            
-                        </Grid>
-                    </ToolTip>
-                </Button.ToolTip>
+            <Button Command="{Binding Command, ElementName=root}" 
+                    CommandParameter="{Binding urlId}">
                 <Button.Style>
                     <Style TargetType="{x:Type Button}">
-                        <Setter Property="Margin" Value="0, 2.5,5,2.5"/>
+                        <Setter Property="Margin" Value="0, 2.5, 5, 2.5"/>
                         <Setter Property="MinHeight" Value="20"/>
                         <Setter Property="MaxHeight" Value="40"/>
                         <Setter Property="HorizontalAlignment" Value="Left"/>
-                        <Setter Property="Width" Value="Auto"/>
                         <Setter Property="BorderBrush" Value="{DynamicResource EmployeeGroups.Button.Static.BorderBrush}"/>
                         <Setter Property="Background" Value="{DynamicResource EmployeeGroups.Button.Static.Background}"/>
+                        <Setter Property="Foreground" Value="{DynamicResource EmployeeGroups.Button.Static.Foreground}"/>
+                        <Setter Property="ToolTip" Value="{StaticResource EmployeeGroupsToolTip}"/>
                         <Setter Property="Focusable" Value="False"/>
                         <Setter Property="Cursor" Value="Hand"/>
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Grid Height="{TemplateBinding Height}" Width="{TemplateBinding Width}" SnapsToDevicePixels="True">
+                                    <Grid SnapsToDevicePixels="True">
                                         <Rectangle x:Name="borderStatic" 
-                                                   Fill="{DynamicResource EmployeeGroups.Button.Static.Background}"
-                                                   Stroke="{DynamicResource EmployeeGroups.Button.Static.BorderBrush}"
+                                                   Fill="{TemplateBinding Background}"
+                                                   Stroke="{TemplateBinding BorderBrush}"
                                                    StrokeThickness="1"
                                                    RadiusX="7.5"
                                                    RadiusY="7.5"/>
                                         <Rectangle x:Name="borderMouseOver"
                                                    Fill="{DynamicResource EmployeeGroups.Button.MouseOver.Background}"
-                                                   Stroke="{DynamicResource EmployeeGroups.Button.Static.BorderBrush}"
+                                                   Stroke="{TemplateBinding BorderBrush}"
                                                    StrokeThickness="1"
-                                                   Opacity="1"
                                                    RadiusX="7.5"
                                                    RadiusY="7.5">
                                             <Rectangle.RenderTransform>
@@ -86,44 +81,51 @@
                                         </Rectangle>
                                         <TextBlock Text="{Binding}" 
                                                    x:Name="content"
-                                                   Margin="5,0,5,0"
-                                                   Foreground="{DynamicResource EmployeeGroups.Button.Static.Foreground}"
+                                                   Margin="7,2"
+                                                   Foreground="{TemplateBinding Foreground}"
                                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
                                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                                    TextWrapping="Wrap"/>
-                                        <TextBlock Text="{Binding}" 
-                                                   x:Name="contentMouseOver"
-                                                   Margin="5,0,5,0"
-                                                   Foreground="{DynamicResource EmployeeGroups.Button.MouseOver.Foreground}"
-                                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" 
-                                                   VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                                   TextWrapping="Wrap"
-                                                   Opacity="0"/>
-                                    </Grid>
-                                    <ControlTemplate.Triggers>
-                                        <EventTrigger RoutedEvent="MouseEnter">
-                                            <EventTrigger.Actions>
-                                                <BeginStoryboard>
-                                                    <Storyboard >
-                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" Storyboard.TargetProperty="RenderTransform.ScaleX" To="1" Duration="0:0:0.20"/>
-                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" Storyboard.TargetProperty="RenderTransform.ScaleY" To="1" Duration="0:0:0.20"/>
-                                                        <DoubleAnimation Storyboard.TargetName="contentMouseOver" Storyboard.TargetProperty="Opacity" To="1" Duration="0:0:0.20" AccelerationRatio="0.75"/>
-                                                    </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger.Actions>
-                                        </EventTrigger>
-                                        <EventTrigger RoutedEvent="MouseLeave">
-                                            <EventTrigger.Actions>
-                                                <BeginStoryboard>
+
+                                        <VisualStateManager.VisualStateGroups>
+                                            <VisualStateGroup x:Name="CommonStates">
+                                                <VisualState x:Name="Normal">
                                                     <Storyboard>
-                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" Storyboard.TargetProperty="RenderTransform.ScaleX" To="0" Duration="0:0:0.20"/>
-                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" Storyboard.TargetProperty="RenderTransform.ScaleY" To="0" Duration="0:0:0.20"/>
-                                                        <DoubleAnimation Storyboard.TargetName="contentMouseOver" Storyboard.TargetProperty="Opacity" To="0" Duration="0:0:0.20" AccelerationRatio="0.25"/>
+                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" 
+                                                                         Storyboard.TargetProperty="RenderTransform.ScaleX" 
+                                                                         To="0" 
+                                                                         Duration="0:0:0.20"/>
+                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" 
+                                                                         Storyboard.TargetProperty="RenderTransform.ScaleY" 
+                                                                         To="0" 
+                                                                         Duration="0:0:0.20"/>
+                                                        <ColorAnimation Storyboard.TargetName="content"
+                                                                        Storyboard.TargetProperty="Foreground.Color"
+                                                                        To="{DynamicResource EmployeeGroups.Button.Foreground}"
+                                                                        Duration="0:0:0.20"
+                                                                        AccelerationRatio="0.25"/>
                                                     </Storyboard>
-                                                </BeginStoryboard>
-                                            </EventTrigger.Actions>
-                                        </EventTrigger>
-                                    </ControlTemplate.Triggers>
+                                                </VisualState>
+                                                <VisualState x:Name="MouseOver">
+                                                    <Storyboard>
+                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" 
+                                                                         Storyboard.TargetProperty="RenderTransform.ScaleX" 
+                                                                         To="1" 
+                                                                         Duration="0:0:0.20"/>
+                                                        <DoubleAnimation Storyboard.TargetName="borderMouseOver" 
+                                                                         Storyboard.TargetProperty="RenderTransform.ScaleY" 
+                                                                         To="1" 
+                                                                         Duration="0:0:0.20"/>
+                                                        <ColorAnimation Storyboard.TargetName="content"
+                                                                        Storyboard.TargetProperty="Foreground.Color"
+                                                                        To="{DynamicResource EmployeeGroups.Button.Foreground.MouseOver}"
+                                                                        Duration="0:0:0.20"
+                                                                        AccelerationRatio="0.75"/>
+                                                    </Storyboard>
+                                                </VisualState>
+                                            </VisualStateGroup>
+                                        </VisualStateManager.VisualStateGroups>
+                                    </Grid>
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
@@ -132,6 +134,7 @@
             </Button>
         </DataTemplate>
     </UserControl.Resources>
+    
     <ItemsControl ItemTemplate="{StaticResource EmployeeGroupsTemplate}"
                   ItemsSource="{Binding}"
                   Focusable="False">

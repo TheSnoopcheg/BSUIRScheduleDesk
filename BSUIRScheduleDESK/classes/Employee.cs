@@ -11,11 +11,14 @@ public class Employee
     public string? degree { get; set; }
     public string? degreeAbbrev { get; set; }
     public string? rank { get; set; }
-    public string? photoLink { get; set; }
     public string? calendarId { get; set; }
     public int id { get; set; }
     public string? urlId { get; set; }
     public string? jobPositions { get; set; }
+    public string? photoLink
+    {
+        get => @$"https://iis.bsuir.by/api/v1/employees/photo/{id}";
+    }
 
     public override string ToString()
     {
