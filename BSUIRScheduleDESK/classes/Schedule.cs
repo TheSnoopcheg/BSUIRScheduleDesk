@@ -28,11 +28,13 @@ public class Schedule
     [JsonIgnore]
     public bool favorited { get; set; }
     public string? currentPeriod { get; set; }
-    public bool Compare(Schedule right)
+    public bool Compare(Schedule? right)
     {
-        string thisObj = JsonSerializer.Serialize(this);
-        string rightObj = JsonSerializer.Serialize(right);
-        return thisObj.Equals(rightObj);
+        if (right is null)
+            return false;
+        JsonElement thisObj = JsonSerializer.SerializeToElement(this);
+        JsonElement rightObj = JsonSerializer.SerializeToElement(right);
+        return JsonElement.DeepEquals(thisObj, rightObj);
     }
     public string? GetName()
     {
@@ -53,6 +55,9 @@ public class Schedule
 
         AddLessonsByDay(lessons, dailyLessons);
         AddLessonsByDay(previousLessons, previousDailyLessons);
+
+        lessons = null;
+        previousLessons = null;
     }
     private static void AddLessonsByDay(Lessons? source, List<Lesson> destination)
     {

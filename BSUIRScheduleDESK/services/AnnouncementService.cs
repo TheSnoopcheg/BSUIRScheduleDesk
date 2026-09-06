@@ -1,4 +1,5 @@
 ﻿using BSUIRScheduleDESK.Classes;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -13,18 +14,15 @@ public class AnnouncementService : IAnnouncementService
     }
     public async Task<List<Announcement>?> LoadAnnouncementsAsync(string? url)
     {
-        List<Announcement>? announcements;
-        if (int.TryParse(url, out var id))
+        if (int.TryParse(url, out _))
         {
-            announcements = await _networkService.GetAsync<List<Announcement>>($"https://iis.bsuir.by/api/v1/announcements/student-groups?name={url}");
+            return await _networkService.GetAsync<List<Announcement>>(
+                $"https://iis.bsuir.by/api/v1/announcements/student-groups?name={url}");
         }
-        else
-        {
-            announcements = await _networkService.GetAsync<List<Announcement>>($"https://iis.bsuir.by/api/v1/announcements/employees?url-id={url}");
-        }
-        if (announcements != null)
-            return announcements;
-        else
-            return default;
+
+        var announcements = await _networkService.GetAsync<AnnouncementPage>(
+            $"https://iis.bsuir.by/api/v1/announcements/employees?url-id={url}&dateFrom={DateTime.Today.ToString("yyyy-MM-dd")}");
+        
+        return announcements?.content;
     }
 }
