@@ -22,9 +22,9 @@ public class TabItemVisibilityConverter : IValueConverter
             {
                 if(v.dailyLessons == null || v.dailyLessons.Count == 0) return Visibility.Collapsed;
             }
-            else if(param == "PreviousSchedule")
+            else if(param == "NextSchedule")
             {
-                if(v.previousDailyLessons == null || v.previousDailyLessons.Count == 0 || v.previousTerm == v.currentTerm) return Visibility.Collapsed;
+                if(v.nextDailyLessons == null || v.nextDailyLessons.Count == 0 || v.nextTerm == v.currentTerm) return Visibility.Collapsed;
             }
         }
         return Visibility.Visible;

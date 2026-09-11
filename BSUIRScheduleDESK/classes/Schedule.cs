@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -8,26 +7,29 @@ namespace BSUIRScheduleDESK.Classes;
 
 public class Schedule
 {
+    public string? startDate { get; set; }
+    public string? endDate { get; set; }
+    public string? startExamsDate { get; set; }
+    public string? endExamsDate { get; set; }
+
     [JsonPropertyName("employeeDto")]
     public Employee? employee { get; set; }
     [JsonPropertyName("studentGroupDto")]
     public StudentGroup? studentGroup { get; set; }
     [JsonPropertyName("schedules")]
     public Lessons? lessons { get; set; }
-    [JsonPropertyName("previousSchedules")]
-    public Lessons? previousLessons { get; set; }
-    public List<Lesson> dailyLessons { get; set; } = new List<Lesson>();
-    public List<Lesson> previousDailyLessons { get; set; } = new List<Lesson>();
+    [JsonPropertyName("nextSchedules")]
+    public Lessons? nextLessons { get; set; }
     public string? currentTerm { get; set; }
-    public string? previousTerm { get; set; }
+    public string? nextTerm { get; set; }
     public List<Lesson>? exams { get; set; }
-    public string? startDate { get; set; }
-    public string? endDate { get; set; }
-    public string? startExamsDate { get; set; }
-    public string? endExamsDate { get; set; }
+    public string? currentPeriod { get; set; }
+    public bool? isZaochOrDist { get; set; }
+    
     [JsonIgnore]
     public bool favorited { get; set; }
-    public string? currentPeriod { get; set; }
+    public List<Lesson> dailyLessons { get; set; } = [];
+    public List<Lesson> nextDailyLessons { get; set; } = [];
     public bool Compare(Schedule? right)
     {
         if (right is null)
@@ -51,13 +53,13 @@ public class Schedule
     public void CreateDailyLessonsCollections()
     {
         dailyLessons.Clear();
-        previousDailyLessons.Clear();
+        nextDailyLessons.Clear();
 
         AddLessonsByDay(lessons, dailyLessons);
-        AddLessonsByDay(previousLessons, previousDailyLessons);
+        AddLessonsByDay(nextLessons, nextDailyLessons);
 
         lessons = null;
-        previousLessons = null;
+        nextLessons = null;
     }
     private static void AddLessonsByDay(Lessons? source, List<Lesson> destination)
     {

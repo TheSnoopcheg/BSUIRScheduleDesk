@@ -64,7 +64,7 @@ public class ScheduleService : IScheduleService
         }
         return schedule!;
     }
-    private async Task<Schedule> ServerLoad(string? url, LoadingType preLoadingType = LoadingType.Server)
+    private async Task<Schedule?> ServerLoad(string? url, LoadingType preLoadingType = LoadingType.Server)
     {
         Schedule? schedule = new Schedule();
         try
@@ -83,11 +83,12 @@ public class ScheduleService : IScheduleService
                 {
                     await SaveScheduleAsync(schedule, url);
                 }
+                await schedule.CreateDailyLessonCollectionsAsync();
+                return schedule;
             }
         }
         catch { }
-
-        return schedule!;
+        return default;
     }
 
     public async Task SaveRecentScheduleAsync(Schedule schedule)

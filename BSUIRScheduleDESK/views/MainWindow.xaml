@@ -553,12 +553,12 @@
                             </Grid>
                         </TabItem.Content>
                     </TabItem>
-                    <!--previous term schedule tab-->
+                    <!--next term schedule tab-->
                     <TabItem Style="{DynamicResource TabItemStyle}" 
-                             Visibility="{Binding Schedule, Converter={x:Static converters:TabItemVisibilityConverter.Instance}, ConverterParameter=PreviousSchedule}">
+                             Visibility="{Binding Schedule, Converter={x:Static converters:TabItemVisibilityConverter.Instance}, ConverterParameter=NextSchedule}">
                         <TabItem.Header>
                             <StackPanel>
-                                <TextBlock Text="{Binding Schedule.previousTerm}" FontSize="14"/>
+                                <TextBlock Text="{Binding Schedule.nextTerm}" FontSize="14"/>
                             </StackPanel>
                         </TabItem.Header>
                         <TabItem.Content>
@@ -570,7 +570,7 @@
                                                              ShowAllLessons="{Binding Source={x:Static classes:Config.Instance}, Path=ShowAllLessons}"
                                                              WindowState="{Binding ElementName=mainWindow, Path=WindowState}"
                                                              Command="{Binding LoadScheduleFromPlate}"
-                                                             Lessons="{Binding Schedule.previousDailyLessons}"/>
+                                                             Lessons="{Binding Schedule.nextDailyLessons}"/>
                             </Grid>
                         </TabItem.Content>
                     </TabItem>

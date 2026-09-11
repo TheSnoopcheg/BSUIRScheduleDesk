@@ -645,7 +645,15 @@
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
                                     <Grid>
-                                        <Path x:Name="path" Data="M288.75,232.25 L288.75,240.625 L283,236.625 z" Fill="{DynamicResource Calendar.DayTitle.Static.Foreground}" HorizontalAlignment="Left" Height="10" Margin="14,-6,0,0" Stretch="Fill" VerticalAlignment="Center" Width="6"/>
+                                        <Path x:Name="path" 
+                                              Data="M288.75,232.25 L288.75,240.625 L283,236.625 z" 
+                                              Fill="{DynamicResource Calendar.DayTitle.Static.Foreground}" 
+                                              HorizontalAlignment="Left" 
+                                              Height="10" 
+                                              Width="6"
+                                              Margin="14,-6,0,0" 
+                                              Stretch="Fill" 
+                                              VerticalAlignment="Center"/>
                                     </Grid>
                                 </Grid>
                                 <ControlTemplate.Triggers>
